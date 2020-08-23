@@ -1,0 +1,147 @@
+@mixin poCentering {
+  top: 50%;
+  right: 50%;
+  bottom: 50%;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-46%, -50%);
+}
+.Landing {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--bodyFont);
+  position: relative;
+  height: 100vh;
+  background-color: #387efa;
+  padding: 1.25rem;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    position: relative;
+
+    &::after {
+      content: "";
+      height: 2px;
+      border-radius: 6px;
+      width: 60%;
+      background-color: #fff;
+      opacity: 0.5;
+      position: absolute;
+      top: 36px;
+      left: 27%;
+      z-index: 1000;
+    }
+
+    .top-message {
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .join-button {
+      background: transparent;
+      text-decoration: none;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      padding: 0.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.5s;
+
+      .discord-icon {
+        height: 24px;
+        width: 24px;
+      }
+
+      .join-text {
+        color: #fff;
+        // margin-left: 0.5rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    @include poCentering();
+    .main-container {
+      position: relative;
+      .introducing-text {
+        color: #fff;
+        font-size: 26px;
+        position: absolute;
+        top: -17px;
+        left: 13%;
+        background-color: #387efa;
+        padding: 0px 1rem;
+      }
+      .logo-container {
+        padding: 1rem 4rem;
+        display: flex;
+        align-items: center;
+        border: 8px solid #fff;
+        border-radius: 48px;
+        .logo-image {
+          height: 84px;
+        }
+
+        .logo-text {
+          font-size: 84px;
+          color: #fff;
+          margin-left: 2rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    position: absolute;
+    bottom: 1rem;
+    width: 92.5%;
+
+    .coming-soon-container {
+      padding: 0.6rem 0px;
+      display: flex;
+      align-items: center;
+      .coming-soon-text {
+        color: #fff;
+        font-size: 1.4rem;
+        margin-right: 2px;
+      }
+    }
+
+    .social-icon-container {
+      padding: 0.6rem 0px;
+      display: block;
+      text-decoration: none;
+      transition: all 0.5s;
+
+      .social-icon {
+        height: 36px;
+        width: 36px;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
