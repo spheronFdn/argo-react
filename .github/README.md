@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://argoapp.live/">
-    <img src="../static/logo_light.svg" alt="ArGo logo (light version)" width="110">
+    <img src="../static/logo_light.png" alt="ArGo logo (light version)" width="110">
   </a>
 
   <h3 align="center">ArGo</h3>
