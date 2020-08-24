@@ -18,8 +18,8 @@
     flex-direction: column;
     font-family: var(--bodyFont);
     position: relative;
-    height: 94.7vh;
-    background-color: #387efa;
+    height: 95.1vh;
+    background-color: var(--themeColor);
     padding: 1.25rem;
 
     .header {
@@ -89,7 +89,7 @@
           position: absolute;
           top: -17px;
           left: 13%;
-          background-color: #387efa;
+          background-color: var(--themeColor);
           padding: 0px 1rem;
         }
         .logo-container {
@@ -274,6 +274,7 @@
 
 $information-phone: "only screen and (max-width : 464px)";
 $information-pad: "only screen and (max-width : 1024px) and (min-width: 464px)";
+$information-xl: "only screen and (min-width: 1920px)";
 @media #{$information-phone} {
   .Landing {
     .bg-animation {
@@ -534,7 +535,23 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 464px)";
 
       .footer {
         bottom: 1rem !important;
-        width: 93.5% !important;
+        width: 91.5% !important;
+      }
+    }
+  }
+}
+
+@media #{$information-xl} {
+  .Landing {
+    .landing-container {
+      padding: 0.5rem 0px !important;
+      height: 98.5vh !important;
+
+      .header {
+        &::after {
+          width: 70% !important;
+          left: 20% !important;
+        }
       }
     }
   }
