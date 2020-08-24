@@ -18,7 +18,7 @@
     flex-direction: column;
     font-family: var(--bodyFont);
     position: relative;
-    height: 95.9vh;
+    height: 95vh;
     overflow: hidden;
     background-color: var(--themeColor);
     padding: 1.25rem;
@@ -352,7 +352,7 @@ $information-xxl: "only screen and (min-width: 1920px)";
 
     .landing-container {
       padding: 0.5rem 0px !important;
-      height: 98vh !important;
+      height: 97.5vh !important;
 
       .header {
         &::after {
@@ -494,7 +494,7 @@ $information-xxl: "only screen and (min-width: 1920px)";
 
     .landing-container {
       padding: 0.5rem 0px !important;
-      height: 99vh !important;
+      height: 98vh !important;
 
       .header {
         &::after {
@@ -547,7 +547,7 @@ $information-xxl: "only screen and (min-width: 1920px)";
   .Landing {
     .landing-container {
       padding: 0.5rem 0px !important;
-      height: 98.5vh !important;
+      height: 98.4vh !important;
 
       .header {
         &::after {
@@ -563,7 +563,7 @@ $information-xxl: "only screen and (min-width: 1920px)";
   .Landing {
     .landing-container {
       padding: 0.5rem 0px !important;
-      height: 98.5vh !important;
+      height: 98.4vh !important;
 
       .header {
         &::after {
