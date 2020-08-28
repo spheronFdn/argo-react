@@ -1,12 +1,11 @@
 import React from "react";
 import "./SignIn.scss";
+import { AuthService } from "../../services/AuthService";
 
 function SignIn() {
+  const authService = new AuthService();
   const signInUsingGoogle = () => {
-    fetch("https://localhost:5001").then((response) => {
-      // eslint-disable-next-line no-console
-      console.log(response);
-    });
+    authService.login();
   };
   return (
     <div className="SignIn">
