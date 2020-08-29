@@ -1,6 +1,6 @@
 import React from "react";
 import "./SignIn.scss";
-import { AuthService } from "../../services/AuthService";
+import { AuthService } from "../../services";
 
 function SignIn() {
   const authService = new AuthService();

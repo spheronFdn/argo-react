@@ -1,17 +1,17 @@
 import { Log, User, UserManager } from "oidc-client";
 
-export class AuthService {
+export default class AuthService {
   public userManager: UserManager;
 
   constructor() {
     const settings = {
-      authority: "https://demo.identityserver.io/",
-      client_id: "interactive.public",
-      redirect_uri: `'http://localhost:4200/signin-callback`,
-      silent_redirect_uri: `'http://localhost:4200/silent-renew`,
-      post_logout_redirect_uri: `'http://localhost:4200/'`,
+      authority: "https://localhost:5001/",
+      client_id: "js",
+      redirect_uri: `http://localhost:3000/signin`,
+      // silent_redirect_uri: `http://localhost:3000/`,
+      post_logout_redirect_uri: `http://localhost:3000/`,
       response_type: "code",
-      scope: "openid profile email api",
+      scope: "openid profile clientapi",
     };
     this.userManager = new UserManager(settings);
 
