@@ -1,11 +1,11 @@
 import { Observable, defer, from } from "rxjs";
 
-const ROOT_URL = "https://api.downtownstimulus.com";
+const ROOT_URL = "http://localhost:5002";
 
-export const fetchAllBusinesses = (): Observable<any[]> => {
+export const signInWithGithub = (): Observable<any[]> => {
   return defer(() => {
     return from<Promise<any[]>>(
-      fetch(`${ROOT_URL}/business/`).then((res) => res.json()),
+      fetch(`${ROOT_URL}/auth/github`).then((res) => res.json()),
     );
   });
 };

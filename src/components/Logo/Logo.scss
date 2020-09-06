@@ -1,0 +1,21 @@
+.Logo {
+  display: flex;
+  align-items: center;
+  .logo-image {
+    height: 42px;
+  }
+  .logo-text {
+    font-size: 32px;
+    color: var(--white);
+    margin-left: 0.5rem;
+    font-weight: 600;
+  }
+
+  .logo-light {
+    color: var(--logoColor) !important;
+  }
+
+  .logo-light {
+    color: var(--white) !important;
+  }
+}
