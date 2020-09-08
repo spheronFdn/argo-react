@@ -5,7 +5,7 @@ import Logo from "../Logo";
 
 function SignUp() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = "http://localhost:5002/auth/github";
+    const githubSignInUrl = "http://localhost:8080/auth/github";
     window.open(githubSignInUrl, "_self");
   };
   return (
