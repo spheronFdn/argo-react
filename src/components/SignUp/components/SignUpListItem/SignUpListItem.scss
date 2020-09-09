@@ -1,0 +1,32 @@
+.usage-list-item {
+  display: flex;
+  align-items: baseline;
+  padding: 16px 0px;
+  transition: 0.1s ease-in-out;
+  .usage-number {
+    width: 28px;
+    margin-right: 1rem;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--themeColor);
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .usage-details {
+    text-align: left;
+    width: 80%;
+    .usage-details-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--white);
+    }
+    .usage-details-description {
+      font-size: 16px;
+      color: var(--grey1Color);
+    }
+  }
+}

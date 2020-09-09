@@ -17,6 +17,7 @@
   --grey5Color: #3a3a3a;
   --black: #000;
   --themeColor: #3677e9;
+  --logoColor: #3463ae;
   --themeColorDark: #11498a;
   --themeColorSelected: #1563bb27;
   --labelColor: #737373;
@@ -24,7 +25,7 @@
 }
 
 .App {
-  background: var(--grey1Color);
+  background: var(--white);
   font-family: var(--bodyFont);
   color: var(--textColor);
   line-height: 1.5;
