@@ -8,6 +8,10 @@ function SignUp() {
     const githubSignInUrl = "http://localhost:8080/auth/github";
     window.open(githubSignInUrl, "_self");
   };
+  const signInWithGitlab = async () => {
+    const gitlabSignInUrl = "http://localhost:8080/auth/gitlab";
+    window.open(gitlabSignInUrl, "_self");
+  };
   return (
     <div className="SignIn">
       <div className="side-backdrop"></div>
@@ -66,7 +70,7 @@ function SignUp() {
                   </span>
                   <span>Continue with Github</span>
                 </button>
-                <button className="gitlab-button">
+                <button className="gitlab-button" onClick={signInWithGitlab}>
                   <span className="gitlab-icon">
                     <GitlabIcon />
                   </span>
