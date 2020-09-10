@@ -1,14 +1,14 @@
 .Dashboard {
   display: flex;
   flex-direction: column;
-  background: var(--grey1Color);
+  background: var(--white);
   .app-main {
     margin-top: -8px;
     padding-bottom: 2rem;
     padding-top: 0;
 
     &::before {
-      background: radial-gradient(ellipse at bottom, #3677e9 30%, #3463ae 80%);
+      background: var(--themeColorDark);
       content: " ";
       display: block;
       height: 324px;

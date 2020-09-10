@@ -12,11 +12,41 @@ const Navbar = () => {
             <li className="nav-item">
               <Link
                 className={`${
-                  location.pathname.indexOf("site") !== -1 ? "selected" : ""
+                  location.pathname.indexOf("dashboard") !== -1 ? "selected" : ""
                 }`}
-                to="/site"
+                to="/dashboard"
               >
-                Sites
+                Overview
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`${
+                  location.pathname.indexOf("domains") !== -1 ? "selected" : ""
+                }`}
+                to="/domains"
+              >
+                Domains
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`${
+                  location.pathname.indexOf("member") !== -1 ? "selected" : ""
+                }`}
+                to="/member"
+              >
+                Members
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={`${
+                  location.pathname.indexOf("settings") !== -1 ? "selected" : ""
+                }`}
+                to="/settings"
+              >
+                Settings
               </Link>
             </li>
             {/* <li className="nav-item">
