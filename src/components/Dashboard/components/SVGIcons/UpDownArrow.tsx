@@ -1,6 +1,6 @@
 import React from "react";
 
-const UpDownArrow: React.SFC<any> = () => {
+const UpDownArrow: React.FC<any> = () => {
   return (
     <svg
       viewBox="0 0 16 24"

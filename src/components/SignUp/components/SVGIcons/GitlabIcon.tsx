@@ -1,6 +1,6 @@
 import React from "react";
 
-const GitlabIcon: React.SFC<any> = () => {
+const GitlabIcon: React.FC<any> = () => {
   return (
     <svg width="20" height="20" viewBox="-2 -2 40 40" aria-label="gitlab">
       <path

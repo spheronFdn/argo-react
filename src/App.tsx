@@ -20,7 +20,12 @@ function App() {
           );
         }}
       />
-      <Route path="/dashboard" exact render={() => <Dashboard />} />
+      <Route path="/dashboard/:slug" exact render={() => <Dashboard />} />
+      <Route
+        path="/dashboard"
+        exact
+        render={() => <Redirect to="/dashboard/overview" />}
+      />
     </div>
   );
 }

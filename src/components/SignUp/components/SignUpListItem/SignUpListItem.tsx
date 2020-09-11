@@ -2,7 +2,7 @@ import React from "react";
 import "./SignUpListItem.scss";
 import ISignUpListItemProps from "./model";
 
-const SignUpListItem: React.SFC<ISignUpListItemProps> = ({
+const SignUpListItem: React.FC<ISignUpListItemProps> = ({
   index,
   title,
   description,

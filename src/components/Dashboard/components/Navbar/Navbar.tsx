@@ -12,9 +12,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link
                 className={`${
-                  location.pathname.indexOf("dashboard") !== -1 ? "selected" : ""
+                  location.pathname.indexOf("overview") !== -1 ? "selected" : ""
                 }`}
-                to="/dashboard"
+                to="/dashboard/overview"
               >
                 Overview
               </Link>
@@ -24,7 +24,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("domains") !== -1 ? "selected" : ""
                 }`}
-                to="/domains"
+                to="/dashboard/domains"
               >
                 Domains
               </Link>
@@ -34,7 +34,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("member") !== -1 ? "selected" : ""
                 }`}
-                to="/member"
+                to="/dashboard/member"
               >
                 Members
               </Link>
@@ -44,7 +44,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("settings") !== -1 ? "selected" : ""
                 }`}
-                to="/settings"
+                to="/dashboard/settings"
               >
                 Settings
               </Link>

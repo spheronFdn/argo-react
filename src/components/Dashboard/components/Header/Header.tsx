@@ -24,7 +24,7 @@ const Header = () => {
             </div>
             <div className="teams-container">
               <img
-                src="https://vercel.com/api/www/avatar/f69a5a7fee089fcaae211df228da98adcf4059bc?s=64"
+                src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
                 alt="org"
                 className="team-avatar"
               ></img>

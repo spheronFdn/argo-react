@@ -1,6 +1,6 @@
 import React from "react";
 
-const GithubIcon: React.SFC<any> = () => {
+const GithubIcon: React.FC<any> = () => {
   return (
     <svg width="20" height="20" viewBox="0 0 14 14" aria-label="github">
       <path
