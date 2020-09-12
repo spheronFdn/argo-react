@@ -5,9 +5,11 @@ import { Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import { OrganizationDropdown, ProfileDropdown } from "./components";
 
 const Header = () => {
-  const [showDropdown, setShowDropdown] = React.useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
+  const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
   return (
     <header className="Header">
       <div className="header-container">
@@ -29,7 +31,10 @@ const Header = () => {
                 className="team-avatar"
               ></img>
               <h4 className="team-name">ArGoAppLive</h4>
-              <div className="team-up-down-arrow">
+              <div
+                className="team-up-down-arrow"
+                onClick={(e) => setShowOrgDropdown(true)}
+              >
                 <UpDownArrow />
               </div>
             </div>
@@ -40,7 +45,7 @@ const Header = () => {
             </div>
             <div
               className="profile-container"
-              onClick={(e) => setShowDropdown(true)}
+              onClick={(e) => setShowProfileDropdown(true)}
             >
               <img
                 src="https://avatars0.githubusercontent.com/u/18068841?v=4"
@@ -49,18 +54,11 @@ const Header = () => {
               />
             </div>
           </div>
-          {showDropdown && (
-            <div
-              className="dropdown-overlay"
-              onClick={(e) => setShowDropdown(false)}
-            ></div>
+          {showProfileDropdown && (
+            <ProfileDropdown setShowDropdown={setShowProfileDropdown} />
           )}
-          {showDropdown && (
-            <div className="dropdown-box">
-              <div className="dropdown-triangle"></div>
-              <div className="dropdown-item">Dashboard</div>
-              <div className="dropdown-item">Logout</div>
-            </div>
+          {showOrgDropdown && (
+            <OrganizationDropdown setShowDropdown={setShowOrgDropdown} />
           )}
         </div>
         <Navbar />
