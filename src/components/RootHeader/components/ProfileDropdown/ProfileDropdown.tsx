@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProfileDropdown.scss";
 import IProfileDropdownProps from "./model";
 import { useHistory } from "react-router-dom";
-import { ApiService } from "../../../../../../services";
+import { ApiService } from "../../../../services";
 import { Subscription } from "rxjs";
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) => {

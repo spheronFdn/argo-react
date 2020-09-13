@@ -1,10 +1,19 @@
 import React, { useEffect } from "react";
 import "./App.scss";
 import { Route, Redirect, useHistory } from "react-router-dom";
-import { Landing, SignUp, Dashboard, SignupWorkflows, Login } from "./components";
+import {
+  Landing,
+  SignUp,
+  Dashboard,
+  SignupWorkflows,
+  Login,
+  UserSettings,
+  CreateOrg,
+} from "./components";
 
 function App() {
   const history = useHistory();
+
   useEffect(() => {
     const bc = new BroadcastChannel("signin_channel");
     bc.onmessage = function (ev) {
@@ -17,6 +26,7 @@ function App() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="App">
       <Route path="/" exact render={() => <Landing />} />
@@ -42,6 +52,10 @@ function App() {
           );
         }}
       />
+
+      <Route path="/signup/:slug" exact render={() => <SignupWorkflows />} />
+      <Route path="/callback/:slug" exact render={() => <SignupWorkflows />} />
+
       <Route
         path="/dashboard/:slug"
         exact
@@ -53,12 +67,34 @@ function App() {
           );
         }}
       />
-      <Route path="/signup/:slug" exact render={() => <SignupWorkflows />} />
-      <Route path="/callback/:slug" exact render={() => <SignupWorkflows />} />
       <Route
         path="/dashboard"
         exact
         render={() => <Redirect to="/dashboard/overview" />}
+      />
+
+      <Route
+        path="/user/settings"
+        exact
+        render={() => {
+          return localStorage.getItem("jwt-token") ? (
+            <UserSettings />
+          ) : (
+            <Redirect to="/login" />
+          );
+        }}
+      />
+
+      <Route
+        path="/org/new"
+        exact
+        render={() => {
+          return localStorage.getItem("jwt-token") ? (
+            <CreateOrg />
+          ) : (
+            <Redirect to="/login" />
+          );
+        }}
       />
     </div>
   );

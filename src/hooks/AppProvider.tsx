@@ -1,9 +1,12 @@
 import React, { createContext, useMemo } from "react";
 // import { AuthService, ApiService } from "../services";
-import { useHistory } from "react-router-dom";
+import { ApiService } from "../services";
+import { IUser } from "../services/model";
+import { Actions } from "./Actions";
 
 const actionInitialValue = {
   setModalConfig: (openModal: boolean, modalConfig: any) => {},
+  fetchUser: () => {},
 };
 
 const stateInitialValue = {
@@ -19,16 +22,21 @@ export const StateContext = createContext(stateInitialValue);
 // };
 
 export const AppProvider = (props: any) => {
-  const history = useHistory();
+  // const history = useHistory();
   // const query = useQuery();
   const [state, dispatch] = React.useReducer(
     (prevState: any, action: any) => {
       switch (action.type) {
-        case "TOGGLE_MODAL":
+        case Actions.TOGGLE_MODAL:
           return {
             ...prevState,
             openModal: action.openModal,
             modalConfig: action.modalConfig,
+          };
+        case Actions.FETCH_USER:
+          return {
+            ...prevState,
+            user: action.user,
           };
 
         default:
@@ -37,18 +45,21 @@ export const AppProvider = (props: any) => {
     {
       openModal: false,
       modalConfig: { type: "" },
+      user: null,
     },
   );
 
   const actionContext = useMemo(
     () => ({
       setModalConfig: (openModal: boolean, modalConfig: any) => {
-        if (modalConfig.type === "qfExplainer") {
-          history.push({ search: "?modal=qfExplainer" });
-        } else {
-          history.push({ search: "" });
-        }
-        dispatch({ type: "TOGGLE_MODAL", openModal, modalConfig });
+        dispatch({ type: Actions.TOGGLE_MODAL, openModal, modalConfig });
+      },
+      fetchUser: () => {
+        ApiService.fetchUser("1234").subscribe((user: IUser) => {
+          // eslint-disable-next-line no-console
+          console.log(user);
+          dispatch({ type: Actions.FETCH_USER, user });
+        });
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

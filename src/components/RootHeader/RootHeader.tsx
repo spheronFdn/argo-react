@@ -1,44 +1,25 @@
 import React from "react";
-import "./Header.scss";
+import "./RootHeader.scss";
 import { Link } from "react-router-dom";
-import { Navbar } from "..";
-import { UpDownArrow } from "../SVGIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
-import { OrganizationDropdown, ProfileDropdown } from "./components";
+import { ProfileDropdown } from "./components";
 
-const Header = () => {
+const RootHeader = () => {
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
-  const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
   return (
-    <header className="Header">
+    <header className="RootHeader">
       <div className="header-container">
         <div className="navbar-container">
           <div className="logo-container">
             <div className="app-logo-container">
               <Link to="/">
                 <img
-                  src={require("../../../../assets/png/logo-white.png")}
+                  src={require("../../assets/png/logo-white.png")}
                   alt="logo"
                   className="logo-image"
                 />
               </Link>
-            </div>
-            <div className="teams-container">
-              <img
-                src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
-                alt="org"
-                className="team-avatar"
-              ></img>
-              <h4 className="team-name">ArGoAppLive</h4>
-              <div
-                className={`team-up-down-arrow ${
-                  showOrgDropdown ? "selected-team-arrow" : ""
-                }`}
-                onClick={(e) => setShowOrgDropdown(true)}
-              >
-                <UpDownArrow />
-              </div>
             </div>
           </div>
           <div className="user-profile-container">
@@ -61,14 +42,10 @@ const Header = () => {
           {showProfileDropdown && (
             <ProfileDropdown setShowDropdown={setShowProfileDropdown} />
           )}
-          {showOrgDropdown && (
-            <OrganizationDropdown setShowDropdown={setShowOrgDropdown} />
-          )}
         </div>
-        <Navbar />
       </div>
     </header>
   );
 };
 
-export default Header;
+export default RootHeader;

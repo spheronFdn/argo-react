@@ -116,9 +116,7 @@
         width: 184px;
 
         &:hover {
-          color: var(--themeColor);
-          background: transparent;
-          border: 2px solid var(--themeColor);
+          background: var(--themeColor);
         }
       }
     }
