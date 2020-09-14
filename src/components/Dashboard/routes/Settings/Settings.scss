@@ -194,6 +194,11 @@
             &:hover {
               background: var(--themeColorDark);
             }
+
+            &:disabled {
+              background: var(--themeColor);
+              cursor: not-allowed;
+            }
           }
 
           .delete-button {
@@ -201,6 +206,11 @@
 
             &:hover {
               background: #921818;
+            }
+
+            &:disabled {
+              background: #fc2c2c;
+              cursor: not-allowed;
             }
           }
         }

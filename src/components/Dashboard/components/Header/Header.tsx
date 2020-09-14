@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Header.scss";
 import { Link } from "react-router-dom";
 import { Navbar } from "..";
@@ -6,8 +6,12 @@ import { UpDownArrow } from "../SVGIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { OrganizationDropdown, ProfileDropdown } from "./components";
+import { StateContext } from "../../../../hooks";
+import Skeleton from "react-loading-skeleton";
 
 const Header = () => {
+  const { user, selectedOrg, userLoading } = useContext(StateContext);
+
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
   return (
@@ -25,12 +29,22 @@ const Header = () => {
               </Link>
             </div>
             <div className="teams-container">
-              <img
-                src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
-                alt="org"
-                className="team-avatar"
-              ></img>
-              <h4 className="team-name">ArGoAppLive</h4>
+              {!userLoading ? (
+                <img
+                  src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+                  alt="org"
+                  className="team-avatar"
+                ></img>
+              ) : (
+                <Skeleton circle={true} height={42} width={42} duration={2} />
+              )}
+              <h4 className="team-name">
+                {!userLoading ? (
+                  selectedOrg?.name
+                ) : (
+                  <Skeleton width={60} duration={2} />
+                )}
+              </h4>
               <div
                 className={`team-up-down-arrow ${
                   showOrgDropdown ? "selected-team-arrow" : ""
@@ -49,13 +63,17 @@ const Header = () => {
               className="profile-container"
               onClick={(e) => setShowProfileDropdown(true)}
             >
-              <img
-                src="https://avatars0.githubusercontent.com/u/18068841?v=4"
-                alt="address-blockie"
-                className={`user-profile-blockie-icon ${
-                  showProfileDropdown ? "selected-profile" : ""
-                }`}
-              />
+              {!userLoading ? (
+                <img
+                  src={user?.profile.avatar_url}
+                  alt="address-blockie"
+                  className={`user-profile-blockie-icon ${
+                    showProfileDropdown ? "selected-profile" : ""
+                  }`}
+                />
+              ) : (
+                <Skeleton circle={true} height={42} width={42} duration={2} />
+              )}
             </div>
           </div>
           {showProfileDropdown && (

@@ -1,6 +1,6 @@
 import { Observable, defer, from } from "rxjs";
 import { API_URL } from "../config";
-import { IUser } from "./model";
+import { IUserResponse } from "../model/service.model";
 
 export const logout = (): Observable<any[]> => {
   return defer(() => {
@@ -15,9 +15,9 @@ export const logout = (): Observable<any[]> => {
   });
 };
 
-export const fetchUser = (userId: string): Observable<IUser> => {
+export const fetchUser = (userId: string): Observable<IUserResponse> => {
   return defer(() => {
-    return from<Promise<IUser>>(
+    return from<Promise<IUserResponse>>(
       fetch(`${API_URL}/profile/${userId}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",

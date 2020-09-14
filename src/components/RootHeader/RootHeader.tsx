@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./RootHeader.scss";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { ProfileDropdown } from "./components";
+import { StateContext } from "../../hooks";
+import Skeleton from "react-loading-skeleton";
 
 const RootHeader = () => {
+  const { user, userLoading } = useContext(StateContext);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   return (
     <header className="RootHeader">
@@ -30,13 +33,17 @@ const RootHeader = () => {
               className="profile-container"
               onClick={(e) => setShowProfileDropdown(true)}
             >
-              <img
-                src="https://avatars0.githubusercontent.com/u/18068841?v=4"
-                alt="address-blockie"
-                className={`user-profile-blockie-icon ${
-                  showProfileDropdown ? "selected-profile" : ""
-                }`}
-              />
+              {!userLoading ? (
+                <img
+                  src={user?.profile.avatar_url}
+                  alt="address-blockie"
+                  className={`user-profile-blockie-icon ${
+                    showProfileDropdown ? "selected-profile" : ""
+                  }`}
+                />
+              ) : (
+                <Skeleton circle={true} height={42} width={42} duration={2} />
+              )}
             </div>
           </div>
           {showProfileDropdown && (

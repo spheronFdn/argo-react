@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Settings.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { StateContext } from "../../../../hooks";
 
 const Settings = () => {
+  const { selectedOrg } = useContext(StateContext);
+  const [orgUsername, setOrgUsername] = useState("");
+  const [orgName, setOrgName] = useState("");
+  // const [orgAvatar, setOrgAvatar] = useState("");
+
+  useEffect(() => {
+    if (selectedOrg) {
+      setOrgUsername(selectedOrg.name);
+      setOrgName(selectedOrg.name);
+      // setOrgAvatar(selectedOrg.image);
+    }
+  }, [selectedOrg]);
+
   return (
     <div className="Settings">
       <div className="settings-container">
@@ -29,6 +43,7 @@ const Settings = () => {
                   type="text"
                   placeholder="e.g. argoapp-live"
                   className="settings-profile-item-input"
+                  value={orgUsername}
                 />
               </div>
               <div className="settings-profile-item">
@@ -43,6 +58,7 @@ const Settings = () => {
                   type="text"
                   placeholder="e.g. ArGo Team"
                   className="settings-profile-item-input"
+                  value={orgName}
                 />
               </div>
               {/* <div className="settings-profile-item">

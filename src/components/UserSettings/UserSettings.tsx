@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RootHeader } from "..";
 import "./UserSettings.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { UserDetailsCard } from "./components";
+import { StateContext } from "../../hooks";
+import Skeleton from "react-loading-skeleton";
 
 function UserSettings() {
+  const { user, userLoading } = useContext(StateContext);
+  const [username, setUsername] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [avatar, setAvatar] = useState<string>("");
+
+  useEffect(() => {
+    if (user) {
+      setUsername(user.profile.argo_username);
+      setName(user.profile.name);
+      setEmail(user.profile.email ? user.profile.email : undefined);
+      setAvatar(user.profile.avatar_url);
+    }
+  }, [user]);
+
+  const fileUpload = (file: any) => {
+    const reader: FileReader = new window.FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => saveURL(reader);
+  };
+
+  const saveURL = async (reader: FileReader) => {
+    setAvatar(`${reader.result}`);
+  };
+
   return (
     <div className="UserSettings">
       <RootHeader />
@@ -31,7 +58,16 @@ function UserSettings() {
                     <label className="settings-profile-item-subtitle">
                       This is your ArGo username taken from OAuth provider.
                     </label>
-                    <input type="text" className="settings-profile-item-input" />
+                    {!userLoading ? (
+                      <input
+                        type="text"
+                        className="settings-profile-item-input"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    ) : (
+                      <Skeleton width={326} height={36} duration={2} />
+                    )}
                   </div>
                   <div className="settings-profile-item">
                     <label className="settings-profile-item-title">Your Name</label>
@@ -39,7 +75,16 @@ function UserSettings() {
                       Please enter your name, or a display name you are comfortable
                       with.
                     </label>
-                    <input type="text" className="settings-profile-item-input" />
+                    {!userLoading ? (
+                      <input
+                        type="text"
+                        className="settings-profile-item-input"
+                        value={name}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    ) : (
+                      <Skeleton width={326} height={36} duration={2} />
+                    )}
                   </div>
                   <div className="settings-profile-item">
                     <label className="settings-profile-item-title">Your Email</label>
@@ -47,7 +92,16 @@ function UserSettings() {
                       This is your email address connected with the OAuth provider.
                       We don't allow it to be edited as of now.
                     </label>
-                    <input type="text" className="settings-profile-item-input" />
+                    {!userLoading ? (
+                      <input
+                        type="text"
+                        className="settings-profile-item-input"
+                        value={email}
+                        disabled
+                      />
+                    ) : (
+                      <Skeleton width={326} height={36} duration={2} />
+                    )}
                   </div>
                   <div className="settings-profile-item avatar-container">
                     <div className="settings-profile-item-avatar-container">
@@ -62,12 +116,31 @@ function UserSettings() {
                       </label>
                     </div>
                     <div className="settings-profile-avatar-image-container">
-                      <input type="file" className="file-upload" />
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/18068841?v=4"
-                        alt="avatar"
-                        className="settings-avatar"
-                      />
+                      {!userLoading ? (
+                        <>
+                          <input
+                            type="file"
+                            className="file-upload"
+                            onChange={(e) =>
+                              e.target.files
+                                ? fileUpload(e.target.files[0])
+                                : undefined
+                            }
+                          />
+                          <img
+                            src={avatar}
+                            alt="avatar"
+                            className="settings-avatar"
+                          />
+                        </>
+                      ) : (
+                        <Skeleton
+                          circle={true}
+                          height={64}
+                          width={64}
+                          duration={2}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -78,7 +151,11 @@ function UserSettings() {
                     </span>
                     <span>Click save to update your profile</span>
                   </div>
-                  <button type="button" className="primary-button">
+                  <button
+                    type="button"
+                    className="primary-button"
+                    disabled={userLoading}
+                  >
                     Save
                   </button>
                 </div>

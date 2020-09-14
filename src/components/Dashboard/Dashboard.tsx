@@ -1,17 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import "./Dashboard.scss";
 import { Header } from "./components";
 import { Route } from "react-router-dom";
 import { Overview, Settings } from "./routes";
-import { ActionContext } from "../../hooks";
 
 function Dashboard() {
-  const { fetchUser } = useContext(ActionContext);
-
-  useEffect(() => {
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <div className="Dashboard">
       <Header />

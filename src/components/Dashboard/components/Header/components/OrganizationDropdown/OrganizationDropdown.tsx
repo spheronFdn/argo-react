@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./OrganizationDropdown.scss";
 import IOrganizationDropdownProps from "./model";
 import { OrganizationDropdownItem } from "./components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
+import { StateContext } from "../../../../../../hooks";
+import { IOrganization } from "../../../../../../model/hooks.model";
 
 const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
   setShowDropdown,
 }) => {
   const history = useHistory();
+  const { user } = useContext(StateContext);
   return (
     <>
       <div
@@ -18,12 +21,15 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
       ></div>
       <div className="organization-dropdown-box">
         <label>Teams</label>
-        <OrganizationDropdownItem
-          teamDetails={{
-            name: "ArGoAppLive",
-            avatar: "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
-          }}
-        />
+        {user?.organizations?.map((org: IOrganization, index: number) => (
+          <OrganizationDropdownItem
+            teamDetails={{
+              name: org.name,
+              avatar: "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
+            }}
+            key={index}
+          />
+        ))}
         <div
           className="create-team-item-container"
           onClick={(e) => history.push("/org/new")}

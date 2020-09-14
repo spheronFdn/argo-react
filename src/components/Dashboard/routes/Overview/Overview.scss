@@ -94,6 +94,12 @@
           color: var(--themeColor);
           border: 2px solid var(--themeColor);
         }
+
+        &:disabled {
+          color: #3677e994;
+          border: 2px solid #3677e994;
+          cursor: not-allowed;
+        }
       }
 
       .primary-button {
@@ -117,6 +123,11 @@
 
         &:hover {
           background: var(--themeColor);
+        }
+
+        &:disabled {
+          background: #3677e994;
+          cursor: not-allowed;
         }
       }
     }

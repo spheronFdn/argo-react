@@ -90,7 +90,7 @@
               font-size: 1rem;
               flex-shrink: 0;
               color: #fff;
-              background-color: #24292e;
+              background: #24292e;
               border: 1px solid #24292e;
               -webkit-transition: all 0.2s ease;
               transition: all 0.2s ease;
@@ -107,6 +107,12 @@
               &:hover {
                 background: lighten($color: #24292e, $amount: 15);
                 border: 1px solid lighten($color: #24292e, $amount: 15);
+              }
+
+              &:disabled {
+                background: #24292e;
+                border: 1px solid #24292e;
+                cursor: not-allowed;
               }
 
               .github-icon {
@@ -156,6 +162,12 @@
               &:hover {
                 background: lighten($color: #6b4fbb, $amount: 15);
                 border: 1px solid lighten($color: #6b4fbb, $amount: 15);
+              }
+
+              &:disabled {
+                background-color: #6b4fbb;
+                border: 1px solid #6b4fbb;
+                cursor: not-allowed;
               }
 
               .gitlab-icon {
