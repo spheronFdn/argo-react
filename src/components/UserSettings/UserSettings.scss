@@ -236,6 +236,11 @@
                 &:hover {
                   background: #921818;
                 }
+
+                &:disabled {
+                  background: #fc2c2c;
+                  cursor: not-allowed;
+                }
               }
             }
           }

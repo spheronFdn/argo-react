@@ -2,21 +2,76 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Settings.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
+import Skeleton from "react-loading-skeleton";
+import { ApiService } from "../../../../services";
+import { useHistory } from "react-router-dom";
 
 const Settings = () => {
-  const { selectedOrg } = useContext(StateContext);
-  const [orgUsername, setOrgUsername] = useState("");
-  const [orgName, setOrgName] = useState("");
-  // const [orgAvatar, setOrgAvatar] = useState("");
+  const history = useHistory();
+  const { selectedOrg, userLoading } = useContext(StateContext);
+  const { fetchUser } = useContext(ActionContext);
+
+  const [orgUsername, setOrgUsername] = useState<string>("");
+  const [orgName, setOrgName] = useState<string>("");
+  const [orgAvatar, setOrgAvatar] = useState<string>("");
+  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+  const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedOrg) {
       setOrgUsername(selectedOrg.name);
       setOrgName(selectedOrg.name);
-      // setOrgAvatar(selectedOrg.image);
+      setOrgAvatar(selectedOrg.image);
     }
   }, [selectedOrg]);
+
+  useEffect(() => {
+    if (selectedOrg) {
+      if (
+        selectedOrg.name !== orgUsername ||
+        selectedOrg.name !== orgName ||
+        selectedOrg.image !== orgAvatar
+      ) {
+        setIsDataChanged(true);
+      } else {
+        setIsDataChanged(false);
+      }
+    }
+  }, [selectedOrg, orgUsername, orgName, orgAvatar]);
+
+  const fileUpload = (file: any) => {
+    const reader: FileReader = new window.FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => saveURL(reader);
+  };
+
+  const saveURL = async (reader: FileReader) => {
+    setOrgAvatar(`${reader.result}`);
+  };
+
+  const updateOrganization = () => {
+    const org = {
+      username: orgUsername,
+      name: orgName,
+      avatar: orgAvatar,
+    };
+
+    ApiService.updateOrganization(org).subscribe((result) => {
+      // eslint-disable-next-line no-console
+      console.log(result);
+      fetchUser();
+    });
+  };
+
+  const deleteOrg = () => {
+    if (selectedOrg && deleteConfirmed) {
+      ApiService.deleteOrganization((selectedOrg as any)._id).subscribe((result) => {
+        fetchUser();
+        history.push("/dashboard");
+      });
+    }
+  };
 
   return (
     <div className="Settings">
@@ -39,12 +94,17 @@ const Settings = () => {
                 <label className="settings-profile-item-subtitle">
                   This is your organization username taken from OAuth provider.
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g. argoapp-live"
-                  className="settings-profile-item-input"
-                  value={orgUsername}
-                />
+                {!userLoading ? (
+                  <input
+                    type="text"
+                    placeholder="e.g. argoapp-live"
+                    className="settings-profile-item-input"
+                    value={orgUsername}
+                    onChange={(e) => setOrgUsername(e.target.value)}
+                  />
+                ) : (
+                  <Skeleton width={326} height={36} duration={2} />
+                )}
               </div>
               <div className="settings-profile-item">
                 <label className="settings-profile-item-title">
@@ -54,12 +114,17 @@ const Settings = () => {
                   Please enter your team's name, or a display name you are
                   comfortable with.
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g. ArGo Team"
-                  className="settings-profile-item-input"
-                  value={orgName}
-                />
+                {!userLoading ? (
+                  <input
+                    type="text"
+                    placeholder="e.g. ArGo Team"
+                    className="settings-profile-item-input"
+                    value={orgName}
+                    onChange={(e) => setOrgName(e.target.value)}
+                  />
+                ) : (
+                  <Skeleton width={326} height={36} duration={2} />
+                )}
               </div>
               {/* <div className="settings-profile-item">
                 <label className="settings-profile-item-title">Your Email</label>
@@ -86,12 +151,28 @@ const Settings = () => {
                   </label>
                 </div>
                 <div className="settings-profile-avatar-image-container">
-                  <input type="file" className="file-upload" />
-                  <img
-                    src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
-                    alt="avatar"
-                    className="settings-avatar"
-                  />
+                  {!userLoading ? (
+                    <>
+                      <input
+                        type="file"
+                        className="file-upload"
+                        onChange={(e) =>
+                          e.target.files ? fileUpload(e.target.files[0]) : undefined
+                        }
+                      />
+                      <img
+                        src={
+                          orgAvatar
+                            ? orgAvatar
+                            : require("../../../../assets/svg/camera_grad.svg")
+                        }
+                        alt="avatar"
+                        className="settings-avatar"
+                      />
+                    </>
+                  ) : (
+                    <Skeleton circle={true} height={64} width={64} duration={2} />
+                  )}
                 </div>
               </div>
             </div>
@@ -102,7 +183,12 @@ const Settings = () => {
                 </span>
                 <span>Click save to update your organisation</span>
               </div>
-              <button type="button" className="primary-button">
+              <button
+                type="button"
+                className="primary-button"
+                disabled={userLoading || !isDataChanged}
+                onClick={updateOrganization}
+              >
                 Save
               </button>
             </div>
@@ -120,7 +206,11 @@ const Settings = () => {
               </div>
               <div className="delete-org-confirm-container">
                 <span className="confirm-checkbox">
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={deleteConfirmed}
+                    onClick={(e) => setDeleteConfirmed(!deleteConfirmed)}
+                  />
                 </span>
                 <span>
                   Confirm that I want to irreversibly delete the team Argo Team
@@ -136,7 +226,12 @@ const Settings = () => {
                   Please confirm and click delete to delete your organisation
                 </span>
               </div>
-              <button type="button" className="primary-button delete-button">
+              <button
+                type="button"
+                className="primary-button delete-button"
+                disabled={!deleteConfirmed}
+                onClick={deleteOrg}
+              >
                 Delete
               </button>
             </div>

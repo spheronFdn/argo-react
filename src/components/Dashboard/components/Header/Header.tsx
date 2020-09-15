@@ -47,9 +47,13 @@ const Header = () => {
               </h4>
               <div
                 className={`team-up-down-arrow ${
-                  showOrgDropdown ? "selected-team-arrow" : ""
+                  showOrgDropdown
+                    ? "selected-team-arrow"
+                    : userLoading
+                    ? "disabled-team-arrow"
+                    : ""
                 }`}
-                onClick={(e) => setShowOrgDropdown(true)}
+                onClick={(e) => (!userLoading ? setShowOrgDropdown(true) : null)}
               >
                 <UpDownArrow />
               </div>
@@ -61,7 +65,7 @@ const Header = () => {
             </div>
             <div
               className="profile-container"
-              onClick={(e) => setShowProfileDropdown(true)}
+              onClick={(e) => (!userLoading ? setShowProfileDropdown(true) : null)}
             >
               {!userLoading ? (
                 <img

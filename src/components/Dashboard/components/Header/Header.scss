@@ -88,6 +88,11 @@
             background-color: #3261b89e;
             border-radius: 6px;
           }
+
+          .disabled-team-arrow {
+            background-color: transparent !important;
+            cursor: not-allowed;
+          }
         }
       }
       .user-profile-container {
@@ -143,6 +148,10 @@
 
           .selected-profile {
             border: 2px solid var(--white) !important;
+          }
+
+          .disabled-profile {
+            border: 2px solid var(--themeColor) !important;
           }
         }
       }

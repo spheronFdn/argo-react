@@ -1,4 +1,4 @@
-import { IModalModel } from "../model/hooks.model";
+import { IModalModel, IOrganization } from "../model/hooks.model";
 
 export default class Actions {
   static TOGGLE_MODAL = "[Actions] TOGGLE_MODAL";
@@ -9,4 +9,5 @@ export default class Actions {
 export const actionInitialValue = {
   toggleModal: (modal: IModalModel) => {},
   fetchUser: () => {},
+  setSelectedOrganization: (organization: IOrganization) => {},
 };

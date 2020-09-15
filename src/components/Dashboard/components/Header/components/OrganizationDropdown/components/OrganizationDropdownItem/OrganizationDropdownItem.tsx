@@ -6,9 +6,10 @@ import { faCog } from "@fortawesome/free-solid-svg-icons";
 
 const OrganizationDropdownItem: React.FC<IOrganizationDropdownItemProps> = ({
   teamDetails,
+  onClick,
 }) => {
   return (
-    <div className="organization-dropdown-item">
+    <div className="organization-dropdown-item" onClick={onClick}>
       <div className="organization-dropdown-item-avatar">
         <img src={teamDetails.avatar} alt="org" className="team-avatar"></img>
       </div>

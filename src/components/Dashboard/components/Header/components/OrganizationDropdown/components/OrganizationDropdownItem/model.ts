@@ -4,4 +4,5 @@ export interface ITeamDetails {
 }
 export interface IOrganizationDropdownItemProps {
   teamDetails: ITeamDetails;
+  onClick: (e: any) => void;
 }

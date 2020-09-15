@@ -4,15 +4,23 @@ import "./UserSettings.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { UserDetailsCard } from "./components";
-import { StateContext } from "../../hooks";
+import { ActionContext, StateContext } from "../../hooks";
 import Skeleton from "react-loading-skeleton";
+import { ApiService } from "../../services";
+import { useHistory } from "react-router-dom";
 
 function UserSettings() {
+  const history = useHistory();
+
   const { user, userLoading } = useContext(StateContext);
+  const { fetchUser } = useContext(ActionContext);
+
   const [username, setUsername] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [avatar, setAvatar] = useState<string>("");
+  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+  const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
@@ -23,6 +31,20 @@ function UserSettings() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (user) {
+      if (
+        user.profile.argo_username !== username ||
+        user.profile.name !== name ||
+        user.profile.avatar_url !== avatar
+      ) {
+        setIsDataChanged(true);
+      } else {
+        setIsDataChanged(false);
+      }
+    }
+  }, [avatar, name, user, username]);
+
   const fileUpload = (file: any) => {
     const reader: FileReader = new window.FileReader();
     reader.readAsDataURL(file);
@@ -31,6 +53,29 @@ function UserSettings() {
 
   const saveURL = async (reader: FileReader) => {
     setAvatar(`${reader.result}`);
+  };
+
+  const updateProfile = () => {
+    const profile = {
+      username,
+      name,
+      avatar,
+    };
+
+    ApiService.updateProfile(profile).subscribe((result) => {
+      // eslint-disable-next-line no-console
+      console.log(result);
+      fetchUser();
+    });
+  };
+
+  const deleteUser = () => {
+    if (user && deleteConfirmed) {
+      ApiService.deleteProfile((user as any)._id).subscribe((result) => {
+        localStorage.removeItem("jwt-token");
+        history.push("/signup");
+      });
+    }
   };
 
   return (
@@ -128,7 +173,11 @@ function UserSettings() {
                             }
                           />
                           <img
-                            src={avatar}
+                            src={
+                              avatar
+                                ? avatar
+                                : require("../../assets/svg/camera_grad.svg")
+                            }
                             alt="avatar"
                             className="settings-avatar"
                           />
@@ -154,7 +203,8 @@ function UserSettings() {
                   <button
                     type="button"
                     className="primary-button"
-                    disabled={userLoading}
+                    disabled={userLoading || !isDataChanged}
+                    onClick={updateProfile}
                   >
                     Save
                   </button>
@@ -173,7 +223,11 @@ function UserSettings() {
                   </div>
                   <div className="delete-org-confirm-container">
                     <span className="confirm-checkbox">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={deleteConfirmed}
+                        onClick={(e) => setDeleteConfirmed(!deleteConfirmed)}
+                      />
                     </span>
                     <span>
                       Confirm that I want to start the account deletion process for
@@ -190,7 +244,12 @@ function UserSettings() {
                       Please confirm and click delete button to delete your profile.
                     </span>
                   </div>
-                  <button type="button" className="primary-button delete-button">
+                  <button
+                    type="button"
+                    className="primary-button delete-button"
+                    disabled={!deleteConfirmed}
+                    onClick={deleteUser}
+                  >
                     Delete
                   </button>
                 </div>

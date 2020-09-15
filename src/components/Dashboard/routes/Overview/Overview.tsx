@@ -34,13 +34,13 @@ const Overview = () => {
               <div className="overview-team-detail-container">
                 <label className="overview-team-detail-label">Members</label>
                 <div className="overview-team-member-value">
-                  {selectedOrg?.users.length}
+                  {selectedOrg?.users?.length}
                 </div>
               </div>
               <div className="overview-team-detail-container git-integration-container">
                 <label className="overview-team-detail-label">Projects</label>
                 <div className="overview-team-member-value">
-                  {selectedOrg?.repositories.length}
+                  {selectedOrg?.repositories?.length}
                 </div>
               </div>
               {/* <div className="overview-team-detail-container git-integration-container">
@@ -68,8 +68,17 @@ const Overview = () => {
       </div>
       <div className="project-list-container">
         <ul className="project-list">
-          <ProjectItem index={1} />
-          <ProjectItem index={2} />
+          {!userLoading ? (
+            selectedOrg?.repositories?.length ? (
+              selectedOrg?.repositories?.map((repo, index) => (
+                <ProjectItem index={index} type="filled" />
+              ))
+            ) : (
+              <ProjectItem index={1} type="empty" />
+            )
+          ) : (
+            <ProjectItem index={1} type="skeleton" />
+          )}
         </ul>
       </div>
     </div>

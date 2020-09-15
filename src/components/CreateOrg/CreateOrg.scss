@@ -128,6 +128,11 @@
               &:hover {
                 background: var(--themeColorDark);
               }
+
+              &:disabled {
+                background: var(--themeColor);
+                cursor: not-allowed;
+              }
             }
 
             .cancel-button {
@@ -150,6 +155,11 @@
 
               &:hover {
                 background: var(--grey3Color);
+              }
+
+              &:disabled {
+                background: var(--grey2Color);
+                cursor: not-allowed;
               }
             }
           }

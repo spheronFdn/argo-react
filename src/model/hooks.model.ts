@@ -58,10 +58,11 @@ export interface IDeployment {
 }
 
 export interface IOrganization {
+  _id?: string;
   name: string;
   image: string;
-  repositories: IRepository[];
-  users: string[];
+  repositories?: IRepository[];
+  users?: string[];
 }
 
 export interface IModalConfig {
@@ -84,4 +85,5 @@ export interface IStateModel {
 export interface IActionModel {
   toggleModal: (modal: IModalModel) => void;
   fetchUser: () => void;
+  setSelectedOrganization: (organization: IOrganization) => void;
 }

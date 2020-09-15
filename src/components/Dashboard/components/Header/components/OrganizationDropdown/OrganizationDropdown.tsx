@@ -5,14 +5,17 @@ import { OrganizationDropdownItem } from "./components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
-import { StateContext } from "../../../../../../hooks";
+import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IOrganization } from "../../../../../../model/hooks.model";
 
 const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
   setShowDropdown,
 }) => {
   const history = useHistory();
+
+  const { setSelectedOrganization } = useContext(ActionContext);
   const { user } = useContext(StateContext);
+
   return (
     <>
       <div
@@ -28,6 +31,10 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
               avatar: "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
             }}
             key={index}
+            onClick={(e: any) => {
+              setSelectedOrganization(org);
+              setShowDropdown(false);
+            }}
           />
         ))}
         <div
