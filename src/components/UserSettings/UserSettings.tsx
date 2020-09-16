@@ -24,19 +24,19 @@ function UserSettings() {
 
   useEffect(() => {
     if (user) {
-      setUsername(user.profile.argo_username);
-      setName(user.profile.name);
-      setEmail(user.profile.email ? user.profile.email : undefined);
-      setAvatar(user.profile.avatar_url);
+      setUsername(user.argo_profile.username);
+      setName(user.argo_profile.name);
+      setEmail(user.argo_profile.email ? user.argo_profile.email : undefined);
+      setAvatar(user.argo_profile.avatar);
     }
   }, [user]);
 
   useEffect(() => {
     if (user) {
       if (
-        user.profile.argo_username !== username ||
-        user.profile.name !== name ||
-        user.profile.avatar_url !== avatar
+        user.argo_profile.username !== username ||
+        user.argo_profile.name !== name ||
+        user.argo_profile.avatar !== avatar
       ) {
         setIsDataChanged(true);
       } else {
@@ -57,14 +57,13 @@ function UserSettings() {
 
   const updateProfile = () => {
     const profile = {
+      ...user?.argo_profile,
       username,
       name,
       avatar,
     };
 
     ApiService.updateProfile(profile).subscribe((result) => {
-      // eslint-disable-next-line no-console
-      console.log(result);
       fetchUser();
     });
   };
@@ -125,7 +124,7 @@ function UserSettings() {
                         type="text"
                         className="settings-profile-item-input"
                         value={name}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                       />
                     ) : (
                       <Skeleton width={326} height={36} duration={2} />
@@ -226,7 +225,7 @@ function UserSettings() {
                       <input
                         type="checkbox"
                         checked={deleteConfirmed}
-                        onClick={(e) => setDeleteConfirmed(!deleteConfirmed)}
+                        onChange={(e) => setDeleteConfirmed(!deleteConfirmed)}
                       />
                     </span>
                     <span>

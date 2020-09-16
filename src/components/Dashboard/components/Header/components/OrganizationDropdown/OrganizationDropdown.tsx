@@ -26,9 +26,11 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
         <label>Teams</label>
         {user?.organizations?.map((org: IOrganization, index: number) => (
           <OrganizationDropdownItem
-            teamDetails={{
-              name: org.name,
-              avatar: "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
+            orgDetails={{
+              name: org.profile.name,
+              avatar: org.profile.image
+                ? org.profile.image
+                : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
             }}
             key={index}
             onClick={(e: any) => {

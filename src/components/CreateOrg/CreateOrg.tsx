@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RootHeader } from "..";
 import { ActionContext } from "../../hooks";
-import { IOrganization } from "../../model/hooks.model";
 import { ApiService } from "../../services";
 import "./CreateOrg.scss";
 
@@ -34,12 +33,13 @@ function CreateOrg() {
   }, [orgUsername, orgName, orgAvatar]);
 
   const createOrg = () => {
-    const organization: IOrganization = {
+    const organization = {
+      username: orgUsername,
       name: orgName,
       image: orgAvatar,
     };
     ApiService.createOrganization(organization).subscribe((res) => {
-      fetchUser();
+      fetchUser(res.id);
       history.push("/dashboard");
     });
   };

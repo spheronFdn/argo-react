@@ -31,7 +31,11 @@ const Header = () => {
             <div className="teams-container">
               {!userLoading ? (
                 <img
-                  src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+                  src={
+                    selectedOrg?.profile.image
+                      ? selectedOrg.profile.image
+                      : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+                  }
                   alt="org"
                   className="team-avatar"
                 ></img>
@@ -40,7 +44,7 @@ const Header = () => {
               )}
               <h4 className="team-name">
                 {!userLoading ? (
-                  selectedOrg?.name
+                  selectedOrg?.profile.name
                 ) : (
                   <Skeleton width={60} duration={2} />
                 )}
@@ -69,7 +73,7 @@ const Header = () => {
             >
               {!userLoading ? (
                 <img
-                  src={user?.profile.avatar_url}
+                  src={user?.argo_profile.avatar}
                   alt="address-blockie"
                   className={`user-profile-blockie-icon ${
                     showProfileDropdown ? "selected-profile" : ""

@@ -1,8 +1,8 @@
-export interface ITeamDetails {
+export interface IOrgDetails {
   name: string;
   avatar: string;
 }
 export interface IOrganizationDropdownItemProps {
-  teamDetails: ITeamDetails;
+  orgDetails: IOrgDetails;
   onClick: (e: any) => void;
 }

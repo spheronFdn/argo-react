@@ -19,18 +19,22 @@ const UserDetailsCard: React.FC<any> = () => {
     <div className="user-details-container">
       <div className="user-details-text">
         <h1 className="user-details-title">
-          {!userLoading ? user?.profile.name : <Skeleton width={200} duration={2} />}
+          {!userLoading ? (
+            user?.argo_profile.name
+          ) : (
+            <Skeleton width={200} duration={2} />
+          )}
         </h1>
         <p className="user-details-subtitle">
           {!userLoading ? (
-            user?.profile.argo_username
+            user?.argo_profile.username
           ) : (
             <Skeleton width={100} duration={2} />
           )}
         </p>
         <p className="user-details-subtitle">
           {!userLoading ? (
-            user?.profile.email
+            user?.argo_profile.email
           ) : (
             <Skeleton width={150} duration={2} />
           )}
@@ -56,7 +60,7 @@ const UserDetailsCard: React.FC<any> = () => {
       <div className="user-details-avatar-container">
         {!userLoading ? (
           <img
-            src={user?.profile.avatar_url}
+            src={user?.argo_profile.avatar}
             alt="avatar"
             className="user-details-avatar"
           />

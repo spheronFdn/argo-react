@@ -35,7 +35,7 @@ const RootHeader = () => {
             >
               {!userLoading ? (
                 <img
-                  src={user?.profile.avatar_url}
+                  src={user?.argo_profile.avatar}
                   alt="address-blockie"
                   className={`user-profile-blockie-icon ${
                     showProfileDropdown ? "selected-profile" : ""

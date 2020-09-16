@@ -13,7 +13,11 @@ const Overview = () => {
         <div className="overview-team-avatar-container">
           {!userLoading ? (
             <img
-              src="https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+              src={
+                selectedOrg?.profile.image
+                  ? selectedOrg.profile.image
+                  : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+              }
               alt="org"
               className="team-avatar"
             ></img>
@@ -24,7 +28,7 @@ const Overview = () => {
         <div className="overview-team-details-container">
           <h1 className="overview-team-name">
             {!userLoading ? (
-              selectedOrg?.name
+              selectedOrg?.profile.name
             ) : (
               <Skeleton width={150} duration={2} />
             )}

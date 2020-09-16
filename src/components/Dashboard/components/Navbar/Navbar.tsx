@@ -32,9 +32,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link
                 className={`${
-                  location.pathname.indexOf("member") !== -1 ? "selected" : ""
+                  location.pathname.indexOf("members") !== -1 ? "selected" : ""
                 }`}
-                to="/dashboard/member"
+                to="/dashboard/members"
               >
                 Members
               </Link>

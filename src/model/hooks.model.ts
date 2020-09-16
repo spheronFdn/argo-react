@@ -27,16 +27,21 @@ export interface IProfile {
   is_active: boolean;
 }
 
-/**
- * @export
- * @interface IProvider
- */
+export interface IArgoUser {
+  username: string;
+  avatar: string;
+  is_active?: boolean;
+  name: string;
+  email: string;
+}
+
 export interface IProvider {
   name: string;
 }
 
 export interface IUser {
-  profile: IProfile;
+  provider_profile: IProfile;
+  argo_profile: IArgoUser;
   provider: IProvider;
   dateOfEntry?: Date;
   lastUpdated?: Date;
@@ -59,8 +64,11 @@ export interface IDeployment {
 
 export interface IOrganization {
   _id?: string;
-  name: string;
-  image: string;
+  profile: {
+    name: string;
+    image: string;
+    username: string;
+  };
   repositories?: IRepository[];
   users?: string[];
 }
@@ -84,6 +92,6 @@ export interface IStateModel {
 
 export interface IActionModel {
   toggleModal: (modal: IModalModel) => void;
-  fetchUser: () => void;
+  fetchUser: (id?: string) => void;
   setSelectedOrganization: (organization: IOrganization) => void;
 }

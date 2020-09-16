@@ -20,18 +20,18 @@ const Settings = () => {
 
   useEffect(() => {
     if (selectedOrg) {
-      setOrgUsername(selectedOrg.name);
-      setOrgName(selectedOrg.name);
-      setOrgAvatar(selectedOrg.image);
+      setOrgUsername(selectedOrg.profile.username);
+      setOrgName(selectedOrg.profile.name);
+      setOrgAvatar(selectedOrg.profile.image);
     }
   }, [selectedOrg]);
 
   useEffect(() => {
     if (selectedOrg) {
       if (
-        selectedOrg.name !== orgUsername ||
-        selectedOrg.name !== orgName ||
-        selectedOrg.image !== orgAvatar
+        selectedOrg.profile.username !== orgUsername ||
+        selectedOrg.profile.name !== orgName ||
+        selectedOrg.profile.image !== orgAvatar
       ) {
         setIsDataChanged(true);
       } else {
@@ -51,17 +51,21 @@ const Settings = () => {
   };
 
   const updateOrganization = () => {
-    const org = {
-      username: orgUsername,
-      name: orgName,
-      avatar: orgAvatar,
-    };
+    if (selectedOrg) {
+      const org = {
+        username: orgUsername,
+        name: orgName,
+        image: orgAvatar,
+      };
 
-    ApiService.updateOrganization(org).subscribe((result) => {
-      // eslint-disable-next-line no-console
-      console.log(result);
-      fetchUser();
-    });
+      ApiService.updateOrganization(`${selectedOrg?._id}`, org).subscribe(
+        (result) => {
+          // eslint-disable-next-line no-console
+          console.log(result);
+          fetchUser();
+        },
+      );
+    }
   };
 
   const deleteOrg = () => {
@@ -209,7 +213,7 @@ const Settings = () => {
                   <input
                     type="checkbox"
                     checked={deleteConfirmed}
-                    onClick={(e) => setDeleteConfirmed(!deleteConfirmed)}
+                    onChange={(e) => setDeleteConfirmed(!deleteConfirmed)}
                   />
                 </span>
                 <span>

@@ -1,6 +1,5 @@
 import { Observable, defer, from } from "rxjs";
 import { API_URL } from "../config";
-import { IOrganization } from "../model/hooks.model";
 import { IUserResponse } from "../model/service.model";
 
 export const logout = (): Observable<any> => {
@@ -39,7 +38,7 @@ export const updateProfile = (user: any): Observable<any> => {
         },
         method: "PUT",
         body: JSON.stringify(user),
-      }),
+      }).then((res) => res.json()),
     );
   });
 };
@@ -57,7 +56,7 @@ export const deleteProfile = (id: string): Observable<any> => {
   });
 };
 
-export const createOrganization = (organization: IOrganization): Observable<any> => {
+export const createOrganization = (organization: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
       fetch(`${API_URL}/organization/`, {
@@ -67,22 +66,22 @@ export const createOrganization = (organization: IOrganization): Observable<any>
         },
         method: "POST",
         body: JSON.stringify(organization),
-      }),
+      }).then((res) => res.json()),
     );
   });
 };
 
-export const updateOrganization = (org: any): Observable<any> => {
+export const updateOrganization = (id: string, org: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${API_URL}/organization/`, {
+      fetch(`${API_URL}/organization/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "PUT",
         body: JSON.stringify(org),
-      }),
+      }).then((res) => res.json()),
     );
   });
 };
