@@ -7,6 +7,7 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import SignupWorkflows from "./SignupWorkflows";
 import CreateOrg from "./CreateOrg";
+import InviteCallback from "./InviteCallback";
 
 export {
   Landing,
@@ -18,4 +19,5 @@ export {
   Login,
   SignupWorkflows,
   CreateOrg,
+  InviteCallback,
 };

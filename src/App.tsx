@@ -9,6 +9,7 @@ import {
   Login,
   UserSettings,
   CreateOrg,
+  InviteCallback,
 } from "./components";
 import { ActionContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -81,9 +82,26 @@ function App() {
           }}
         />
         <Route
+          path="/dashboard/:slug1/:slug2"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Dashboard />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
           path="/dashboard"
           exact
-          render={() => <Redirect to="/dashboard/overview" />}
+          render={() =>
+            localStorage.getItem("inviteRef") ? (
+              <Redirect to="/invite/callback" />
+            ) : (
+              <Redirect to="/dashboard/overview" />
+            )
+          }
         />
 
         <Route
@@ -109,6 +127,7 @@ function App() {
             );
           }}
         />
+        <Route path="/invite/callback" exact render={() => <InviteCallback />} />
       </div>
     </SkeletonTheme>
   );

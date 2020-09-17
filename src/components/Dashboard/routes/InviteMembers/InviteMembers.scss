@@ -1,0 +1,137 @@
+.InviteMembers {
+  .invite-members-container {
+    display: flex;
+    margin-top: 1rem;
+
+    .invite-members-details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+
+      .invite-members-inner {
+        width: 688px;
+        margin: auto;
+        padding: 40px;
+        .invite-members-title {
+          margin: 0;
+          padding: 1rem 24px;
+        }
+        .invite-members-form {
+          display: flex;
+          flex-direction: column;
+          padding: 1rem 24px;
+
+          .invite-members-form-title {
+            font-size: 20px;
+            font-weight: bold;
+          }
+
+          .invite-members-form-subtitle {
+            font-size: 16px;
+            color: var(--grey3Color);
+          }
+
+          .invite-input-container {
+            position: relative;
+            .mail-icon {
+              position: absolute;
+              display: flex;
+              bottom: 10px;
+              left: 12px;
+              color: var(--grey2Color);
+            }
+
+            .invite-members-form-input {
+              margin-top: 2rem;
+              width: 350px;
+              padding: 8px 12px;
+              padding-left: 36px;
+              border-radius: 4px;
+              font-size: 16px;
+              border: 1px solid var(--grey2Color);
+              outline: none;
+            }
+
+            .invite-members-form-input:focus {
+              border: 1px solid var(--grey5Color);
+              ~ .mail-icon {
+                color: var(--grey5Color);
+              }
+            }
+          }
+
+          .invite-members-form-subtitle-bottom {
+            font-size: 16px;
+            color: var(--grey3Color);
+            margin-top: 4px;
+          }
+        }
+
+        .button-container {
+          display: flex;
+          padding: 1rem 24px;
+          .primary-button {
+            background: var(--themeColor);
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: 0;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            width: 120px;
+            margin-right: 1rem;
+
+            &:hover {
+              background: var(--themeColorDark);
+            }
+
+            &:disabled {
+              background: var(--themeColor);
+              cursor: not-allowed;
+            }
+          }
+
+          .cancel-button {
+            background: var(--grey2Color);
+            text-decoration: none;
+            color: var(--textColor);
+            font-size: 16px;
+            font-weight: 600;
+            border: 0;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            width: 120px;
+
+            &:hover {
+              background: var(--grey3Color);
+            }
+
+            &:disabled {
+              background: var(--grey2Color);
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+  }
+}

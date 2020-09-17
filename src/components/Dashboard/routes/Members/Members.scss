@@ -3,7 +3,7 @@
     display: flex;
     margin-top: 1rem;
 
-    .members-profile-details {
+    .members-details {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -11,7 +11,7 @@
       border-radius: 8px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
-      .members-profile-header {
+      .members-header {
         display: flex;
         min-height: 32px;
         align-items: center;
@@ -32,7 +32,7 @@
           font-weight: 600;
           border: 0;
           border-radius: 8px;
-          padding: 0.3rem 1rem;
+          padding: 0.5rem 1rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -54,13 +54,95 @@
         }
       }
 
-      .delete-containers {
-        background-color: #fc2c2c38 !important;
-      }
-
-      .members-profile-body {
+      .members-body {
         flex: 1;
-        padding: 1rem 0px;
+        padding: 2rem;
+
+        .table {
+          width: 100%;
+          .thead {
+            .tr {
+              display: flex;
+              background-color: var(--themeColorSelected);
+              .th {
+                padding: 0.5rem 1rem;
+                text-align: left;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: 14px;
+
+                &:nth-child(1) {
+                  border: 1px solid var(--themeColor);
+                  border-right: 0;
+                  border-radius: 6px;
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                  width: 10%;
+                }
+
+                &:nth-child(2) {
+                  border: 1px solid var(--themeColor);
+                  border-left: 0;
+                  border-radius: 6px;
+                  border-top-left-radius: 0;
+                  border-bottom-left-radius: 0;
+                  width: 90%;
+                  padding-left: 1.5rem;
+                }
+              }
+            }
+          }
+
+          .tbody {
+            .tr {
+              display: flex;
+              border-bottom: 1px solid var(--themeColor);
+              .td {
+                padding: 0.5rem 1rem;
+
+                .avatar-container {
+                  display: flex;
+                  justify-content: center;
+                  .profile-avatar {
+                    height: 32px;
+                    width: 32px;
+                  }
+                }
+
+                .user-container {
+                  .user-email {
+                    line-height: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-weight: 500;
+                  }
+
+                  .user-username {
+                    line-height: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-weight: 300;
+                    color: var(--grey3Color);
+                  }
+                }
+
+                &:nth-child(1) {
+                  width: 10%;
+                }
+
+                &:nth-child(2) {
+                  width: 30%;
+                }
+
+                &:nth-child(3) {
+                  width: 60%;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

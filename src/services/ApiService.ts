@@ -56,6 +56,18 @@ export const deleteProfile = (id: string): Observable<any> => {
   });
 };
 
+export const getOrganization = (id: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/organization/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};
+
 export const createOrganization = (organization: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
@@ -94,6 +106,36 @@ export const deleteOrganization = (id: string): Observable<any> => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const sendMemberInvite = (invite: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/invite/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(invite),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const updateInvite = (inviteReply: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/invite/update/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(inviteReply),
       }).then((res) => res.json()),
     );
   });
