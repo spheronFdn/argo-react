@@ -25,12 +25,12 @@ function CreateOrg() {
   };
 
   useEffect(() => {
-    if (orgUsername && orgName && orgAvatar) {
+    if (orgUsername && orgName) {
       setIsFormFilled(true);
     } else {
       setIsFormFilled(false);
     }
-  }, [orgUsername, orgName, orgAvatar]);
+  }, [orgUsername, orgName]);
 
   const createOrg = () => {
     const organization = {

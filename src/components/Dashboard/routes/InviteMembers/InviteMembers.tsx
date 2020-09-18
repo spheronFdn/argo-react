@@ -17,6 +17,7 @@ const InviteMembers = () => {
     const members = inviteMembers.split(",").map((member) => member.trim());
     const invites = members.map((member) => ({
       organization: selectedOrg?._id,
+      orgName: selectedOrg?.profile.name,
       userEmail: member,
     }));
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(

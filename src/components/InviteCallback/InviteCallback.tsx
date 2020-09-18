@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { RootHeader } from "..";
+import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./InviteCallback.scss";
 
@@ -8,12 +9,16 @@ function InviteCallback() {
   const location = useLocation();
   const history = useHistory();
 
+  const { fetchUser } = useContext(ActionContext);
+
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt-token");
     if (!jwtToken) {
       const query = new URLSearchParams(location.search);
       const ref = query.get("ref");
+      const orgName = query.get("orgName");
       localStorage.setItem("inviteRef", `${ref}`);
+      localStorage.setItem("orgName", `${orgName}`);
       history.push("/signup");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,6 +33,7 @@ function InviteCallback() {
     };
     ApiService.updateInvite(inviteReply).subscribe((res) => {
       localStorage.removeItem("inviteRef");
+      fetchUser();
       history.push("/dashboard");
     });
   };
@@ -41,10 +47,11 @@ function InviteCallback() {
               <h1 className="invite-callback-title">Accept the invitation</h1>
               <div className="create-org-form">
                 <label className="create-org-form-title">
-                  Invitation from Team 1 Organization
+                  Invitation from {localStorage.getItem("orgName")} Organization
                 </label>
                 <label className="create-org-form-subtitle">
-                  You have been invited to join the Team 1 organization on ArGo.
+                  You have been invited to join the {localStorage.getItem("orgName")}{" "}
+                  organization on ArGo.
                 </label>
                 <label className="create-org-form-subtitle">
                   By joining, your name, email address and username will be visible

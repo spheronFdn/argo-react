@@ -83,11 +83,17 @@
                 &:nth-child(2) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
+                  border-right: 0;
+                  width: 40%;
+                }
+
+                &:nth-child(3) {
+                  border: 1px solid var(--themeColor);
+                  border-left: 0;
                   border-radius: 6px;
                   border-top-left-radius: 0;
                   border-bottom-left-radius: 0;
-                  width: 90%;
-                  padding-left: 1.5rem;
+                  width: 50%;
                 }
               }
             }
@@ -106,6 +112,7 @@
                   .profile-avatar {
                     height: 32px;
                     width: 32px;
+                    border-radius: 50%;
                   }
                 }
 
@@ -133,11 +140,11 @@
                 }
 
                 &:nth-child(2) {
-                  width: 30%;
+                  width: 40%;
                 }
 
                 &:nth-child(3) {
-                  width: 60%;
+                  width: 50%;
                 }
               }
             }
