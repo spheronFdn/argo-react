@@ -1,0 +1,100 @@
+.project-item {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0px;
+  min-height: 208px;
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+  .project-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem;
+    .project-item-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .project-item-visit-button {
+      background: transparent;
+      text-decoration: none;
+      color: #3677e994;
+      font-size: 16px;
+      font-weight: 600;
+      border: 2px solid #3677e994;
+      border-radius: 5px;
+      padding: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      width: 80px;
+
+      &:hover {
+        color: var(--themeColor);
+        border: 2px solid var(--themeColor);
+      }
+
+      &:disabled {
+        color: #3677e994;
+        border: 2px solid #3677e994;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .project-item-body {
+    margin: 1.5rem;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    word-break: break-all;
+    .project-item-live-key {
+      font-weight: 500;
+    }
+
+    .project-item-live-value {
+      text-decoration: none;
+      color: var(--logoColor);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .project-item-footer {
+    flex: 1 1;
+    padding: 0 24px;
+    min-height: 48px;
+    max-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--grey1Color);
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    font-size: 15px;
+    .project-item-git-integration {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .git-name {
+        margin-left: 0.5rem;
+        font-weight: 500;
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .project-item-updated-time {
+      color: var(--grey3Color);
+    }
+  }
+}

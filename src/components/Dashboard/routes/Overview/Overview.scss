@@ -1,0 +1,145 @@
+.Overview {
+  .overview-container {
+    display: flex;
+    align-items: center;
+    color: var(--white);
+    margin-top: 3rem;
+
+    .overview-team-avatar-container {
+      display: flex;
+      margin-right: 2rem;
+      .team-avatar {
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+        border: 2px solid var(--themeColor);
+      }
+    }
+
+    .overview-team-details-container {
+      flex: 1;
+      .overview-team-name {
+        margin: 0;
+        font-weight: 500;
+      }
+
+      .overview-team-misc-container {
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        .overview-team-detail-container {
+          min-width: 120px;
+          display: flex;
+          align-items: center;
+          margin-right: 2rem;
+          border-right: 1px solid;
+          .overview-team-detail-label {
+            text-transform: uppercase;
+            font-size: 13px;
+          }
+
+          .overview-team-member-value {
+            font-size: 20px;
+            font-weight: 500;
+            margin-left: 1rem;
+            cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          .overview-team-git-integration-value {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .git-name {
+              margin-left: 0.5rem;
+              font-weight: 500;
+            }
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .git-integration-container {
+          border: 0;
+        }
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+
+      .secondary-button {
+        background: transparent;
+        text-decoration: none;
+        color: #3677e994;
+        font-size: 16px;
+        font-weight: 600;
+        border: 2px solid #3677e994;
+        border-radius: 8px;
+        padding: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        width: 184px;
+
+        &:hover {
+          color: var(--themeColor);
+          border: 2px solid var(--themeColor);
+        }
+
+        &:disabled {
+          color: #3677e994;
+          border: 2px solid #3677e994;
+          cursor: not-allowed;
+        }
+      }
+
+      .primary-button {
+        background: #3677e994;
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        border: 0;
+        border-radius: 8px;
+        padding: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid transparent;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin-left: 1rem;
+        width: 184px;
+
+        &:hover {
+          background: var(--themeColor);
+        }
+
+        &:disabled {
+          background: #3677e994;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .project-list-container {
+    margin-top: 3rem;
+    .project-list {
+      padding: 0px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+    }
+  }
+}
