@@ -1,0 +1,156 @@
+.Members {
+  .members-container {
+    display: flex;
+    margin-top: 1rem;
+
+    .members-details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+      .members-header {
+        display: flex;
+        min-height: 32px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 24px;
+        font-size: 22px;
+        font-weight: 500;
+        background-color: #3463ae38;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom: 1px solid var(--themeColorDark);
+
+        .primary-button {
+          background: var(--themeColor);
+          text-decoration: none;
+          color: white;
+          font-size: 16px;
+          font-weight: 600;
+          border: 0;
+          border-radius: 8px;
+          padding: 0.5rem 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid transparent;
+          outline: none;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          margin-left: 1rem;
+          min-width: 86px;
+
+          &:hover {
+            background: var(--themeColorDark);
+          }
+
+          &:disabled {
+            background: var(--themeColor);
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .members-body {
+        flex: 1;
+        padding: 2rem;
+
+        .table {
+          width: 100%;
+          .thead {
+            .tr {
+              display: flex;
+              background-color: var(--themeColorSelected);
+              .th {
+                padding: 0.5rem 1rem;
+                text-align: left;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: 14px;
+
+                &:nth-child(1) {
+                  border: 1px solid var(--themeColor);
+                  border-right: 0;
+                  border-radius: 6px;
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                  width: 10%;
+                }
+
+                &:nth-child(2) {
+                  border: 1px solid var(--themeColor);
+                  border-left: 0;
+                  border-right: 0;
+                  width: 40%;
+                }
+
+                &:nth-child(3) {
+                  border: 1px solid var(--themeColor);
+                  border-left: 0;
+                  border-radius: 6px;
+                  border-top-left-radius: 0;
+                  border-bottom-left-radius: 0;
+                  width: 50%;
+                }
+              }
+            }
+          }
+
+          .tbody {
+            .tr {
+              display: flex;
+              border-bottom: 1px solid var(--themeColor);
+              .td {
+                padding: 0.5rem 1rem;
+
+                .avatar-container {
+                  display: flex;
+                  justify-content: center;
+                  .profile-avatar {
+                    height: 32px;
+                    width: 32px;
+                    border-radius: 50%;
+                  }
+                }
+
+                .user-container {
+                  .user-email {
+                    line-height: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-weight: 500;
+                  }
+
+                  .user-username {
+                    line-height: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-weight: 300;
+                    color: var(--grey3Color);
+                  }
+                }
+
+                &:nth-child(1) {
+                  width: 10%;
+                }
+
+                &:nth-child(2) {
+                  width: 40%;
+                }
+
+                &:nth-child(3) {
+                  width: 50%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

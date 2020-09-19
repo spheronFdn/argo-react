@@ -2,15 +2,16 @@ import React from "react";
 import "./SignUp.scss";
 import { SignUpListItem, GithubIcon, GitlabIcon } from "./components";
 import Logo from "../Logo";
+import { BASE_URL } from "../../config";
 
 function SignUp() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = "http://localhost:8080/auth/github";
-    window.open(githubSignInUrl, "_self");
+    const githubSignInUrl = `${BASE_URL}/signup/github`;
+    window.open(githubSignInUrl, "_blank");
   };
   const signInWithGitlab = async () => {
-    const gitlabSignInUrl = "http://localhost:8080/auth/gitlab";
-    window.open(gitlabSignInUrl, "_self");
+    const gitlabSignInUrl = `${BASE_URL}/signup/gitlab`;
+    window.open(gitlabSignInUrl, "_blank");
   };
   return (
     <div className="SignIn">
