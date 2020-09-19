@@ -29,7 +29,7 @@ function Landing() {
         <header className="header">
           <div className="top-message">Deployment made easy on Arweave.</div>
           <a
-            href="https://discord.gg/9fcQkp"
+            href="https://discord.gg/ahxuCtm"
             target="_blank"
             rel="noopener noreferrer"
             className="join-button"

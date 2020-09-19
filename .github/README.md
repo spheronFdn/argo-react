@@ -10,11 +10,15 @@
  </p>
 </p>
 
+> Important Notice: ArGo is in its Alpha stage. If you have a suggestion, idea, or find a bug, please report it! The ArGo team will not be held accountable for any funds lost.
+
 ## About Argo
 
-Want to only focus on building, Don't worry! We provide you with a simple & powerful way to directly deploy your frontend app to Arweave Permaweb where your app will live for eternity.
+ArGo is a one-click ☝️  deployment service platform on top of Arweave Permaweb. It offers a Vercel-like seamless experience for the developer to deploy web apps to Arweave Permaweb directly from the ArGo dashboard.
 
 ## Installation
+
+> Note: Our current latest stable branch is dev. After clone make sure to checkout to dev branch
 
 Follow these easy steps to run ArGo in your machine:
 
@@ -23,6 +27,8 @@ Follow these easy steps to run ArGo in your machine:
 3. `npm start`
 
 ArGo Web App will start running on http://localhost:3000/
+
+> Note: To run the app you need to run our api, you can follow the api setup provided in [argoapp-live/argo-api](https://github.com/argoapp-live/argo-api)
 
 ## Demo Link
 
@@ -33,3 +39,8 @@ https://youtu.be/68SwcLDteTM
 
 To view ArGo Pitch Video, visit at:
 https://youtu.be/DikhRVcPgiE
+
+## Contact
+
+You can reach out to ArGo team in ArGo Discord server using this invite link:
+https://discord.gg/ahxuCtm
