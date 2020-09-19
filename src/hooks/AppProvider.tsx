@@ -2,6 +2,7 @@ import React, { createContext, useMemo } from "react";
 import Actions, { actionInitialValue } from "./Actions";
 import { IActionModel, IStateModel } from "../model/hooks.model";
 import Reducers, { stateInitialValue } from "./Reducers";
+import { useHistory } from "react-router-dom";
 
 export const ActionContext = createContext<IActionModel>(actionInitialValue);
 export const StateContext = createContext<IStateModel>(stateInitialValue);
@@ -11,7 +12,7 @@ export const StateContext = createContext<IStateModel>(stateInitialValue);
 // };
 
 export const AppProvider = (props: any) => {
-  // const history = useHistory();
+  const history = useHistory();
   // const query = useQuery();
   const [state, dispatch] = React.useReducer((prevState: any, action: any) => {
     switch (action.type) {
@@ -21,7 +22,7 @@ export const AppProvider = (props: any) => {
           openModal: action.modal.openModal,
           modalConfig: action.modal.modalConfig,
         };
-      case Actions.FETCH_USER:
+      case Actions.SET_USER:
         return {
           ...prevState,
           user: action.user,
@@ -42,7 +43,7 @@ export const AppProvider = (props: any) => {
   }, stateInitialValue);
 
   const actionContext = useMemo(
-    () => Reducers(dispatch),
+    () => Reducers(dispatch, history),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

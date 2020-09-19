@@ -94,4 +94,5 @@ export interface IActionModel {
   toggleModal: (modal: IModalModel) => void;
   fetchUser: (id?: string) => void;
   setSelectedOrganization: (organization: IOrganization) => void;
+  resetUser: () => void;
 }

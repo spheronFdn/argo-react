@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./ProfileDropdown.scss";
 import IProfileDropdownProps from "./model";
 import { useHistory } from "react-router-dom";
 import { ApiService } from "../../../../../../services";
 import { Subscription } from "rxjs";
+import { ActionContext } from "../../../../../../hooks";
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) => {
   let logoutSvc: Subscription;
   const history = useHistory();
+  const { resetUser } = useContext(ActionContext);
 
   const [logoutText, setLogoutText] = useState("Logout");
 
@@ -15,6 +17,7 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) =
     setLogoutText("Logging out...");
     logoutSvc = ApiService.logout().subscribe(() => {
       localStorage.removeItem("jwt-token");
+      resetUser();
       history.push("/login");
       setLogoutText("Logout");
     });

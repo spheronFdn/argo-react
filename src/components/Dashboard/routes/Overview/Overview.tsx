@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-
+import { useHistory } from "react-router-dom";
 import "./Overview.scss";
 
 const Overview = () => {
+  const history = useHistory();
   const { selectedOrg, userLoading } = useContext(StateContext);
   return (
     <div className="Overview">
@@ -37,7 +38,10 @@ const Overview = () => {
             <div className="overview-team-misc-container">
               <div className="overview-team-detail-container">
                 <label className="overview-team-detail-label">Members</label>
-                <div className="overview-team-member-value">
+                <div
+                  className="overview-team-member-value"
+                  onClick={(e) => history.push("/dashboard/members")}
+                >
                   {selectedOrg?.users?.length}
                 </div>
               </div>

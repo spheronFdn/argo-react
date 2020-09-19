@@ -43,7 +43,17 @@ function App() {
   return (
     <SkeletonTheme color="#ebebeb" highlightColor="#787878">
       <div className="App">
-        <Route path="/" exact render={() => <Landing />} />
+        <Route
+          path="/"
+          exact
+          render={() => {
+            return !localStorage.getItem("jwt-token") ? (
+              <Landing />
+            ) : (
+              <Redirect to="/dashboard" />
+            );
+          }}
+        />
         <Route
           path="/signup"
           exact

@@ -39,7 +39,7 @@ function InviteCallback() {
   };
   return (
     <div className="InviteCallback">
-      <RootHeader />
+      <RootHeader parent={"InviteCallback"} />
       <main className="app-main">
         <div className="invite-callback-container">
           <div className="invite-callback-card">

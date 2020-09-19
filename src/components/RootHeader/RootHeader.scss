@@ -140,6 +140,44 @@
             border: 2px solid var(--white) !important;
           }
         }
+
+        .login-container {
+          font-size: 18px;
+          font-weight: 500;
+          margin-right: 1rem;
+          cursor: not-allowed;
+        }
+
+        .primary-button {
+          background: var(--themeColorDark);
+          text-decoration: none;
+          color: white;
+          font-size: 16px;
+          font-weight: 600;
+          border: 0;
+          border-radius: 8px;
+          padding: 0.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid transparent;
+          outline: none;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          margin-left: 1rem;
+          width: 104px;
+
+          &:hover {
+            background: transparent;
+            border: 2px solid var(--themeColorDark);
+            color: var(--themeColorDark);
+          }
+
+          &:disabled {
+            background: var(--themeColorDark);
+            cursor: not-allowed;
+          }
+        }
       }
     }
   }

@@ -46,7 +46,7 @@ function CreateOrg() {
 
   return (
     <div className="CreateOrg">
-      <RootHeader />
+      <RootHeader parent={"CreateOrg"} />
       <main className="app-main">
         <div className="create-org-container">
           <div className="create-org-card">

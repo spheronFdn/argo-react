@@ -6,8 +6,9 @@ import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { ProfileDropdown } from "./components";
 import { StateContext } from "../../hooks";
 import Skeleton from "react-loading-skeleton";
+import { IRootHeaderModel } from "./model";
 
-const RootHeader = () => {
+const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
   const { user, userLoading } = useContext(StateContext);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   return (
@@ -26,25 +27,38 @@ const RootHeader = () => {
             </div>
           </div>
           <div className="user-profile-container">
-            <div className="menu-container">
-              <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
-            </div>
-            <div
-              className="profile-container"
-              onClick={(e) => setShowProfileDropdown(true)}
-            >
-              {!userLoading ? (
-                <img
-                  src={user?.argo_profile.avatar}
-                  alt="address-blockie"
-                  className={`user-profile-blockie-icon ${
-                    showProfileDropdown ? "selected-profile" : ""
-                  }`}
-                />
-              ) : (
-                <Skeleton circle={true} height={42} width={42} duration={2} />
-              )}
-            </div>
+            {user ? (
+              <>
+                <div className="menu-container">
+                  <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
+                </div>
+                <div
+                  className="profile-container"
+                  onClick={(e) =>
+                    !userLoading ? setShowProfileDropdown(true) : null
+                  }
+                >
+                  {!userLoading ? (
+                    <img
+                      src={user?.argo_profile.avatar}
+                      alt="address-blockie"
+                      className={`user-profile-blockie-icon ${
+                        showProfileDropdown ? "selected-profile" : ""
+                      }`}
+                    />
+                  ) : (
+                    <Skeleton circle={true} height={42} width={42} duration={2} />
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="login-container">Login</div>
+                <button type="button" className="primary-button">
+                  Signup
+                </button>
+              </>
+            )}
           </div>
           {showProfileDropdown && (
             <ProfileDropdown setShowDropdown={setShowProfileDropdown} />

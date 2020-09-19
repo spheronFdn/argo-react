@@ -79,7 +79,7 @@ function UserSettings() {
 
   return (
     <div className="UserSettings">
-      <RootHeader />
+      <RootHeader parent={"UserSettings"} />
       <main className="app-main">
         <div className="user-settings-container">
           <UserDetailsCard />
