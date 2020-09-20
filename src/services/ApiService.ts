@@ -140,3 +140,15 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
     );
   });
 };
+
+export const getAllRepos = (): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/repository/github/repo/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};

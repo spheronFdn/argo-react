@@ -1,0 +1,44 @@
+.deploy-site-item-repo-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  &:hover {
+    background-color: var(--hoverBackground);
+  }
+  .deploy-site-item-repo-item-details {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 1rem;
+    .deploy-site-item-github-icon {
+      font-size: 24px;
+    }
+
+    .deploy-site-item-github-name {
+      margin-left: 1rem;
+      font-size: 18px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .deploy-site-item-private {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    color: var(--grey4Color);
+    margin-right: 1rem;
+    span {
+      display: flex;
+      margin-right: 4px;
+    }
+  }
+
+  .deploy-site-item-chevron-right {
+    color: var(--grey3Color);
+  }
+}

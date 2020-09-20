@@ -13,6 +13,7 @@ import {
 } from "./components";
 import { ActionContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
+import DeploySiteConfig from "./components/DeploySiteConfig";
 
 function App() {
   const history = useHistory();
@@ -132,6 +133,17 @@ function App() {
           render={() => {
             return localStorage.getItem("jwt-token") ? (
               <CreateOrg />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
+          path="/deploy/new"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <DeploySiteConfig />
             ) : (
               <Redirect to="/login" />
             );

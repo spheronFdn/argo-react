@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./RootHeader.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { ProfileDropdown } from "./components";
@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { IRootHeaderModel } from "./model";
 
 const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
+  const history = useHistory();
   const { user, userLoading } = useContext(StateContext);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   return (
@@ -27,7 +28,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
             </div>
           </div>
           <div className="user-profile-container">
-            {user ? (
+            {user || parent !== "Login" ? (
               <>
                 <div className="menu-container">
                   <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
@@ -54,7 +55,11 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
             ) : (
               <>
                 <div className="login-container">Login</div>
-                <button type="button" className="primary-button">
+                <button
+                  type="button"
+                  className="primary-button"
+                  onClick={(e) => history.push("/signup")}
+                >
                   Signup
                 </button>
               </>
