@@ -6,9 +6,14 @@ import { faChevronRight, faLock } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
-const RepoItem: React.FC<IRepoItemProps> = ({ name, privateRepo, skeleton }) => {
+const RepoItem: React.FC<IRepoItemProps> = ({
+  name,
+  privateRepo,
+  skeleton,
+  onClick,
+}) => {
   return (
-    <div className="deploy-site-item-repo-item">
+    <div className="deploy-site-item-repo-item" onClick={(e) => onClick()}>
       <div className="deploy-site-item-repo-item-details">
         <div className="deploy-site-item-github-icon">
           <FontAwesomeIcon icon={faGithub} />

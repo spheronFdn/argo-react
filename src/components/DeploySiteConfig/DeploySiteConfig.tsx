@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RootHeader } from "..";
 import { ApiService } from "../../services";
@@ -13,22 +13,35 @@ import {
 import "./DeploySiteConfig.scss";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import Skeleton from "react-loading-skeleton";
+import { StateContext } from "../../hooks";
 
 function DeploySiteConfig() {
   const history = useHistory();
-  const [donationRegistrationProgress, setDonationRegistrationProgress] = useState(
-    1,
-  );
+
+  const { user } = useContext(StateContext);
+
+  const [createDeployProgress, setCreateDeployProgress] = useState(1);
   const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
   const [reposDetails, setReposDetails] = useState<any[]>([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
+  const [autoPublish, setAutoPublish] = useState<boolean>(true);
+  const [selectedRepo, setSelectedRepo] = useState<any>();
+  const [projectName, setProjectName] = useState<string>("");
+  const [owner, setOwner] = useState<string>("");
+  const [branch, setBranch] = useState<string>("master");
+  const [framework, setFramework] = useState<string>("Create React App");
+  const [packageManager, setPackageManager] = useState<string>("npm");
+  const [buildCommand, setBuildCommand] = useState<string>("");
+  const [publishDirectory, setPublishDirectory] = useState<string>("");
+
   useEffect(() => {
     ApiService.getAllRepos().subscribe((repos: any) => {
       const repositories: any[] = repos.data.map((repo: any) => ({
         clone_url: repo.clone_url,
-        name: repo.full_name,
+        name: repo.name,
+        fullName: repo.full_name,
         private: repo.private,
         owner: { name: repo.owner.login, avatar: repo.owner.avatar_url },
       }));
@@ -47,10 +60,42 @@ function DeploySiteConfig() {
     });
   }, []);
 
+  useEffect(() => {
+    if (user?.organizations && user.organizations[0]._id) {
+      setOwner(user.organizations[0]._id);
+    }
+  }, [user]);
+
   const selectRepoOwner = (repoOwner: any) => {
     setSelectedRepoOwner(repoOwner);
     setShowRepoOrgDropdown(false);
   };
+
+  const selectRepositories = (repo: any) => {
+    setSelectedRepo(repo);
+    setProjectName(repo.name);
+    setCreateDeployProgress(2);
+  };
+
+  const startDeployment = () => {
+    const deployment = {
+      github_url: selectedRepo.clone_url,
+      folder_name: projectName,
+      orgId: owner,
+      project_name: projectName,
+      branch,
+      framework,
+      package_manager: packageManager,
+      build_command: buildCommand,
+      publish_directory: publishDirectory,
+      auto_publish: autoPublish,
+    };
+    ApiService.startDeployment(deployment).subscribe((result) =>
+      // eslint-disable-next-line no-console
+      console.log(result),
+    );
+  };
+
   return (
     <div className="DeploySiteConfig">
       <RootHeader parent={"DeploySiteConfig"} />
@@ -70,26 +115,26 @@ function DeploySiteConfig() {
               </div>
               <div className="deploy-site-progress-bar">
                 <div className="deploy-site-progress-number-container">
-                  {donationRegistrationProgress <= 1 ? (
+                  {createDeployProgress <= 1 ? (
                     <div
                       className={`deploy-site-progress-number ${
-                        donationRegistrationProgress === 1 ? "active" : ""
+                        createDeployProgress === 1 ? "active" : ""
                       }`}
-                      onClick={(e) => setDonationRegistrationProgress(1)}
+                      onClick={(e) => setCreateDeployProgress(1)}
                     >
                       1
                     </div>
                   ) : (
                     <div
                       className="deploy-site-progress-done"
-                      onClick={(e) => setDonationRegistrationProgress(1)}
+                      onClick={(e) => setCreateDeployProgress(1)}
                     >
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
                   )}
                   <div
                     className={`deploy-site-progress-text ${
-                      donationRegistrationProgress === 1
+                      createDeployProgress === 1
                         ? "deploy-site-progress-text-active"
                         : ""
                     }`}
@@ -98,26 +143,26 @@ function DeploySiteConfig() {
                   </div>
                 </div>
                 <div className="deploy-site-progress-number-container">
-                  {donationRegistrationProgress <= 2 ? (
+                  {createDeployProgress <= 2 ? (
                     <div
                       className={`deploy-site-progress-number ${
-                        donationRegistrationProgress === 2 ? "active" : ""
+                        createDeployProgress === 2 ? "active" : ""
                       }`}
-                      onClick={(e) => setDonationRegistrationProgress(2)}
+                      onClick={(e) => setCreateDeployProgress(2)}
                     >
                       2
                     </div>
                   ) : (
                     <div
                       className="deploy-site-progress-done"
-                      onClick={(e) => setDonationRegistrationProgress(2)}
+                      onClick={(e) => setCreateDeployProgress(2)}
                     >
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
                   )}
                   <div
                     className={`deploy-site-progress-text ${
-                      donationRegistrationProgress === 2
+                      createDeployProgress === 2
                         ? "deploy-site-progress-text-active"
                         : ""
                     }`}
@@ -127,103 +172,281 @@ function DeploySiteConfig() {
                 </div>
               </div>
               <div className="deploy-site-form-container">
-                <div className="deploy-site-form-item">
-                  <label className="deploy-site-item-title">
-                    Continuous Deployment: GitHub Webhook
-                  </label>
-                  <label className="deploy-site-item-subtitle">
-                    Choose the repository you want to link to your site on ArGo. When
-                    you push to Git we run your build tool on our services and deploy
-                    the result.
-                  </label>
-                  <div className="deploy-site-item-repo-list-container">
-                    <div className="deploy-site-item-repo-header">
-                      <div
-                        className="deploy-site-item-repo-header-left"
-                        onClick={(e) =>
-                          !repoLoading ? setShowRepoOrgDropdown(true) : null
-                        }
-                      >
-                        {!repoLoading ? (
-                          <img
-                            src={selectedRepoOwner.avatar}
-                            alt="camera"
-                            className="deploy-site-item-repo-org-avatar"
-                          />
-                        ) : (
-                          <Skeleton
-                            circle={true}
-                            height={32}
-                            width={32}
-                            duration={2}
+                {createDeployProgress === 1 && (
+                  <div className="deploy-site-form-item">
+                    <label className="deploy-site-item-title">
+                      Continuous Deployment: GitHub Webhook
+                    </label>
+                    <label className="deploy-site-item-subtitle">
+                      Choose the repository you want to link to your site on ArGo.
+                    </label>
+                    <div className="webhook-confirm-container">
+                      <span className="confirm-checkbox">
+                        <input
+                          type="checkbox"
+                          checked={autoPublish}
+                          onChange={(e) => setAutoPublish(e.target.checked)}
+                        />
+                      </span>
+                      <span>
+                        Do you want to setup github webhook? When you push to Git we
+                        run your build tool on our services and deploy the result.
+                      </span>
+                    </div>
+                    <div className="deploy-site-item-repo-list-container">
+                      <div className="deploy-site-item-repo-header">
+                        <div
+                          className="deploy-site-item-repo-header-left"
+                          onClick={(e) =>
+                            !repoLoading ? setShowRepoOrgDropdown(true) : null
+                          }
+                        >
+                          {!repoLoading ? (
+                            <img
+                              src={selectedRepoOwner.avatar}
+                              alt="camera"
+                              className="deploy-site-item-repo-org-avatar"
+                            />
+                          ) : (
+                            <Skeleton
+                              circle={true}
+                              height={32}
+                              width={32}
+                              duration={2}
+                            />
+                          )}
+                          <span className="deploy-site-item-repo-org-name">
+                            {!repoLoading ? (
+                              selectedRepoOwner.name
+                            ) : (
+                              <Skeleton width={140} height={24} duration={2} />
+                            )}
+                          </span>
+                          <span className="deploy-site-item-repo-down">
+                            <FontAwesomeIcon
+                              icon={
+                                showRepoOrgDropdown ? faChevronUp : faChevronDown
+                              }
+                            />
+                          </span>
+                        </div>
+                        <div className="deploy-site-item-repo-header-right">
+                          <div className="deploy-site-item-repo-search-container">
+                            <span className="deploy-site-item-repo-search-icon">
+                              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                            </span>
+                            <input
+                              type="text"
+                              className="deploy-site-item-repo-search-input"
+                              placeholder="Search repos"
+                            />
+                          </div>
+                        </div>
+                        {showRepoOrgDropdown && (
+                          <RepoOrgDropdown
+                            setShowDropdown={setShowRepoOrgDropdown}
+                            repoOwner={reposDetails}
+                            selectedRepoOwner={selectedRepoOwner}
+                            setSelectedRepoOwner={selectRepoOwner}
                           />
                         )}
-                        <span className="deploy-site-item-repo-org-name">
-                          {!repoLoading ? (
-                            selectedRepoOwner.name
-                          ) : (
-                            <Skeleton width={140} height={24} duration={2} />
-                          )}
-                        </span>
-                        <span className="deploy-site-item-repo-down">
-                          <FontAwesomeIcon
-                            icon={showRepoOrgDropdown ? faChevronUp : faChevronDown}
-                          />
-                        </span>
                       </div>
-                      <div className="deploy-site-item-repo-header-right">
-                        <div className="deploy-site-item-repo-search-container">
-                          <span className="deploy-site-item-repo-search-icon">
-                            <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                          </span>
-                          <input
-                            type="text"
-                            className="deploy-site-item-repo-search-input"
-                            placeholder="Search repos"
-                          />
-                        </div>
+                      <div className="deploy-site-item-repo-body">
+                        {!repoLoading ? (
+                          selectedRepoOwner.repos.map((repo: any, index: number) => (
+                            <RepoItem
+                              skeleton={false}
+                              name={repo.fullName}
+                              privateRepo={repo.private}
+                              key={index}
+                              onClick={() => selectRepositories(repo)}
+                            />
+                          ))
+                        ) : (
+                          <>
+                            <RepoItem
+                              skeleton={true}
+                              name={""}
+                              privateRepo={false}
+                              onClick={() => null}
+                            />
+                            <RepoItem
+                              skeleton={true}
+                              name={""}
+                              privateRepo={false}
+                              onClick={() => null}
+                            />
+                          </>
+                        )}
                       </div>
-                      {showRepoOrgDropdown && (
-                        <RepoOrgDropdown
-                          setShowDropdown={setShowRepoOrgDropdown}
-                          repoOwner={reposDetails}
-                          selectedRepoOwner={selectedRepoOwner}
-                          setSelectedRepoOwner={selectRepoOwner}
-                        />
-                      )}
-                    </div>
-                    <div className="deploy-site-item-repo-body">
-                      {!repoLoading ? (
-                        selectedRepoOwner.repos.map((repo: any, index: number) => (
-                          <RepoItem
-                            skeleton={false}
-                            name={repo.name}
-                            privateRepo={repo.private}
-                            key={index}
-                          />
-                        ))
-                      ) : (
-                        <>
-                          <RepoItem skeleton={true} name={""} privateRepo={false} />
-                          <RepoItem skeleton={true} name={""} privateRepo={false} />
-                        </>
-                      )}
                     </div>
                   </div>
-                </div>
+                )}
+                {createDeployProgress === 2 && (
+                  <>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Deploy settings for {selectedRepo.name}
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Get more control over how ArGo builds and deploys your site
+                        with these settings.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Project Name</label>
+                          {true ? (
+                            <input
+                              type="text"
+                              className="deploy-site-item-input"
+                              value={projectName}
+                              onChange={(e) => setProjectName(e.target.value)}
+                            />
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Owner</label>
+                          {true ? (
+                            <div className="deploy-site-item-select-container">
+                              <select
+                                className="deploy-site-item-select"
+                                value={owner}
+                                onChange={(e) => setOwner(e.target.value)}
+                              >
+                                {user?.organizations &&
+                                  user?.organizations.map((organization, index) => (
+                                    <option value={organization._id} key={index}>
+                                      {organization.profile.name}
+                                    </option>
+                                  ))}
+                              </select>
+                              <span className="select-down-icon">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </span>
+                            </div>
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Branch to deploy</label>
+                          {true ? (
+                            <div className="deploy-site-item-select-container">
+                              <select
+                                className="deploy-site-item-select"
+                                value={branch}
+                                onChange={(e) => setBranch(e.target.value)}
+                              >
+                                <option value="master">master</option>
+                              </select>
+                              <span className="select-down-icon">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </span>
+                            </div>
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Basic build settings
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        If you’re using a static site generator or build tool, we’ll
+                        need these settings to build your site.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Framework</label>
+                          {true ? (
+                            <div className="deploy-site-item-select-container">
+                              <select
+                                className="deploy-site-item-select"
+                                value={framework}
+                                onChange={(e) => setFramework(e.target.value)}
+                              >
+                                <option value="Create React App">
+                                  Create React App
+                                </option>
+                              </select>
+                              <span className="select-down-icon">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </span>
+                            </div>
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Package Manager</label>
+                          {true ? (
+                            <div className="deploy-site-item-select-container">
+                              <select
+                                className="deploy-site-item-select"
+                                value={packageManager}
+                                onChange={(e) => setPackageManager(e.target.value)}
+                              >
+                                <option value="npm">NPM</option>
+                              </select>
+                              <span className="select-down-icon">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </span>
+                            </div>
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Build command</label>
+                          {true ? (
+                            <input
+                              type="text"
+                              className="deploy-site-item-input"
+                              value={buildCommand}
+                              onChange={(e) => setBuildCommand(e.target.value)}
+                            />
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Publish directory</label>
+                          {true ? (
+                            <input
+                              type="text"
+                              className="deploy-site-item-input"
+                              value={publishDirectory}
+                              onChange={(e) => setPublishDirectory(e.target.value)}
+                            />
+                          ) : (
+                            <Skeleton width={326} height={36} duration={2} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="button-container">
+                      <button
+                        type="button"
+                        className="primary-button"
+                        onClick={startDeployment}
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        type="button"
+                        className="cancel-button"
+                        onClick={(e) => setCreateDeployProgress(1)}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-              {/* <div className="button-container">
-                <button
-                  type="button"
-                  className="cancel-button"
-                  onClick={(e) => history.goBack()}
-                >
-                  Cancel
-                </button>
-                <button type="button" className="primary-button">
-                  Continue
-                </button>
-              </div> */}
             </div>
           </div>
         </div>

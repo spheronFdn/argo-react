@@ -152,3 +152,18 @@ export const getAllRepos = (): Observable<any> => {
     );
   });
 };
+
+export const startDeployment = (deployment: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/logs/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(deployment),
+      }).then((res) => res.json()),
+    );
+  });
+};

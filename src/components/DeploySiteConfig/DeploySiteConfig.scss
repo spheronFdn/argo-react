@@ -140,6 +140,76 @@
                 color: var(--grey3Color);
               }
 
+              .deploy-site-item-form {
+                .deploy-site-item-form-item {
+                  margin-top: 1rem;
+                  display: flex;
+                  flex-direction: column;
+                  label {
+                    font-size: 16px;
+                    font-weight: bold;
+                  }
+                  .deploy-site-item-input {
+                    margin-top: 0.5rem;
+                    width: 300px;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    border: 1px solid var(--grey2Color);
+                    outline: none;
+
+                    &:focus {
+                      border: 1px solid var(--grey5Color);
+                    }
+                  }
+
+                  .deploy-site-item-select-container {
+                    position: relative;
+
+                    .deploy-site-item-select {
+                      margin-top: 0.5rem;
+                      width: 327px;
+                      padding: 9px 12px;
+                      border-radius: 4px;
+                      font-size: 16px;
+                      border: 1px solid var(--grey2Color);
+                      outline: none;
+                      appearance: none;
+
+                      &:focus {
+                        border: 1px solid var(--grey5Color);
+                      }
+
+                      &::-ms-expand {
+                        display: none;
+                      }
+                    }
+
+                    .select-down-icon {
+                      position: absolute;
+                      left: 300px;
+                      top: 16px;
+                    }
+                  }
+                }
+              }
+
+              .webhook-confirm-container {
+                padding: 1rem 0px;
+                color: var(--grey4Color);
+                display: flex;
+
+                .confirm-checkbox {
+                  display: flex;
+                  height: 20px !important;
+                  margin-right: 8px;
+                  margin-top: 3px;
+                  input {
+                    cursor: pointer;
+                  }
+                }
+              }
+
               .deploy-site-item-repo-list-container {
                 margin-top: 2rem;
                 .deploy-site-item-repo-header {
@@ -212,7 +282,6 @@
           .button-container {
             display: flex;
             padding: 1rem 24px;
-            justify-content: flex-end;
             .primary-button {
               background: var(--themeColor);
               text-decoration: none;
@@ -258,7 +327,7 @@
               cursor: pointer;
               transition: all 0.3s ease-in-out;
               width: 120px;
-              margin-right: 1rem;
+              margin-left: 1rem;
 
               &:hover {
                 background: var(--grey3Color);
