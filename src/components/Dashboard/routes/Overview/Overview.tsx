@@ -82,7 +82,7 @@ const Overview = () => {
         <ul className="project-list">
           {!userLoading ? (
             selectedOrg?.repositories?.length ? (
-              selectedOrg?.repositories?.map((repo, index) => (
+              selectedOrg?.repositories?.map((repo: any, index: number) => (
                 <ProjectItem index={index} type="filled" />
               ))
             ) : (

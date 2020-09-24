@@ -13,12 +13,18 @@ import {
 import "./DeploySiteConfig.scss";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-import { StateContext } from "../../hooks";
+import { ActionContext, StateContext } from "../../hooks";
+import { IActionModel, IStateModel } from "../../model/hooks.model";
 
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user } = useContext(StateContext);
+  const { user } = useContext<IStateModel>(StateContext);
+  const {
+    setLatestDeploymentSocketTopic,
+    setSelectedProject,
+    setLatestDeploymentConfig,
+  } = useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
   const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
@@ -80,7 +86,7 @@ function DeploySiteConfig() {
   const startDeployment = () => {
     const deployment = {
       github_url: selectedRepo.clone_url,
-      folder_name: projectName,
+      folder_name: selectedRepo.name,
       orgId: owner,
       project_name: projectName,
       branch,
@@ -90,10 +96,16 @@ function DeploySiteConfig() {
       publish_directory: publishDirectory,
       auto_publish: autoPublish,
     };
-    ApiService.startDeployment(deployment).subscribe((result) =>
+    ApiService.startDeployment(deployment).subscribe((result) => {
       // eslint-disable-next-line no-console
-      console.log(result),
-    );
+      console.log(result);
+      setLatestDeploymentSocketTopic(result.topic);
+      setSelectedProject({ name: projectName });
+      setLatestDeploymentConfig(deployment);
+      history.push(
+        `/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
+      );
+    });
   };
 
   return (

@@ -42,6 +42,34 @@ const Reducers = (dispatch: any, history: any) => ({
       selectedOrg: null,
     });
   },
+  setLatestDeploymentConfig: (config: any) => {
+    dispatch({
+      type: Actions.SET_LATEST_DEPLOY_CONFIG,
+      currentSiteDeployConfig: config,
+    });
+    dispatch({
+      type: Actions.SET_LATEST_DEPLOY_LOGS,
+      currentSiteDeployLogs: [],
+    });
+  },
+  setSelectedProject: (project: any) => {
+    dispatch({
+      type: Actions.SET_SELECTED_PROJECT,
+      selectedProject: project,
+    });
+  },
+  setLatestDeploymentLogs: (logs: any[]) => {
+    dispatch({
+      type: Actions.SET_LATEST_DEPLOY_LOGS,
+      currentSiteDeployLogs: logs,
+    });
+  },
+  setLatestDeploymentSocketTopic: (topic: string) => {
+    dispatch({
+      type: Actions.SET_LATEST_DEPLOY_SOCKET_TOPIC,
+      currentSiteDeploySocketTopic: topic,
+    });
+  },
 });
 
 export const stateInitialValue = {
@@ -50,6 +78,10 @@ export const stateInitialValue = {
   user: null,
   userLoading: false,
   selectedOrg: null,
+  currentSiteDeployConfig: null,
+  currentSiteDeployLogs: [],
+  selectedProject: null,
+  currentSiteDeploySocketTopic: "",
 };
 
 export default Reducers;

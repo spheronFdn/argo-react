@@ -88,6 +88,10 @@ export interface IStateModel {
   user: IUser | null;
   selectedOrg: IOrganization | null;
   userLoading: boolean;
+  currentSiteDeployConfig: any;
+  currentSiteDeployLogs: any[];
+  selectedProject: any;
+  currentSiteDeploySocketTopic: string;
 }
 
 export interface IActionModel {
@@ -95,4 +99,8 @@ export interface IActionModel {
   fetchUser: (id?: string) => void;
   setSelectedOrganization: (organization: IOrganization) => void;
   resetUser: () => void;
+  setLatestDeploymentConfig: (config: any) => void;
+  setLatestDeploymentLogs: (logs: any[]) => void;
+  setLatestDeploymentSocketTopic: (topic: string) => void;
+  setSelectedProject: (project: any) => void;
 }

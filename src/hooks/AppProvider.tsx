@@ -37,6 +37,26 @@ export const AppProvider = (props: any) => {
           ...prevState,
           userLoading: action.userLoading,
         };
+      case Actions.SET_LATEST_DEPLOY_CONFIG:
+        return {
+          ...prevState,
+          currentSiteDeployConfig: action.currentSiteDeployConfig,
+        };
+      case Actions.SET_LATEST_DEPLOY_LOGS:
+        return {
+          ...prevState,
+          currentSiteDeployLogs: action.currentSiteDeployLogs,
+        };
+      case Actions.SET_SELECTED_PROJECT:
+        return {
+          ...prevState,
+          selectedProject: action.selectedProject,
+        };
+      case Actions.SET_LATEST_DEPLOY_SOCKET_TOPIC:
+        return {
+          ...prevState,
+          currentSiteDeploySocketTopic: action.currentSiteDeploySocketTopic,
+        };
 
       default:
     }

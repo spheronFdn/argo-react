@@ -10,6 +10,7 @@ import {
   UserSettings,
   CreateOrg,
   InviteCallback,
+  Sites,
 } from "./components";
 import { ActionContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -150,6 +151,61 @@ function App() {
           }}
         />
         <Route path="/invite/callback" exact render={() => <InviteCallback />} />
+        <Route
+          path="/sites/:slug"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Sites />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
+          path="/sites/:slug1/:slug2"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Sites />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
+          path="/sites/:slug1/:slug2/:slug3"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Sites />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
+          path="/sites/:slug1/:slug2/:slug3/:slug4"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Sites />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+        <Route
+          path="/sites/:slug1/:slug2/:slug3/:slug4/:slug5"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
+              <Sites />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
       </div>
     </SkeletonTheme>
   );
