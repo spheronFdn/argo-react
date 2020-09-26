@@ -19,14 +19,18 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
             <div className="deployment-left-detail">
               <div className="deployment-publish-detail">
                 <span className="bold-text">Published at: </span>
-                <a
-                  href={deployment?.sitePreview}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="commit-link"
-                >
-                  {deployment?.sitePreview}
-                </a>
+                {deployment?.sitePreview ? (
+                  <a
+                    href={deployment?.sitePreview}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="commit-link"
+                  >
+                    {deployment?.sitePreview}
+                  </a>
+                ) : (
+                  <span>Site preview not available</span>
+                )}
               </div>
               <div className="deployment-commit-details">
                 <span className="bold-text">Production: </span>

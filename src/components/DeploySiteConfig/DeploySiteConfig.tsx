@@ -19,11 +19,12 @@ import { IActionModel, IStateModel } from "../../model/hooks.model";
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user } = useContext<IStateModel>(StateContext);
+  const { user, selectedOrg } = useContext<IStateModel>(StateContext);
   const {
     setLatestDeploymentSocketTopic,
     setSelectedProject,
     setLatestDeploymentConfig,
+    setSelectedOrganization,
   } = useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
@@ -32,10 +33,10 @@ function DeploySiteConfig() {
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
-  const [autoPublish, setAutoPublish] = useState<boolean>(true);
+  // const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [projectName, setProjectName] = useState<string>("");
-  const [owner, setOwner] = useState<string>("");
+  const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
   const [framework, setFramework] = useState<string>("Create React App");
   const [packageManager, setPackageManager] = useState<string>("npm");
@@ -67,10 +68,12 @@ function DeploySiteConfig() {
   }, []);
 
   useEffect(() => {
-    if (user?.organizations && user.organizations[0]._id) {
-      setOwner(user.organizations[0]._id);
+    if (selectedOrg) {
+      setOwner(selectedOrg);
+    } else if (user?.organizations && user.organizations[0]) {
+      setOwner(user.organizations[0]);
     }
-  }, [user]);
+  }, [user, selectedOrg]);
 
   const selectRepoOwner = (repoOwner: any) => {
     setSelectedRepoOwner(repoOwner);
@@ -87,14 +90,14 @@ function DeploySiteConfig() {
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
-      orgId: owner,
+      orgId: owner._id,
       project_name: projectName,
       branch,
       framework,
       package_manager: packageManager,
       build_command: buildCommand,
       publish_directory: publishDirectory,
-      auto_publish: autoPublish,
+      auto_publish: false,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
       // eslint-disable-next-line no-console
@@ -187,12 +190,13 @@ function DeploySiteConfig() {
                 {createDeployProgress === 1 && (
                   <div className="deploy-site-form-item">
                     <label className="deploy-site-item-title">
-                      Continuous Deployment: GitHub Webhook
+                      {/* Continuous Deployment: GitHub Webhook */}
+                      Choose repository
                     </label>
                     <label className="deploy-site-item-subtitle">
                       Choose the repository you want to link to your site on ArGo.
                     </label>
-                    <div className="webhook-confirm-container">
+                    {/* <div className="webhook-confirm-container">
                       <span className="confirm-checkbox">
                         <input
                           type="checkbox"
@@ -204,7 +208,7 @@ function DeploySiteConfig() {
                         Do you want to setup github webhook? When you push to Git we
                         run your build tool on our services and deploy the result.
                       </span>
-                    </div>
+                    </div> */}
                     <div className="deploy-site-item-repo-list-container">
                       <div className="deploy-site-item-repo-header">
                         <div
@@ -305,7 +309,7 @@ function DeploySiteConfig() {
                         with these settings.
                       </label>
                       <div className="deploy-site-item-form">
-                        <div className="deploy-site-item-form-item">
+                        {/* <div className="deploy-site-item-form-item">
                           <label>Project Name</label>
                           {true ? (
                             <input
@@ -317,15 +321,25 @@ function DeploySiteConfig() {
                           ) : (
                             <Skeleton width={326} height={36} duration={2} />
                           )}
-                        </div>
+                        </div> */}
                         <div className="deploy-site-item-form-item">
                           <label>Owner</label>
                           {true ? (
                             <div className="deploy-site-item-select-container">
                               <select
                                 className="deploy-site-item-select"
-                                value={owner}
-                                onChange={(e) => setOwner(e.target.value)}
+                                value={owner._id}
+                                onChange={(e) => {
+                                  const selOrg = user
+                                    ? user.organizations
+                                      ? user.organizations.filter(
+                                          (org) => org._id === e.target.value,
+                                        )[0]
+                                      : null
+                                    : null;
+                                  setSelectedOrganization(selOrg as any);
+                                  setOwner(e.target.value);
+                                }}
                               >
                                 {user?.organizations &&
                                   user?.organizations.map((organization, index) => (

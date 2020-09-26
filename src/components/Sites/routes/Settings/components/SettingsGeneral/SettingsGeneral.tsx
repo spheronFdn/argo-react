@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import "./SettingsGeneral.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { StateContext } from "../../../../../../hooks";
 import moment from "moment";
@@ -12,9 +12,9 @@ const SettingsGeneral = () => {
     StateContext,
   );
 
-  const [repoName, setRepoName] = useState<string>("");
-  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
-  const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
+  // const [repoName, setRepoName] = useState<string>("");
+  // const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+  // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
   const lastPublishedDate = moment(selectedProject?.updateDate).format(
     "MMM DD, YYYY hh:mm A",
@@ -32,22 +32,22 @@ const SettingsGeneral = () => {
     );
   }
 
-  useEffect(() => {
-    if (selectedProject) {
-      setRepoName(selectedProject.name);
-    }
-  }, [selectedProject]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     setRepoName(selectedProject.name);
+  //   }
+  // }, [selectedProject]);
 
-  useEffect(() => {
-    if (selectedProject) {
-      if (selectedProject.name !== repoName) {
-        setIsDataChanged(true);
-      } else {
-        setIsDataChanged(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject, repoName]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     if (selectedProject.name !== repoName) {
+  //       setIsDataChanged(true);
+  //     } else {
+  //       setIsDataChanged(false);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedProject, repoName]);
 
   // const updateOrganization = () => {
   //   if (selectedProject) {
@@ -82,7 +82,7 @@ const SettingsGeneral = () => {
         <div className="settings-project-details">
           <div className="settings-project-header">Project Details</div>
           <div className="settings-project-body">
-            <div className="settings-project-item">
+            {/* <div className="settings-project-item">
               <label className="settings-project-item-title">Project Name</label>
               <label className="settings-project-item-subtitle">
                 This is your project name.
@@ -98,7 +98,7 @@ const SettingsGeneral = () => {
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
-            </div>
+            </div> */}
             <div className="settings-project-item">
               <label className="settings-project-item-title">Project Owner</label>
               <label className="settings-project-item-subtitle">
@@ -150,7 +150,7 @@ const SettingsGeneral = () => {
               )}
             </div>
           </div>
-          <div className="settings-project-footer">
+          {/* <div className="settings-project-footer">
             <div className="warning-text-container">
               <span className="exclamation-icon">
                 <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
@@ -165,9 +165,9 @@ const SettingsGeneral = () => {
             >
               Save
             </button>
-          </div>
+          </div> */}
         </div>
-        <div className="settings-project-details">
+        {/* <div className="settings-project-details">
           <div className="settings-project-header delete-containers">
             Delete Project
           </div>
@@ -207,7 +207,7 @@ const SettingsGeneral = () => {
               Delete
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

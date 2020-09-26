@@ -10,10 +10,14 @@ import Lottie from "react-lottie";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
+import { useHistory, useParams } from "react-router-dom";
 
 const ENDPOINT = "http://localhost:5000";
 
 const Deployment = () => {
+  const history = useHistory();
+  const params = useParams<any>();
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -100,7 +104,10 @@ const Deployment = () => {
   };
   return (
     <div className="SiteDeployment">
-      <div className="site-deployment-back">
+      <div
+        className="site-deployment-back"
+        onClick={(e) => history.push(`/sites/${params.siteid}/deployments/`)}
+      >
         <span>
           <FontAwesomeIcon icon={faChevronLeft} />
         </span>

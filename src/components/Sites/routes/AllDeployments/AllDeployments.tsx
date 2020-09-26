@@ -5,10 +5,17 @@ import Switch from "react-switch";
 import { StateContext } from "../../../../hooks";
 import { IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
+import moment from "moment";
 
 const AllDeployments = () => {
   const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+
+  const sortedDeployments = projectLoading
+    ? []
+    : selectedProject?.deployments.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
 
   return (
     <div className="AllDeployments">
@@ -18,7 +25,7 @@ const AllDeployments = () => {
         <div className="deploy-summary-item">
           <div className="deploy-summary-body-item">
             <label>Deployments:</label>
-            <span>{selectedProject?.deployments.length}</span>
+            <span>{selectedProject?.deployments?.length}</span>
           </div>
           <div className="deploy-summary-body-item">
             <label>
@@ -50,7 +57,7 @@ const AllDeployments = () => {
         </div>
         <div className="deploy-summary-item">
           {!projectLoading ? (
-            selectedProject?.deployments.map((deployment, index) => (
+            (sortedDeployments ? sortedDeployments : []).map((deployment, index) => (
               <DeploymentItem index={index} type="filled" deployment={deployment} />
             ))
           ) : (

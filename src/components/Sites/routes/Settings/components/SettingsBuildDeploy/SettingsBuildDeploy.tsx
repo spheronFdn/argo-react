@@ -12,32 +12,40 @@ const SettingsBuildDeploy = () => {
   const { selectedProject, projectLoading } = useContext(StateContext);
 
   const [packageManager, setPackageManager] = useState<string>("");
-  const [productionBranch, setProductionBranch] = useState<string>("");
+  const [buildCommand, setBuildCommand] = useState<string>("");
+  const [publishDirectory, setPublishDirectory] = useState<string>("");
+  // const [productionBranch, setProductionBranch] = useState<string>("");
   const [isDataChanged1, setIsDataChanged1] = useState<boolean>(false);
-  const [isDataChanged2, setIsDataChanged2] = useState<boolean>(false);
+  // const [isDataChanged2, setIsDataChanged2] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProject) {
       setPackageManager("NPM");
-      setProductionBranch("master");
+      setBuildCommand("npm run build");
+      setPublishDirectory("build");
+      // setProductionBranch("master");
     }
   }, [selectedProject]);
 
   useEffect(() => {
     if (selectedProject) {
-      if ("NPM" !== packageManager) {
+      if (
+        "NPM" !== packageManager ||
+        "npm run build" !== buildCommand ||
+        "build" !== publishDirectory
+      ) {
         setIsDataChanged1(true);
       } else {
         setIsDataChanged1(false);
       }
-      if ("master" !== productionBranch) {
-        setIsDataChanged2(true);
-      } else {
-        setIsDataChanged2(false);
-      }
+      // if ("master" !== productionBranch) {
+      //   setIsDataChanged2(true);
+      // } else {
+      //   setIsDataChanged2(false);
+      // }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject, packageManager]);
+  }, [selectedProject, packageManager, buildCommand, publishDirectory]);
 
   // const updateOrganization = () => {
   //   if (selectedProject) {
@@ -124,7 +132,12 @@ const SettingsBuildDeploy = () => {
                 This is your project's build command.
               </label>
               {!projectLoading ? (
-                <div className="settings-project-value">yarn build</div>
+                <input
+                  type="text"
+                  className="settings-project-item-input"
+                  value={buildCommand}
+                  onChange={(e) => setBuildCommand(e.target.value)}
+                />
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
@@ -137,7 +150,12 @@ const SettingsBuildDeploy = () => {
                 This is the project's publish directory
               </label>
               {!projectLoading ? (
-                <div className="settings-project-value">dist</div>
+                <input
+                  type="text"
+                  className="settings-project-item-input"
+                  value={publishDirectory}
+                  onChange={(e) => setPublishDirectory(e.target.value)}
+                />
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
@@ -160,7 +178,7 @@ const SettingsBuildDeploy = () => {
             </button>
           </div>
         </div>
-        <div className="settings-project-details">
+        {/* <div className="settings-project-details">
           <div className="settings-project-header">Deploy Contexts</div>
           <div className="settings-project-body">
             <div className="settings-project-item">
@@ -200,7 +218,7 @@ const SettingsBuildDeploy = () => {
               Save
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
