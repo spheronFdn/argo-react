@@ -1,9 +1,11 @@
 import React from "react";
 import "./Navbar.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
+  const param = useParams<any>();
+
   return (
     <nav className="NavBar">
       <div className="navigation-container">
@@ -14,7 +16,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("overview") !== -1 ? "selected" : ""
                 }`}
-                to="/dashboard/overview"
+                to={`/sites/${param.slug1}/overview`}
               >
                 Overview
               </Link>
@@ -24,12 +26,12 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("deployments") !== -1 ? "selected" : ""
                 }`}
-                to="/dashboard/members"
+                to={`/sites/${param.slug1}/deployments`}
               >
                 Deploys
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 className={`${
                   location.pathname.indexOf("domains") !== -1 ? "selected" : ""
@@ -38,13 +40,13 @@ const Navbar = () => {
               >
                 Domains
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 className={`${
                   location.pathname.indexOf("settings") !== -1 ? "selected" : ""
                 }`}
-                to="/dashboard/settings"
+                to={`/sites/${param.slug1}/settings`}
               >
                 Settings
               </Link>

@@ -9,6 +9,7 @@ const Reducers = (dispatch: any, history: any) => ({
   },
   fetchUser: (orgId?: string) => {
     dispatch({ type: Actions.SET_USER_LOADING, userLoading: true });
+    dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: true });
 
     ApiService.fetchUser("1234").subscribe((response: IUserResponse) => {
       // eslint-disable-next-line no-console
@@ -23,6 +24,21 @@ const Reducers = (dispatch: any, history: any) => ({
               : response.user.organizations[0]
             : null,
         });
+        ApiService.getAllProjects(
+          `${
+            orgId
+              ? orgId
+              : response.user.organizations?.length
+              ? response.user.organizations[0]._id
+              : ""
+          }`,
+        ).subscribe((res) => {
+          dispatch({
+            type: Actions.SET_SELECTED_ORG,
+            selectedOrg: res,
+          });
+          dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: false });
+        });
       } else {
         localStorage.removeItem("jwt-token");
         history.push("/login");
@@ -31,9 +47,13 @@ const Reducers = (dispatch: any, history: any) => ({
     });
   },
   setSelectedOrganization: (organization: IOrganization) => {
-    dispatch({
-      type: Actions.SET_SELECTED_ORG,
-      selectedOrg: organization,
+    dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: true });
+    ApiService.getAllProjects(`${organization._id}`).subscribe((res) => {
+      dispatch({
+        type: Actions.SET_SELECTED_ORG,
+        selectedOrg: res,
+      });
+      dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: false });
     });
   },
   resetUser: () => {
@@ -70,6 +90,12 @@ const Reducers = (dispatch: any, history: any) => ({
       currentSiteDeploySocketTopic: topic,
     });
   },
+  setPojectLoading: (loading: boolean) => {
+    dispatch({
+      type: Actions.SET_PROJECT_LOADING,
+      projectLoading: loading,
+    });
+  },
 });
 
 export const stateInitialValue = {
@@ -77,6 +103,8 @@ export const stateInitialValue = {
   modalConfig: { type: "" },
   user: null,
   userLoading: false,
+  orgLoading: false,
+  projectLoading: false,
   selectedOrg: null,
   currentSiteDeployConfig: null,
   currentSiteDeployLogs: [],

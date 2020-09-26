@@ -61,7 +61,17 @@
             font-size: 18px;
             font-weight: 500;
             margin: 0;
-            margin-left: 1rem;
+            margin-left: 0.5rem;
+            padding: 4px 10px;
+          }
+
+          .project-name {
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #3261b873;
+            }
           }
 
           .team-up-down-arrow {

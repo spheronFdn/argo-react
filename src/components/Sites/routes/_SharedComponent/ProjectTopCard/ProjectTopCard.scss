@@ -62,8 +62,11 @@
         }
 
         .project-top-link {
-          color: var(--grey5Color);
-          font-size: 14px;
+          text-decoration: none;
+          color: var(--logoColor);
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

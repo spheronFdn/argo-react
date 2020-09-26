@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,9 +11,16 @@ import Skeleton from "react-loading-skeleton";
 import { IStateModel } from "../../../../model/hooks.model";
 
 const Header = () => {
-  const { user, selectedOrg, userLoading, selectedProject } = useContext<
-    IStateModel
-  >(StateContext);
+  const history = useHistory();
+  const params = useParams<any>();
+  const {
+    user,
+    selectedOrg,
+    userLoading,
+    selectedProject,
+    orgLoading,
+    projectLoading,
+  } = useContext<IStateModel>(StateContext);
 
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
@@ -32,7 +39,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="teams-container">
-              {!userLoading ? (
+              {!orgLoading ? (
                 <img
                   src={
                     selectedOrg?.profile.image
@@ -46,7 +53,7 @@ const Header = () => {
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}
               <h4 className="team-name">
-                {!userLoading ? (
+                {!orgLoading ? (
                   selectedOrg?.profile.name
                 ) : (
                   <Skeleton width={60} duration={2} />
@@ -56,21 +63,24 @@ const Header = () => {
                 className={`team-up-down-arrow ${
                   showOrgDropdown
                     ? "selected-team-arrow"
-                    : userLoading
+                    : orgLoading
                     ? "disabled-team-arrow"
                     : ""
                 }`}
-                onClick={(e) => (!userLoading ? setShowOrgDropdown(true) : null)}
+                onClick={(e) => (!orgLoading ? setShowOrgDropdown(true) : null)}
               >
                 <UpDownArrow />
               </div>
             </div>
             <div className="teams-container">
-              <h4 className="team-name">
-                {!userLoading ? (
+              <h4
+                className={`team-name ${!projectLoading ? "project-name" : ""}`}
+                onClick={(e) => history.push(`/sites/${params.slug1}/overview`)}
+              >
+                {!projectLoading ? (
                   selectedProject?.name
                 ) : (
-                  <Skeleton width={60} duration={2} />
+                  <Skeleton width={140} duration={2} />
                 )}
               </h4>
             </div>

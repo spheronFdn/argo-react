@@ -4,15 +4,18 @@ import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import "./Overview.scss";
+import { IStateModel } from "../../../../model/hooks.model";
 
 const Overview = () => {
   const history = useHistory();
-  const { selectedOrg, userLoading } = useContext(StateContext);
+
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+
   return (
     <div className="Overview">
       <div className="overview-container">
         <div className="overview-team-avatar-container">
-          {!userLoading ? (
+          {!orgLoading ? (
             <img
               src={
                 selectedOrg?.profile.image
@@ -28,13 +31,13 @@ const Overview = () => {
         </div>
         <div className="overview-team-details-container">
           <h1 className="overview-team-name">
-            {!userLoading ? (
+            {!orgLoading ? (
               selectedOrg?.profile.name
             ) : (
               <Skeleton width={150} duration={2} />
             )}
           </h1>
-          {!userLoading ? (
+          {!orgLoading ? (
             <div className="overview-team-misc-container">
               <div className="overview-team-detail-container">
                 <label className="overview-team-detail-label">Members</label>
@@ -80,16 +83,42 @@ const Overview = () => {
       </div>
       <div className="project-list-container">
         <ul className="project-list">
-          {!userLoading ? (
+          {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
               selectedOrg?.repositories?.map((repo: any, index: number) => (
-                <ProjectItem index={index} type="filled" />
+                <ProjectItem
+                  index={index}
+                  type="filled"
+                  projectName={repo.name}
+                  latestDeployment={
+                    "https://arweave.net/SgR5PmbNpDEb3nXB1VnvxoT8FtFpfQxVqRejTPrnYqg"
+                  }
+                  githubUrl={repo.url}
+                  updateTime={"5d ago"}
+                  repo={repo}
+                />
               ))
             ) : (
-              <ProjectItem index={1} type="empty" />
+              <ProjectItem
+                index={1}
+                type="empty"
+                projectName={null}
+                latestDeployment={null}
+                githubUrl={null}
+                updateTime={null}
+                repo={null}
+              />
             )
           ) : (
-            <ProjectItem index={1} type="skeleton" />
+            <ProjectItem
+              index={1}
+              type="skeleton"
+              projectName={null}
+              latestDeployment={null}
+              githubUrl={null}
+              updateTime={null}
+              repo={null}
+            />
           )}
         </ul>
       </div>

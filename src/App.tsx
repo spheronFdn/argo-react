@@ -151,6 +151,7 @@ function App() {
           }}
         />
         <Route path="/invite/callback" exact render={() => <InviteCallback />} />
+
         <Route
           path="/sites/:slug"
           exact

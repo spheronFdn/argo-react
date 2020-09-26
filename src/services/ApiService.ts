@@ -167,3 +167,27 @@ export const startDeployment = (deployment: any): Observable<any> => {
     );
   });
 };
+
+export const getAllProjects = (orgId: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/organization/${orgId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const getProject = (projectId: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/repository/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};

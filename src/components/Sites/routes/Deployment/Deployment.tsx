@@ -11,7 +11,7 @@ import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 
-const ENDPOINT = "http://localhost:8080";
+const ENDPOINT = "http://localhost:5000";
 
 const Deployment = () => {
   const defaultOptions = {
@@ -110,7 +110,15 @@ const Deployment = () => {
         <div className="site-deployment-card-header">
           <h2 className="site-deployment-card-header-title">
             <span>{isDeployed ? "Published deploy" : "Deploy in Progress"}</span>
-            <Lottie options={defaultOptions} height={54} width={76} />
+            {!isDeployed ? (
+              <Lottie options={defaultOptions} height={54} width={76} />
+            ) : (
+              <img
+                src={require("../../../../assets/svg/rocket_background.svg")}
+                alt="rocket"
+                className="rocket-icon"
+              />
+            )}
           </h2>
           <p className="site-deployment-card-header-description">
             <u>Production</u>: {currentSiteDeployConfig?.branch}
@@ -164,7 +172,7 @@ const Deployment = () => {
             </div>
             <div className="deploy-summary-item-info-container">
               <div className="deploy-summary-item-info-title">
-                Total time to Build & Deploy: {buildTime?.min}m {buildTime?.sec}
+                Total time to Build & Deploy: {buildTime?.min}m {buildTime?.sec}s
               </div>
               <div className="deploy-summary-item-info-description">
                 Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}

@@ -5,6 +5,8 @@ export default class Actions {
   static SET_USER = "[Actions] SET_USER";
   static SET_SELECTED_ORG = "[Actions] SET_SELECTED_ORG";
   static SET_USER_LOADING = "[Actions] SET_USER_LOADING";
+  static SET_PROJECT_LOADING = "[Actions] SET_PROJECT_LOADING";
+  static SET_ORG_LOADING = "[Actions] SET_ORG_LOADING";
   static SET_LATEST_DEPLOY_CONFIG = "[Actions] SET_LATEST_DEPLOY_CONFIG";
   static SET_LATEST_DEPLOY_LOGS = "[Actions] SET_LATEST_DEPLOY_LOGS";
   static SET_LATEST_DEPLOY_SOCKET_TOPIC = "[Actions] SET_LATEST_DEPLOY_SOCKET_TOPIC";
@@ -19,4 +21,5 @@ export const actionInitialValue = {
   setLatestDeploymentLogs: (logs: any[]) => {},
   setLatestDeploymentSocketTopic: (topic: string) => {},
   setSelectedProject: (project: any) => {},
+  setPojectLoading: (loading: boolean) => {},
 };

@@ -49,17 +49,22 @@ export interface IUser {
 }
 
 export interface IRepository {
+  _id?: string;
   name: string;
   url: string;
   webHook: string;
   deployments: IDeployment[];
+  updateDate: Date;
+  createDate: Date;
 }
 
 export interface IDeployment {
   sitePreview: string;
   commitId: string;
-  log: string;
-  createdAt: Date;
+  log: string[];
+  createdAt: any;
+  topic: string;
+  branch: string;
 }
 
 export interface IOrganization {
@@ -88,9 +93,11 @@ export interface IStateModel {
   user: IUser | null;
   selectedOrg: IOrganization | null;
   userLoading: boolean;
+  orgLoading: boolean;
+  projectLoading: boolean;
   currentSiteDeployConfig: any;
   currentSiteDeployLogs: any[];
-  selectedProject: any;
+  selectedProject: IRepository | null;
   currentSiteDeploySocketTopic: string;
 }
 
@@ -103,4 +110,5 @@ export interface IActionModel {
   setLatestDeploymentLogs: (logs: any[]) => void;
   setLatestDeploymentSocketTopic: (topic: string) => void;
   setSelectedProject: (project: any) => void;
+  setPojectLoading: (loading: boolean) => void;
 }

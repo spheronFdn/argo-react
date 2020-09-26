@@ -17,47 +17,11 @@
     padding: 24px;
     min-height: 186px;
 
-    .site-overview-card-header {
-      .site-overview-card-header-title {
-        margin: 0px;
-        color: var(--themeColorDark);
-      }
-
-      .site-overview-card-header-description {
-        margin: 0px;
-        margin-top: 12px;
-      }
-    }
-
     .site-overview-header-title {
       padding: 0.6rem 24px;
       font-size: 18px;
       font-weight: 500;
       border-bottom: 1px solid var(--grey2Color);
-    }
-
-    .site-overview-card-content {
-      margin-top: 1rem;
-      .site-overview-card-fields {
-        display: flex;
-        align-items: center;
-        margin: 1rem 0px;
-        .site-overview-github-icon {
-          font-size: 24px;
-          display: flex;
-          margin-right: 1rem;
-        }
-        .site-overview-logo {
-          height: 24px;
-          width: 24px;
-          margin-right: 1rem;
-        }
-
-        .site-overview-link {
-          color: var(--grey5Color);
-          font-size: 14px;
-        }
-      }
     }
   }
 
@@ -68,91 +32,33 @@
     .deploy-summary-item {
       display: flex;
       align-items: center;
+      flex-direction: column;
       padding: 1rem;
-      .deploy-summary-item-info-icon {
-        margin-right: 1rem;
+
+      .deploy-summary-body-item {
         display: flex;
         align-items: center;
-        font-size: 20px;
-      }
+        width: 100%;
+        margin-top: 0.5rem;
+        label {
+          color: var(--grey3Color);
+          width: 30%;
+        }
 
-      .deploy-summary-item-info-container {
-        .deploy-summary-item-info-title {
-          font-size: 16px;
+        span {
           font-weight: 500;
         }
 
-        .deploy-summary-item-info-description {
-          font-size: 14px;
-          color: var(--grey3Color);
+        a {
+          text-decoration: none;
+          color: var(--logoColor);
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }
-  }
-
-  .deploy-logs-card-title {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 24px !important;
-    .card-header-deploy-title {
-      flex: 1;
-      font-size: 18px;
-      font-weight: 500;
-    }
-
-    .copy-to-clipboard-button {
-      padding: 8px 20px;
-      font-size: 0.95rem;
-      min-width: 64px;
-      box-sizing: border-box;
-      font-style: normal;
-      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-        border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-      font-weight: 400;
-      line-height: 1.23;
-      white-space: nowrap;
-      border-radius: 4px;
-      letter-spacing: normal;
-      text-transform: none;
-      background-color: var(--themeColor);
-      color: var(--white);
-      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-      border: 0px;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.25s linear;
-
-      &:hover {
-        transform: scale(1.015);
-      }
-      &:active {
-        background-color: var(--themeColorDark);
-      }
-    }
-  }
-
-  .deploy-logs-container {
-    max-height: 250px;
-    min-height: 250px;
-    overflow-y: auto;
-    background-color: var(--black);
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    padding: 1rem;
-    color: var(--grey1Color);
-    .deploy-logs-items {
-      line-height: 24px;
-      font-size: 15px;
-    }
-  }
-
-  .log-site-link {
-    color: #c3c3c3;
-    padding-bottom: 1px;
-    border-bottom: 1px dotted #c3c3c3;
-    text-decoration: none;
-    transition: 0.1s ease-in-out;
   }
 }

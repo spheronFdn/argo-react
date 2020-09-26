@@ -217,7 +217,8 @@ const Settings = () => {
                   />
                 </span>
                 <span>
-                  Confirm that I want to irreversibly delete the team Argo Team
+                  Confirm that I want to irreversibly delete the team{" "}
+                  {selectedOrg?.profile.name}
                 </span>
               </div>
             </div>

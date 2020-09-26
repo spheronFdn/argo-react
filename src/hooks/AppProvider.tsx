@@ -37,6 +37,11 @@ export const AppProvider = (props: any) => {
           ...prevState,
           userLoading: action.userLoading,
         };
+      case Actions.SET_ORG_LOADING:
+        return {
+          ...prevState,
+          orgLoading: action.orgLoading,
+        };
       case Actions.SET_LATEST_DEPLOY_CONFIG:
         return {
           ...prevState,
@@ -56,6 +61,11 @@ export const AppProvider = (props: any) => {
         return {
           ...prevState,
           currentSiteDeploySocketTopic: action.currentSiteDeploySocketTopic,
+        };
+      case Actions.SET_PROJECT_LOADING:
+        return {
+          ...prevState,
+          projectLoading: action.projectLoading,
         };
 
       default:
