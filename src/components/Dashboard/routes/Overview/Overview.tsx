@@ -69,7 +69,11 @@ const Overview = () => {
           )}
         </div>
         <div className="buttons-container">
-          <button type="button" className="secondary-button">
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={(e) => history.push("/dashboard/members/new")}
+          >
             Invite Members
           </button>
           <button

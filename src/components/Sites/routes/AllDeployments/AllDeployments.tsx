@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./AllDeployments.scss";
 import { ProjectTopCard } from "../_SharedComponent";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import { StateContext } from "../../../../hooks";
 import { IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
 import moment from "moment";
 
 const AllDeployments = () => {
-  const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
+  // const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
 
   const sortedDeployments = projectLoading
@@ -24,10 +24,10 @@ const AllDeployments = () => {
         <div className="site-deployment-header-title">Deploy Info</div>
         <div className="deploy-summary-item">
           <div className="deploy-summary-body-item">
-            <label>Deployments:</label>
+            <label>Deployments Done:</label>
             <span>{selectedProject?.deployments?.length}</span>
           </div>
-          <div className="deploy-summary-body-item">
+          {/* <div className="deploy-summary-body-item">
             <label>
               Auto Deployment:
               <br />
@@ -47,7 +47,7 @@ const AllDeployments = () => {
               width={48}
               className="react-switch"
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="site-deployment-card-container deploy-container">
