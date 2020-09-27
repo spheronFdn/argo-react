@@ -1,7 +1,7 @@
 import { ApiService } from "../services";
 import { IUserResponse } from "../model/service.model";
 import Actions from "./Actions";
-import { IModalModel, IOrganization } from "../model/hooks.model";
+import { IModalModel } from "../model/hooks.model";
 
 const Reducers = (dispatch: any, history: any) => ({
   toggleModal: (modal: IModalModel) => {
@@ -46,7 +46,7 @@ const Reducers = (dispatch: any, history: any) => ({
       dispatch({ type: Actions.SET_USER_LOADING, userLoading: false });
     });
   },
-  setSelectedOrganization: (organization: IOrganization) => {
+  setSelectedOrganization: (organization: any) => {
     dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: true });
     ApiService.getAllProjects(`${organization._id}`).subscribe((res) => {
       dispatch({
@@ -94,6 +94,12 @@ const Reducers = (dispatch: any, history: any) => ({
     dispatch({
       type: Actions.SET_PROJECT_LOADING,
       projectLoading: loading,
+    });
+  },
+  setOrgLoading: (loading: boolean) => {
+    dispatch({
+      type: Actions.SET_ORG_LOADING,
+      orgLoading: loading,
     });
   },
 });

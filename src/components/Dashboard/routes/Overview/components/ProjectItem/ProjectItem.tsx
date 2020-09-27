@@ -6,8 +6,8 @@ import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import IProjectItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import { IActionModel } from "../../../../../../model/hooks.model";
-import { ActionContext } from "../../../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../../hooks";
 
 const ProjectItem: React.FC<IProjectItemProps> = ({
   index,
@@ -21,6 +21,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   const history = useHistory();
 
   const { setSelectedProject } = useContext<IActionModel>(ActionContext);
+  const { selectedOrg } = useContext<IStateModel>(StateContext);
 
   let displayGithubRepo = "";
   if (githubUrl) {
@@ -36,7 +37,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
               className="project-item-title"
               onClick={(e) => {
                 setSelectedProject(null);
-                history.push(`/sites/${repo?._id}/overview`);
+                history.push(`/org/${selectedOrg?._id}/sites/${repo?._id}/overview`);
               }}
             >
               {projectName}

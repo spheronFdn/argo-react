@@ -10,10 +10,12 @@ import { IActionModel, IStateModel } from "../../model/hooks.model";
 function Sites() {
   const params = useParams<any>();
 
-  const { setSelectedProject, setPojectLoading } = useContext<IActionModel>(
-    ActionContext,
-  );
-  const { selectedProject } = useContext<IStateModel>(StateContext);
+  const {
+    setSelectedProject,
+    setPojectLoading,
+    setSelectedOrganization,
+  } = useContext<IActionModel>(ActionContext);
+  const { selectedProject, selectedOrg } = useContext<IStateModel>(StateContext);
 
   useEffect(() => {
     if (params.slug1 && !selectedProject?._id) {
@@ -23,6 +25,9 @@ function Sites() {
         setPojectLoading(false);
       });
     }
+    if (params.orgid !== selectedOrg?._id) {
+      setSelectedOrganization({ _id: params.orgid });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -30,28 +35,35 @@ function Sites() {
       <Header />
       <main className="app-main">
         <div className="home-container">
-          <Route path="/sites/:siteid/overview" exact render={() => <Overview />} />
           <Route
-            path="/sites/:siteid/deployments/:deploymentid"
+            path="/org/:orgid/sites/:siteid/overview"
             exact
-            render={() => <Deployment />}
+            render={() => <Overview />}
           />
           <Route
-            path="/sites/:siteid/deployments/"
+            path="/org/:orgid/sites/:siteid/deployments/"
             exact
             render={() => <AllDeployments />}
           />
           <Route
-            path="/sites/:siteid/settings/"
-            exact
-            render={() => (
-              <Redirect to={`/sites/${params.slug1}/settings/general`} />
-            )}
-          />
-          <Route
-            path="/sites/:siteid/settings/:slug"
+            path="/org/:orgid/sites/:siteid/settings/:slug"
             exact
             render={() => <Settings />}
+          />
+          <Route
+            path="/org/:orgid/sites/:siteid/settings/"
+            exact
+            render={() => (
+              <Redirect
+                to={`/org/${params.orgid}/sites/${params.slug1}/settings/general`}
+              />
+            )}
+          />
+
+          <Route
+            path="/org/:orgid/sites/:siteid/deployments/:deploymentid"
+            exact
+            render={() => <Deployment />}
           />
         </div>
       </main>

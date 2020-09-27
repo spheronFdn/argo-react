@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import "./App.scss";
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import {
   Landing,
   SignUp,
@@ -18,6 +18,7 @@ import DeploySiteConfig from "./components/DeploySiteConfig";
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
   const { fetchUser } = useContext(ActionContext);
 
   useEffect(() => {
@@ -37,7 +38,12 @@ function App() {
   useEffect(() => {
     const isJWTPresent = localStorage.getItem("jwt-token");
     if (isJWTPresent) {
-      fetchUser();
+      const urls = location.pathname.split("/");
+      if (urls[1] === "org") {
+        fetchUser(urls[2]);
+      } else {
+        fetchUser();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -153,7 +159,7 @@ function App() {
         <Route path="/invite/callback" exact render={() => <InviteCallback />} />
 
         <Route
-          path="/sites/:slug"
+          path="/org/:orgid/sites/:slug"
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (
@@ -164,7 +170,7 @@ function App() {
           }}
         />
         <Route
-          path="/sites/:slug1/:slug2"
+          path="/org/:orgid/sites/:slug1/:slug2"
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (
@@ -175,7 +181,7 @@ function App() {
           }}
         />
         <Route
-          path="/sites/:slug1/:slug2/:slug3"
+          path="/org/:orgid/sites/:slug1/:slug2/:slug3"
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (
@@ -186,7 +192,7 @@ function App() {
           }}
         />
         <Route
-          path="/sites/:slug1/:slug2/:slug3/:slug4"
+          path="/org/:orgid/sites/:slug1/:slug2/:slug3/:slug4"
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (
@@ -197,7 +203,7 @@ function App() {
           }}
         />
         <Route
-          path="/sites/:slug1/:slug2/:slug3/:slug4/:slug5"
+          path="/org/:orgid/sites/:slug1/:slug2/:slug3/:slug4/:slug5"
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (

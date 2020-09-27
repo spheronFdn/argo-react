@@ -104,11 +104,12 @@ export interface IStateModel {
 export interface IActionModel {
   toggleModal: (modal: IModalModel) => void;
   fetchUser: (id?: string) => void;
-  setSelectedOrganization: (organization: IOrganization) => void;
+  setSelectedOrganization: (organization: any) => void;
   resetUser: () => void;
   setLatestDeploymentConfig: (config: any) => void;
   setLatestDeploymentLogs: (logs: any[]) => void;
   setLatestDeploymentSocketTopic: (topic: string) => void;
   setSelectedProject: (project: any) => void;
   setPojectLoading: (loading: boolean) => void;
+  setOrgLoading: (loading: boolean) => void;
 }

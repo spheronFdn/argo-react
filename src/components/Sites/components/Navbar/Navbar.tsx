@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
-  const param = useParams<any>();
+  const params = useParams<any>();
 
   return (
     <nav className="NavBar">
@@ -16,7 +16,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("overview") !== -1 ? "selected" : ""
                 }`}
-                to={`/sites/${param.slug1}/overview`}
+                to={`/org/${params.orgid}/sites/${params.slug1}/overview`}
               >
                 Overview
               </Link>
@@ -26,7 +26,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("deployments") !== -1 ? "selected" : ""
                 }`}
-                to={`/sites/${param.slug1}/deployments`}
+                to={`/org/${params.orgid}/sites/${params.slug1}/deployments`}
               >
                 Deploys
               </Link>
@@ -46,7 +46,7 @@ const Navbar = () => {
                 className={`${
                   location.pathname.indexOf("settings") !== -1 ? "selected" : ""
                 }`}
-                to={`/sites/${param.slug1}/settings`}
+                to={`/org/${params.orgid}/sites/${params.slug1}/settings`}
               >
                 Settings
               </Link>

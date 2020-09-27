@@ -22,4 +22,5 @@ export const actionInitialValue = {
   setLatestDeploymentSocketTopic: (topic: string) => {},
   setSelectedProject: (project: any) => {},
   setPojectLoading: (loading: boolean) => {},
+  setOrgLoading: (loading: boolean) => {},
 };

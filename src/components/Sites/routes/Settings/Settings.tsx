@@ -32,12 +32,12 @@ const Settings = () => {
           </div>
         </div>
         <Route
-          path="/sites/:siteid/settings/general"
+          path="/org/:orgid/sites/:siteid/settings/general"
           exact
           render={() => <SettingsGeneral />}
         />
         <Route
-          path="/sites/:siteid/settings/deploys"
+          path="/org/:orgid/sites/:siteid/settings/deploys"
           exact
           render={() => <SettingsBuildDeploy />}
         />

@@ -106,7 +106,7 @@ function DeploySiteConfig() {
       setSelectedProject({ name: projectName });
       setLatestDeploymentConfig(deployment);
       history.push(
-        `/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
+        `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
       );
     });
   };
