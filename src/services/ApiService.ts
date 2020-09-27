@@ -191,3 +191,15 @@ export const getProject = (projectId: string): Observable<any> => {
     );
   });
 };
+
+export const getDeployment = (deploymentId: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/logs/${deploymentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};

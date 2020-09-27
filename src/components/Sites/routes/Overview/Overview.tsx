@@ -11,7 +11,17 @@ const Overview = () => {
     StateContext,
   );
 
-  const lastPublishedDate = moment(selectedProject?.updateDate).format(
+  const sortedDeployments = projectLoading
+    ? []
+    : selectedProject?.deployments.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
+  let latestDeployment: any = {};
+  if (sortedDeployments) {
+    latestDeployment = sortedDeployments[0];
+  }
+
+  const lastPublishedDate = moment(latestDeployment?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
   );
 
@@ -32,6 +42,7 @@ const Overview = () => {
       selectedProject.url.length - 4,
     )}/tree/${"master"}`;
   }
+
   return (
     <div className="SiteOverview">
       <ProjectTopCard />
@@ -70,9 +81,13 @@ const Overview = () => {
           </div>
           <div className="deploy-summary-body-item">
             <label>Latest deploy site on Arweave:</label>
-            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+            <a
+              href={latestDeployment?.sitePreview}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {!projectLoading ? (
-                `https://arweave.net/SgR5PmbNpDEb3nXB1VnvxoT8FtFpfQxVqRejTPrnYqg`
+                latestDeployment?.sitePreview
               ) : (
                 <Skeleton width={200} duration={2} />
               )}

@@ -102,6 +102,28 @@ const Reducers = (dispatch: any, history: any) => ({
       orgLoading: loading,
     });
   },
+  setSelectedDeployment: (deployment: boolean) => {
+    dispatch({
+      type: Actions.SET_SELECTED_DEPLOYMENT,
+      orgLoading: deployment,
+    });
+  },
+  fetchProject: (projectId: string) => {
+    dispatch({
+      type: Actions.SET_PROJECT_LOADING,
+      projectLoading: true,
+    });
+    ApiService.getProject(projectId).subscribe((project) => {
+      dispatch({
+        type: Actions.SET_SELECTED_PROJECT,
+        selectedProject: project,
+      });
+      dispatch({
+        type: Actions.SET_PROJECT_LOADING,
+        projectLoading: false,
+      });
+    });
+  },
 });
 
 export const stateInitialValue = {
@@ -116,6 +138,7 @@ export const stateInitialValue = {
   currentSiteDeployLogs: [],
   selectedProject: null,
   currentSiteDeploySocketTopic: "",
+  selectedDeployment: null,
 };
 
 export default Reducers;

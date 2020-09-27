@@ -1,4 +1,4 @@
-.Settings {
+.OrgSettings {
   .settings-container {
     display: flex;
     margin-top: 1rem;
@@ -8,6 +8,7 @@
       background-color: var(--white);
       border-radius: 8px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      min-height: 200px;
       .settings-bar-item {
         padding: 8px 12px;
         border-bottom: 1px solid var(--grey2Color);
@@ -16,11 +17,11 @@
         color: var(--grey3Color);
         border-left: 3px solid transparent;
 
-        &:nth-last-child(1) {
-          border-bottom: 0px;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-        }
+        // &:nth-last-child(1) {
+        //   border-bottom: 0px;
+        //   border-bottom-left-radius: 8px;
+        //   border-bottom-right-radius: 8px;
+        // }
 
         &:nth-child(1) {
           border-top-left-radius: 8px;

@@ -94,9 +94,7 @@ const Overview = () => {
                   index={index}
                   type="filled"
                   projectName={repo.name}
-                  latestDeployment={
-                    "https://arweave.net/SgR5PmbNpDEb3nXB1VnvxoT8FtFpfQxVqRejTPrnYqg"
-                  }
+                  latestDeployment={repo.sitePreview}
                   githubUrl={repo.url}
                   updateTime={"5d ago"}
                   repo={repo}

@@ -18,7 +18,11 @@ const Settings = () => {
             className={`settings-bar-item ${
               location.pathname.indexOf("general") !== -1 ? "selected" : ""
             }`}
-            onClick={(e) => history.push(`/sites/${params.siteid}/settings/general`)}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/settings/general`,
+              )
+            }
           >
             General
           </div>
@@ -26,7 +30,11 @@ const Settings = () => {
             className={`settings-bar-item ${
               location.pathname.indexOf("deploys") !== -1 ? "selected" : ""
             }`}
-            onClick={(e) => history.push(`/sites/${params.siteid}/settings/deploys`)}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/settings/deploys`,
+              )
+            }
           >
             Build & Deploy
           </div>

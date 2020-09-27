@@ -20,9 +20,9 @@ const SettingsBuildDeploy = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      setPackageManager("NPM");
-      setBuildCommand("npm run build");
-      setPublishDirectory("build");
+      setPackageManager(selectedProject.package_manager);
+      setBuildCommand(selectedProject.build_command);
+      setPublishDirectory(selectedProject.publish_dir);
       // setProductionBranch("master");
     }
   }, [selectedProject]);
@@ -30,9 +30,9 @@ const SettingsBuildDeploy = () => {
   useEffect(() => {
     if (selectedProject) {
       if (
-        "NPM" !== packageManager ||
-        "npm run build" !== buildCommand ||
-        "build" !== publishDirectory
+        selectedProject.package_manager !== packageManager ||
+        selectedProject.build_command !== buildCommand ||
+        selectedProject.publish_dir !== publishDirectory
       ) {
         setIsDataChanged1(true);
       } else {
@@ -115,8 +115,8 @@ const SettingsBuildDeploy = () => {
                     value={packageManager}
                     onChange={(e) => setPackageManager(e.target.value)}
                   >
-                    <option value="NPM">NPM</option>
-                    <option value="YARN">YARN</option>
+                    <option value="npm">NPM</option>
+                    <option value="yarn">YARN</option>
                   </select>
                   <span className="select-down-icon">
                     <FontAwesomeIcon icon={faChevronDown} />

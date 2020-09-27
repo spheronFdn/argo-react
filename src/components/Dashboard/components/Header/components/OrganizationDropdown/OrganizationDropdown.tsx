@@ -35,7 +35,6 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
             key={index}
             onClick={(e: any) => {
               setSelectedOrganization(org);
-              history.push("/dashboard");
               setShowDropdown(false);
             }}
           />

@@ -67,6 +67,11 @@ export const AppProvider = (props: any) => {
           ...prevState,
           projectLoading: action.projectLoading,
         };
+      case Actions.SET_SELECTED_DEPLOYMENT:
+        return {
+          ...prevState,
+          selectedDeployment: action.selectedDeployment,
+        };
 
       default:
     }

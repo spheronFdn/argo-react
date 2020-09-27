@@ -42,7 +42,11 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
             >
               {projectName}
             </h3>
-            <button type="button" className="project-item-visit-button">
+            <button
+              type="button"
+              className="project-item-visit-button"
+              onClick={(e) => window.open(`${latestDeployment}`, "_blank")}
+            >
               Visit
             </button>
           </div>

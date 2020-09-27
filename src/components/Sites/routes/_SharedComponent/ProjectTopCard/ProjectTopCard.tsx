@@ -10,6 +10,16 @@ import moment from "moment";
 const ProjectTopCard = () => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
 
+  const sortedDeployments = projectLoading
+    ? []
+    : selectedProject?.deployments.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
+  let latestDeployment: any = {};
+  if (sortedDeployments) {
+    latestDeployment = sortedDeployments[0];
+  }
+
   const lastPublishedDate = moment(selectedProject?.updateDate).format(
     "MMM DD, YYYY hh:mm A",
   );
@@ -25,7 +35,7 @@ const ProjectTopCard = () => {
     githubBranchLink = `${selectedProject.url.substring(
       0,
       selectedProject.url.length - 4,
-    )}/tree/${"master"}`;
+    )}/tree/${selectedProject.branch}`;
   }
 
   return (
@@ -62,7 +72,7 @@ const ProjectTopCard = () => {
             >
               {!projectLoading ? (
                 <>
-                  {displayGithubRepo} (branch: {"master"})
+                  {displayGithubRepo} (branch: {selectedProject?.branch})
                 </>
               ) : (
                 <Skeleton width={300} duration={2} />
@@ -77,7 +87,7 @@ const ProjectTopCard = () => {
             />
 
             <a
-              href={"https://arweave.net/"}
+              href={latestDeployment?.sitePreview}
               className="project-top-link"
               target="_blank"
               rel="noopener noreferrer"

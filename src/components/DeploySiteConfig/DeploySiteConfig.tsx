@@ -96,7 +96,7 @@ function DeploySiteConfig() {
       framework,
       package_manager: packageManager,
       build_command: buildCommand,
-      publish_directory: publishDirectory,
+      publish_dir: publishDirectory,
       auto_publish: false,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
@@ -110,6 +110,13 @@ function DeploySiteConfig() {
       );
     });
   };
+
+  let buildCommandPrefix: string = "";
+  if (packageManager === "npm") {
+    buildCommandPrefix = "npm run";
+  } else {
+    buildCommandPrefix = "yarn";
+  }
 
   return (
     <div className="DeploySiteConfig">
@@ -359,18 +366,12 @@ function DeploySiteConfig() {
                         <div className="deploy-site-item-form-item">
                           <label>Branch to deploy</label>
                           {true ? (
-                            <div className="deploy-site-item-select-container">
-                              <select
-                                className="deploy-site-item-select"
-                                value={branch}
-                                onChange={(e) => setBranch(e.target.value)}
-                              >
-                                <option value="master">master</option>
-                              </select>
-                              <span className="select-down-icon">
-                                <FontAwesomeIcon icon={faChevronDown} />
-                              </span>
-                            </div>
+                            <input
+                              type="text"
+                              className="deploy-site-item-input"
+                              value={branch}
+                              onChange={(e) => setBranch(e.target.value)}
+                            />
                           ) : (
                             <Skeleton width={326} height={36} duration={2} />
                           )}
@@ -417,6 +418,7 @@ function DeploySiteConfig() {
                                 onChange={(e) => setPackageManager(e.target.value)}
                               >
                                 <option value="npm">NPM</option>
+                                <option value="yarn">YARN</option>
                               </select>
                               <span className="select-down-icon">
                                 <FontAwesomeIcon icon={faChevronDown} />
@@ -429,12 +431,20 @@ function DeploySiteConfig() {
                         <div className="deploy-site-item-form-item">
                           <label>Build command</label>
                           {true ? (
-                            <input
-                              type="text"
-                              className="deploy-site-item-input"
-                              value={buildCommand}
-                              onChange={(e) => setBuildCommand(e.target.value)}
-                            />
+                            <div className="deploy-site-item-input-container">
+                              <input
+                                type="text"
+                                className="deploy-site-item-input-disabled"
+                                value={buildCommandPrefix}
+                                disabled
+                              />
+                              <input
+                                type="text"
+                                className="deploy-site-item-input-build"
+                                value={buildCommand}
+                                onChange={(e) => setBuildCommand(e.target.value)}
+                              />
+                            </div>
                           ) : (
                             <Skeleton width={326} height={36} duration={2} />
                           )}

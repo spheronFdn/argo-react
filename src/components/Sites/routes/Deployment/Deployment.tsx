@@ -11,6 +11,7 @@ import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
+import { ApiService } from "../../../../services";
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -27,23 +28,29 @@ const Deployment = () => {
     },
   };
 
+  const { currentSiteDeployConfig, currentSiteDeployLogs } = useContext<IStateModel>(
+    StateContext,
+  );
   const {
-    currentSiteDeployConfig,
-    currentSiteDeployLogs,
-    currentSiteDeploySocketTopic,
-  } = useContext<IStateModel>(StateContext);
-  const { setLatestDeploymentLogs } = useContext<IActionModel>(ActionContext);
+    setLatestDeploymentLogs,
+    setLatestDeploymentConfig,
+    fetchProject,
+  } = useContext<IActionModel>(ActionContext);
 
   const [isDeployed, setIsDeployed] = useState<boolean>(false);
   const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
 
   useEffect(() => {
-    if (currentSiteDeployConfig) {
-      const socket = socketIOClient(ENDPOINT);
-      socket.on(currentSiteDeploySocketTopic, (data: any) => {
-        // console.log(data);
-        data.split("\n").forEach((line: string) => {
+    const socket = socketIOClient(ENDPOINT);
+    ApiService.getDeployment(params.deploymentid).subscribe((result) => {
+      const deployment = {
+        github_url: result.deployment.github_url,
+        branch: result.deployment.branch,
+      };
+      setLatestDeploymentConfig(deployment);
+      result.deployment.log.forEach((log: string) => {
+        log.split("\n").forEach((line: string) => {
           if (line.trim()) {
             currentSiteDeployLogs.push({
               log: line,
@@ -53,24 +60,44 @@ const Deployment = () => {
         });
         setLatestDeploymentLogs(currentSiteDeployLogs);
         scrollToWithContainer(currentSiteDeployLogs.length - 1);
-        if (
-          currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
-            "https://arweave.net/",
-          ) !== -1
-        ) {
-          setIsDeployed(true);
-          const arweaveLink = currentSiteDeployLogs[
-            currentSiteDeployLogs.length - 1
-          ].log.trim();
-          setDeployedLink(arweaveLink);
-          setBuildTime({ min: 1, sec: 20 });
-        }
       });
-      // CLEAN UP THE EFFECT
-      return () => {
-        socket.disconnect();
-      };
-    }
+      if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
+        socket.on(result.deployment.topic, (data: any) => {
+          // console.log(data);
+          data.split("\n").forEach((line: string) => {
+            if (line.trim()) {
+              currentSiteDeployLogs.push({
+                log: line,
+                time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+              });
+            }
+          });
+          setLatestDeploymentLogs(currentSiteDeployLogs);
+          scrollToWithContainer(currentSiteDeployLogs.length - 1);
+          if (
+            currentSiteDeployLogs.length &&
+            currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
+              "https://arweave.net/",
+            ) !== -1
+          ) {
+            setIsDeployed(true);
+            const arweaveLink = currentSiteDeployLogs[
+              currentSiteDeployLogs.length - 1
+            ].log.trim();
+            setDeployedLink(arweaveLink);
+            setBuildTime({ min: 1, sec: 20 });
+          }
+        });
+        // CLEAN UP THE EFFECT
+      } else {
+        setDeployedLink(result.deployment.sitePreview);
+        setIsDeployed(true);
+        setBuildTime({ min: 1, sec: 20 });
+      }
+    });
+    return () => {
+      socket.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -102,11 +129,15 @@ const Deployment = () => {
         : 0;
     }
   };
+
   return (
     <div className="SiteDeployment">
       <div
         className="site-deployment-back"
-        onClick={(e) => history.push(`/sites/${params.siteid}/deployments/`)}
+        onClick={(e) => {
+          fetchProject(params.siteid);
+          history.push(`/org/${params.orgid}/sites/${params.siteid}/deployments/`);
+        }}
       >
         <span>
           <FontAwesomeIcon icon={faChevronLeft} />

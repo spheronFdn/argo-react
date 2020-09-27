@@ -56,15 +56,25 @@ export interface IRepository {
   deployments: IDeployment[];
   updateDate: Date;
   createDate: Date;
+  orgId: string;
+  package_manager: string;
+  build_command: string;
+  publish_dir: string;
+  branch: string;
 }
 
 export interface IDeployment {
+  _id?: string;
   sitePreview: string;
   commitId: string;
   log: string[];
   createdAt: any;
   topic: string;
   branch: string;
+  deploymentStatus: string;
+  package_manager: string;
+  build_command: string;
+  publish_dir: string;
 }
 
 export interface IOrganization {
@@ -99,6 +109,7 @@ export interface IStateModel {
   currentSiteDeployLogs: any[];
   selectedProject: IRepository | null;
   currentSiteDeploySocketTopic: string;
+  selectedDeployment: IDeployment | null;
 }
 
 export interface IActionModel {
@@ -112,4 +123,6 @@ export interface IActionModel {
   setSelectedProject: (project: any) => void;
   setPojectLoading: (loading: boolean) => void;
   setOrgLoading: (loading: boolean) => void;
+  setSelectedDeployment: (deployment: boolean) => void;
+  fetchProject: (projectId: string) => void;
 }

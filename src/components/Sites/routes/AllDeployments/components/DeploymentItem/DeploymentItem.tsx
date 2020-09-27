@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./DeploymentItem.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
+import { ApiService } from "../../../../../../services";
+import { useHistory, useParams } from "react-router-dom";
+import { ActionContext } from "../../../../../../hooks";
+import { IActionModel } from "../../../../../../model/hooks.model";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   index,
   type,
   deployment,
 }) => {
+  const params = useParams<any>();
+  const history = useHistory();
+  const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
+
+  const openDeployment = () => {
+    ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
+      setSelectedDeployment(response.deployment);
+      history.push(
+        `/org/${params.orgid}/sites/${params.siteid}/deployments/${deployment?._id}`,
+      );
+    });
+  };
   return (
-    <div className="deployment-item" key={index}>
+    <div className="deployment-item" key={index} onClick={openDeployment}>
       {type === "filled" && (
         <>
           <div className="deployment-left">
@@ -53,6 +69,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
                 {moment(`${deployment?.createdAt}`).format("hh:mm A")}
               </div>
+              <div>{deployment?.deploymentStatus}</div>
             </div>
           </div>
           <div className="deployment-right">

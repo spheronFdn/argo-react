@@ -3,33 +3,27 @@ import "./Sites.scss";
 import { Header } from "./components";
 import { Redirect, Route, useParams } from "react-router-dom";
 import { AllDeployments, Deployment, Overview, Settings } from "./routes";
-import { ApiService } from "../../services";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 
 function Sites() {
   const params = useParams<any>();
 
-  const {
-    setSelectedProject,
-    setPojectLoading,
-    setSelectedOrganization,
-  } = useContext<IActionModel>(ActionContext);
+  const { setSelectedOrganization, fetchProject } = useContext<IActionModel>(
+    ActionContext,
+  );
   const { selectedProject, selectedOrg } = useContext<IStateModel>(StateContext);
 
   useEffect(() => {
     if (params.slug1 && !selectedProject?._id) {
-      setPojectLoading(true);
-      ApiService.getProject(params.slug1).subscribe((project) => {
-        setSelectedProject(project);
-        setPojectLoading(false);
-      });
+      fetchProject(params.slug1);
     }
     if (params.orgid !== selectedOrg?._id) {
       setSelectedOrganization({ _id: params.orgid });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="Sites">
       <Header />
