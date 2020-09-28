@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 const Settings = () => {
   const history = useHistory();
-  const { selectedOrg, userLoading } = useContext(StateContext);
+  const { selectedOrg, orgLoading } = useContext(StateContext);
   const { fetchUser } = useContext(ActionContext);
 
   const [orgUsername, setOrgUsername] = useState<string>("");
@@ -78,14 +78,14 @@ const Settings = () => {
   };
 
   return (
-    <div className="Settings">
+    <div className="OrgSettings">
       <div className="settings-container">
         <div className="settings-left-side-bar">
           <div className="settings-bar-item selected">General</div>
-          <div className="settings-bar-item">OAuth</div>
+          {/* <div className="settings-bar-item">OAuth</div>
           <div className="settings-bar-item">Git Integration</div>
           <div className="settings-bar-item">Billing</div>
-          <div className="settings-bar-item">Tokens</div>
+          <div className="settings-bar-item">Tokens</div> */}
         </div>
         <div className="settings-right-container">
           <div className="settings-profile-details">
@@ -98,7 +98,7 @@ const Settings = () => {
                 <label className="settings-profile-item-subtitle">
                   This is your organization username taken from OAuth provider.
                 </label>
-                {!userLoading ? (
+                {!orgLoading ? (
                   <input
                     type="text"
                     placeholder="e.g. argoapp-live"
@@ -118,7 +118,7 @@ const Settings = () => {
                   Please enter your team's name, or a display name you are
                   comfortable with.
                 </label>
-                {!userLoading ? (
+                {!orgLoading ? (
                   <input
                     type="text"
                     placeholder="e.g. ArGo Team"
@@ -155,7 +155,7 @@ const Settings = () => {
                   </label>
                 </div>
                 <div className="settings-profile-avatar-image-container">
-                  {!userLoading ? (
+                  {!orgLoading ? (
                     <>
                       <input
                         type="file"
@@ -190,7 +190,7 @@ const Settings = () => {
               <button
                 type="button"
                 className="primary-button"
-                disabled={userLoading || !isDataChanged}
+                disabled={orgLoading || !isDataChanged}
                 onClick={updateOrganization}
               >
                 Save
@@ -217,7 +217,8 @@ const Settings = () => {
                   />
                 </span>
                 <span>
-                  Confirm that I want to irreversibly delete the team Argo Team
+                  Confirm that I want to irreversibly delete the team{" "}
+                  {selectedOrg?.profile.name}
                 </span>
               </div>
             </div>

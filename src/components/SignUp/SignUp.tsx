@@ -3,6 +3,7 @@ import "./SignUp.scss";
 import { SignUpListItem, GithubIcon, GitlabIcon } from "./components";
 import Logo from "../Logo";
 import { BASE_URL } from "../../config";
+import { Link } from "react-router-dom";
 
 function SignUp() {
   const signInWithGithub = async () => {
@@ -78,6 +79,15 @@ function SignUp() {
                   <span>Continue with Gitlab</span>
                 </button>
               </div>
+              <p className="misc-text">
+                By clicking continue, you agree to our{" "}
+                <Link to="/">Terms of Service</Link> and{" "}
+                <Link to="/">Privacy Policy</Link>.
+              </p>
+              <hr className="hor-line" />
+              <p className="login-text">
+                Already have an account? <Link to="/login">Log in</Link>{" "}
+              </p>
             </div>
           </div>
         </div>

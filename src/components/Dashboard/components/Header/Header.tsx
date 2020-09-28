@@ -8,9 +8,12 @@ import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { OrganizationDropdown, ProfileDropdown } from "./components";
 import { StateContext } from "../../../../hooks";
 import Skeleton from "react-loading-skeleton";
+import { IStateModel } from "../../../../model/hooks.model";
 
 const Header = () => {
-  const { user, selectedOrg, userLoading } = useContext(StateContext);
+  const { user, selectedOrg, userLoading, orgLoading } = useContext<IStateModel>(
+    StateContext,
+  );
 
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
@@ -29,7 +32,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="teams-container">
-              {!userLoading ? (
+              {!orgLoading ? (
                 <img
                   src={
                     selectedOrg?.profile.image
@@ -43,7 +46,7 @@ const Header = () => {
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}
               <h4 className="team-name">
-                {!userLoading ? (
+                {!orgLoading ? (
                   selectedOrg?.profile.name
                 ) : (
                   <Skeleton width={60} duration={2} />
@@ -53,11 +56,11 @@ const Header = () => {
                 className={`team-up-down-arrow ${
                   showOrgDropdown
                     ? "selected-team-arrow"
-                    : userLoading
+                    : orgLoading
                     ? "disabled-team-arrow"
                     : ""
                 }`}
-                onClick={(e) => (!userLoading ? setShowOrgDropdown(true) : null)}
+                onClick={(e) => (!orgLoading ? setShowOrgDropdown(true) : null)}
               >
                 <UpDownArrow />
               </div>

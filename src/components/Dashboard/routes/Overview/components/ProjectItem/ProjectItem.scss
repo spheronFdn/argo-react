@@ -7,7 +7,6 @@
   border-radius: 8px;
   background: var(--white);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
 
   .project-item-empty {
     position: relative;
@@ -51,8 +50,9 @@
     margin: 1.5rem;
     .project-item-title {
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 500;
+      cursor: pointer;
     }
 
     .project-item-visit-button {
@@ -91,6 +91,7 @@
     display: flex;
     flex-direction: column;
     word-break: break-all;
+    flex: 1;
     .project-item-live-key {
       font-weight: 500;
     }
@@ -124,6 +125,9 @@
       .git-name {
         margin-left: 0.5rem;
         font-weight: 500;
+        text-decoration: none;
+        color: inherit;
+        font-size: 14px;
       }
       &:hover {
         text-decoration: underline;

@@ -19,7 +19,7 @@ const Navbar = () => {
                 Overview
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 className={`${
                   location.pathname.indexOf("domains") !== -1 ? "selected" : ""
@@ -28,7 +28,7 @@ const Navbar = () => {
               >
                 Domains
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 className={`${

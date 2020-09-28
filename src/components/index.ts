@@ -1,6 +1,7 @@
 import Landing from "./Landing";
 import RootHeader from "./RootHeader";
 import Dashboard from "./Dashboard";
+import Sites from "./Sites";
 import UserSettings from "./UserSettings";
 import Logo from "./Logo";
 import SignUp from "./SignUp";
@@ -13,6 +14,7 @@ export {
   Landing,
   RootHeader,
   Dashboard,
+  Sites,
   UserSettings,
   Logo,
   SignUp,
