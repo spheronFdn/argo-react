@@ -1,7 +1,7 @@
 .RootHeader {
   padding: 20px 40px;
   color: var(--white);
-  // background: var(--themeColor);
+  background: var(--themeColor);
   z-index: 999;
   .header-container {
     max-width: 1000px;
@@ -144,6 +144,12 @@
           font-size: 18px;
           font-weight: 500;
           margin-right: 1rem;
+          cursor: pointer;
+          text-decoration: none;
+          color: #fff;
+        }
+
+        .disable-login {
           cursor: not-allowed;
         }
 
