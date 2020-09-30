@@ -12,10 +12,20 @@ import socketIOClient from "socket.io-client";
 import moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
 import { ApiService } from "../../../../services";
+import Skeleton from "react-loading-skeleton";
+import TimeAgo from "javascript-time-ago";
+
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
+
+// Add locale-specific relative date/time formatting rules.
+TimeAgo.addLocale(en);
 
 const ENDPOINT = "http://localhost:5000";
 
 const Deployment = () => {
+  const timeAgo = new TimeAgo("en-US");
+
   const history = useHistory();
   const params = useParams<any>();
 
@@ -40,6 +50,7 @@ const Deployment = () => {
   const [isDeployed, setIsDeployed] = useState<boolean>(false);
   const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
+  const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
@@ -47,8 +58,10 @@ const Deployment = () => {
       const deployment = {
         github_url: result.deployment.github_url,
         branch: result.deployment.branch,
+        createdAt: result.deployment.createdAt,
       };
       setLatestDeploymentConfig(deployment);
+      setLatestDeploymentLogs([]);
       result.deployment.log.forEach((log: string) => {
         log.split("\n").forEach((line: string) => {
           if (line.trim()) {
@@ -94,6 +107,7 @@ const Deployment = () => {
         setIsDeployed(true);
         setBuildTime({ min: 1, sec: 20 });
       }
+      setDeploymentLoading(false);
     });
     return () => {
       socket.disconnect();
@@ -147,20 +161,38 @@ const Deployment = () => {
       <div className="site-deployment-card-container max-width-set">
         <div className="site-deployment-card-header">
           <h2 className="site-deployment-card-header-title">
-            <span>{isDeployed ? "Published deploy" : "Deploy in Progress"}</span>
-            {!isDeployed ? (
-              <Lottie options={defaultOptions} height={54} width={76} />
+            {!deploymentLoading ? (
+              <>
+                <span>{isDeployed ? "Published deploy" : "Deploy in Progress"}</span>
+                {!isDeployed ? (
+                  <Lottie options={defaultOptions} height={54} width={76} />
+                ) : (
+                  <img
+                    src={require("../../../../assets/svg/rocket_background.svg")}
+                    alt="rocket"
+                    className="rocket-icon"
+                  />
+                )}
+              </>
             ) : (
-              <img
-                src={require("../../../../assets/svg/rocket_background.svg")}
-                alt="rocket"
-                className="rocket-icon"
-              />
+              <Skeleton width={200} duration={2} />
             )}
           </h2>
           <p className="site-deployment-card-header-description">
-            <u>Production</u>: {currentSiteDeployConfig?.branch}
-            {/* - Last published at May 7 at 7:49 PM */}
+            {!deploymentLoading ? (
+              <>
+                <u>Production</u>: {currentSiteDeployConfig?.branch} -{" "}
+                {!isDeployed
+                  ? `Deployment started ${timeAgo.format(
+                      moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
+                    )}`
+                  : `Deployed at ${moment(currentSiteDeployConfig.createdAt).format(
+                      "MMM DD, YYYY hh:mm a",
+                    )}`}
+              </>
+            ) : (
+              <Skeleton width={400} duration={2} />
+            )}
           </p>
         </div>
         <div className="site-deployment-card-content">
@@ -168,14 +200,18 @@ const Deployment = () => {
             <span className="site-deployment-github-icon">
               <FontAwesomeIcon icon={faGithub} />
             </span>
-            <a
-              href={githubBranchLink}
-              className="site-deployment-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {displayGithubRepo} (branch: {currentSiteDeployConfig?.branch})
-            </a>
+            {!deploymentLoading ? (
+              <a
+                href={githubBranchLink}
+                className="site-deployment-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {displayGithubRepo} (branch: {currentSiteDeployConfig?.branch})
+              </a>
+            ) : (
+              <Skeleton width={300} duration={2} />
+            )}
           </div>
           <div className="site-deployment-card-fields">
             <img
@@ -184,19 +220,23 @@ const Deployment = () => {
               className="site-deployment-logo"
             />
 
-            {isDeployed ? (
-              <a
-                href={deployedLink}
-                className="site-deployment-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Preview deploy on Arweave
-              </a>
+            {!deploymentLoading ? (
+              isDeployed ? (
+                <a
+                  href={deployedLink}
+                  className="site-deployment-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Preview deploy on Arweave
+                </a>
+              ) : (
+                <span className="site-deployment-link">
+                  Deploying on Arweave, Preview in a minute
+                </span>
+              )
             ) : (
-              <span className="site-deployment-link">
-                Deploying on Arweave, Preview in a minute
-              </span>
+              <Skeleton width={200} duration={2} />
             )}
           </div>
         </div>

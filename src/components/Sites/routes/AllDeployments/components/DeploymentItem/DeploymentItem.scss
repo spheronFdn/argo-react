@@ -31,4 +31,24 @@
       overflow: hidden;
     }
   }
+
+  .deployment-status {
+    color: var(--grey3Color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .deployment-status-icon {
+      display: flex;
+      div {
+        display: flex;
+        margin: -10px -10px !important;
+      }
+
+      .rocket-icon {
+        height: 16px;
+        width: 16px;
+        margin-right: 10px;
+      }
+    }
+  }
 }

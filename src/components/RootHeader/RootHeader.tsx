@@ -20,7 +20,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
             <div className="app-logo-container">
               <Link to="/">
                 <img
-                  src={require("../../assets/png/logo-white.png")}
+                  src={require("../../assets/png/logo_text.png")}
                   alt="logo"
                   className="logo-image"
                 />
@@ -28,7 +28,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
             </div>
           </div>
           <div className="user-profile-container">
-            {user || parent !== "Login" ? (
+            {user || (parent !== "Login" && parent !== "Landing") ? (
               <>
                 <div className="menu-container">
                   <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
@@ -54,7 +54,22 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
               </>
             ) : (
               <>
-                <div className="login-container">Login</div>
+                <a
+                  className={`login-container`}
+                  href="https://discord.gg/ahxuCtm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Contact
+                </a>
+                <Link
+                  className={`login-container ${
+                    parent === "Login" ? "disable-login" : ""
+                  }`}
+                  to={`/login`}
+                >
+                  Login
+                </Link>
                 <button
                   type="button"
                   className="primary-button"

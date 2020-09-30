@@ -3,8 +3,8 @@ import "./Header.scss";
 import { Link } from "react-router-dom";
 import { Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { OrganizationDropdown, ProfileDropdown } from "./components";
 import { StateContext } from "../../../../hooks";
 import Skeleton from "react-loading-skeleton";
@@ -37,7 +37,7 @@ const Header = () => {
                   src={
                     selectedOrg?.profile.image
                       ? selectedOrg.profile.image
-                      : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+                      : require("../../../../assets/png/default_icon.png")
                   }
                   alt="org"
                   className="team-avatar"
@@ -67,9 +67,9 @@ const Header = () => {
             </div>
           </div>
           <div className="user-profile-container">
-            <div className="menu-container">
+            {/* <div className="menu-container">
               <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
-            </div>
+            </div> */}
             <div
               className="profile-container"
               onClick={(e) => (!userLoading ? setShowProfileDropdown(true) : null)}

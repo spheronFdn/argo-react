@@ -30,7 +30,7 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
               name: org.profile.name,
               avatar: org.profile.image
                 ? org.profile.image
-                : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4",
+                : require("../../../../../../assets/png/default_icon.png"),
             }}
             key={index}
             onClick={(e: any) => {

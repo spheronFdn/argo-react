@@ -203,3 +203,18 @@ export const getDeployment = (deploymentId: string): Observable<any> => {
     );
   });
 };
+
+export const updateProject = (id: string, project: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${API_URL}/repository/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(project),
+      }).then((res) => res.json()),
+    );
+  });
+};

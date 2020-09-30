@@ -81,17 +81,21 @@ const Overview = () => {
           </div>
           <div className="deploy-summary-body-item">
             <label>Latest deploy site on Arweave:</label>
-            <a
-              href={latestDeployment?.sitePreview}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {!projectLoading ? (
-                latestDeployment?.sitePreview
+            {!projectLoading ? (
+              latestDeployment?.sitePreview ? (
+                <a
+                  href={latestDeployment?.sitePreview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {latestDeployment?.sitePreview}
+                </a>
               ) : (
-                <Skeleton width={200} duration={2} />
-              )}
-            </a>
+                "Site preview not available"
+              )
+            ) : (
+              <Skeleton width={200} duration={2} />
+            )}
           </div>
           <div className="deploy-summary-body-item">
             <label>Created:</label>
