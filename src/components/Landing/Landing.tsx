@@ -4,8 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpaceShuttle } from "@fortawesome/free-solid-svg-icons";
 import RootHeader from "../RootHeader";
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
-
+import { Particle } from "./components";
+import { useHistory } from "react-router-dom";
 function Landing() {
+  const history = useHistory();
   return (
     <div className="Landing">
       <div className="landing-header">
@@ -13,10 +15,15 @@ function Landing() {
       </div>
       <div className="landing-home">
         <div className="gradient-layer"></div>
+        <Particle type="home" />
         <div className="landing-home-body">
           <h1>Permaweb deployment.</h1>
           <h1 className="heading-sec">Simplified.</h1>
-          <button type="button" className="primary-button">
+          <button
+            type="button"
+            className="primary-button"
+            onClick={(e) => history.push("/signup")}
+          >
             <span className="button-icon">
               <FontAwesomeIcon icon={faSpaceShuttle} />
             </span>
@@ -27,6 +34,7 @@ function Landing() {
       </div>
       <div className="background-color-container">
         <div className="landing-deploy">
+          <Particle type="deploy" />
           <div className="landing-deploy-container">
             <div className="explore-text">Explore the 2 step deployment</div>
             <div className="argo-desc-text">
@@ -89,19 +97,15 @@ function Landing() {
               </div>
               <div className="deploy-steps-features-container">
                 <div className="deploy-steps-features">
-                  <div className="deploy-steps-feature">
-                    ◆ &nbsp;Feature Number 1
-                  </div>
-                  <div className="deploy-steps-feature">
-                    ◆ &nbsp;Feature Number 2
-                  </div>
+                  <div className="deploy-steps-feature">◆ &nbsp;Permanent site</div>
+                  <div className="deploy-steps-feature">◆ &nbsp;Push to deploy</div>
                 </div>
                 <div className="deploy-steps-features">
                   <div className="deploy-steps-feature">
-                    ◆ &nbsp;Feature Number 3
+                    ◆ &nbsp;Deploy Preview URL
                   </div>
                   <div className="deploy-steps-feature">
-                    ◆ &nbsp;Feature Number 4
+                    ◆ &nbsp;Share and Collaborate
                   </div>
                 </div>
               </div>
@@ -128,13 +132,23 @@ function Landing() {
               </p>
             </div>
             <div className="button-container">
-              <button type="button" className="primary-button">
+              <button
+                type="button"
+                className="primary-button"
+                onClick={(e) =>
+                  window.open("https://github.com/argoapp-live", "_blank")
+                }
+              >
                 <span className="button-icon">
                   <FontAwesomeIcon icon={faGithub} />
                 </span>
                 <span>See code on GitHub</span>
               </button>
-              <button type="button" className="primary-button white-button">
+              <button
+                type="button"
+                className="primary-button white-button"
+                onClick={(e) => window.open("https://www.arweave.org", "_blank")}
+              >
                 <span className="button-icon">
                   <img src={require("../../assets/png/ar_light.png")} alt="ar" />
                 </span>
@@ -146,14 +160,38 @@ function Landing() {
         <div className="landing-footer">
           <div className="landing-footer-container">
             <div>
-              © 2020 ArGo • Built on <a href="https://www.arweave.org">Arweave</a> •{" "}
-              <a href="https://www.arweave.org">Privacy Policy</a>
+              © 2020 ArGo • Built on{" "}
+              <a
+                href="https://www.arweave.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Arweave
+              </a>{" "}
+              •{" "}
+              <a
+                href="https://www.arweave.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Privacy Policy
+              </a>
             </div>
             <div className="landing-footer-container-right">
-              <div className="landing-footer-icon">
+              <div
+                className="landing-footer-icon"
+                onClick={(e) =>
+                  window.open("https://github.com/argoapp-live", "_blank")
+                }
+              >
                 <FontAwesomeIcon icon={faGithub} />
               </div>
-              <div className="landing-footer-icon">
+              <div
+                className="landing-footer-icon"
+                onClick={(e) =>
+                  window.open("https://twitter.com/argoapplive", "_blank")
+                }
+              >
                 <FontAwesomeIcon icon={faTwitter} />
               </div>
             </div>

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import "./RootHeader.scss";
 import { Link, useHistory } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { ProfileDropdown } from "./components";
 import { StateContext } from "../../hooks";
 import Skeleton from "react-loading-skeleton";
@@ -30,9 +30,9 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
           <div className="user-profile-container">
             {user || (parent !== "Login" && parent !== "Landing") ? (
               <>
-                <div className="menu-container">
+                {/* <div className="menu-container">
                   <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
-                </div>
+                </div> */}
                 <div
                   className="profile-container"
                   onClick={(e) =>

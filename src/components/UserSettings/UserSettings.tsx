@@ -86,10 +86,6 @@ function UserSettings() {
           <div className="settings-container">
             <div className="settings-left-side-bar">
               <div className="settings-bar-item selected">General</div>
-              <div className="settings-bar-item">OAuth</div>
-              <div className="settings-bar-item">Git Integration</div>
-              <div className="settings-bar-item">Billing</div>
-              <div className="settings-bar-item">Tokens</div>
             </div>
             <div className="settings-right-container">
               <div className="settings-profile-details">
