@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
+import Lottie from "react-lottie";
+import animationData from "../../../../../../assets/lotties/rotating-settings.json";
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import { useHistory, useParams } from "react-router-dom";
@@ -15,6 +17,15 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   type,
   deployment,
 }) => {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid",
+    },
+  };
+
   const params = useParams<any>();
   const history = useHistory();
   const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
@@ -51,7 +62,8 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               <div className="deployment-commit-details">
                 <span className="bold-text">Production: </span>
                 <span>
-                  {deployment?.branch}@
+                  {deployment?.branch}
+                  {/* @
                   <a
                     href="https://github.com/"
                     target="_blank"
@@ -60,7 +72,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   >
                     8234jf3
                   </a>{" "}
-                  - Updated feature
+                  - Updated feature */}
                 </span>
               </div>
             </div>
@@ -69,7 +81,20 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
                 {moment(`${deployment?.createdAt}`).format("hh:mm A")}
               </div>
-              <div>{deployment?.deploymentStatus}</div>
+              <div className="deployment-status">
+                <span className="deployment-status-icon">
+                  {deployment?.deploymentStatus.toLowerCase() === "pending" ? (
+                    <Lottie options={defaultOptions} height={42} width={58} />
+                  ) : (
+                    <img
+                      src={require("../../../../../../assets/svg/rocket_background.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                    />
+                  )}
+                </span>
+                {deployment?.deploymentStatus}
+              </div>
             </div>
           </div>
           <div className="deployment-right">

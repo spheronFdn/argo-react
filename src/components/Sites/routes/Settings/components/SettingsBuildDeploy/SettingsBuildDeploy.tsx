@@ -6,10 +6,13 @@ import {
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { StateContext } from "../../../../../../hooks";
+import { ActionContext, StateContext } from "../../../../../../hooks";
+import { ApiService } from "../../../../../../services";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
 
 const SettingsBuildDeploy = () => {
-  const { selectedProject, projectLoading } = useContext(StateContext);
+  const { selectedProject, projectLoading } = useContext<IStateModel>(StateContext);
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [packageManager, setPackageManager] = useState<string>("");
   const [buildCommand, setBuildCommand] = useState<string>("");
@@ -47,22 +50,24 @@ const SettingsBuildDeploy = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject, packageManager, buildCommand, publishDirectory]);
 
-  // const updateOrganization = () => {
-  //   if (selectedProject) {
-  //     const org = {
-  //       username: orgUsername,
-  //       name: orgName,
-  //       image: orgAvatar,
-  //     };
+  const updateProject = () => {
+    if (selectedProject) {
+      const project = {
+        package_manager: packageManager,
+        build_command: buildCommand,
+        publish_dir: publishDirectory,
+        branch: selectedProject.branch,
+      };
 
-  //     ApiService.updateOrganization(`${selectedOrg?._id}`, org).subscribe(
-  //       (result) => {
-  //         // eslint-disable-next-line no-console
-  //         console.log(result);
-  //         fetchUser();
-  //       },
-  //     );
-  //   }
+      ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
+        (result) => {
+          // eslint-disable-next-line no-console
+          console.log(result);
+          fetchProject(`${selectedProject?._id}`);
+        },
+      );
+    }
+  };
   // };
 
   // const deleteOrg = () => {
@@ -172,7 +177,7 @@ const SettingsBuildDeploy = () => {
               type="button"
               className="primary-button"
               disabled={projectLoading || !isDataChanged1}
-              // onClick={updateOrganization}
+              onClick={updateProject}
             >
               Save
             </button>

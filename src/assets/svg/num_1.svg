@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 507.2 511.2" style="enable-background:new 0 0 507.2 511.2;" xml:space="preserve">
+<style type="text/css">
+	.st0{display:none;}
+	.st1{display:inline;stroke:#FFFFFF;stroke-miterlimit:10;}
+	.st2{display:inline;fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+	.st3{display:inline;}
+	.st4{font-family:'FilsonSoft-Bold';}
+	.st5{font-size:300px;}
+	.st6{display:inline;fill:#FFFFFF;}
+	.st7{fill:url(#SVGID_1_);}
+	.st8{fill:url(#SVGID_2_);}
+</style>
+<g id="Layer_2" class="st0">
+	<rect x="-51.6" y="-31.2" class="st1" width="600.8" height="599.3"/>
+</g>
+<g id="Layer_1" class="st0">
+	<path class="st2" d="M466.7,222.5L287.5,43.3c-18.7-18.7-49-18.7-67.7,0L40.7,222.5c-18.7,18.7-18.7,49,0,67.7l179.2,179.2
+		c18.7,18.7,49,18.7,67.7,0l179.2-179.2C485.4,271.5,485.4,241.2,466.7,222.5z"/>
+	<text transform="matrix(1 0 0 1 180.4001 375.0209)" class="st3 st4 st5">1</text>
+</g>
+<g id="_x31__diamond_copy" class="st0">
+	<path class="st6" d="M477.9,233.7L276.3,32.2c-12.5-12.5-32.8-12.5-45.3,0L29.5,233.7C17,246.2,17,266.5,29.5,279L231,480.5
+		c12.5,12.5,32.8,12.5,45.3,0L477.9,279C490.4,266.5,490.4,246.2,477.9,233.7z"/>
+</g>
+<g id="_x31__diamond">
+	<radialGradient id="SVGID_1_" cx="253.6842" cy="256.3421" r="233.563" gradientUnits="userSpaceOnUse">
+		<stop  offset="0.4143" style="stop-color:#4B7ABD"/>
+		<stop  offset="0.9754" style="stop-color:#4B7ABD;stop-opacity:0.3"/>
+	</radialGradient>
+	<path class="st7" d="M477.9,233.7L276.3,32.2c-12.5-12.5-32.8-12.5-45.3,0L29.5,233.7C17,246.2,17,266.5,29.5,279L231,480.5
+		c12.5,12.5,32.8,12.5,45.3,0L477.9,279C490.4,266.5,490.4,246.2,477.9,233.7z M285.3,369.1c0,10.2-5.9,15.8-16.2,15.8h-19.1
+		c-10.2,0-15.8-5.6-15.8-15.8V210.3l-33.7,14.2c-9.6,4.3-17.2,0.3-20.1-9.6l-3.3-9.2c-3-9.6,0.3-16.5,9.2-20.5l60.7-27.1
+		c7.6-3.6,13.2-4.3,23.8-4.3c9.2,0,14.5,5.6,14.5,15.8V369.1z"/>
+</g>
+<g id="_x31__diamond_copy_2">
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="253.6842" y1="489.905" x2="253.6842" y2="22.7791">
+		<stop  offset="0.267" style="stop-color:#4B7ABD"/>
+		<stop  offset="0.9751" style="stop-color:#CE4983"/>
+	</linearGradient>
+	<path class="st8" d="M477.9,233.7L276.3,32.2c-12.5-12.5-32.8-12.5-45.3,0L29.5,233.7C17,246.2,17,266.5,29.5,279L231,480.5
+		c12.5,12.5,32.8,12.5,45.3,0L477.9,279C490.4,266.5,490.4,246.2,477.9,233.7z M285.3,369.1c0,10.2-5.9,15.8-16.2,15.8h-19.1
+		c-10.2,0-15.8-5.6-15.8-15.8V210.3l-33.7,14.2c-9.6,4.3-17.2,0.3-20.1-9.6l-3.3-9.2c-3-9.6,0.3-16.5,9.2-20.5l60.7-27.1
+		c7.6-3.6,13.2-4.3,23.8-4.3c9.2,0,14.5,5.6,14.5,15.8V369.1z"/>
+</g>
+</svg>
