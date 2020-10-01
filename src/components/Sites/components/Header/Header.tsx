@@ -75,7 +75,9 @@ const Header = () => {
             <div className="teams-container">
               <h4
                 className={`team-name ${!projectLoading ? "project-name" : ""}`}
-                onClick={(e) => history.push(`/sites/${params.slug1}/overview`)}
+                onClick={(e) =>
+                  history.push(`/org/${params.orgid}/sites/${params.slug1}/overview`)
+                }
               >
                 {!projectLoading ? (
                   selectedProject?.name
