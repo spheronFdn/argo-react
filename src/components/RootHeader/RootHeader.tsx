@@ -3,15 +3,18 @@ import "./RootHeader.scss";
 import { Link, useHistory } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
-import { ProfileDropdown } from "./components";
+import { MenuDropdown, ProfileDropdown } from "./components";
 import { StateContext } from "../../hooks";
 import Skeleton from "react-loading-skeleton";
 import { IRootHeaderModel } from "./model";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
   const history = useHistory();
   const { user, userLoading } = useContext(StateContext);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
+  const [showMenuDropdown, setShowMenuDropdown] = React.useState(false);
   return (
     <header className="RootHeader">
       <div className="header-container">
@@ -77,6 +80,15 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                 >
                   Signup
                 </button>
+                <div
+                  className="menu-button"
+                  onClick={(e) => setShowMenuDropdown(true)}
+                >
+                  <FontAwesomeIcon icon={faBars} />
+                </div>
+                {showMenuDropdown && (
+                  <MenuDropdown setShowDropdown={setShowMenuDropdown} />
+                )}
               </>
             )}
           </div>
