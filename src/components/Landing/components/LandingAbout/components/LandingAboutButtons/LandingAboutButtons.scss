@@ -1,0 +1,53 @@
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+
+  animation: fl-fade-in 1s ease;
+  -webkit-animation: fl-fade-in 1s ease;
+  animation-duration: 2s;
+
+  .primary-button {
+    background: #040c34;
+    text-decoration: none;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.12);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 8px;
+    padding: 0.75rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 352px;
+
+    .button-icon {
+      margin-right: 1rem;
+      display: flex;
+      img {
+        height: 20px;
+        width: 20px;
+      }
+    }
+
+    &:hover {
+      background: #735386;
+    }
+  }
+
+  .white-button {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    color: #040c34 !important;
+    margin-left: 2rem;
+
+    &:hover {
+      background: #fff !important;
+    }
+  }
+}

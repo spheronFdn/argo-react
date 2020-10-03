@@ -29,6 +29,7 @@ const Header = () => {
                   alt="logo"
                   className="logo-image"
                 />
+                <span className="logo-badge">Alpha</span>
               </Link>
             </div>
             <div className="teams-container">

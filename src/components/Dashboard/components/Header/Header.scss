@@ -19,9 +19,20 @@
             text-decoration: none;
             color: var(--white);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             .logo-image {
               height: 32px;
+            }
+
+            .logo-badge {
+              margin-left: 4px;
+              font-size: 9px;
+              color: #fafafa;
+              padding: 1px 3px;
+              font-weight: 500;
+              background-color: #030d34;
+              border-radius: 2px;
+              text-transform: uppercase;
             }
           }
         }

@@ -1,0 +1,14 @@
+.landing-about {
+  // background-color: var(--themeColor);
+  z-index: 100;
+  text-align: center;
+  padding: 20px;
+  padding-bottom: 0;
+  margin-bottom: 2rem;
+  min-height: 522px;
+
+  .landing-about-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+}

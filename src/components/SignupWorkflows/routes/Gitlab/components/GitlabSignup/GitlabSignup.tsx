@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { API_URL } from "../../../../../../config";
+import config from "../../../../../../config";
 
 const GithubSignup = () => {
   useEffect(() => {
@@ -7,7 +7,7 @@ const GithubSignup = () => {
   }, []);
 
   const signInWithGitlab = async () => {
-    const gitlabSignInUrl = `${API_URL}/auth/gitlab`;
+    const gitlabSignInUrl = `${config.urls.API_URL}/auth/gitlab`;
     window.open(gitlabSignInUrl, "_self");
   };
 

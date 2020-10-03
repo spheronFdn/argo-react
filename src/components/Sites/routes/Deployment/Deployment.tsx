@@ -17,7 +17,7 @@ import TimeAgo from "javascript-time-ago";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-import { BACKEND_URL } from "../../../../config";
+import config from "../../../../config";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -52,7 +52,7 @@ const Deployment = () => {
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const socket = socketIOClient(BACKEND_URL);
+    const socket = socketIOClient(config.urls.BACKEND_URL);
     ApiService.getDeployment(params.deploymentid).subscribe((result) => {
       const deployment = {
         github_url: result.deployment.github_url,

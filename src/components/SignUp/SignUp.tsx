@@ -2,16 +2,16 @@ import React from "react";
 import "./SignUp.scss";
 import { SignUpListItem, GithubIcon, GitlabIcon } from "./components";
 import Logo from "../Logo";
-import { BASE_URL } from "../../config";
+import config from "../../config";
 import { Link } from "react-router-dom";
 
 function SignUp() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${BASE_URL}/signup/github`;
+    const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
     window.open(githubSignInUrl, "_blank");
   };
   const signInWithGitlab = async () => {
-    const gitlabSignInUrl = `${BASE_URL}/signup/gitlab`;
+    const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;
     window.open(gitlabSignInUrl, "_blank");
   };
   return (

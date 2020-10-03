@@ -8,5 +8,11 @@
 
   div {
     height: 100%;
+    overflow: hidden;
+
+    canvas {
+      height: 1440px !important;
+      width: 1440px !important;
+    }
   }
 }

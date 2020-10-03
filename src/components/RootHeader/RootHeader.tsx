@@ -27,6 +27,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   alt="logo"
                   className="logo-image"
                 />
+                <span className="logo-badge">Alpha</span>
               </Link>
             </div>
           </div>
