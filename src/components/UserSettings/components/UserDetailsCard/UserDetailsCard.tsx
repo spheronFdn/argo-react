@@ -51,7 +51,11 @@ const UserDetailsCard: React.FC<any> = () => {
         </p>
         <p className="user-details-subtitle">
           {!userLoading ? (
-            `Created 4 projects. Collaborates on ${user?.organizations?.length} organization.`
+            `Created ${user?.organizations
+              ?.map((org) => (org?.repositories ? org.repositories.length : 0))
+              .reduce((prev, curr) => prev + curr)} projects. Collaborates on ${
+              user?.organizations?.length
+            } organization.`
           ) : (
             <Skeleton width={350} duration={2} />
           )}

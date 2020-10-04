@@ -124,6 +124,12 @@ const Reducers = (dispatch: any, history: any) => ({
       });
     });
   },
+  setRepoForTriggerDeployment: (repo: string) => {
+    dispatch({
+      type: Actions.SET_REPO_FOR_TRIGGER_DEPLOYMENT,
+      selectedRepoForTriggerDeployment: repo,
+    });
+  },
 });
 
 export const stateInitialValue = {
@@ -139,6 +145,7 @@ export const stateInitialValue = {
   selectedProject: null,
   currentSiteDeploySocketTopic: "",
   selectedDeployment: null,
+  selectedRepoForTriggerDeployment: null,
 };
 
 export default Reducers;

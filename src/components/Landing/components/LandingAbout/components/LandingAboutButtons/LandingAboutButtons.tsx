@@ -5,7 +5,7 @@ import "./LandingAboutButtons.scss";
 
 const LandingAboutButtons = () => {
   return (
-    <div className="button-container">
+    <div className="landing-about-button-container">
       <button
         type="button"
         className="primary-button"

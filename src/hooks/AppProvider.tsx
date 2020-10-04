@@ -72,6 +72,11 @@ export const AppProvider = (props: any) => {
           ...prevState,
           selectedDeployment: action.selectedDeployment,
         };
+      case Actions.SET_REPO_FOR_TRIGGER_DEPLOYMENT:
+        return {
+          ...prevState,
+          selectedRepoForTriggerDeployment: action.selectedRepoForTriggerDeployment,
+        };
 
       default:
     }

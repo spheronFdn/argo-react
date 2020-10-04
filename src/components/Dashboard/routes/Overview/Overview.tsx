@@ -3,10 +3,19 @@ import { StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import "./Overview.scss";
 import { IStateModel } from "../../../../model/hooks.model";
+import TimeAgo from "javascript-time-ago";
+import "./Overview.scss";
+
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
+
+// Add locale-specific relative date/time formatting rules.
+TimeAgo.addLocale(en);
 
 const Overview = () => {
+  const timeAgo = new TimeAgo("en-US");
+
   const history = useHistory();
 
   const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
@@ -96,7 +105,7 @@ const Overview = () => {
                   projectName={repo.name}
                   latestDeployment={repo.sitePreview}
                   githubUrl={repo.url}
-                  updateTime={"5d ago"}
+                  updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
                   repo={repo}
                 />
               ))

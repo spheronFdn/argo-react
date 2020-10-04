@@ -12,7 +12,7 @@
     position: relative;
     background-color: var(--themeColor);
 
-    .login-container {
+    .login-container-inner {
       position: absolute;
       width: 25%;
       top: 50%;
@@ -130,6 +130,36 @@
           }
         }
       }
+    }
+  }
+}
+
+$information-phone: "only screen and (max-width : 512px)";
+$information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
+
+@media #{$information-phone} {
+  .Login {
+    .menu-button {
+      display: block !important;
+    }
+
+    .login-container {
+      display: none !important;
+    }
+    .primary-button {
+      display: none !important;
+    }
+
+    .login-container-inner {
+      width: 75% !important;
+    }
+  }
+}
+
+@media #{$information-pad} {
+  .Login {
+    .login-container-inner {
+      width: 50% !important;
     }
   }
 }

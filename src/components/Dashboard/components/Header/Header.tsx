@@ -6,14 +6,15 @@ import { UpDownArrow } from "../SVGIcons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { OrganizationDropdown, ProfileDropdown } from "./components";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
 import Skeleton from "react-loading-skeleton";
-import { IStateModel } from "../../../../model/hooks.model";
+import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 
 const Header = () => {
   const { user, selectedOrg, userLoading, orgLoading } = useContext<IStateModel>(
     StateContext,
   );
+  const { fetchUser } = useContext<IActionModel>(ActionContext);
 
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [showOrgDropdown, setShowOrgDropdown] = React.useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
         <div className="navbar-container">
           <div className="logo-container">
             <div className="app-logo-container">
-              <Link to="/">
+              <Link to="/" onClick={(e) => fetchUser(selectedOrg?._id)}>
                 <img
                   src={require("../../../../assets/png/logo-white.png")}
                   alt="logo"

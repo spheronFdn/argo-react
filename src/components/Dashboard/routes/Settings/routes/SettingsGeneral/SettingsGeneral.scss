@@ -1,9 +1,9 @@
-.SettingsBuildDeploy {
+.OrgSettingsGeneral {
   flex: 1;
   .settings-right-container {
     flex: 1;
     margin-left: 2rem;
-    .settings-project-details {
+    .settings-profile-details {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -11,7 +11,7 @@
       border-radius: 8px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
-      .settings-project-header {
+      .settings-profile-header {
         display: flex;
         min-height: 32px;
         align-items: center;
@@ -28,7 +28,7 @@
         background-color: #fc2c2c38 !important;
       }
 
-      .settings-project-body {
+      .settings-profile-body {
         flex: 1;
         padding: 1rem 0px;
         .delete-org-container {
@@ -51,22 +51,22 @@
             }
           }
         }
-        .settings-project-item {
+        .settings-profile-item {
           display: flex;
           flex-direction: column;
           padding: 1rem 24px;
 
-          .settings-project-item-title {
+          .settings-profile-item-title {
             font-size: 18px;
             font-weight: bold;
           }
 
-          .settings-project-item-subtitle {
+          .settings-profile-item-subtitle {
             font-size: 14px;
             color: var(--grey3Color);
           }
 
-          .settings-project-item-input {
+          .settings-profile-item-input {
             margin-top: 0.5rem;
             width: 300px;
             padding: 8px 12px;
@@ -80,46 +80,12 @@
             }
           }
 
-          .deploy-site-item-select-container {
-            position: relative;
-
-            .deploy-site-item-select {
-              margin-top: 0.5rem;
-              width: 327px;
-              padding: 9px 12px;
-              border-radius: 4px;
-              font-size: 16px;
-              border: 1px solid var(--grey2Color);
-              outline: none;
-              appearance: none;
-
-              &:focus {
-                border: 1px solid var(--grey5Color);
-              }
-
-              &::-ms-expand {
-                display: none;
-              }
-            }
-
-            .select-down-icon {
-              position: absolute;
-              left: 300px;
-              top: 16px;
-            }
-          }
-
-          .settings-project-value {
-            font-size: 18px;
-            margin-top: 0.5rem;
-          }
-
-          .settings-project-item-avatar-container {
+          .settings-profile-item-avatar-container {
             display: flex;
             flex-direction: column;
           }
 
-          .settings-project-avatar-image-container {
+          .settings-profile-avatar-image-container {
             display: flex;
             .file-upload {
               position: absolute;
@@ -145,7 +111,7 @@
         }
       }
 
-      .settings-project-footer {
+      .settings-profile-footer {
         display: flex;
         justify-content: space-between;
         min-height: 32px;
@@ -192,7 +158,7 @@
           }
 
           &:disabled {
-            background: var(--primaryDisabled);
+            background: var(--themeColor);
             cursor: not-allowed;
           }
         }
@@ -205,7 +171,7 @@
           }
 
           &:disabled {
-            background: #fc7979;
+            background: #fc2c2c;
             cursor: not-allowed;
           }
         }

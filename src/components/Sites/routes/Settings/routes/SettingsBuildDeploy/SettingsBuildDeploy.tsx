@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { ApiService } from "../../../../../../services";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import { BounceLoader } from "react-spinners";
 
 const SettingsBuildDeploy = () => {
   const { selectedProject, projectLoading } = useContext<IStateModel>(StateContext);
@@ -19,6 +20,8 @@ const SettingsBuildDeploy = () => {
   const [publishDirectory, setPublishDirectory] = useState<string>("");
   // const [productionBranch, setProductionBranch] = useState<string>("");
   const [isDataChanged1, setIsDataChanged1] = useState<boolean>(false);
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+
   // const [isDataChanged2, setIsDataChanged2] = useState<boolean>(false);
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const SettingsBuildDeploy = () => {
 
   const updateProject = () => {
     if (selectedProject) {
+      setUpdateLoading(true);
       const project = {
         package_manager: packageManager,
         build_command: buildCommand,
@@ -61,8 +65,7 @@ const SettingsBuildDeploy = () => {
 
       ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
         (result) => {
-          // eslint-disable-next-line no-console
-          console.log(result);
+          setUpdateLoading(false);
           fetchProject(`${selectedProject?._id}`);
         },
       );
@@ -179,6 +182,9 @@ const SettingsBuildDeploy = () => {
               disabled={projectLoading || !isDataChanged1}
               onClick={updateProject}
             >
+              {updateLoading && (
+                <BounceLoader size={20} color={"#fff"} loading={true} />
+              )}
               Save
             </button>
           </div>

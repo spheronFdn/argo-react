@@ -1,8 +1,8 @@
 import React from "react";
 import "./Settings.scss";
 import { ProjectTopCard } from "../_SharedComponent";
-import { SettingsBuildDeploy, SettingsGeneral } from "./components";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
+import { SettingsGeneral, SettingsBuildDeploy } from "./routes";
 
 const Settings = () => {
   const location = useLocation();

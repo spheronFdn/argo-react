@@ -22,9 +22,9 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    BASE_URL: process.env.BASE_URL || "http://localhost:3000",
-    API_URL: process.env.API_URL || "http://localhost:8080",
-    BACKEND_URL: process.env.BACKEND_URL || "http://localhost:5000",
+    BASE_URL: process.env.BASE_URL || "http://argoapp.live",
+    API_URL: process.env.API_URL || "http://argoapp.live:8080",
+    BACKEND_URL: process.env.BACKEND_URL || "http://argoapp.live:5000",
   },
 };
 

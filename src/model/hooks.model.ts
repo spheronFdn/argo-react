@@ -110,6 +110,7 @@ export interface IStateModel {
   selectedProject: IRepository | null;
   currentSiteDeploySocketTopic: string;
   selectedDeployment: IDeployment | null;
+  selectedRepoForTriggerDeployment: any | null;
 }
 
 export interface IActionModel {
@@ -125,4 +126,5 @@ export interface IActionModel {
   setOrgLoading: (loading: boolean) => void;
   setSelectedDeployment: (deployment: boolean) => void;
   fetchProject: (projectId: string) => void;
+  setRepoForTriggerDeployment: (repo: any) => void;
 }

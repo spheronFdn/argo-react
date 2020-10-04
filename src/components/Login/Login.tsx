@@ -17,7 +17,7 @@ function Login() {
     <div className="Login">
       <RootHeader parent={"Login"} />
       <div className="login-main-container">
-        <div className="login-container">
+        <div className="login-container-inner">
           <h1 className="login-header">Login to ArGo</h1>
           <div className="login-button-container">
             <button className="github-button" onClick={signInWithGithub}>

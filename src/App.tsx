@@ -127,6 +127,18 @@ function App() {
           exact
           render={() => {
             return localStorage.getItem("jwt-token") ? (
+              <Redirect to={`/user/settings/general`} />
+            ) : (
+              <Redirect to="/login" />
+            );
+          }}
+        />
+
+        <Route
+          path="/user/settings/:slug"
+          exact
+          render={() => {
+            return localStorage.getItem("jwt-token") ? (
               <UserSettings />
             ) : (
               <Redirect to="/login" />

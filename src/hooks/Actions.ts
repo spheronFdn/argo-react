@@ -12,6 +12,8 @@ export default class Actions {
   static SET_LATEST_DEPLOY_SOCKET_TOPIC = "[Actions] SET_LATEST_DEPLOY_SOCKET_TOPIC";
   static SET_SELECTED_PROJECT = "[Actions] SET_SELECTED_PROJECT";
   static SET_SELECTED_DEPLOYMENT = "[Actions] SET_SELECTED_DEPLOYMENT";
+  static SET_REPO_FOR_TRIGGER_DEPLOYMENT =
+    "[Actions] SET_REPO_FOR_TRIGGER_DEPLOYMENT";
 }
 export const actionInitialValue = {
   toggleModal: (modal: IModalModel) => {},
@@ -26,4 +28,5 @@ export const actionInitialValue = {
   setOrgLoading: (loading: boolean) => {},
   setSelectedDeployment: (deployment: boolean) => {},
   fetchProject: (projectId: string) => {},
+  setRepoForTriggerDeployment: (repo: any) => {},
 };

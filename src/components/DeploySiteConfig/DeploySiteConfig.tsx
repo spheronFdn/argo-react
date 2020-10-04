@@ -15,11 +15,14 @@ import { RepoOrgDropdown, RepoItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
+import BounceLoader from "react-spinners/BounceLoader";
 
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg } = useContext<IStateModel>(StateContext);
+  const { user, selectedOrg, selectedRepoForTriggerDeployment } = useContext<
+    IStateModel
+  >(StateContext);
   const {
     setLatestDeploymentSocketTopic,
     setSelectedProject,
@@ -42,6 +45,9 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
+  const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
+    false,
+  );
 
   useEffect(() => {
     ApiService.getAllRepos().subscribe((repos: any) => {
@@ -75,6 +81,18 @@ function DeploySiteConfig() {
     }
   }, [user, selectedOrg]);
 
+  useEffect(() => {
+    if (selectedRepoForTriggerDeployment) {
+      setSelectedRepo({
+        name: selectedRepoForTriggerDeployment
+          .substring(19, selectedRepoForTriggerDeployment.length - 4)
+          .split("/")[1],
+        clone_url: selectedRepoForTriggerDeployment,
+      });
+      setCreateDeployProgress(2);
+    }
+  }, [selectedRepoForTriggerDeployment]);
+
   const selectRepoOwner = (repoOwner: any) => {
     setSelectedRepoOwner(repoOwner);
     setShowRepoOrgDropdown(false);
@@ -87,6 +105,7 @@ function DeploySiteConfig() {
   };
 
   const startDeployment = () => {
+    setStartDeploymentLoading(true);
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
@@ -100,11 +119,10 @@ function DeploySiteConfig() {
       auto_publish: false,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
-      // eslint-disable-next-line no-console
-      console.log(result);
       setLatestDeploymentSocketTopic(result.topic);
       setSelectedProject({ name: projectName });
       setLatestDeploymentConfig(deployment);
+      setStartDeploymentLoading(false);
       history.push(
         `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
       );
@@ -470,6 +488,9 @@ function DeploySiteConfig() {
                         className="primary-button"
                         onClick={startDeployment}
                       >
+                        {startDeploymentLoading && (
+                          <BounceLoader size={20} color={"#fff"} loading={true} />
+                        )}
                         Deploy
                       </button>
                       <button

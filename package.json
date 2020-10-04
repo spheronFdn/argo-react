@@ -25,6 +25,7 @@
     "react-particles-js": "2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-spinners": "^0.9.0",
     "react-switch": "^5.0.1",
     "react-typist": "^2.0.5",
     "rxjs": "^6.6.2",

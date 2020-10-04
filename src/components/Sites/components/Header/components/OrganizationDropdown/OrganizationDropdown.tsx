@@ -45,7 +45,7 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
           onClick={(e) => history.push("/org/new")}
         >
           <div className="create-team-item">
-            <div className="create-team-title">Create a Team</div>
+            <div className="create-team-title">Create a Organization</div>
             <div className="create-team-icon">
               <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
             </div>

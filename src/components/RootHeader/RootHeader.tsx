@@ -7,7 +7,7 @@ import { MenuDropdown, ProfileDropdown } from "./components";
 import { StateContext } from "../../hooks";
 import Skeleton from "react-loading-skeleton";
 import { IRootHeaderModel } from "./model";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
@@ -85,7 +85,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   className="menu-button"
                   onClick={(e) => setShowMenuDropdown(true)}
                 >
-                  <FontAwesomeIcon icon={faBars} />
+                  <FontAwesomeIcon icon={showMenuDropdown ? faTimes : faBars} />
                 </div>
                 {showMenuDropdown && (
                   <MenuDropdown setShowDropdown={setShowMenuDropdown} />

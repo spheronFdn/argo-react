@@ -1,21 +1,30 @@
 import React, { useContext } from "react";
 import "./AllDeployments.scss";
+import Skeleton from "react-loading-skeleton";
 import { ProjectTopCard } from "../_SharedComponent";
 // import Switch from "react-switch";
-import { StateContext } from "../../../../hooks";
-import { IStateModel } from "../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const AllDeployments = () => {
+  const history = useHistory();
   // const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   const sortedDeployments = projectLoading
     ? []
     : selectedProject?.deployments.sort((a, b) =>
         moment(b.createdAt).diff(moment(a.createdAt)),
       );
+
+  const triggerDeployment = () => {
+    setRepoForTriggerDeployment(selectedProject?.url);
+    history.push("/deploy/new");
+  };
 
   return (
     <div className="AllDeployments">
@@ -24,8 +33,53 @@ const AllDeployments = () => {
         <div className="site-deployment-header-title">Deploy Info</div>
         <div className="deploy-summary-item">
           <div className="deploy-summary-body-item">
-            <label>Deployments Done:</label>
-            <span>{selectedProject?.deployments?.length}</span>
+            <label>Total Deployments:</label>
+            <span>
+              {!projectLoading ? (
+                selectedProject?.deployments?.length
+              ) : (
+                <Skeleton width={20} duration={2} />
+              )}
+            </span>
+          </div>
+          <div className="deploy-summary-body-item">
+            <label>Pending Deployments:</label>
+            <span>
+              {!projectLoading ? (
+                selectedProject?.deployments?.filter(
+                  (deployment) =>
+                    deployment.deploymentStatus.toLowerCase() === "pending",
+                ).length
+              ) : (
+                <Skeleton width={20} duration={2} />
+              )}
+            </span>
+          </div>
+          <div className="deploy-summary-body-item">
+            <label>Successful Deployments:</label>
+            <span>
+              {!projectLoading ? (
+                selectedProject?.deployments?.filter(
+                  (deployment) =>
+                    deployment.deploymentStatus.toLowerCase() === "deployed",
+                ).length
+              ) : (
+                <Skeleton width={20} duration={2} />
+              )}
+            </span>
+          </div>
+          <div className="deploy-summary-body-item">
+            <label>Failed Deployments:</label>
+            <span>
+              {!projectLoading ? (
+                selectedProject?.deployments?.filter(
+                  (deployment) =>
+                    deployment.deploymentStatus.toLowerCase() === "failed",
+                ).length
+              ) : (
+                <Skeleton width={20} duration={2} />
+              )}
+            </span>
           </div>
           {/* <div className="deploy-summary-body-item">
             <label>
@@ -53,7 +107,9 @@ const AllDeployments = () => {
       <div className="site-deployment-card-container deploy-container">
         <div className="site-deployment-header-title">
           <span>Deployments</span>
-          <button className="trigger-deploy-button">Trigger deploy</button>
+          <button className="trigger-deploy-button" onClick={triggerDeployment}>
+            Trigger deploy
+          </button>
         </div>
         <div className="deploy-summary-item">
           {!projectLoading ? (

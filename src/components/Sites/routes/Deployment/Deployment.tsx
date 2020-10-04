@@ -52,6 +52,7 @@ const Deployment = () => {
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLatestDeploymentLogs([]);
     const socket = socketIOClient(config.urls.BACKEND_URL);
     ApiService.getDeployment(params.deploymentid).subscribe((result) => {
       const deployment = {
@@ -60,7 +61,7 @@ const Deployment = () => {
         createdAt: result.deployment.createdAt,
       };
       setLatestDeploymentConfig(deployment);
-      setLatestDeploymentLogs([]);
+      currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
       result.deployment.log.forEach((log: string) => {
         log.split("\n").forEach((line: string) => {
           if (line.trim()) {
