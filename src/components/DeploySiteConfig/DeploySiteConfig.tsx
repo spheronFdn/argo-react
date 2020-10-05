@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RootHeader } from "..";
-import { ApiService } from "../../services";
+import { ApiService, ArweaveService } from "../../services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faCheck,
   faChevronDown,
   faChevronUp,
+  faExclamationCircle,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
@@ -16,7 +17,6 @@ import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
-// import Community from "community-js";
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -49,6 +49,12 @@ function DeploySiteConfig() {
   const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
     false,
   );
+  const [walletFileName, setWalletFileName] = useState<string>("");
+  const [walletKey, setWalletKey] = useState<any>();
+  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [argoBal, setArgoBal] = useState<number>(0);
+  const [walletLoader, setWalletLoader] = useState<boolean>(false);
+  const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     ApiService.getAllRepos().subscribe((repos: any) => {
@@ -73,6 +79,34 @@ function DeploySiteConfig() {
       setRepoLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (
+      selectedRepo &&
+      owner &&
+      branch &&
+      framework &&
+      packageManager &&
+      buildCommand &&
+      publishDirectory &&
+      walletKey &&
+      argoBal >= 1
+    ) {
+      setDeployDisabled(false);
+    } else {
+      setDeployDisabled(true);
+    }
+  }, [
+    selectedRepo,
+    owner,
+    branch,
+    framework,
+    packageManager,
+    buildCommand,
+    publishDirectory,
+    walletKey,
+    argoBal,
+  ]);
 
   useEffect(() => {
     if (selectedOrg) {
@@ -111,18 +145,7 @@ function DeploySiteConfig() {
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
-    // const community = new Community(arweave);
-    // community.setCommunityTx("p04Jz3AO0cuGLzrgRG0s2BJbGL20HP1N8F9hsu6iFrE");
-    // community.setWallet(key);
-    // const argoBal = await community.getBalance(address);
-    // console.log(argoBal);
-    // if (argoBal >= 1) {
-    //   console.log(
-    //     `You have enough ARGO in your wallet. Transferring 1 ARGO as a tip!`,
-    //   );
-    //   await community.transfer("NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY", 1);
-    //   console.log(`Transferred 1 ARGO as a tip!. Let's start the deployment! 🚀`);
-    // }
+    await ArweaveService.payArgoFee(walletKey);
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
@@ -144,6 +167,26 @@ function DeploySiteConfig() {
         `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
       );
     });
+  };
+
+  // load file to json
+  const walletLogin = (file: any) => {
+    setWalletLoader(true);
+    setWalletFileName(file.name);
+    const fileReader = new FileReader();
+    fileReader.onloadend = handleFileRead;
+    fileReader.readAsText(file);
+  };
+
+  // set pk json to state
+  const handleFileRead = async (evt: any) => {
+    const jwk = JSON.parse(evt.target.result);
+    setWalletKey(jwk);
+    const address = await ArweaveService.getWalletAddress(jwk);
+    setWalletAddress(address);
+    const argoBal = await ArweaveService.getArgoTokenBalance(address);
+    setArgoBal(argoBal);
+    setWalletLoader(false);
   };
 
   let buildCommandPrefix: string = "";
@@ -366,50 +409,42 @@ function DeploySiteConfig() {
                         </div> */}
                         <div className="deploy-site-item-form-item">
                           <label>Owner</label>
-                          {true ? (
-                            <div className="deploy-site-item-select-container">
-                              <select
-                                className="deploy-site-item-select"
-                                value={owner._id}
-                                onChange={(e) => {
-                                  const selOrg = user
-                                    ? user.organizations
-                                      ? user.organizations.filter(
-                                          (org) => org._id === e.target.value,
-                                        )[0]
-                                      : null
-                                    : null;
-                                  setSelectedOrganization(selOrg as any);
-                                  setOwner(e.target.value);
-                                }}
-                              >
-                                {user?.organizations &&
-                                  user?.organizations.map((organization, index) => (
-                                    <option value={organization._id} key={index}>
-                                      {organization.profile.name}
-                                    </option>
-                                  ))}
-                              </select>
-                              <span className="select-down-icon">
-                                <FontAwesomeIcon icon={faChevronDown} />
-                              </span>
-                            </div>
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <div className="deploy-site-item-select-container">
+                            <select
+                              className="deploy-site-item-select"
+                              value={owner._id}
+                              onChange={(e) => {
+                                const selOrg = user
+                                  ? user.organizations
+                                    ? user.organizations.filter(
+                                        (org) => org._id === e.target.value,
+                                      )[0]
+                                    : null
+                                  : null;
+                                setSelectedOrganization(selOrg as any);
+                                setOwner(e.target.value);
+                              }}
+                            >
+                              {user?.organizations &&
+                                user?.organizations.map((organization, index) => (
+                                  <option value={organization._id} key={index}>
+                                    {organization.profile.name}
+                                  </option>
+                                ))}
+                            </select>
+                            <span className="select-down-icon">
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            </span>
+                          </div>
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Branch to deploy</label>
-                          {true ? (
-                            <input
-                              type="text"
-                              className="deploy-site-item-input"
-                              value={branch}
-                              onChange={(e) => setBranch(e.target.value)}
-                            />
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <input
+                            type="text"
+                            className="deploy-site-item-input"
+                            value={branch}
+                            onChange={(e) => setBranch(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -424,79 +459,152 @@ function DeploySiteConfig() {
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
                           <label>Framework</label>
-                          {true ? (
-                            <div className="deploy-site-item-select-container">
-                              <select
-                                className="deploy-site-item-select"
-                                value={framework}
-                                onChange={(e) => setFramework(e.target.value)}
-                              >
-                                <option value="Create React App">
-                                  Create React App
-                                </option>
-                              </select>
-                              <span className="select-down-icon">
-                                <FontAwesomeIcon icon={faChevronDown} />
-                              </span>
-                            </div>
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <div className="deploy-site-item-select-container">
+                            <select
+                              className="deploy-site-item-select"
+                              value={framework}
+                              onChange={(e) => setFramework(e.target.value)}
+                            >
+                              <option value="Create React App">
+                                Create React App
+                              </option>
+                            </select>
+                            <span className="select-down-icon">
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            </span>
+                          </div>
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Package Manager</label>
-                          {true ? (
-                            <div className="deploy-site-item-select-container">
-                              <select
-                                className="deploy-site-item-select"
-                                value={packageManager}
-                                onChange={(e) => setPackageManager(e.target.value)}
-                              >
-                                <option value="npm">NPM</option>
-                                <option value="yarn">YARN</option>
-                              </select>
-                              <span className="select-down-icon">
-                                <FontAwesomeIcon icon={faChevronDown} />
-                              </span>
-                            </div>
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <div className="deploy-site-item-select-container">
+                            <select
+                              className="deploy-site-item-select"
+                              value={packageManager}
+                              onChange={(e) => setPackageManager(e.target.value)}
+                            >
+                              <option value="npm">NPM</option>
+                              <option value="yarn">YARN</option>
+                            </select>
+                            <span className="select-down-icon">
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            </span>
+                          </div>
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Build command</label>
-                          {true ? (
-                            <div className="deploy-site-item-input-container">
-                              <input
-                                type="text"
-                                className="deploy-site-item-input-disabled"
-                                value={buildCommandPrefix}
-                                disabled
-                              />
-                              <input
-                                type="text"
-                                className="deploy-site-item-input-build"
-                                value={buildCommand}
-                                onChange={(e) => setBuildCommand(e.target.value)}
-                              />
-                            </div>
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <div className="deploy-site-item-input-container">
+                            <input
+                              type="text"
+                              className="deploy-site-item-input-disabled"
+                              value={buildCommandPrefix}
+                              disabled
+                            />
+                            <input
+                              type="text"
+                              className="deploy-site-item-input-build"
+                              value={buildCommand}
+                              onChange={(e) => setBuildCommand(e.target.value)}
+                            />
+                          </div>
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Publish directory</label>
-                          {true ? (
-                            <input
-                              type="text"
-                              className="deploy-site-item-input"
-                              value={publishDirectory}
-                              onChange={(e) => setPublishDirectory(e.target.value)}
-                            />
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
+                          <input
+                            type="text"
+                            className="deploy-site-item-input"
+                            value={publishDirectory}
+                            onChange={(e) => setPublishDirectory(e.target.value)}
+                          />
                         </div>
+                      </div>
+                    </div>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Wallet configuration
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Your arweave wallet is required to start the deployment.
+                        We'll be charging 1 ARGO token per deployment.
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Please be aware that ArGo is in alpha stage and deployment
+                        may fail sometimes, so contact us if your fund is lost after
+                        deployment
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Arweave Wallet</label>
+                          <div className="wallet-choose-container">
+                            <button type="button" className="file-upload-button">
+                              Choose
+                            </button>
+                            <input
+                              type="file"
+                              className="file-upload"
+                              accept="application/JSON"
+                              onChange={(e: any) => walletLogin(e.target.files[0])}
+                            />
+                            {walletFileName && (
+                              <span className="file-upload-name">
+                                {walletFileName}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        {walletFileName && (
+                          <div className="deploy-site-item-form-item">
+                            <label>Wallet Details</label>
+                            <div className="wallet-details-container">
+                              <div className="wallet-details-items">
+                                <div className="wallet-details-item-title">
+                                  Wallet Address
+                                </div>
+                                <div className="wallet-details-item-desc">
+                                  {!walletLoader ? (
+                                    walletAddress
+                                  ) : (
+                                    <Skeleton width={300} duration={2} />
+                                  )}
+                                </div>
+                              </div>
+                              <div className="wallet-details-items">
+                                <div className="wallet-details-item-title">
+                                  ArGo Token Balance
+                                </div>
+                                <div className="wallet-details-item-desc">
+                                  {!walletLoader ? (
+                                    `${argoBal} ARGO Token`
+                                  ) : (
+                                    <Skeleton width={150} duration={2} />
+                                  )}
+                                </div>
+                              </div>
+                              <div className="wallet-details-items">
+                                <div className="wallet-details-item-title">Fees</div>
+                                <div className="wallet-details-item-desc">
+                                  {!walletLoader ? (
+                                    "1 ARGO Token"
+                                  ) : (
+                                    <Skeleton width={150} duration={2} />
+                                  )}
+                                </div>
+                              </div>
+                              {argoBal < 1 && !walletLoader && (
+                                <div className="wallet-details-items">
+                                  <span className="exclamation-icon">
+                                    <FontAwesomeIcon
+                                      icon={faExclamationCircle}
+                                    ></FontAwesomeIcon>
+                                  </span>
+                                  <span>
+                                    You do not have enough balance to deploy your
+                                    site
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="button-container">
@@ -504,6 +612,7 @@ function DeploySiteConfig() {
                         type="button"
                         className="primary-button"
                         onClick={startDeployment}
+                        disabled={deployDisabled}
                       >
                         {startDeploymentLoading && (
                           <BounceLoader size={20} color={"#fff"} loading={true} />

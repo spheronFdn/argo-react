@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "arweave": "^1.9.1",
     "community-js": "^1.0.15",
     "dotenv": "^8.2.0",
     "javascript-time-ago": "^2.0.13",

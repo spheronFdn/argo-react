@@ -10,7 +10,7 @@ interface IConfig {
   };
 }
 
-const NODE_ENV: string = process.env.NODE_ENV || "development";
+const NODE_ENV: string = "development";
 
 const development: IConfig = {
   urls: {

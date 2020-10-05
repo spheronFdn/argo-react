@@ -120,7 +120,13 @@ const AllDeployments = () => {
         <div className="deploy-summary-item">
           {!projectLoading ? (
             (sortedDeployments ? sortedDeployments : []).map((deployment, index) => (
-              <DeploymentItem index={index} type="filled" deployment={deployment} />
+              <div key={index}>
+                <DeploymentItem
+                  index={index}
+                  type="filled"
+                  deployment={deployment}
+                />
+              </div>
             ))
           ) : (
             <>

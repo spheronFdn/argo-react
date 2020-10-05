@@ -225,6 +225,81 @@
                       top: 16px;
                     }
                   }
+
+                  .wallet-choose-container {
+                    position: relative;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    align-items: center;
+
+                    .file-upload {
+                      opacity: 0;
+                      position: absolute;
+                      top: 0;
+                      width: 97px;
+                      height: 33px;
+                      z-index: 100;
+                      cursor: pointer;
+                    }
+
+                    .file-upload-button {
+                      background: var(--grey5Color);
+                      text-decoration: none;
+                      color: white;
+                      font-size: 14px;
+                      font-weight: 600;
+                      border-radius: 4px;
+                      padding: 0.4rem 1rem;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border: 2px solid transparent;
+                      outline: none;
+                      cursor: pointer;
+                      text-transform: uppercase;
+                      transition: all 0.3s ease-in-out;
+                      width: fit-content;
+                      z-index: 1;
+
+                      div {
+                        margin-right: 8px;
+                      }
+
+                      &:hover {
+                        background: var(--themeColorDark);
+                      }
+
+                      &:disabled {
+                        background: var(--themeColor);
+                        cursor: not-allowed;
+                      }
+                    }
+
+                    .file-upload-name {
+                      margin-left: 1rem;
+                      font-size: 14px;
+                    }
+                  }
+
+                  .wallet-details-container {
+                    .wallet-details-items {
+                      margin-top: 0.3rem;
+                      display: flex;
+                      align-items: center;
+                      .wallet-details-item-title {
+                        width: 35%;
+                      }
+
+                      .wallet-details-item-desc {
+                        font-weight: 500;
+                      }
+
+                      .exclamation-icon {
+                        margin-right: 1rem;
+                        color: var(--wildWatermelon);
+                      }
+                    }
+                  }
                 }
               }
 
@@ -343,7 +418,7 @@
               }
 
               &:disabled {
-                background: var(--themeColor);
+                background: var(--primaryDisabled);
                 cursor: not-allowed;
               }
             }
