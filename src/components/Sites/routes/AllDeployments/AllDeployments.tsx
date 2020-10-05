@@ -22,7 +22,13 @@ const AllDeployments = () => {
       );
 
   const triggerDeployment = () => {
-    setRepoForTriggerDeployment(selectedProject?.url);
+    setRepoForTriggerDeployment({
+      github_url: selectedProject?.url,
+      branch: selectedProject?.branch,
+      publish_dir: selectedProject?.publish_dir,
+      package_manager: selectedProject?.package_manager,
+      build_command: selectedProject?.build_command,
+    });
     history.push("/deploy/new");
   };
 

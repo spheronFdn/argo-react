@@ -16,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
+// import Community from "community-js";
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -84,11 +85,15 @@ function DeploySiteConfig() {
   useEffect(() => {
     if (selectedRepoForTriggerDeployment) {
       setSelectedRepo({
-        name: selectedRepoForTriggerDeployment
-          .substring(19, selectedRepoForTriggerDeployment.length - 4)
+        name: selectedRepoForTriggerDeployment.github_url
+          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
           .split("/")[1],
-        clone_url: selectedRepoForTriggerDeployment,
+        clone_url: selectedRepoForTriggerDeployment.github_url,
       });
+      setBranch(selectedRepoForTriggerDeployment.branch);
+      setPackageManager(selectedRepoForTriggerDeployment.package_manager);
+      setBuildCommand(selectedRepoForTriggerDeployment.build_command);
+      setPublishDirectory(selectedRepoForTriggerDeployment.publish_dir);
       setCreateDeployProgress(2);
     }
   }, [selectedRepoForTriggerDeployment]);
@@ -104,8 +109,20 @@ function DeploySiteConfig() {
     setCreateDeployProgress(2);
   };
 
-  const startDeployment = () => {
+  const startDeployment = async () => {
     setStartDeploymentLoading(true);
+    // const community = new Community(arweave);
+    // community.setCommunityTx("p04Jz3AO0cuGLzrgRG0s2BJbGL20HP1N8F9hsu6iFrE");
+    // community.setWallet(key);
+    // const argoBal = await community.getBalance(address);
+    // console.log(argoBal);
+    // if (argoBal >= 1) {
+    //   console.log(
+    //     `You have enough ARGO in your wallet. Transferring 1 ARGO as a tip!`,
+    //   );
+    //   await community.transfer("NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY", 1);
+    //   console.log(`Transferred 1 ARGO as a tip!. Let's start the deployment! 🚀`);
+    // }
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
