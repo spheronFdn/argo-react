@@ -267,7 +267,7 @@ const Deployment = () => {
       >
         <div className="card-header-title deploy-logs-card-title">
           <span className="card-header-deploy-title">Deploy Logs</span>
-          <button className="copy-to-clipboard-button">Copy to clipboard</button>
+          {/* <button className="copy-to-clipboard-button">Copy to clipboard</button> */}
         </div>
         <div className="deploy-logs-container" id="deploy-logs-list">
           {
