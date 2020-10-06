@@ -4,12 +4,12 @@ import BounceLoader from "react-spinners/BounceLoader";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Skeleton from "react-loading-skeleton";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { StateContext, ActionContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
 
 const SettingsGeneral = () => {
-  const history = useHistory();
+  // const history = useHistory();
 
   const { user, userLoading } = useContext(StateContext);
   const { fetchUser } = useContext(ActionContext);
@@ -19,9 +19,9 @@ const SettingsGeneral = () => {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [avatar, setAvatar] = useState<string>("");
   const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
-  const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
+  // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
-  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  // const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (user) {
@@ -71,17 +71,17 @@ const SettingsGeneral = () => {
     });
   };
 
-  const deleteUser = () => {
-    if (user && deleteConfirmed) {
-      setDeleteLoading(true);
+  // const deleteUser = () => {
+  //   if (user && deleteConfirmed) {
+  //     setDeleteLoading(true);
 
-      ApiService.deleteProfile((user as any)._id).subscribe((result) => {
-        setDeleteLoading(false);
-        localStorage.removeItem("jwt-token");
-        history.push("/signup");
-      });
-    }
-  };
+  //     ApiService.deleteProfile((user as any)._id).subscribe((result) => {
+  //       setDeleteLoading(false);
+  //       localStorage.removeItem("jwt-token");
+  //       history.push("/signup");
+  //     });
+  //   }
+  // };
   return (
     <div className="UserSettingsGeneral">
       <div className="settings-right-container">
@@ -193,7 +193,7 @@ const SettingsGeneral = () => {
             </button>
           </div>
         </div>
-        <div className="settings-profile-details">
+        {/* <div className="settings-profile-details">
           <div className="settings-profile-header delete-containers">
             Delete Your ArGo Account
           </div>
@@ -239,7 +239,7 @@ const SettingsGeneral = () => {
               Delete
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

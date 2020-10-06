@@ -10,7 +10,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 
 const InviteMembers = () => {
   const history = useHistory();
-  const { selectedOrg } = useContext(StateContext);
+  const { selectedOrg, user } = useContext(StateContext);
   const [inviteMembers, setInviteMembers] = useState<string>("");
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>(false);
 
@@ -21,12 +21,13 @@ const InviteMembers = () => {
       organization: selectedOrg?._id,
       orgName: selectedOrg?.profile.name,
       userEmail: member,
+      invitingUser: user?.argo_profile.name,
     }));
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(
       (res) =>
         res.subscribe((data) => {
           setInviteMembersLoading(false);
-          history.goBack();
+          history.push("/dashboard/members");
         }),
     );
   };

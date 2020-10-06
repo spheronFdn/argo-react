@@ -62,12 +62,12 @@ const Deployment = () => {
       };
       setLatestDeploymentConfig(deployment);
       currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
-      result.deployment.log.forEach((log: string) => {
-        log.split("\n").forEach((line: string) => {
+      result.deployment.logs.forEach((logItem: any) => {
+        logItem.log.split("\n").forEach((line: string) => {
           if (line.trim()) {
             currentSiteDeployLogs.push({
               log: line,
-              time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+              time: moment(logItem.time).format("hh:mm:ss A MM-DD-YYYY"),
             });
           }
         });
@@ -98,14 +98,50 @@ const Deployment = () => {
               currentSiteDeployLogs.length - 1
             ].log.trim();
             setDeployedLink(arweaveLink);
-            setBuildTime({ min: 1, sec: 20 });
+            const buildMins = Number.parseInt(
+              `${
+                moment
+                  .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                  .asSeconds() / 60
+              }`,
+            );
+            const buildSecs = Number.parseInt(
+              `${
+                moment
+                  .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                  .asSeconds() % 60
+              }`,
+            );
+            setBuildTime({ min: buildMins, sec: buildSecs });
           }
         });
         // CLEAN UP THE EFFECT
       } else {
         setDeployedLink(result.deployment.sitePreview);
         setIsDeployed(true);
-        setBuildTime({ min: 1, sec: 20 });
+        const buildMins = Number.parseInt(
+          `${
+            moment
+              .duration(
+                moment(
+                  currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
+                ).diff(moment(currentSiteDeployLogs[0].time)),
+              )
+              .asSeconds() / 60
+          }`,
+        );
+        const buildSecs = Number.parseInt(
+          `${
+            moment
+              .duration(
+                moment(
+                  currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
+                ).diff(moment(currentSiteDeployLogs[0].time)),
+              )
+              .asSeconds() % 60
+          }`,
+        );
+        setBuildTime({ min: buildMins, sec: buildSecs });
       }
       setDeploymentLoading(false);
     });

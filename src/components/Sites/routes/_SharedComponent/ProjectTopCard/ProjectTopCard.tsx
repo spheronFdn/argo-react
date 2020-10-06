@@ -52,7 +52,8 @@ const ProjectTopCard = () => {
           <p className="project-top-card-header-description">
             {!projectLoading ? (
               <>
-                <u>Production</u>: master - Last published at {lastPublishedDate}
+                <u>Production</u>: {selectedProject?.branch} - Last published at{" "}
+                {lastPublishedDate}
               </>
             ) : (
               <Skeleton width={400} duration={2} />
@@ -86,18 +87,22 @@ const ProjectTopCard = () => {
               className="project-top-logo"
             />
 
-            <a
-              href={latestDeployment?.sitePreview}
-              className="project-top-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {!projectLoading ? (
-                "Latest deployment preview on Arweave"
-              ) : (
-                <Skeleton width={300} duration={2} />
-              )}
-            </a>
+            {latestDeployment?.sitePreview ? (
+              <a
+                href={latestDeployment?.sitePreview}
+                className="project-top-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {!projectLoading ? (
+                  "Latest deployment preview on Arweave"
+                ) : (
+                  <Skeleton width={300} duration={2} />
+                )}
+              </a>
+            ) : (
+              <span>Site preview not available</span>
+            )}
           </div>
         </div>
       </div>

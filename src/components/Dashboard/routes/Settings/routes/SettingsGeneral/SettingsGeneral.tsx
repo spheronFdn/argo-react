@@ -2,14 +2,14 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { StateContext, ActionContext } from "../../../../../../hooks";
 import { ApiService } from "../../../../../../services";
 import "./SettingsGeneral.scss";
 import BounceLoader from "react-spinners/BounceLoader";
 
 const SettingsGeneral = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const { selectedOrg, orgLoading } = useContext(StateContext);
   const { fetchUser } = useContext(ActionContext);
 
@@ -17,9 +17,9 @@ const SettingsGeneral = () => {
   const [orgName, setOrgName] = useState<string>("");
   const [orgAvatar, setOrgAvatar] = useState<string>("");
   const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
-  const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
+  // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
-  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  // const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedOrg) {
@@ -71,16 +71,16 @@ const SettingsGeneral = () => {
     }
   };
 
-  const deleteOrg = () => {
-    if (selectedOrg && deleteConfirmed) {
-      setDeleteLoading(true);
-      ApiService.deleteOrganization((selectedOrg as any)._id).subscribe((result) => {
-        setDeleteLoading(false);
-        fetchUser();
-        history.push("/dashboard");
-      });
-    }
-  };
+  // const deleteOrg = () => {
+  //   if (selectedOrg && deleteConfirmed) {
+  //     setDeleteLoading(true);
+  //     ApiService.deleteOrganization((selectedOrg as any)._id).subscribe((result) => {
+  //       setDeleteLoading(false);
+  //       fetchUser();
+  //       history.push("/dashboard");
+  //     });
+  //   }
+  // };
   return (
     <div className="OrgSettingsGeneral">
       <div className="settings-right-container">
@@ -196,7 +196,7 @@ const SettingsGeneral = () => {
             </button>
           </div>
         </div>
-        <div className="settings-profile-details">
+        {/* <div className="settings-profile-details">
           <div className="settings-profile-header delete-containers">
             Delete Organisation
           </div>
@@ -241,7 +241,7 @@ const SettingsGeneral = () => {
               Delete
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

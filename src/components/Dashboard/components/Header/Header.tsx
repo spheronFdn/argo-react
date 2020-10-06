@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 
 const Header = () => {
+  const history = useHistory();
   const { user, selectedOrg, userLoading, orgLoading } = useContext<IStateModel>(
     StateContext,
   );
@@ -43,11 +44,12 @@ const Header = () => {
                   }
                   alt="org"
                   className="team-avatar"
+                  onClick={(e) => history.push("/dashboard")}
                 ></img>
               ) : (
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}
-              <h4 className="team-name">
+              <h4 className="team-name" onClick={(e) => history.push("/dashboard")}>
                 {!orgLoading ? (
                   selectedOrg?.profile.name
                 ) : (

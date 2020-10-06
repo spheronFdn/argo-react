@@ -66,6 +66,7 @@
             border-radius: 50%;
             border: 2px solid var(--themeColor);
             background-color: var(--white);
+            cursor: pointer;
           }
 
           .team-name {
@@ -74,6 +75,7 @@
             margin: 0;
             margin-left: 0.5rem;
             padding: 4px 10px;
+            cursor: pointer;
           }
 
           .project-name {

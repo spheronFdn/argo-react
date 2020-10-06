@@ -80,6 +80,41 @@
             }
           }
 
+          .settings-project-item-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+            .settings-project-item-input-disabled {
+              width: 77px;
+              padding: 8px 12px;
+              border-radius: 4px;
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+              font-size: 16px;
+              border: 1px solid var(--grey2Color);
+              border-right: 0;
+              &:disabled {
+                cursor: not-allowed;
+                background-color: var(--grey1Color);
+              }
+            }
+
+            .settings-project-item-input-build {
+              width: 200px;
+              padding: 8px 12px;
+              border-radius: 4px;
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+              font-size: 16px;
+              border: 1px solid var(--grey2Color);
+              outline: none;
+
+              &:focus {
+                border: 1px solid var(--grey5Color);
+              }
+            }
+          }
+
           .deploy-site-item-select-container {
             position: relative;
 

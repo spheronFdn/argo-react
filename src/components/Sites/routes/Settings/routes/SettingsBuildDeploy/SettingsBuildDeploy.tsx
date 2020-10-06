@@ -82,6 +82,13 @@ const SettingsBuildDeploy = () => {
   //   }
   // };
 
+  let buildCommandPrefix: string = "";
+  if (packageManager === "npm") {
+    buildCommandPrefix = "npm run";
+  } else {
+    buildCommandPrefix = "yarn";
+  }
+
   return (
     <div className="SettingsBuildDeploy">
       <div className="settings-right-container">
@@ -140,12 +147,20 @@ const SettingsBuildDeploy = () => {
                 This is your project's build command.
               </label>
               {!projectLoading ? (
-                <input
-                  type="text"
-                  className="settings-project-item-input"
-                  value={buildCommand}
-                  onChange={(e) => setBuildCommand(e.target.value)}
-                />
+                <div className="settings-project-item-input-container">
+                  <input
+                    type="text"
+                    className="settings-project-item-input-disabled"
+                    value={buildCommandPrefix}
+                    disabled
+                  />
+                  <input
+                    type="text"
+                    className="settings-project-item-input-build"
+                    value={buildCommand}
+                    onChange={(e) => setBuildCommand(e.target.value)}
+                  />
+                </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}

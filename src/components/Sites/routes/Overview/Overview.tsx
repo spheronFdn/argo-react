@@ -73,7 +73,7 @@ const Overview = () => {
             <label>GitHub Repo/Branch:</label>
             <a href={githubBranchLink} target="_blank" rel="noopener noreferrer">
               {!projectLoading ? (
-                `${displayGithubRepo} (branch: master)`
+                `${displayGithubRepo} (branch: ${selectedProject?.branch})`
               ) : (
                 <Skeleton width={200} duration={2} />
               )}

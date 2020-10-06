@@ -9,7 +9,7 @@ import {
   faChevronDown,
   faChevronUp,
   faExclamationCircle,
-  faSearch,
+  // faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
 import { RepoOrgDropdown, RepoItem } from "./components";
@@ -220,15 +220,11 @@ function DeploySiteConfig() {
                       className={`deploy-site-progress-number ${
                         createDeployProgress === 1 ? "active" : ""
                       }`}
-                      onClick={(e) => setCreateDeployProgress(1)}
                     >
                       1
                     </div>
                   ) : (
-                    <div
-                      className="deploy-site-progress-done"
-                      onClick={(e) => setCreateDeployProgress(1)}
-                    >
+                    <div className="deploy-site-progress-done">
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
                   )}
@@ -248,15 +244,11 @@ function DeploySiteConfig() {
                       className={`deploy-site-progress-number ${
                         createDeployProgress === 2 ? "active" : ""
                       }`}
-                      onClick={(e) => setCreateDeployProgress(2)}
                     >
                       2
                     </div>
                   ) : (
-                    <div
-                      className="deploy-site-progress-done"
-                      onClick={(e) => setCreateDeployProgress(2)}
-                    >
+                    <div className="deploy-site-progress-done">
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
                   )}
@@ -332,7 +324,7 @@ function DeploySiteConfig() {
                           </span>
                         </div>
                         <div className="deploy-site-item-repo-header-right">
-                          <div className="deploy-site-item-repo-search-container">
+                          {/* <div className="deploy-site-item-repo-search-container">
                             <span className="deploy-site-item-repo-search-icon">
                               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                             </span>
@@ -341,7 +333,7 @@ function DeploySiteConfig() {
                               className="deploy-site-item-repo-search-input"
                               placeholder="Search repos"
                             />
-                          </div>
+                          </div> */}
                         </div>
                         {showRepoOrgDropdown && (
                           <RepoOrgDropdown

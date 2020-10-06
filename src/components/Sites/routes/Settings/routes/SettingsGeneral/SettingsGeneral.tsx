@@ -121,7 +121,7 @@ const SettingsGeneral = () => {
               </label>
               {!projectLoading ? (
                 <div className="settings-project-value">
-                  {displayGithubRepo} (branch: master)
+                  {displayGithubRepo} (branch: {selectedProject?.branch})
                 </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />

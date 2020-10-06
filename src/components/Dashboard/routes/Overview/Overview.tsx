@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import { IStateModel } from "../../../../model/hooks.model";
+import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import TimeAgo from "javascript-time-ago";
 import "./Overview.scss";
 
@@ -19,6 +19,7 @@ const Overview = () => {
   const history = useHistory();
 
   const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   return (
     <div className="Overview">
@@ -88,7 +89,10 @@ const Overview = () => {
           <button
             type="button"
             className="primary-button"
-            onClick={(e) => history.push("/deploy/new")}
+            onClick={(e) => {
+              setRepoForTriggerDeployment(null);
+              history.push("/deploy/new");
+            }}
           >
             Deploy
           </button>
