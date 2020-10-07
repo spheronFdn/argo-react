@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { BroadcastChannel } from "broadcast-channel";
 
 const GithubCallback = () => {
   const location = useLocation();

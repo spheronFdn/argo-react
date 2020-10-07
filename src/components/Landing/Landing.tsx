@@ -15,19 +15,19 @@ function Landing() {
       <div className="landing-header">
         <RootHeader parent={"Landing"} />
       </div>
-      <LazyLoad once>
+      <LazyLoad>
         <LandingHome />
       </LazyLoad>
       <div className="background-color-container">
-        <LazyLoad once>
+        <LazyLoad>
           <LandingDeploy />
         </LazyLoad>
 
-        <LazyLoad once>
+        <LazyLoad>
           <LandingAbout />
         </LazyLoad>
 
-        <LazyLoad once>
+        <LazyLoad>
           <LandingFooter />
         </LazyLoad>
       </div>

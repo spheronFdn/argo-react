@@ -15,6 +15,7 @@ import {
 import { ActionContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
 import DeploySiteConfig from "./components/DeploySiteConfig";
+import { BroadcastChannel } from "broadcast-channel";
 
 function App() {
   const history = useHistory();
@@ -23,8 +24,8 @@ function App() {
 
   useEffect(() => {
     const bc = new BroadcastChannel("signin_channel");
-    bc.onmessage = function (ev) {
-      if (ev.data === "signedup") {
+    bc.onmessage = (msg) => {
+      if (msg === "signedup") {
         fetchUser();
         history.push("/dashboard");
       }
