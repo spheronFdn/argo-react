@@ -1,6 +1,10 @@
 import React from "react";
 import "./SignUp.scss";
-import { SignUpListItem, GithubIcon, GitlabIcon } from "./components";
+import {
+  SignUpListItem,
+  GithubIcon,
+  // GitlabIcon
+} from "./components";
 import Logo from "../Logo";
 import config from "../../config";
 import { Link } from "react-router-dom";
@@ -10,10 +14,10 @@ function SignUp() {
     const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
     window.open(githubSignInUrl, "_blank");
   };
-  const signInWithGitlab = async () => {
-    const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;
-    window.open(gitlabSignInUrl, "_blank");
-  };
+  // const signInWithGitlab = async () => {
+  //   const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;
+  //   window.open(gitlabSignInUrl, "_blank");
+  // };
   return (
     <div className="SignIn">
       <div className="side-backdrop"></div>
@@ -72,12 +76,12 @@ function SignUp() {
                   </span>
                   <span>Continue with Github</span>
                 </button>
-                <button className="gitlab-button" onClick={signInWithGitlab}>
+                {/* <button className="gitlab-button" onClick={signInWithGitlab}>
                   <span className="gitlab-icon">
                     <GitlabIcon />
                   </span>
                   <span>Continue with Gitlab</span>
-                </button>
+                </button> */}
               </div>
               <p className="misc-text">
                 By clicking continue, you agree to our{" "}
