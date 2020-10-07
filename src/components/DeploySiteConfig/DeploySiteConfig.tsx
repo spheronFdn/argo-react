@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RootHeader } from "..";
-import { ApiService, ArweaveService } from "../../services";
+import { ApiService } from "../../services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faCheck,
   faChevronDown,
   faChevronUp,
-  faExclamationCircle,
+  // faExclamationCircle,
   // faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
@@ -49,11 +49,11 @@ function DeploySiteConfig() {
   const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
     false,
   );
-  const [walletFileName, setWalletFileName] = useState<string>("");
-  const [walletKey, setWalletKey] = useState<any>();
-  const [walletAddress, setWalletAddress] = useState<string>("");
-  const [argoBal, setArgoBal] = useState<number>(0);
-  const [walletLoader, setWalletLoader] = useState<boolean>(false);
+  // const [walletFileName, setWalletFileName] = useState<string>("");
+  // const [walletKey, setWalletKey] = useState<any>();
+  // const [walletAddress, setWalletAddress] = useState<string>("");
+  // const [argoBal, setArgoBal] = useState<number>(0);
+  // const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -88,9 +88,9 @@ function DeploySiteConfig() {
       framework &&
       packageManager &&
       buildCommand &&
-      publishDirectory &&
-      walletKey &&
-      argoBal >= 1
+      publishDirectory
+      // walletKey &&
+      // argoBal >= 1
     ) {
       setDeployDisabled(false);
     } else {
@@ -104,8 +104,8 @@ function DeploySiteConfig() {
     packageManager,
     buildCommand,
     publishDirectory,
-    walletKey,
-    argoBal,
+    // walletKey,
+    // argoBal,
   ]);
 
   useEffect(() => {
@@ -145,7 +145,7 @@ function DeploySiteConfig() {
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
-    await ArweaveService.payArgoFee(walletKey);
+    // await ArweaveService.payArgoFee(walletKey);
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
@@ -170,24 +170,24 @@ function DeploySiteConfig() {
   };
 
   // load file to json
-  const walletLogin = (file: any) => {
-    setWalletLoader(true);
-    setWalletFileName(file.name);
-    const fileReader = new FileReader();
-    fileReader.onloadend = handleFileRead;
-    fileReader.readAsText(file);
-  };
+  // const walletLogin = (file: any) => {
+  //   setWalletLoader(true);
+  //   setWalletFileName(file.name);
+  //   const fileReader = new FileReader();
+  //   fileReader.onloadend = handleFileRead;
+  //   fileReader.readAsText(file);
+  // };
 
   // set pk json to state
-  const handleFileRead = async (evt: any) => {
-    const jwk = JSON.parse(evt.target.result);
-    setWalletKey(jwk);
-    const address = await ArweaveService.getWalletAddress(jwk);
-    setWalletAddress(address);
-    const argoBal = await ArweaveService.getArgoTokenBalance(address);
-    setArgoBal(argoBal);
-    setWalletLoader(false);
-  };
+  // const handleFileRead = async (evt: any) => {
+  //   const jwk = JSON.parse(evt.target.result);
+  //   setWalletKey(jwk);
+  //   const address = await ArweaveService.getWalletAddress(jwk);
+  //   setWalletAddress(address);
+  //   const argoBal = await ArweaveService.getArgoTokenBalance(address);
+  //   setArgoBal(argoBal);
+  //   setWalletLoader(false);
+  // };
 
   let buildCommandPrefix: string = "";
   if (packageManager === "npm") {
@@ -510,7 +510,7 @@ function DeploySiteConfig() {
                         </div>
                       </div>
                     </div>
-                    <div className="deploy-site-form-item">
+                    {/* <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">
                         Wallet configuration
                       </label>
@@ -598,7 +598,7 @@ function DeploySiteConfig() {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                     <div className="button-container">
                       <button
                         type="button"
