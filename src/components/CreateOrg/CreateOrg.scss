@@ -125,6 +125,10 @@
               width: 120px;
               margin-right: 1rem;
 
+              div {
+                margin-right: 4px;
+              }
+
               &:hover {
                 background: var(--themeColorDark);
               }

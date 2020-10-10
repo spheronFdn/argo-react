@@ -1,0 +1,79 @@
+.deploy-steps-one {
+  margin-top: 3rem;
+  animation: fl-fade-in 1s ease;
+  -webkit-animation: fl-fade-in 1s ease;
+  animation-duration: 2s;
+  .deploy-steps-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .path-line {
+      background: linear-gradient(#4a79bc60, #c34f88);
+      padding-right: 1px;
+      width: 1px;
+      align-self: center;
+      height: 100px;
+      margin-bottom: -4px;
+    }
+    .numbers {
+      height: 80px;
+      width: 80px;
+    }
+  }
+
+  .deploy-steps-title {
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    font-size: 38px;
+    letter-spacing: 8px;
+    margin-top: 0.5rem;
+    text-align: center;
+    background: -webkit-linear-gradient(180deg, #3664ae, #ce4983);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .deploy-steps-description {
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff;
+    margin: 1.65rem;
+    margin-bottom: 0px;
+    font-size: 18px;
+  }
+
+  .jamstack-support-container {
+    .jamstack-support-title {
+      color: rgba(255, 255, 255, 0.7);
+      font-family: Rubik, sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      letter-spacing: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .jamstack-support-icons-container {
+      display: flex;
+      justify-content: center;
+      .jamstack-support-icon {
+        width: 124px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        img {
+          width: 60px;
+          height: 60px;
+        }
+      }
+
+      .icon-disabled {
+        opacity: 0.45;
+      }
+    }
+  }
+}

@@ -184,6 +184,43 @@
               }
             }
           }
+
+          .misc-text {
+            color: var(--grey3Color);
+            font-size: 17px;
+            line-height: 24px;
+            margin: 3rem 0px;
+
+            a {
+              text-decoration: none;
+              color: var(--textColor);
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+
+          .hor-line {
+            height: 1px;
+            background-color: var(--grey1Color);
+            border: none;
+          }
+
+          .login-text {
+            font-size: 17px;
+            line-height: 24px;
+            margin: 1.5rem 0px;
+
+            a {
+              text-decoration: none;
+              color: var(--themeColor);
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
         }
       }
     }

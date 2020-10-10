@@ -1,23 +1,40 @@
 import React, { useContext } from "react";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
+import {
+  IActionModel,
+  IRepository,
+  IStateModel,
+} from "../../../../model/hooks.model";
+import TimeAgo from "javascript-time-ago";
 import "./Overview.scss";
 
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
+
+// Add locale-specific relative date/time formatting rules.
+TimeAgo.addLocale(en);
+
 const Overview = () => {
+  const timeAgo = new TimeAgo("en-US");
+
   const history = useHistory();
-  const { selectedOrg, userLoading } = useContext(StateContext);
+
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
+
   return (
     <div className="Overview">
       <div className="overview-container">
         <div className="overview-team-avatar-container">
-          {!userLoading ? (
+          {!orgLoading ? (
             <img
               src={
                 selectedOrg?.profile.image
                   ? selectedOrg.profile.image
-                  : "https://avatars1.githubusercontent.com/u/70075140?s=200&v=4"
+                  : require("../../../../assets/png/default_icon.png")
               }
               alt="org"
               className="team-avatar"
@@ -28,13 +45,13 @@ const Overview = () => {
         </div>
         <div className="overview-team-details-container">
           <h1 className="overview-team-name">
-            {!userLoading ? (
+            {!orgLoading ? (
               selectedOrg?.profile.name
             ) : (
               <Skeleton width={150} duration={2} />
             )}
           </h1>
-          {!userLoading ? (
+          {!orgLoading ? (
             <div className="overview-team-misc-container">
               <div className="overview-team-detail-container">
                 <label className="overview-team-detail-label">Members</label>
@@ -66,26 +83,61 @@ const Overview = () => {
           )}
         </div>
         <div className="buttons-container">
-          <button type="button" className="secondary-button">
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={(e) => history.push("/dashboard/members/new")}
+          >
             Invite Members
           </button>
-          <button type="button" className="primary-button">
+          <button
+            type="button"
+            className="primary-button"
+            onClick={(e) => {
+              setRepoForTriggerDeployment(null);
+              history.push("/deploy/new");
+            }}
+          >
             Deploy
           </button>
         </div>
       </div>
       <div className="project-list-container">
         <ul className="project-list">
-          {!userLoading ? (
+          {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
-              selectedOrg?.repositories?.map((repo, index) => (
-                <ProjectItem index={index} type="filled" />
+              selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
+                <ProjectItem
+                  index={index}
+                  type="filled"
+                  projectName={repo.name}
+                  latestDeployment={repo.sitePreview}
+                  githubUrl={repo.url}
+                  updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
+                  repo={repo}
+                />
               ))
             ) : (
-              <ProjectItem index={1} type="empty" />
+              <ProjectItem
+                index={1}
+                type="empty"
+                projectName={null}
+                latestDeployment={null}
+                githubUrl={null}
+                updateTime={null}
+                repo={null}
+              />
             )
           ) : (
-            <ProjectItem index={1} type="skeleton" />
+            <ProjectItem
+              index={1}
+              type="skeleton"
+              projectName={null}
+              latestDeployment={null}
+              githubUrl={null}
+              updateTime={null}
+              repo={null}
+            />
           )}
         </ul>
       </div>

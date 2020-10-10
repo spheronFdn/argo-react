@@ -1,0 +1,96 @@
+.AllDeployments {
+  .site-deployment-card-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    color: var(--grey4Color);
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-top: 24px;
+    min-width: 264px;
+    padding: 24px;
+    min-height: 152px;
+
+    .site-deployment-header-title {
+      padding: 0.6rem 24px;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--grey2Color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .trigger-deploy-button {
+        padding: 8px 20px;
+        font-size: 0.95rem;
+        min-width: 64px;
+        box-sizing: border-box;
+        font-style: normal;
+        line-height: 1.23;
+        white-space: nowrap;
+        border-radius: 4px;
+        font-weight: 600;
+        letter-spacing: normal;
+        text-transform: none;
+        background-color: var(--themeColor);
+        color: var(--white);
+        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+          0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+        border: 0px;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.25s linear;
+
+        &:hover {
+          transform: scale(1.015);
+        }
+        &:active {
+          background-color: var(--themeColorDark);
+        }
+      }
+    }
+  }
+
+  .deploy-container {
+    padding: 0 !important;
+    min-height: auto !important;
+
+    .deploy-summary-item {
+      padding: 1rem;
+
+      .deploy-summary-body-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 0.5rem;
+        &:nth-last-child(1) {
+          margin-bottom: 0.5rem;
+        }
+        label {
+          color: var(--grey3Color);
+          width: 40%;
+
+          label {
+            font-size: 14px;
+          }
+        }
+
+        span {
+          margin-left: 8px;
+          font-weight: 500;
+        }
+
+        a {
+          text-decoration: none;
+          color: var(--logoColor);
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

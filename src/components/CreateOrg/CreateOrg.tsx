@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { RootHeader } from "..";
+import { BounceLoader } from "react-spinners";
+import { RootHeader } from "../SharedComponents";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./CreateOrg.scss";
@@ -13,8 +14,9 @@ function CreateOrg() {
   const [orgUsername, setOrgUsername] = useState<string>("");
   const [orgAvatar, setOrgAvatar] = useState<string>("");
   const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
+  const [createOrgLoading, setCreateOrgLoading] = useState<boolean>(false);
 
-  const fileUpload = (file: any) => {
+  const fileUpload = (file: Blob) => {
     const reader: FileReader = new window.FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => saveURL(reader);
@@ -33,12 +35,14 @@ function CreateOrg() {
   }, [orgUsername, orgName]);
 
   const createOrg = () => {
+    setCreateOrgLoading(true);
     const organization = {
       username: orgUsername,
       name: orgName,
       image: orgAvatar,
     };
     ApiService.createOrganization(organization).subscribe((res) => {
+      setCreateOrgLoading(false);
       fetchUser(res.id);
       history.push("/dashboard");
     });
@@ -123,6 +127,9 @@ function CreateOrg() {
                   disabled={!isFormFilled}
                   onClick={createOrg}
                 >
+                  {createOrgLoading && (
+                    <BounceLoader size={20} color={"#fff"} loading={true} />
+                  )}
                   Save
                 </button>
                 <button

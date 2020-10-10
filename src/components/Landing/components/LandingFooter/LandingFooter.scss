@@ -1,0 +1,39 @@
+.landing-footer {
+  background-color: #040c34;
+  padding: 1.2rem;
+  .landing-footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    color: #999999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fl-fade-in 1s ease;
+    -webkit-animation: fl-fade-in 1s ease;
+    animation-duration: 2s;
+
+    a {
+      color: #dddddd;
+      text-decoration: none;
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+
+    .landing-footer-container-right {
+      display: flex;
+      .landing-footer-icon {
+        color: #999999;
+        font-size: 20px;
+        display: flex;
+        cursor: pointer;
+        margin-left: 1rem;
+
+        &:hover {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

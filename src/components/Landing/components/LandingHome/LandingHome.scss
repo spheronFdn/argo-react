@@ -1,0 +1,86 @@
+.landing-home {
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../../../assets/jpg/uni.jpg");
+  background-color: #040c34;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+  background-blend-mode: lighten;
+  position: relative;
+  border-top: 1px solid var(--white);
+  border-bottom-left-radius: 70% 10%;
+  border-bottom-right-radius: 70% 10%;
+  .gradient-layer {
+    background: linear-gradient(
+      0deg,
+      rgba(9, 9, 121, 0) 65%,
+      rgba(54, 100, 174, 1) 100%
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .landing-home-body {
+    text-align: center;
+    z-index: 9999;
+    h1 {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.3;
+      font-family: Inter, sans-serif;
+      font-weight: 700;
+      font-size: 66px;
+    }
+
+    .alpha-text {
+      color: var(--white);
+      font-style: italic;
+      font-size: 17px;
+    }
+
+    .heading-sec {
+      font-weight: 500;
+      width: fit-content;
+      margin: 0 auto;
+      overflow: hidden;
+      height: 85px;
+    }
+
+    .primary-button {
+      background: #040c34;
+      text-decoration: none;
+      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.12);
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      border: 0;
+      border-radius: 8px;
+      padding: 0.75rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid transparent;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      margin: 1rem auto;
+      margin-top: 2rem;
+
+      .button-icon {
+        margin-right: 1rem;
+      }
+
+      &:hover {
+        background: #735386;
+      }
+    }
+  }
+}

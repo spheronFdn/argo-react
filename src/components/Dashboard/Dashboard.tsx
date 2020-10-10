@@ -1,13 +1,13 @@
 import React from "react";
 import "./Dashboard.scss";
-import { Header } from "./components";
-import { Route } from "react-router-dom";
+import { Header } from "../SharedComponents";
+import { Redirect, Route } from "react-router-dom";
 import { InviteMembers, Members, Overview, Settings } from "./routes";
 
 function Dashboard() {
   return (
     <div className="Dashboard">
-      <Header />
+      <Header parent="dashboard" />
       <main className="app-main">
         <div className="home-container">
           <Route path="/dashboard/overview" exact render={() => <Overview />} />
@@ -17,6 +17,16 @@ function Dashboard() {
             path="/dashboard/members/new"
             exact
             render={() => <InviteMembers />}
+          />
+          <Route
+            path="/dashboard/settings/:slug"
+            exact
+            render={() => <Settings />}
+          />
+          <Route
+            path="/dashboard/settings"
+            exact
+            render={() => <Redirect to={`/dashboard/settings/general`} />}
           />
         </div>
       </main>

@@ -6,24 +6,28 @@ import { StateContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
-// import Skeleton from "react-loading-skeleton";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const InviteMembers = () => {
   const history = useHistory();
-  const { selectedOrg } = useContext(StateContext);
-  const [inviteMembers, setInviteMembers] = useState("");
+  const { selectedOrg, user } = useContext(StateContext);
+  const [inviteMembers, setInviteMembers] = useState<string>("");
+  const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>(false);
 
   const sendInvite = () => {
+    setInviteMembersLoading(true);
     const members = inviteMembers.split(",").map((member) => member.trim());
     const invites = members.map((member) => ({
       organization: selectedOrg?._id,
       orgName: selectedOrg?.profile.name,
       userEmail: member,
+      invitingUser: user?.argo_profile.name,
     }));
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(
       (res) =>
         res.subscribe((data) => {
-          history.goBack();
+          setInviteMembersLoading(false);
+          history.push("/dashboard/members");
         }),
     );
   };
@@ -61,6 +65,9 @@ const InviteMembers = () => {
             </div>
             <div className="button-container">
               <button type="button" className="primary-button" onClick={sendInvite}>
+                {inviteMemberLoading && (
+                  <BounceLoader size={20} color={"#fff"} loading={true} />
+                )}
                 Send
               </button>
               <button

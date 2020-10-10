@@ -1,18 +1,23 @@
 import React from "react";
 import "./SignUp.scss";
-import { SignUpListItem, GithubIcon, GitlabIcon } from "./components";
+import {
+  SignUpListItem,
+  GithubIcon,
+  // GitlabIcon
+} from "./components";
 import Logo from "../Logo";
-import { BASE_URL } from "../../config";
+import config from "../../config";
+import { Link } from "react-router-dom";
 
 function SignUp() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${BASE_URL}/signup/github`;
+    const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
     window.open(githubSignInUrl, "_blank");
   };
-  const signInWithGitlab = async () => {
-    const gitlabSignInUrl = `${BASE_URL}/signup/gitlab`;
-    window.open(gitlabSignInUrl, "_blank");
-  };
+  // const signInWithGitlab = async () => {
+  //   const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;
+  //   window.open(gitlabSignInUrl, "_blank");
+  // };
   return (
     <div className="SignIn">
       <div className="side-backdrop"></div>
@@ -71,13 +76,22 @@ function SignUp() {
                   </span>
                   <span>Continue with Github</span>
                 </button>
-                <button className="gitlab-button" onClick={signInWithGitlab}>
+                {/* <button className="gitlab-button" onClick={signInWithGitlab}>
                   <span className="gitlab-icon">
                     <GitlabIcon />
                   </span>
                   <span>Continue with Gitlab</span>
-                </button>
+                </button> */}
               </div>
+              <p className="misc-text">
+                By clicking continue, you agree to our{" "}
+                <Link to="/">Terms of Service</Link> and{" "}
+                <Link to="/">Privacy Policy</Link>.
+              </p>
+              <hr className="hor-line" />
+              <p className="login-text">
+                Already have an account? <Link to="/login">Log in</Link>{" "}
+              </p>
             </div>
           </div>
         </div>

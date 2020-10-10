@@ -7,7 +7,6 @@
   border-radius: 8px;
   background: var(--white);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
 
   .project-item-empty {
     position: relative;
@@ -51,8 +50,12 @@
     margin: 1.5rem;
     .project-item-title {
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 500;
+      cursor: pointer;
+      overflow: hidden;
+      margin-right: 1rem;
+      text-overflow: ellipsis;
     }
 
     .project-item-visit-button {
@@ -70,7 +73,7 @@
       outline: none;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
-      width: 80px;
+      min-width: 80px;
 
       &:hover {
         color: var(--themeColor);
@@ -91,6 +94,7 @@
     display: flex;
     flex-direction: column;
     word-break: break-all;
+    flex: 1;
     .project-item-live-key {
       font-weight: 500;
     }
@@ -115,15 +119,23 @@
     border-top: 1px solid var(--grey1Color);
     border-radius: 0 0 8px 8px;
     overflow: hidden;
-    font-size: 15px;
+    font-size: 12px;
     .project-item-git-integration {
       display: flex;
       align-items: center;
       cursor: pointer;
+      flex: 1;
+      overflow: hidden;
+      margin-right: 1rem;
 
       .git-name {
         margin-left: 0.5rem;
         font-weight: 500;
+        text-decoration: none;
+        color: inherit;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       &:hover {
         text-decoration: underline;

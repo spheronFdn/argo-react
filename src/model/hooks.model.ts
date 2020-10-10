@@ -49,17 +49,33 @@ export interface IUser {
 }
 
 export interface IRepository {
+  _id?: string;
   name: string;
   url: string;
   webHook: string;
   deployments: IDeployment[];
+  updateDate: Date;
+  createDate: Date;
+  orgId: string;
+  package_manager: string;
+  build_command: string;
+  publish_dir: string;
+  branch: string;
+  sitePreview: string;
 }
 
 export interface IDeployment {
+  _id?: string;
   sitePreview: string;
   commitId: string;
-  log: string;
-  createdAt: Date;
+  log: string[];
+  createdAt: any;
+  topic: string;
+  branch: string;
+  deploymentStatus: string;
+  package_manager: string;
+  build_command: string;
+  publish_dir: string;
 }
 
 export interface IOrganization {
@@ -88,11 +104,28 @@ export interface IStateModel {
   user: IUser | null;
   selectedOrg: IOrganization | null;
   userLoading: boolean;
+  orgLoading: boolean;
+  projectLoading: boolean;
+  currentSiteDeployConfig: any;
+  currentSiteDeployLogs: any[];
+  selectedProject: IRepository | null;
+  currentSiteDeploySocketTopic: string;
+  selectedDeployment: IDeployment | null;
+  selectedRepoForTriggerDeployment: any | null;
 }
 
 export interface IActionModel {
   toggleModal: (modal: IModalModel) => void;
   fetchUser: (id?: string) => void;
-  setSelectedOrganization: (organization: IOrganization) => void;
+  setSelectedOrganization: (organization: any) => void;
   resetUser: () => void;
+  setLatestDeploymentConfig: (config: any) => void;
+  setLatestDeploymentLogs: (logs: any[]) => void;
+  setLatestDeploymentSocketTopic: (topic: string) => void;
+  setSelectedProject: (project: any) => void;
+  setPojectLoading: (loading: boolean) => void;
+  setOrgLoading: (loading: boolean) => void;
+  setSelectedDeployment: (deployment: boolean) => void;
+  fetchProject: (projectId: string) => void;
+  setRepoForTriggerDeployment: (repo: any) => void;
 }

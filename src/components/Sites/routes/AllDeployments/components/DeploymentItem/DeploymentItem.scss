@@ -1,0 +1,54 @@
+.deployment-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--grey1Color);
+  border-radius: 6px;
+  margin: 0.75rem 0px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 6px var(--grey1Color);
+  }
+  .deployment-left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1rem;
+
+    .bold-text {
+      font-weight: 500;
+    }
+
+    .commit-link {
+      text-decoration: none;
+      color: var(--logoColor);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .deployment-left-detail {
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+
+  .deployment-status {
+    color: var(--grey3Color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .deployment-status-icon {
+      display: flex;
+      div {
+        display: flex;
+        margin: -10px -10px !important;
+      }
+
+      .rocket-icon {
+        height: 16px;
+        width: 16px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
