@@ -37,7 +37,7 @@ function DeploySiteConfig() {
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
-  // const [autoPublish, setAutoPublish] = useState<boolean>(true);
+  const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [projectName, setProjectName] = useState<string>("");
   const [owner, setOwner] = useState<any>();
@@ -149,6 +149,7 @@ function DeploySiteConfig() {
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
+      owner: selectedRepoOwner.name,
       orgId: owner._id,
       project_name: projectName,
       branch,
@@ -156,7 +157,7 @@ function DeploySiteConfig() {
       package_manager: packageManager,
       build_command: buildCommand,
       publish_dir: publishDirectory,
-      auto_publish: false,
+      auto_publish: autoPublish,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
       setLatestDeploymentSocketTopic(result.topic);
@@ -273,7 +274,7 @@ function DeploySiteConfig() {
                     <label className="deploy-site-item-subtitle">
                       Choose the repository you want to link to your site on ArGo.
                     </label>
-                    {/* <div className="webhook-confirm-container">
+                    <div className="webhook-confirm-container">
                       <span className="confirm-checkbox">
                         <input
                           type="checkbox"
@@ -285,7 +286,7 @@ function DeploySiteConfig() {
                         Do you want to setup github webhook? When you push to Git we
                         run your build tool on our services and deploy the result.
                       </span>
-                    </div> */}
+                    </div>
                     <div className="deploy-site-item-repo-list-container">
                       <div className="deploy-site-item-repo-header">
                         <div
