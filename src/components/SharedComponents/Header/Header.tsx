@@ -1,20 +1,27 @@
 import React, { useContext } from "react";
 import "./Header.scss";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { OrganizationDropdown, ProfileDropdown } from "./components";
-import { ActionContext, StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../hooks";
 import Skeleton from "react-loading-skeleton";
-import { IActionModel, IStateModel } from "../../../../model/hooks.model";
+import { IActionModel, IStateModel } from "../../../model/hooks.model";
+import IHeaderProps from "./model";
 
-const Header = () => {
+const Header: React.FC<IHeaderProps> = ({ parent }) => {
   const history = useHistory();
-  const { user, selectedOrg, userLoading, orgLoading } = useContext<IStateModel>(
-    StateContext,
-  );
+  const params = useParams<any>();
+  const {
+    user,
+    selectedOrg,
+    userLoading,
+    selectedProject,
+    orgLoading,
+    projectLoading,
+  } = useContext<IStateModel>(StateContext);
   const { fetchUser } = useContext<IActionModel>(ActionContext);
 
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
@@ -27,7 +34,7 @@ const Header = () => {
             <div className="app-logo-container">
               <Link to="/" onClick={(e) => fetchUser(selectedOrg?._id)}>
                 <img
-                  src={require("../../../../assets/png/logo-white.png")}
+                  src={require("../../../assets/png/logo-white.png")}
                   alt="logo"
                   className="logo-image"
                 />
@@ -40,7 +47,7 @@ const Header = () => {
                   src={
                     selectedOrg?.profile.image
                       ? selectedOrg.profile.image
-                      : require("../../../../assets/png/default_icon.png")
+                      : require("../../../assets/png/default_icon.png")
                   }
                   alt="org"
                   className="team-avatar"
@@ -69,6 +76,24 @@ const Header = () => {
                 <UpDownArrow />
               </div>
             </div>
+            {parent === "sites" && (
+              <div className="teams-container">
+                <h4
+                  className={`team-name ${!projectLoading ? "project-name" : ""}`}
+                  onClick={(e) =>
+                    history.push(
+                      `/org/${params.orgid}/sites/${params.slug1}/overview`,
+                    )
+                  }
+                >
+                  {!projectLoading ? (
+                    selectedProject?.name
+                  ) : (
+                    <Skeleton width={140} duration={2} />
+                  )}
+                </h4>
+              </div>
+            )}
           </div>
           <div className="user-profile-container">
             {/* <div className="menu-container">
@@ -98,7 +123,7 @@ const Header = () => {
             <OrganizationDropdown setShowDropdown={setShowOrgDropdown} />
           )}
         </div>
-        <Navbar />
+        <Navbar parent={parent} />
       </div>
     </header>
   );

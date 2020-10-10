@@ -5,8 +5,8 @@ import { OrganizationDropdownItem } from "./components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
-import { ActionContext, StateContext } from "../../../../../../hooks";
-import { IOrganization } from "../../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../hooks";
+import { IOrganization } from "../../../../../model/hooks.model";
 
 const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
   setShowDropdown,
@@ -30,11 +30,12 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
               name: org.profile.name,
               avatar: org.profile.image
                 ? org.profile.image
-                : require("../../../../../../assets/png/default_icon.png"),
+                : require("../../../../../assets/png/default_icon.png"),
             }}
             key={index}
             onClick={(e: any) => {
               setSelectedOrganization(org);
+              history.push("/dashboard");
               setShowDropdown(false);
             }}
           />

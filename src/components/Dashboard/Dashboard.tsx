@@ -1,13 +1,13 @@
 import React from "react";
 import "./Dashboard.scss";
-import { Header } from "./components";
+import { Header } from "../SharedComponents";
 import { Redirect, Route } from "react-router-dom";
 import { InviteMembers, Members, Overview, Settings } from "./routes";
 
 function Dashboard() {
   return (
     <div className="Dashboard">
-      <Header />
+      <Header parent="dashboard" />
       <main className="app-main">
         <div className="home-container">
           <Route path="/dashboard/overview" exact render={() => <Overview />} />

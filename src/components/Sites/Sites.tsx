@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import "./Sites.scss";
-import { Header } from "./components";
+import { Header } from "../SharedComponents";
 import { Redirect, Route, useParams } from "react-router-dom";
 import { AllDeployments, Deployment, Overview, Settings } from "./routes";
 import { ActionContext, StateContext } from "../../hooks";
@@ -26,7 +26,7 @@ function Sites() {
 
   return (
     <div className="Sites">
-      <Header />
+      <Header parent="sites" />
       <main className="app-main">
         <div className="home-container">
           <Route
