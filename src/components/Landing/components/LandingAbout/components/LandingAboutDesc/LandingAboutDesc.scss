@@ -1,0 +1,15 @@
+.landing-about-paragraphs {
+  margin: 2rem;
+  margin-right: 12%;
+  margin-bottom: 0%;
+  margin-left: 12%;
+
+  animation: fl-fade-in 1s ease;
+  -webkit-animation: fl-fade-in 1s ease;
+  animation-duration: 2s;
+
+  p {
+    color: #ffffff;
+    font-size: 20px;
+  }
+}

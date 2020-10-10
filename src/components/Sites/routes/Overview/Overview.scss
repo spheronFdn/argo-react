@@ -1,0 +1,64 @@
+.SiteOverview {
+  .max-width-set {
+    max-width: 50%;
+  }
+  .site-overview-card-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    color: var(--grey4Color);
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-top: 24px;
+    min-width: 264px;
+    padding: 24px;
+    min-height: 186px;
+
+    .site-overview-header-title {
+      padding: 0.6rem 24px;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--grey2Color);
+    }
+  }
+
+  .deploy-container {
+    padding: 0 !important;
+    min-height: auto !important;
+
+    .deploy-summary-item {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 1rem;
+
+      .deploy-summary-body-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 0.5rem;
+        label {
+          color: var(--grey3Color);
+          width: 30%;
+        }
+
+        span {
+          font-weight: 500;
+        }
+
+        a {
+          text-decoration: none;
+          color: var(--logoColor);
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
