@@ -5,7 +5,7 @@ import {
   // , GitlabIcon
 } from "./components";
 import config from "../../config";
-import { RootHeader } from "..";
+import { RootHeader } from "../SharedComponents";
 
 function Login() {
   const signInWithGithub = async () => {

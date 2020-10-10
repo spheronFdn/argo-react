@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { RootHeader } from "..";
+import { RootHeader } from "../SharedComponents";
 import { ApiService } from "../../services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

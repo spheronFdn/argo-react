@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
-import { RootHeader } from "..";
+import { RootHeader } from "../SharedComponents";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./CreateOrg.scss";

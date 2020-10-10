@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import "./ProfileDropdown.scss";
 import IProfileDropdownProps from "./model";
 import { useHistory } from "react-router-dom";
-import { ApiService } from "../../../../services";
+import { ApiService } from "../../../../../services";
 import { Subscription } from "rxjs";
-import { ActionContext } from "../../../../hooks";
+import { ActionContext } from "../../../../../hooks";
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) => {
   let logoutSvc: Subscription;

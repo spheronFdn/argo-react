@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { MenuDropdown, ProfileDropdown } from "./components";
-import { StateContext } from "../../hooks";
+import { StateContext } from "../../../hooks";
 import Skeleton from "react-loading-skeleton";
 import { IRootHeaderModel } from "./model";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +23,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
             <div className="app-logo-container">
               <Link to="/">
                 <img
-                  src={require("../../assets/png/logo_text.png")}
+                  src={require("../../../assets/png/logo_text.png")}
                   alt="logo"
                   className="logo-image"
                 />

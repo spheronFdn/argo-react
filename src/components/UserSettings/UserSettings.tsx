@@ -1,5 +1,5 @@
 import React from "react";
-import { RootHeader } from "..";
+import { RootHeader } from "../SharedComponents";
 import "./UserSettings.scss";
 import { UserDetailsCard } from "./components";
 import { SettingsGeneral } from "./routes";

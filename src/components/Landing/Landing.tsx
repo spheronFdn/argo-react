@@ -1,6 +1,6 @@
 import React from "react";
 import "./Landing.scss";
-import RootHeader from "../RootHeader";
+import { RootHeader } from "../SharedComponents";
 import {
   LandingAbout,
   LandingDeploy,
