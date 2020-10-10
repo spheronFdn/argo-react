@@ -16,7 +16,7 @@ function CreateOrg() {
   const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
   const [createOrgLoading, setCreateOrgLoading] = useState<boolean>(false);
 
-  const fileUpload = (file: any) => {
+  const fileUpload = (file: Blob) => {
     const reader: FileReader = new window.FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => saveURL(reader);

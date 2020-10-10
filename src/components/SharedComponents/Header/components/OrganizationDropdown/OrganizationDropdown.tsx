@@ -33,7 +33,7 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
                 : require("../../../../../assets/png/default_icon.png"),
             }}
             key={index}
-            onClick={(e: any) => {
+            onClick={(e: Event) => {
               setSelectedOrganization(org);
               history.push("/dashboard");
               setShowDropdown(false);

@@ -61,6 +61,7 @@ export interface IRepository {
   build_command: string;
   publish_dir: string;
   branch: string;
+  sitePreview: string;
 }
 
 export interface IDeployment {

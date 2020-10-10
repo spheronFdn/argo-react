@@ -43,7 +43,7 @@ const SettingsGeneral = () => {
     }
   }, [selectedOrg, orgUsername, orgName, orgAvatar]);
 
-  const fileUpload = (file: any) => {
+  const fileUpload = (file: Blob) => {
     const reader: FileReader = new window.FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => saveURL(reader);

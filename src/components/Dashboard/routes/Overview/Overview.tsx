@@ -3,7 +3,11 @@ import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import { IActionModel, IStateModel } from "../../../../model/hooks.model";
+import {
+  IActionModel,
+  IRepository,
+  IStateModel,
+} from "../../../../model/hooks.model";
 import TimeAgo from "javascript-time-ago";
 import "./Overview.scss";
 
@@ -102,7 +106,7 @@ const Overview = () => {
         <ul className="project-list">
           {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
-              selectedOrg?.repositories?.map((repo: any, index: number) => (
+              selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
                 <ProjectItem
                   index={index}
                   type="filled"

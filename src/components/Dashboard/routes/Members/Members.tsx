@@ -6,12 +6,13 @@ import { ApiService } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { IUser } from "../../../../model/hooks.model";
+import { IMemberModel } from "../../../../model/member.model";
 
 const Members = () => {
   const history = useHistory();
   const { userLoading, selectedOrg } = useContext(StateContext);
   const [memberLoading, setMemberLoading] = useState(false);
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<IMemberModel[]>([]);
   useEffect(() => {
     setMemberLoading(true);
 
@@ -19,7 +20,7 @@ const Members = () => {
       const subscription = ApiService.getOrganization(
         `${selectedOrg?._id}`,
       ).subscribe((data) => {
-        const members = data.users.map((user: IUser) => ({
+        const members: IMemberModel[] = data.users.map((user: IUser) => ({
           name: user.argo_profile.name,
           email: user.argo_profile.email,
           avatar: user.argo_profile.avatar,
@@ -61,7 +62,7 @@ const Members = () => {
               </div>
               {!memberLoading ? (
                 <div className="tbody">
-                  {members.map((member: any, index: number) => (
+                  {members.map((member: IMemberModel, index: number) => (
                     <div className="tr" key={index}>
                       <div className="td">
                         <div className="avatar-container">
