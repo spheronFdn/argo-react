@@ -7,16 +7,18 @@ import {
   faArrowLeft,
   faCheck,
   faChevronDown,
-  faChevronUp,
+  // faChevronUp,
   // faExclamationCircle,
   // faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
-import { RepoOrgDropdown, RepoItem } from "./components";
-import Skeleton from "react-loading-skeleton";
+// import { RepoOrgDropdown, RepoItem } from "./components";
+// import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
+import { GithubIcon } from "../SignUp/components";
+import config from "../../config";
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -26,20 +28,20 @@ function DeploySiteConfig() {
   >(StateContext);
   const {
     setLatestDeploymentSocketTopic,
-    setSelectedProject,
+    // setSelectedProject,
     setLatestDeploymentConfig,
     setSelectedOrganization,
   } = useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
-  const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
-  const [reposDetails, setReposDetails] = useState<any[]>([]);
+  // const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
+  // const [reposDetails, setReposDetails] = useState<any[]>([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
-  const [repoLoading, setRepoLoading] = useState<boolean>(true);
+  // const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
   const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
-  const [projectName, setProjectName] = useState<string>("");
+  // const [projectName, setProjectName] = useState<string>("");
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
   const [framework, setFramework] = useState<string>("Create React App");
@@ -74,9 +76,9 @@ function DeploySiteConfig() {
         ...owner,
         repos: repositories.filter((repo) => repo.owner.name === owner.name),
       }));
-      setReposDetails(completeRepoData);
+      // setReposDetails(completeRepoData);
       setSelectedRepoOwner(completeRepoData[0]);
-      setRepoLoading(false);
+      // setRepoLoading(false);
     });
   }, []);
 
@@ -132,16 +134,16 @@ function DeploySiteConfig() {
     }
   }, [selectedRepoForTriggerDeployment]);
 
-  const selectRepoOwner = (repoOwner: any) => {
-    setSelectedRepoOwner(repoOwner);
-    setShowRepoOrgDropdown(false);
-  };
+  // const selectRepoOwner = (repoOwner: any) => {
+  //   setSelectedRepoOwner(repoOwner);
+  //   setShowRepoOrgDropdown(false);
+  // };
 
-  const selectRepositories = (repo: any) => {
-    setSelectedRepo(repo);
-    setProjectName(repo.name);
-    setCreateDeployProgress(2);
-  };
+  // const selectRepositories = (repo: any) => {
+  //   setSelectedRepo(repo);
+  //   setProjectName(repo.name);
+  //   setCreateDeployProgress(2);
+  // };
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
@@ -151,7 +153,7 @@ function DeploySiteConfig() {
       folder_name: selectedRepo.name,
       owner: selectedRepoOwner.name,
       orgId: owner._id,
-      project_name: projectName,
+      // project_name: projectName,
       branch,
       framework,
       package_manager: packageManager,
@@ -161,13 +163,18 @@ function DeploySiteConfig() {
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
       setLatestDeploymentSocketTopic(result.topic);
-      setSelectedProject({ name: projectName });
+      // setSelectedProject({ name: projectName });
       setLatestDeploymentConfig(deployment);
       setStartDeploymentLoading(false);
       history.push(
         `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
       );
     });
+  };
+
+  const signInWithGithub = async () => {
+    const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
+    window.open(githubSignInUrl, "_blank");
   };
 
   // load file to json
@@ -287,7 +294,15 @@ function DeploySiteConfig() {
                         run your build tool on our services and deploy the result.
                       </span>
                     </div>
-                    <div className="deploy-site-item-repo-list-container">
+                    <div className="deployment-provider-buttons">
+                      <button className="github-button" onClick={signInWithGithub}>
+                        <span className="github-icon">
+                          <GithubIcon />
+                        </span>
+                        <span>Github</span>
+                      </button>
+                    </div>
+                    {/* <div className="deploy-site-item-repo-list-container">
                       <div className="deploy-site-item-repo-header">
                         <div
                           className="deploy-site-item-repo-header-left"
@@ -325,7 +340,7 @@ function DeploySiteConfig() {
                           </span>
                         </div>
                         <div className="deploy-site-item-repo-header-right">
-                          {/* <div className="deploy-site-item-repo-search-container">
+                          <div className="deploy-site-item-repo-search-container">
                             <span className="deploy-site-item-repo-search-icon">
                               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                             </span>
@@ -334,7 +349,7 @@ function DeploySiteConfig() {
                               className="deploy-site-item-repo-search-input"
                               placeholder="Search repos"
                             />
-                          </div> */}
+                          </div>
                         </div>
                         {showRepoOrgDropdown && (
                           <RepoOrgDropdown
@@ -373,7 +388,7 @@ function DeploySiteConfig() {
                           </>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 )}
                 {createDeployProgress === 2 && (
