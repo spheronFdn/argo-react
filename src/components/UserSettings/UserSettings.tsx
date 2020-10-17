@@ -1,9 +1,10 @@
 import React from "react";
-import { RootHeader } from "../SharedComponents";
 import "./UserSettings.scss";
-import { UserDetailsCard } from "./components";
 import { SettingsGeneral } from "./routes";
 import { Route, useHistory, useLocation } from "react-router-dom";
+
+const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const UserDetailsCard = React.lazy(() => import("./components/UserDetailsCard"));
 
 function UserSettings() {
   const location = useLocation();

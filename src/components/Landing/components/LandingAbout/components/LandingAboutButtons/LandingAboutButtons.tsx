@@ -9,7 +9,9 @@ const LandingAboutButtons = () => {
       <button
         type="button"
         className="primary-button"
-        onClick={(e) => window.open("https://github.com/argoapp-live", "_blank")}
+        onClick={(e) =>
+          window.open("https://github.com/argoapp-live", "_blank", "noopener")
+        }
       >
         <span className="button-icon">
           <FontAwesomeIcon icon={faGithub} />
@@ -19,10 +21,15 @@ const LandingAboutButtons = () => {
       <button
         type="button"
         className="primary-button white-button"
-        onClick={(e) => window.open("https://www.arweave.org", "_blank")}
+        onClick={(e) => window.open("https://www.arweave.org", "_blank", "noopener")}
       >
         <span className="button-icon">
-          <img src={require("../../../../../../assets/png/ar_light.png")} alt="ar" />
+          <img
+            src={require("../../../../../../assets/png/ar_light.png")}
+            alt="ar"
+            height={20}
+            width={20}
+          />
         </span>
         <span>Learn More about Arweave</span>
       </button>

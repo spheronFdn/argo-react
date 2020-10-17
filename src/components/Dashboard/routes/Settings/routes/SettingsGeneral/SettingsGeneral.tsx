@@ -168,6 +168,8 @@ const SettingsGeneral = () => {
                       }
                       alt="avatar"
                       className="settings-avatar"
+                      height={64}
+                      width={64}
                     />
                   </>
                 ) : (
