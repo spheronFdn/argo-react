@@ -13,12 +13,11 @@ import { useHistory, useParams } from "react-router-dom";
 import { ApiService } from "../../../../services";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "javascript-time-ago";
+import Lottie from "react-lottie";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
 import config from "../../../../config";
-
-const Lottie = React.lazy(() => import("react-lottie"));
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
