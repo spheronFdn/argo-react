@@ -64,7 +64,7 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
           font-size: 14px !important;
         }
 
-        .deploy-steps {
+        .deploy-steps-one {
           .deploy-steps-title {
             font-size: 32px !important;
           }
@@ -89,6 +89,16 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
               }
             }
           }
+        }
+
+        .deploy-steps-two {
+          .deploy-steps-title {
+            font-size: 32px !important;
+          }
+
+          .deploy-steps-description {
+            font-size: 14px !important;
+          }
 
           .deploy-steps-features-container {
             .deploy-steps-feature {
@@ -102,11 +112,11 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
 
     .landing-about {
       .landing-about-container {
-        .explore-text {
+        .landing-about-top-text {
           font-size: 16px !important;
         }
 
-        h1 {
+        .landing-about-title {
           font-size: 36px !important;
         }
 
@@ -116,7 +126,7 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
           }
         }
 
-        .button-container {
+        .landing-about-button-container {
           .primary-button {
             padding: 0.75rem !important;
             font-size: 13px !important;
@@ -166,7 +176,7 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
           font-size: 18px !important;
         }
 
-        .deploy-steps {
+        .deploy-steps-one {
           .deploy-steps-title {
             font-size: 36px !important;
           }
@@ -191,7 +201,15 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
               }
             }
           }
+        }
+        .deploy-steps-two {
+          .deploy-steps-title {
+            font-size: 36px !important;
+          }
 
+          .deploy-steps-description {
+            font-size: 16px !important;
+          }
           .deploy-steps-features-container {
             .deploy-steps-feature {
               margin: 1rem !important;
@@ -204,11 +222,11 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
 
     .landing-about {
       .landing-about-container {
-        .explore-text {
+        .landing-about-top-text {
           font-size: 22px !important;
         }
 
-        h1 {
+        .landing-about-title {
           font-size: 42px !important;
         }
 
@@ -218,7 +236,7 @@ $information-pad: "only screen and (max-width : 1024px) and (min-width: 512px)";
           }
         }
 
-        .button-container {
+        .landing-about-button-container {
           .primary-button {
             padding: 0.75rem !important;
             font-size: 13px !important;

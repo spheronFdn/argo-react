@@ -38,6 +38,8 @@ const Overview = () => {
               }
               alt="org"
               className="team-avatar"
+              height={120}
+              width={120}
             ></img>
           ) : (
             <Skeleton circle={true} height={120} width={120} duration={2} />
@@ -107,19 +109,19 @@ const Overview = () => {
           {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
               selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
-                <ProjectItem
-                  index={index}
-                  type="filled"
-                  projectName={repo.name}
-                  latestDeployment={repo.sitePreview}
-                  githubUrl={repo.url}
-                  updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
-                  repo={repo}
-                />
+                <div key={index}>
+                  <ProjectItem
+                    type="filled"
+                    projectName={repo.name}
+                    latestDeployment={repo.sitePreview}
+                    githubUrl={repo.url}
+                    updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
+                    repo={repo}
+                  />
+                </div>
               ))
             ) : (
               <ProjectItem
-                index={1}
                 type="empty"
                 projectName={null}
                 latestDeployment={null}
@@ -130,7 +132,6 @@ const Overview = () => {
             )
           ) : (
             <ProjectItem
-              index={1}
               type="skeleton"
               projectName={null}
               latestDeployment={null}

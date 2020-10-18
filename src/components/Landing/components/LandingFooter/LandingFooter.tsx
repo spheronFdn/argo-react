@@ -28,13 +28,17 @@ const LandingFooter = () => {
         <div className="landing-footer-container-right">
           <div
             className="landing-footer-icon"
-            onClick={(e) => window.open("https://github.com/argoapp-live", "_blank")}
+            onClick={(e) =>
+              window.open("https://github.com/argoapp-live", "_blank", "noopener")
+            }
           >
             <FontAwesomeIcon icon={faGithub} />
           </div>
           <div
             className="landing-footer-icon"
-            onClick={(e) => window.open("https://twitter.com/argoapplive", "_blank")}
+            onClick={(e) =>
+              window.open("https://twitter.com/argoapplive", "_blank", "noopener")
+            }
           >
             <FontAwesomeIcon icon={faTwitter} />
           </div>

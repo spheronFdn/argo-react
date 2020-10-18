@@ -1,7 +1,8 @@
 import React from "react";
 import "./Particle.scss";
-import Particles from "react-particles-js";
 import { IParticleModel } from "./model";
+
+const Particles = React.lazy(() => import("react-particles-js"));
 
 const Particle: React.FC<IParticleModel> = ({ type }) => {
   return (

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Loading from "../../../../../Loading";
 
 const GithubCallback = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const GithubCallback = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <div></div>;
+  return <Loading />;
 };
 
 export default GithubCallback;

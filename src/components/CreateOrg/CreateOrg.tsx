@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
-import { RootHeader } from "../SharedComponents";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./CreateOrg.scss";
+
+const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
 
 function CreateOrg() {
   const history = useHistory();
@@ -117,6 +118,8 @@ function CreateOrg() {
                     }
                     alt="avatar"
                     className="create-org-avatar"
+                    height={82}
+                    width={82}
                   />
                 </div>
               </div>

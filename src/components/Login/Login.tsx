@@ -1,16 +1,15 @@
 import React from "react";
 import "./Login.scss";
-import {
-  GithubIcon,
-  // , GitlabIcon
-} from "./components";
-import config from "../../config";
-import { RootHeader } from "../SharedComponents";
+
+const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const GithubIcon = React.lazy(() => import("./components/SVGIcons/GithubIcon"));
 
 function Login() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
-    window.open(githubSignInUrl, "_blank");
+    import("../../config").then((config: any) => {
+      const githubSignInUrl = `${config.default.urls.BASE_URL}/signup/github`;
+      window.open(githubSignInUrl, "_blank");
+    });
   };
   // const signInWithGitlab = async () => {
   //   const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Members.scss";
 import { StateContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
@@ -13,6 +13,9 @@ const Members = () => {
   const { userLoading, selectedOrg } = useContext(StateContext);
   const [memberLoading, setMemberLoading] = useState(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
+
+  const componentIsMounted = useRef(true);
+
   useEffect(() => {
     setMemberLoading(true);
 
@@ -20,18 +23,21 @@ const Members = () => {
       const subscription = ApiService.getOrganization(
         `${selectedOrg?._id}`,
       ).subscribe((data) => {
-        const members: IMemberModel[] = data.users.map((user: IUser) => ({
-          name: user.argo_profile.name,
-          email: user.argo_profile.email,
-          avatar: user.argo_profile.avatar,
-          username: user.argo_profile.username,
-        }));
-        setMembers(members);
-        setMemberLoading(false);
+        if (componentIsMounted.current) {
+          const members: IMemberModel[] = data.users.map((user: IUser) => ({
+            name: user.argo_profile.name,
+            email: user.argo_profile.email,
+            avatar: user.argo_profile.avatar,
+            username: user.argo_profile.username,
+          }));
+          setMembers(members);
+          setMemberLoading(false);
+        }
       });
 
       return () => {
         subscription.unsubscribe();
+        componentIsMounted.current = false;
       };
     }
   }, [selectedOrg]);
@@ -70,6 +76,8 @@ const Members = () => {
                             src={member.avatar}
                             alt="avatar"
                             className="profile-avatar"
+                            height={32}
+                            width={32}
                           />
                         </div>
                       </div>

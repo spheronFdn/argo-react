@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Deployment.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faChevronLeft, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { IActionModel, IStateModel } from "../../../../model/hooks.model";
-import Lottie from "react-lottie";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
@@ -14,6 +13,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { ApiService } from "../../../../services";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "javascript-time-ago";
+import Lottie from "react-lottie";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
@@ -31,7 +31,7 @@ const Deployment = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: animationData,
+    animationData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid",
     },
@@ -50,103 +50,110 @@ const Deployment = () => {
   const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
+  const componentIsMounted = useRef(true);
 
   useEffect(() => {
     setLatestDeploymentLogs([]);
     const socket = socketIOClient(config.urls.BACKEND_URL);
-    ApiService.getDeployment(params.deploymentid).subscribe((result) => {
-      const deployment = {
-        github_url: result.deployment.github_url,
-        branch: result.deployment.branch,
-        createdAt: result.deployment.createdAt,
-      };
-      setLatestDeploymentConfig(deployment);
-      currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
-      result.deployment.logs.forEach((logItem: any) => {
-        logItem.log.split("\n").forEach((line: string) => {
-          if (line.trim()) {
-            currentSiteDeployLogs.push({
-              log: line,
-              time: moment(logItem.time).format("hh:mm:ss A MM-DD-YYYY"),
+    const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
+      (result) => {
+        if (componentIsMounted.current) {
+          const deployment = {
+            github_url: result.deployment.github_url,
+            branch: result.deployment.branch,
+            createdAt: result.deployment.createdAt,
+          };
+          setLatestDeploymentConfig(deployment);
+          currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
+          result.deployment.logs.forEach((logItem: any) => {
+            logItem.log.split("\n").forEach((line: string) => {
+              if (line.trim()) {
+                currentSiteDeployLogs.push({
+                  log: line,
+                  time: moment(logItem.time).format("hh:mm:ss A MM-DD-YYYY"),
+                });
+              }
             });
-          }
-        });
-        setLatestDeploymentLogs(currentSiteDeployLogs);
-        scrollToWithContainer(currentSiteDeployLogs.length - 1);
-      });
-      if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
-        socket.on(result.deployment.topic, (data: any) => {
-          // console.log(data);
-          data.split("\n").forEach((line: string) => {
-            if (line.trim()) {
-              currentSiteDeployLogs.push({
-                log: line,
-                time: moment().format("hh:mm:ss A MM-DD-YYYY"),
-              });
-            }
+            setLatestDeploymentLogs(currentSiteDeployLogs);
+            scrollToWithContainer(currentSiteDeployLogs.length - 1);
           });
-          setLatestDeploymentLogs(currentSiteDeployLogs);
-          scrollToWithContainer(currentSiteDeployLogs.length - 1);
-          if (
-            currentSiteDeployLogs.length &&
-            currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
-              "https://arweave.net/",
-            ) !== -1
-          ) {
+          if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
+            socket.on(result.deployment.topic, (data: any) => {
+              // console.log(data);
+              data.split("\n").forEach((line: string) => {
+                if (line.trim()) {
+                  currentSiteDeployLogs.push({
+                    log: line,
+                    time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+                  });
+                }
+              });
+              setLatestDeploymentLogs(currentSiteDeployLogs);
+              scrollToWithContainer(currentSiteDeployLogs.length - 1);
+              if (
+                currentSiteDeployLogs.length &&
+                currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
+                  "https://arweave.net/",
+                ) !== -1
+              ) {
+                setIsDeployed(true);
+                const arweaveLink = currentSiteDeployLogs[
+                  currentSiteDeployLogs.length - 1
+                ].log.trim();
+                setDeployedLink(arweaveLink);
+                const buildMins = Number.parseInt(
+                  `${
+                    moment
+                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                      .asSeconds() / 60
+                  }`,
+                );
+                const buildSecs = Number.parseInt(
+                  `${
+                    moment
+                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                      .asSeconds() % 60
+                  }`,
+                );
+                setBuildTime({ min: buildMins, sec: buildSecs });
+              }
+            });
+            // CLEAN UP THE EFFECT
+          } else {
+            setDeployedLink(result.deployment.sitePreview);
             setIsDeployed(true);
-            const arweaveLink = currentSiteDeployLogs[
-              currentSiteDeployLogs.length - 1
-            ].log.trim();
-            setDeployedLink(arweaveLink);
             const buildMins = Number.parseInt(
               `${
                 moment
-                  .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                  .duration(
+                    moment(
+                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
+                    ).diff(moment(currentSiteDeployLogs[0].time)),
+                  )
                   .asSeconds() / 60
               }`,
             );
             const buildSecs = Number.parseInt(
               `${
                 moment
-                  .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
+                  .duration(
+                    moment(
+                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
+                    ).diff(moment(currentSiteDeployLogs[0].time)),
+                  )
                   .asSeconds() % 60
               }`,
             );
             setBuildTime({ min: buildMins, sec: buildSecs });
           }
-        });
-        // CLEAN UP THE EFFECT
-      } else {
-        setDeployedLink(result.deployment.sitePreview);
-        setIsDeployed(true);
-        const buildMins = Number.parseInt(
-          `${
-            moment
-              .duration(
-                moment(
-                  currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                ).diff(moment(currentSiteDeployLogs[0].time)),
-              )
-              .asSeconds() / 60
-          }`,
-        );
-        const buildSecs = Number.parseInt(
-          `${
-            moment
-              .duration(
-                moment(
-                  currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                ).diff(moment(currentSiteDeployLogs[0].time)),
-              )
-              .asSeconds() % 60
-          }`,
-        );
-        setBuildTime({ min: buildMins, sec: buildSecs });
-      }
-      setDeploymentLoading(false);
-    });
+          setDeploymentLoading(false);
+        }
+      },
+    );
     return () => {
       socket.disconnect();
+      deploymentSvc.unsubscribe();
+      componentIsMounted.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

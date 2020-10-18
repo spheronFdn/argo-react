@@ -27,6 +27,8 @@ const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
               src={owner.avatar}
               alt="camera"
               className="dropdown-item-org-avatar"
+              height={32}
+              width={32}
             />
             <span className="dropdown-item-org-name">{owner.name}</span>
             {selectedRepoOwner.name === owner.name && (

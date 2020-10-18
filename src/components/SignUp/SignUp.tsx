@@ -1,18 +1,17 @@
 import React from "react";
 import "./SignUp.scss";
-import {
-  SignUpListItem,
-  GithubIcon,
-  // GitlabIcon
-} from "./components";
-import Logo from "../Logo";
-import config from "../../config";
 import { Link } from "react-router-dom";
+
+const GithubIcon = React.lazy(() => import("./components/SVGIcons/GithubIcon"));
+const SignUpListItem = React.lazy(() => import("./components/SignUpListItem"));
+const Logo = React.lazy(() => import("../Logo"));
 
 function SignUp() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${config.urls.BASE_URL}/signup/github`;
-    window.open(githubSignInUrl, "_blank");
+    import("../../config").then((config: any) => {
+      const githubSignInUrl = `${config.default.urls.BASE_URL}/signup/github`;
+      window.open(githubSignInUrl, "_blank");
+    });
   };
   // const signInWithGitlab = async () => {
   //   const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;

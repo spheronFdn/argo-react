@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import config from "../../../../../../config";
+import Loading from "../../../../../Loading";
 
 const GithubSignup = () => {
   useEffect(() => {
@@ -7,11 +7,13 @@ const GithubSignup = () => {
   }, []);
 
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${config.urls.API_URL}/auth/github`;
-    window.open(githubSignInUrl, "_self");
+    import("../../../../../../config").then((config: any) => {
+      const githubSignInUrl = `${config.default.urls.API_URL}/auth/github`;
+      window.open(githubSignInUrl, "_self");
+    });
   };
 
-  return <div></div>;
+  return <Loading />;
 };
 
 export default GithubSignup;

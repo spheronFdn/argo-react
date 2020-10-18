@@ -1,8 +1,9 @@
 import React from "react";
 import "./Dashboard.scss";
-import { Header } from "../SharedComponents";
 import { Redirect, Route } from "react-router-dom";
 import { InviteMembers, Members, Overview, Settings } from "./routes";
+
+const Header = React.lazy(() => import("../SharedComponents/Header"));
 
 function Dashboard() {
   return (

@@ -26,6 +26,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   src={require("../../../assets/png/logo_text.png")}
                   alt="logo"
                   className="logo-image"
+                  height={32}
                 />
                 <span className="logo-badge">Alpha</span>
               </Link>
