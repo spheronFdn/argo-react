@@ -102,7 +102,7 @@
             }
 
             &:disabled {
-              background: var(--themeColor);
+              background: var(--primaryDisabled) !important;
               cursor: not-allowed;
             }
           }
@@ -130,7 +130,7 @@
             }
 
             &:disabled {
-              background: var(--grey2Color);
+              background: var(--grey1Color) !important;
               cursor: not-allowed;
             }
           }

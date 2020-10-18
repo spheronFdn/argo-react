@@ -18,6 +18,7 @@ const DeploySiteConfig = lazy(() => import("./components/DeploySiteConfig"));
 const Sites = lazy(() => import("./components/Sites"));
 const NotFound = lazy(() => import("./components/NotFound"));
 const ErrorBoundary = lazy(() => import("./components/ErrorBoundary"));
+const WalletRecharge = lazy(() => import("./components/WalletRecharge"));
 
 function App() {
   const history = useHistory();
@@ -266,6 +267,19 @@ function App() {
                 return localStorage.getItem("jwt-token") ? (
                   <ErrorBoundary>
                     <Sites />
+                  </ErrorBoundary>
+                ) : (
+                  <Redirect to="/login" />
+                );
+              }}
+            />
+            <Route
+              path="/wallet/recharge"
+              exact
+              render={() => {
+                return localStorage.getItem("jwt-token") ? (
+                  <ErrorBoundary>
+                    <WalletRecharge />
                   </ErrorBoundary>
                 ) : (
                   <Redirect to="/login" />

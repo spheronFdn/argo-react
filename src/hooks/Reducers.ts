@@ -13,7 +13,6 @@ const Reducers = (dispatch: any, history: any) => ({
 
     ApiService.fetchUser("1234").subscribe((response: IUserResponse) => {
       // eslint-disable-next-line no-console
-      console.log(response.user, orgId);
       if (response.user) {
         dispatch({ type: Actions.SET_USER, user: response.user });
         dispatch({

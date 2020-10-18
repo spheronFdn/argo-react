@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   IActionModel,
   IRepository,
@@ -13,6 +13,8 @@ import "./Overview.scss";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -22,11 +24,25 @@ const Overview = () => {
 
   const history = useHistory();
 
-  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading, user, userLoading } = useContext<IStateModel>(
+    StateContext,
+  );
   const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   return (
     <div className="Overview">
+      {(!user?.argo_wallet || user?.argo_wallet?.wallet_balance === 0) &&
+      !userLoading ? (
+        <div className="overview-alert">
+          <span className="exclamation-icon">
+            <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+          </span>
+          <span>
+            You do not have enough balance to deploy any site.{" "}
+            <Link to="/wallet/recharge">Please recharge now</Link>
+          </span>
+        </div>
+      ) : null}
       <div className="overview-container">
         <div className="overview-team-avatar-container">
           {!orgLoading ? (
