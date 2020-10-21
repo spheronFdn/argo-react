@@ -37,6 +37,7 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                   src={require("../../../assets/png/logo-white.png")}
                   alt="logo"
                   className="logo-image"
+                  height={32}
                 />
                 <span className="logo-badge">Alpha</span>
               </Link>

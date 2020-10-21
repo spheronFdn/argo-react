@@ -1,0 +1,25 @@
+.NotFound {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--themeColor);
+  .not-found-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--themeColor);
+    align-items: center;
+    justify-content: center;
+    color: var(--grey1Color);
+
+    h1 {
+      margin: 0;
+      font-size: 48px;
+    }
+
+    p {
+      font-size: 22px;
+      margin: 0;
+    }
+  }
+}

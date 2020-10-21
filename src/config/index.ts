@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-interface IConfig {
+export interface IConfig {
   urls: {
     BASE_URL: string;
     API_URL: string;

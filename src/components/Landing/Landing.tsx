@@ -1,13 +1,12 @@
 import React from "react";
 import "./Landing.scss";
 import { RootHeader } from "../SharedComponents";
-import {
-  LandingAbout,
-  LandingDeploy,
-  LandingFooter,
-  LandingHome,
-} from "./components";
 import LazyLoad from "react-lazyload";
+
+const LandingHome = React.lazy(() => import("./components/LandingHome"));
+const LandingFooter = React.lazy(() => import("./components/LandingFooter"));
+const LandingDeploy = React.lazy(() => import("./components/LandingDeploy"));
+const LandingAbout = React.lazy(() => import("./components/LandingAbout"));
 
 function Landing() {
   return (

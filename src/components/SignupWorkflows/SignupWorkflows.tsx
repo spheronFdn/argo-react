@@ -1,12 +1,19 @@
 import React from "react";
 import "./SignupWorkflows.scss";
 import { Route } from "react-router-dom";
-import {
-  GithubCallback,
-  GithubSignup,
-  GitlabCallback,
-  GitlabSignup,
-} from "./routes";
+
+const GithubCallback = React.lazy(
+  () => import("./routes/Github/components/GithubCallback"),
+);
+const GithubSignup = React.lazy(
+  () => import("./routes/Github/components/GithubSignup"),
+);
+const GitlabCallback = React.lazy(
+  () => import("./routes/Gitlab/components/GitlabCallback"),
+);
+const GitlabSignup = React.lazy(
+  () => import("./routes/Gitlab/components/GitlabSignup"),
+);
 
 const SignupWorkflows = () => {
   return (

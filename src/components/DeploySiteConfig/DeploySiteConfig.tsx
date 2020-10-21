@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { RootHeader } from "../SharedComponents";
 import { ApiService } from "../../services";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,6 +18,8 @@ import { IActionModel, IStateModel } from "../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
 import { GithubIcon } from "../SignUp/components";
 import config from "../../config";
+
+const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -58,28 +59,36 @@ function DeploySiteConfig() {
   // const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
 
+  const componentIsMounted = useRef(true);
+
   useEffect(() => {
-    ApiService.getAllRepos().subscribe((repos: any) => {
-      const repositories: any[] = repos.data.map((repo: any) => ({
-        clone_url: repo.clone_url,
-        name: repo.name,
-        fullName: repo.full_name,
-        private: repo.private,
-        owner: { name: repo.owner.login, avatar: repo.owner.avatar_url },
-      }));
-      const owners = repositories.flatMap((repo) => repo.owner);
-      const uniqueOwners = owners.filter(
-        (owner, index) =>
-          owners.map((owner) => owner.name).indexOf(owner.name) === index,
-      );
-      const completeRepoData = uniqueOwners.map((owner) => ({
-        ...owner,
-        repos: repositories.filter((repo) => repo.owner.name === owner.name),
-      }));
-      // setReposDetails(completeRepoData);
-      setSelectedRepoOwner(completeRepoData[0]);
-      // setRepoLoading(false);
+    const repoSvc = ApiService.getAllRepos().subscribe((repos: any) => {
+      if (componentIsMounted.current) {
+        const repositories: any[] = repos.data.map((repo: any) => ({
+          clone_url: repo.clone_url,
+          name: repo.name,
+          fullName: repo.full_name,
+          private: repo.private,
+          owner: { name: repo.owner.login, avatar: repo.owner.avatar_url },
+        }));
+        const owners = repositories.flatMap((repo) => repo.owner);
+        const uniqueOwners = owners.filter(
+          (owner, index) =>
+            owners.map((owner) => owner.name).indexOf(owner.name) === index,
+        );
+        const completeRepoData = uniqueOwners.map((owner) => ({
+          ...owner,
+          repos: repositories.filter((repo) => repo.owner.name === owner.name),
+        }));
+        // setReposDetails(completeRepoData);
+        setSelectedRepoOwner(completeRepoData[0]);
+        // setRepoLoading(false);
+     }
     });
+    return () => {
+      repoSvc.unsubscribe();
+      componentIsMounted.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -315,6 +324,8 @@ function DeploySiteConfig() {
                               src={selectedRepoOwner.avatar}
                               alt="camera"
                               className="deploy-site-item-repo-org-avatar"
+                              height={32}
+                              width={32}
                             />
                           ) : (
                             <Skeleton
