@@ -319,6 +319,55 @@
                 }
               }
 
+              .deployment-provider-buttons {
+                display: flex;
+                .github-button {
+                  position: relative;
+                  -webkit-box-align: center;
+                  align-items: center;
+                  -webkit-box-pack: center;
+                  justify-content: center;
+                  text-decoration: none;
+                  color: white;
+                  font-size: 16px;
+                  font-weight: 600;
+                  border: 0;
+                  border-radius: 8px;
+                  padding: 0.5rem 1rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border: 2px solid transparent;
+                  outline: none;
+                  cursor: pointer;
+                  transition: all 0.3s ease-in-out;
+                  color: #fff;
+                  background: #24292e;
+                  border: 1px solid #24292e;
+                  -webkit-transition: all 0.2s ease;
+                  transition: all 0.2s ease;
+                  user-select: none;
+                  cursor: pointer;
+                  overflow: hidden;
+                  outline: none;
+
+                  .github-icon {
+                    margin-right: 8px;
+                  }
+
+                  &:hover {
+                    background: lighten($color: #24292e, $amount: 15);
+                    border: 1px solid lighten($color: #24292e, $amount: 15);
+                  }
+
+                  &:disabled {
+                    background: #24292e;
+                    border: 1px solid #24292e;
+                    cursor: not-allowed;
+                  }
+                }
+              }
+
               .deploy-site-item-repo-list-container {
                 margin-top: 2rem;
                 .deploy-site-item-repo-header {
