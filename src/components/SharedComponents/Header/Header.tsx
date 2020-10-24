@@ -57,7 +57,13 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
               ) : (
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}
-              <h4 className="team-name" onClick={(e) => history.push("/dashboard")}>
+              <h4
+                className="team-name"
+                onClick={(e) => {
+                  fetchUser(selectedOrg?._id);
+                  history.push("/dashboard");
+                }}
+              >
                 {!orgLoading ? (
                   selectedOrg?.profile.name
                 ) : (
