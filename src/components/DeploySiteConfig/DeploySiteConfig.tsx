@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ApiService } from "../../services";
 import { BroadcastChannel } from "broadcast-channel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import {
   faCheck,
   faChevronDown,
   faChevronUp,
+  faExclamationCircle,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
@@ -43,7 +44,7 @@ function DeploySiteConfig() {
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
-  const [autoPublish, setAutoPublish] = useState<boolean>(true);
+  // const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
@@ -73,7 +74,9 @@ function DeploySiteConfig() {
       framework &&
       packageManager &&
       buildCommand &&
-      publishDirectory
+      publishDirectory &&
+      user?.argo_wallet?.wallet_balance &&
+      user?.argo_wallet?.wallet_balance >= 0.2
     ) {
       setDeployDisabled(false);
     } else {
@@ -87,6 +90,7 @@ function DeploySiteConfig() {
     packageManager,
     buildCommand,
     publishDirectory,
+    user,
   ]);
 
   useEffect(() => {
@@ -186,7 +190,7 @@ function DeploySiteConfig() {
       package_manager: packageManager,
       build_command: buildCommand,
       publish_dir: publishDirectory,
-      auto_publish: autoPublish,
+      auto_publish: false,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
       if (componentIsMounted.current) {
@@ -289,7 +293,7 @@ function DeploySiteConfig() {
                     <label className="deploy-site-item-subtitle">
                       Choose the repository you want to link to your site on ArGo.
                     </label>
-                    <div className="webhook-confirm-container">
+                    {/* <div className="webhook-confirm-container">
                       <span className="confirm-checkbox">
                         <input
                           type="checkbox"
@@ -301,18 +305,23 @@ function DeploySiteConfig() {
                         Do you want to setup github webhook? When you push to Git we
                         run your build tool on our services and deploy the result.
                       </span>
-                    </div>
+                    </div> */}
                     {!showGithubRepos ? (
-                      <div className="deployment-provider-buttons">
-                        <button
-                          className="github-button"
-                          onClick={openGithubAppAuth}
-                        >
-                          <span className="github-icon">
-                            <GithubIcon />
-                          </span>
-                          <span>Github</span>
-                        </button>
+                      <div className="deployment-provider-container">
+                        <div className="deployment-provider-title">
+                          Connect with your favorite provider
+                        </div>
+                        <div className="deployment-provider-buttons">
+                          <button
+                            className="github-button"
+                            onClick={openGithubAppAuth}
+                          >
+                            <span className="github-icon">
+                              <GithubIcon />
+                            </span>
+                            <span>Github</span>
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <div className="deploy-site-item-repo-list-container">
@@ -548,6 +557,24 @@ function DeploySiteConfig() {
                           />
                         </div>
                       </div>
+                      {user?.argo_wallet?.wallet_balance &&
+                      user?.argo_wallet?.wallet_balance < 0.2 ? (
+                        <div className="wallet-details-container">
+                          <div className="wallet-details-items">
+                            <span className="exclamation-icon">
+                              <FontAwesomeIcon
+                                icon={faExclamationCircle}
+                              ></FontAwesomeIcon>
+                            </span>
+                            <span>
+                              You do not have enough balance to deploy your site. To
+                              deploy a site you have to have minimum 0.2 AR in your
+                              wallet.
+                              <Link to="/wallet/recharge">Recharge here</Link>
+                            </span>
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                     <div className="button-container">
                       <button

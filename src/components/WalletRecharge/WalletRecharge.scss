@@ -59,6 +59,22 @@
               color: var(--grey3Color);
             }
 
+            .current-wallet-details {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              margin-top: 0.5rem;
+              font-size: 18px;
+              .current-wallet-details-title {
+                font-weight: 500;
+                width: 25%;
+              }
+
+              .current-wallet-details-desc {
+                color: var(--grey4Color);
+              }
+            }
+
             .wallet-recharge-form-input {
               margin-top: 0.5rem;
               width: 300px;
