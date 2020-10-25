@@ -115,6 +115,24 @@ function App() {
                 </ErrorBoundary>
               )}
             />
+            <Route
+              path="/github/app/:id"
+              exact
+              render={() => (
+                <ErrorBoundary>
+                  <SignupWorkflows />
+                </ErrorBoundary>
+              )}
+            />
+            <Route
+              path="/github/callback/app"
+              exact
+              render={() => (
+                <ErrorBoundary>
+                  <SignupWorkflows />
+                </ErrorBoundary>
+              )}
+            />
 
             <Route
               path="/dashboard/:slug"

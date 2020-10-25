@@ -3,6 +3,7 @@ import "./RepoOrgDropdown.scss";
 import IRepoOrgDropdownProps from "./model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import config from "../../../../config";
 
 const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
   setShowDropdown,
@@ -38,6 +39,15 @@ const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
             )}
           </div>
         ))}
+        <div
+          className="dropdown-item top-border"
+          key={repoOwner.length}
+          onClick={(e) =>
+            window.open(`${config.urls.API_URL}/auth/github/app/new`, "_blank")
+          }
+        >
+          <span className="dropdown-item-org-name">Add another Org</span>
+        </div>
       </div>
     </>
   );
