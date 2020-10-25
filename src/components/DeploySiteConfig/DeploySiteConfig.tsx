@@ -45,7 +45,7 @@ function DeploySiteConfig() {
   // const [projectName, setProjectName] = useState<string>("");
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
-  const [framework, setFramework] = useState<string>("Create React App");
+  const [framework, setFramework] = useState<string>("react");
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
@@ -484,9 +484,11 @@ function DeploySiteConfig() {
                               value={framework}
                               onChange={(e) => setFramework(e.target.value)}
                             >
-                              <option value="Create React App">
-                                Create React App
+                              <option value="static">
+                                No Framework - Simple JavaScript App
                               </option>
+                              <option value="react">Create React App</option>
+                              <option value="vue">Vue App</option>
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
