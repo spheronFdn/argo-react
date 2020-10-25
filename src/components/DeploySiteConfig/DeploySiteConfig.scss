@@ -266,11 +266,11 @@
                       }
 
                       &:hover {
-                        background: var(--themeColorDark);
+                        background: var(--black);
                       }
 
                       &:disabled {
-                        background: var(--themeColor);
+                        background: var(--grey4Color);
                         cursor: not-allowed;
                       }
                     }

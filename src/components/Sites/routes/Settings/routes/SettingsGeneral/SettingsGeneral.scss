@@ -169,14 +169,14 @@
         }
 
         .delete-button {
-          background: #fc2c2c;
+          background: var(--red);
 
           &:hover {
-            background: #921818;
+            background: var(--redDark);
           }
 
           &:disabled {
-            background: #fc7979;
+            background: var(--redDisabled);
             cursor: not-allowed;
           }
         }

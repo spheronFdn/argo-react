@@ -218,3 +218,33 @@ export const updateProject = (id: string, project: any): Observable<any> => {
     );
   });
 };
+
+export const rechargeWallet = (recharge: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/profile/wallet/balance`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(recharge),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const updateWalletAddress = (address: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/profile/wallet/address`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(address),
+      }).then((res) => res.json()),
+    );
+  });
+};

@@ -1,30 +1,46 @@
 import Arweave from "arweave";
-import Community from "community-js";
+import config from "../config";
 
 export const arweave: Arweave = Arweave.init({
-  host: "arweave.dev",
+  host: "arweave.net",
   port: 443,
   protocol: "https",
 });
-
-const contractId = "p04Jz3AO0cuGLzrgRG0s2BJbGL20HP1N8F9hsu6iFrE";
-const feeAddress = "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY";
 
 export const getWalletAddress = (wallet: any) => {
   return arweave.wallets.jwkToAddress(wallet);
 };
 
-export const getArgoTokenBalance = async (address: string) => {
-  const community = new Community(arweave);
-  community.setCommunityTx(contractId);
-  // community.setWallet(wallet);
-  const argoBal = await community.getBalance(address);
-  return argoBal;
+export const getWalletAmount = (address: string) => {
+  return arweave.wallets.getBalance(address);
 };
 
-export const payArgoFee = async (wallet: any) => {
-  const community = new Community(arweave as any);
-  community.setCommunityTx(contractId);
-  community.setWallet(wallet);
-  await community.transfer(feeAddress, 1);
+export const convertToAr = (amount: string) => {
+  return arweave.ar.winstonToAr(amount);
+};
+
+export const convertToWinston = (amount: string) => {
+  return arweave.ar.arToWinston(amount);
+};
+
+export const rechargeArgo = async (amount: string, wallet: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const transaction = await arweave.createTransaction(
+        {
+          target: config.arweave.RECHARGE_ADDRESS,
+          quantity: arweave.ar.arToWinston(amount),
+          data: "",
+        },
+        wallet,
+      );
+      transaction.addTag("APP_NAME", config.arweave.APP_NAME);
+      transaction.addTag("TYPE", "WALLET_RECHARGE");
+      await arweave.transactions.sign(transaction, wallet);
+      await arweave.transactions.post(transaction);
+      resolve(transaction.id);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };

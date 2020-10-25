@@ -8,7 +8,6 @@ const GithubCallback = () => {
     const query = new URLSearchParams(location.search);
     const token = query.get("token");
     // eslint-disable-next-line no-console
-    console.log(token);
     localStorage.setItem("jwt-token", token || "");
     const bc = new BroadcastChannel("signin_channel");
     bc.postMessage("signedup");

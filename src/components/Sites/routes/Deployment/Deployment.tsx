@@ -79,7 +79,6 @@ const Deployment = () => {
           });
           if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
             socket.on(result.deployment.topic, (data: any) => {
-              // console.log(data);
               data.split("\n").forEach((line: string) => {
                 if (line.trim()) {
                   currentSiteDeployLogs.push({
