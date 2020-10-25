@@ -37,7 +37,7 @@ const production: IConfig = {
   },
   arweave: {
     RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
+      process.env.RECHARGE_ADDRESS || "WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
   },
 };
@@ -50,7 +50,7 @@ const test: IConfig = {
   },
   arweave: {
     RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
+      process.env.RECHARGE_ADDRESS || "OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
   },
 };
