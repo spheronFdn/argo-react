@@ -31,15 +31,15 @@ const Overview = () => {
 
   return (
     <div className="Overview">
-      {(!user?.argo_wallet || user?.argo_wallet?.wallet_balance === 0) &&
+      {(!user?.argo_wallet || user?.argo_wallet?.wallet_balance < 0.2) &&
       !userLoading ? (
         <div className="overview-alert">
           <span className="exclamation-icon">
             <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
           </span>
           <span>
-            You do not have enough balance to deploy any site.{" "}
-            <Link to="/wallet/recharge">Please recharge now</Link>
+            You do not have minimum 0.2 AR balance to deploy any site.{" "}
+            <Link to="/wallet/recharge">Recharge here</Link>
           </span>
         </div>
       ) : null}

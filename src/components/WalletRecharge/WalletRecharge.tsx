@@ -4,7 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
-import { ActionContext } from "../../hooks";
+import { ActionContext, StateContext } from "../../hooks";
+import { IActionModel, IStateModel } from "../../model/hooks.model";
 import { ApiService, ArweaveService } from "../../services";
 import "./WalletRecharge.scss";
 
@@ -12,19 +13,23 @@ const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
 
 function WalletRecharge() {
   const history = useHistory();
-  const { fetchUser } = useContext(ActionContext);
+  const { fetchUser } = useContext<IActionModel>(ActionContext);
+  const { user } = useContext<IStateModel>(StateContext);
 
   const [walletFileName, setWalletFileName] = useState<string>("");
   const [walletKey, setWalletKey] = useState<any>();
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
-  const [rechargeAmount, setRechargeAmount] = useState<string>("0");
+  const [rechargeAmount, setRechargeAmount] = useState<string>("0.2");
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [rechargeLoader, setRechargeLoader] = useState<boolean>(false);
   const [rechargeDisabled, setRechargeDisabled] = useState<boolean>(true);
 
   useEffect(() => {
-    if (Number.parseFloat(rechargeAmount) > 0 && walletBal !== 0) {
+    if (
+      Number.parseFloat(rechargeAmount) >= 0.2 &&
+      walletBal > Number.parseFloat(rechargeAmount)
+    ) {
       setRechargeDisabled(false);
     } else {
       setRechargeDisabled(true);
@@ -82,10 +87,20 @@ function WalletRecharge() {
                   Your Arweave wallet
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please recharge your ArGo wallet using your Arweave wallet. You can
-                  recharge with any amount of AR, but we recommend that you have
-                  atleast 1 AR in your ArGo Wallet.
+                  Please recharge your ArGo wallet using your Arweave wallet.
                 </label>
+                <label className="wallet-recharge-form-subtitle">
+                  To start deploying your application, minimum balance required is
+                  0.2 AR.
+                </label>
+                <div className="current-wallet-details">
+                  <div className="current-wallet-details-title">
+                    Current Balance:
+                  </div>
+                  <div className="current-wallet-details-desc">
+                    {user?.argo_wallet.wallet_balance}
+                  </div>
+                </div>
                 <div className="wallet-choose-container">
                   <button type="button" className="file-upload-button">
                     Choose
@@ -154,7 +169,7 @@ function WalletRecharge() {
                     </label>
                     <input
                       type="number"
-                      min={0}
+                      min={0.2}
                       className="wallet-recharge-form-input"
                       value={rechargeAmount}
                       onChange={(e) => setRechargeAmount(e.target.value)}
