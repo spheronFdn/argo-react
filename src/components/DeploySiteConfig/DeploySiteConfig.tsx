@@ -151,18 +151,19 @@ function DeploySiteConfig() {
           installationId: installation.id,
         }));
         setReposOwnerDetails(repoOwners);
-        let newRepoOwner = null;
-
-        if (selectedRepoOwner) {
-          newRepoOwner = repoOwners.filter(
-            (repoOwner) => repoOwner.name === selectedRepoOwner.name,
-          )[0];
-        } else {
-          newRepoOwner = repoOwners[0];
-        }
-        setSelectedRepoOwner(newRepoOwner);
         setOwnerLoading(false);
-        getOwnerRepos(newRepoOwner.installationId);
+        if (repoOwners.length) {
+          let newRepoOwner = null;
+          if (selectedRepoOwner) {
+            newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === selectedRepoOwner.name,
+            )[0];
+          } else {
+            newRepoOwner = repoOwners[0];
+          }
+          setSelectedRepoOwner(newRepoOwner);
+          getOwnerRepos(newRepoOwner.installationId);
+        }
       }
     });
   };
@@ -341,7 +342,7 @@ function DeploySiteConfig() {
                           </button>
                         </div>
                       </div>
-                    ) : (
+                    ) : reposOwnerDetails.length ? (
                       <div className="deploy-site-item-repo-list-container">
                         <div className="deploy-site-item-repo-header">
                           <div
@@ -450,6 +451,24 @@ function DeploySiteConfig() {
                           >
                             Configure the ArGo app on GitHub.
                           </a>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="deployment-provider-container">
+                        <div className="deployment-provider-title">
+                          You don't have any configured owner, Configure it now to
+                          view your repositories
+                        </div>
+                        <div className="deployment-provider-buttons">
+                          <button
+                            className="github-button"
+                            onClick={openGithubAppAuth}
+                          >
+                            <span className="github-icon">
+                              <GithubIcon />
+                            </span>
+                            <span>Github</span>
+                          </button>
                         </div>
                       </div>
                     )}
