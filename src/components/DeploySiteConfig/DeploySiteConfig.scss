@@ -60,6 +60,7 @@
             margin: 0;
             padding: 1rem 24px;
             padding-bottom: 0.5rem;
+            font-family: var(--headerFont) !important;
           }
 
           .deploy-site-subtitle {
@@ -115,10 +116,12 @@
                 font-size: 20px;
                 font-weight: 500;
                 margin-left: 1rem;
+                font-family: var(--headerFont) !important;
               }
 
               .deploy-site-progress-text-active {
                 color: var(--themeColor);
+                font-family: var(--header) !important;
               }
             }
           }
@@ -133,6 +136,7 @@
               .deploy-site-item-title {
                 font-size: 20px;
                 font-weight: bold;
+                font-family: var(--headerFont) !important;
               }
 
               .deploy-site-item-subtitle {
@@ -324,6 +328,7 @@
                       font-size: 20px;
                       font-weight: 500;
                       margin-left: 1rem;
+                      font-family: var(--headerFont) !important;
                     }
 
                     .deploy-site-item-repo-down {

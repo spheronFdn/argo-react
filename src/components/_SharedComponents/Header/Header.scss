@@ -110,6 +110,7 @@
           .selected-team-arrow {
             background-color: #3261b89e;
             border-radius: 6px;
+            font-family: var(--headerFont) !important;
           }
 
           .disabled-team-arrow {
@@ -170,6 +171,7 @@
 
           .selected-profile {
             border: 2px solid var(--white) !important;
+            font-family: var(--headerFont) !important;
           }
 
           .disabled-profile {

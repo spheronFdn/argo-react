@@ -1,5 +1,6 @@
 .SiteDeployment {
   .site-deployment-back {
+    font-family: var(--headerFont) !important;
     color: var(--grey2Color);
     display: flex;
     align-items: center;
@@ -8,6 +9,7 @@
     cursor: pointer;
 
     span {
+      font-family: var(--headerFont) !important;
       font-weight: 500;
       margin-right: 0.7rem;
     }
@@ -40,6 +42,7 @@
         color: var(--themeColorDark);
         display: flex;
         align-items: center;
+        font-family: var(--headerFont) !important;
 
         div {
           display: flex;
@@ -63,6 +66,7 @@
     }
 
     .site-deployment-header-title {
+      font-family: var(--headerFont) !important;
       padding: 0.6rem 24px;
       font-size: 18px;
       font-weight: 500;

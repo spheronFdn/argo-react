@@ -37,6 +37,7 @@
         border-radius: 50%;
         border: 2px solid var(--themeColor);
         background-color: var(--white);
+        font-family: var(--hearderFont) !important;
       }
     }
 
@@ -45,6 +46,7 @@
       .overview-team-name {
         margin: 0;
         font-weight: 500;
+        font-family: var(--headerFont) !important;
       }
 
       .overview-team-misc-container {
@@ -127,6 +129,7 @@
       }
 
       .primary-button {
+        font-family: var(--headerFont) !important;
         background: #3677e994;
         text-decoration: none;
         color: white;

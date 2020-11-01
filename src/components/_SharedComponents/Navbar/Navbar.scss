@@ -51,6 +51,7 @@
           }
         }
         .selected {
+          font-family: var(--headerFont) !important;
           color: var(--white);
           position: relative;
           &::after {
