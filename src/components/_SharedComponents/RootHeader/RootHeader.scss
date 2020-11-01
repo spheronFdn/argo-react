@@ -73,6 +73,7 @@
             font-size: 18px;
             font-weight: 500;
             margin: 0;
+            font-family: var(--headerFont) !important;
           }
 
           .team-up-down-arrow {
@@ -148,7 +149,6 @@
 
           .selected-profile {
             border: 2px solid var(--white) !important;
-            font-family: var(--headerFont) !important;
           }
         }
 
