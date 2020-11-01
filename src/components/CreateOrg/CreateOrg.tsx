@@ -127,7 +127,7 @@ function CreateOrg() {
                 <button
                   type="button"
                   className="primary-button"
-                  disabled={!isFormFilled}
+                  disabled={!isFormFilled || createOrgLoading}
                   onClick={createOrg}
                 >
                   {createOrgLoading && (

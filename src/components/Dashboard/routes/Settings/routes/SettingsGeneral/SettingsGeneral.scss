@@ -158,20 +158,20 @@
           }
 
           &:disabled {
-            background: var(--themeColor);
+            background: var(--primaryDisabled) !important;
             cursor: not-allowed;
           }
         }
 
         .delete-button {
-          background: #fc2c2c;
+          background: var(--red);
 
           &:hover {
-            background: #921818;
+            background: var(--redDark);
           }
 
           &:disabled {
-            background: #fc2c2c;
+            background: var(--redDisabled);
             cursor: not-allowed;
           }
         }

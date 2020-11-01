@@ -1,17 +1,11 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { BroadcastChannel } from "broadcast-channel";
 import Loading from "../../../../../Loading";
 
 const GithubCallback = () => {
-  const location = useLocation();
   useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const token = query.get("token");
-    // eslint-disable-next-line no-console
-    localStorage.setItem("jwt-token", token || "");
-    const bc = new BroadcastChannel("signin_channel");
-    bc.postMessage("signedup");
+    const bc = new BroadcastChannel("github_app_auth");
+    bc.postMessage("authorized");
     window.close();
 
     return () => {

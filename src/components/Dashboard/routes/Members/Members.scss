@@ -48,7 +48,7 @@
           }
 
           &:disabled {
-            background: var(--themeColor);
+            background: var(--primaryDisabled) !important;
             cursor: not-allowed;
           }
         }
