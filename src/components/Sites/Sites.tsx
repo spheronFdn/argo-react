@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import "./Sites.scss";
-import { Header } from "../SharedComponents";
+import { Header } from "../_SharedComponents";
 import { Redirect, Route, useParams } from "react-router-dom";
 import { AllDeployments, Deployment, Overview, Settings } from "./routes";
 import { ActionContext, StateContext } from "../../hooks";

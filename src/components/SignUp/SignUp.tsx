@@ -6,6 +6,8 @@ const GithubIcon = React.lazy(() => import("./components/SVGIcons/GithubIcon"));
 const SignUpListItem = React.lazy(() => import("./components/SignUpListItem"));
 const Logo = React.lazy(() => import("../Logo"));
 
+const MemoSignUpListItem = React.memo(SignUpListItem);
+
 function SignUp() {
   const signInWithGithub = async () => {
     import("../../config").then((config: any) => {
@@ -35,28 +37,28 @@ function SignUp() {
         <div className="sign-in-container">
           <div className="sign-in-left-container">
             <div className="sign-in-usage-container">
-              <SignUpListItem
+              <MemoSignUpListItem
                 index={1}
                 title={"Built on top on Arweave"}
                 description={
                   "We have built our solution directly on top on Arweave CLI to make our architecture linear and extensible."
                 }
               />
-              <SignUpListItem
+              <MemoSignUpListItem
                 index={2}
                 title={"Permanently deploy your web app"}
                 description={
                   "As we deploy your site directly to Arweave Permaweb, it will be always available for you to see."
                 }
               />
-              <SignUpListItem
+              <MemoSignUpListItem
                 index={3}
                 title={"Instant static deploys"}
                 description={
                   "Push to git and your website is live. Zero configuration required."
                 }
               />
-              <SignUpListItem
+              <MemoSignUpListItem
                 index={4}
                 title={"Maintained Permaweb Deployment"}
                 description={

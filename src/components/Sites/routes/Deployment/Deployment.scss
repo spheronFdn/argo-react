@@ -46,10 +46,13 @@
           margin: -10px -10px !important;
         }
 
-        .rocket-icon {
-          height: 24px;
-          width: 24px;
-          margin-left: 1rem;
+        .lazyload-wrapper {
+          margin: 0px 0px !important;
+          .rocket-icon {
+            height: 24px;
+            width: 24px;
+            margin-left: 1rem;
+          }
         }
       }
 

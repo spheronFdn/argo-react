@@ -9,7 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { ApiService } from "../../../../../../services";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const SettingsBuildDeploy = () => {
   const { selectedProject, projectLoading } = useContext<IStateModel>(StateContext);

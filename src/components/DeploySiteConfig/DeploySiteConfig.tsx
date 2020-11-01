@@ -19,8 +19,12 @@ import { GithubIcon } from "../SignUp/components";
 import config from "../../config";
 import Skeleton from "react-loading-skeleton";
 import { RepoOrgDropdown, RepoItem } from "./components";
+import { LazyLoadedImage } from "../_SharedComponents";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
+const MemoRepoItem = React.memo(RepoItem);
+
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -333,13 +337,16 @@ function DeploySiteConfig() {
                             }
                           >
                             {!ownerLoading ? (
-                              <img
-                                src={selectedRepoOwner.avatar}
-                                alt="camera"
-                                className="deploy-site-item-repo-org-avatar"
-                                height={32}
-                                width={32}
-                              />
+                              <LazyLoadedImage height={32} once>
+                                <img
+                                  src={selectedRepoOwner.avatar}
+                                  alt="camera"
+                                  className="deploy-site-item-repo-org-avatar"
+                                  height={32}
+                                  width={32}
+                                  loading="lazy"
+                                />
+                              </LazyLoadedImage>
                             ) : (
                               <Skeleton
                                 circle={true}
@@ -382,7 +389,7 @@ function DeploySiteConfig() {
                             </div>
                           </div>
                           {showRepoOrgDropdown && (
-                            <RepoOrgDropdown
+                            <MemoRepoOrgDropdown
                               setShowDropdown={setShowRepoOrgDropdown}
                               repoOwner={reposOwnerDetails}
                               selectedRepoOwner={selectedRepoOwner}
@@ -394,7 +401,7 @@ function DeploySiteConfig() {
                           {!repoLoading ? (
                             reposSelectedOwnerRepoDetails.map(
                               (repo: any, index: number) => (
-                                <RepoItem
+                                <MemoRepoItem
                                   skeleton={false}
                                   name={repo.fullName}
                                   privateRepo={repo.private}
@@ -405,13 +412,13 @@ function DeploySiteConfig() {
                             )
                           ) : (
                             <>
-                              <RepoItem
+                              <MemoRepoItem
                                 skeleton={true}
                                 name={""}
                                 privateRepo={false}
                                 onClick={() => null}
                               />
-                              <RepoItem
+                              <MemoRepoItem
                                 skeleton={true}
                                 name={""}
                                 privateRepo={false}

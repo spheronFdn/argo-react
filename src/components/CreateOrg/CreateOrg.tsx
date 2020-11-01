@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
+import { LazyLoadedImage } from "../_SharedComponents";
 import "./CreateOrg.scss";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function CreateOrg() {
   const history = useHistory();
@@ -110,17 +111,20 @@ function CreateOrg() {
                       e.target.files ? fileUpload(e.target.files[0]) : undefined
                     }
                   />
-                  <img
-                    src={
-                      orgAvatar
-                        ? orgAvatar
-                        : require("../../assets/svg/camera_grad.svg")
-                    }
-                    alt="avatar"
-                    className="create-org-avatar"
-                    height={82}
-                    width={82}
-                  />
+                  <LazyLoadedImage height={82} once>
+                    <img
+                      src={
+                        orgAvatar
+                          ? orgAvatar
+                          : require("../../assets/svg/camera_grad.svg")
+                      }
+                      alt="avatar"
+                      className="create-org-avatar"
+                      height={82}
+                      width={82}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
                 </div>
               </div>
               <div className="button-container">

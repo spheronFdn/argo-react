@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./Header.scss";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { Navbar } from "..";
+import { LazyLoadedImage, Navbar } from "..";
 import { UpDownArrow } from "../SVGIcons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
@@ -38,22 +38,28 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                   alt="logo"
                   className="logo-image"
                   height={32}
+                  loading="lazy"
                 />
                 <span className="logo-badge">Alpha</span>
               </Link>
             </div>
             <div className="teams-container">
               {!orgLoading ? (
-                <img
-                  src={
-                    selectedOrg?.profile.image
-                      ? selectedOrg.profile.image
-                      : require("../../../assets/png/default_icon.png")
-                  }
-                  alt="org"
-                  className="team-avatar"
-                  onClick={(e) => history.push("/dashboard")}
-                ></img>
+                <LazyLoadedImage height={36} once>
+                  <img
+                    src={
+                      selectedOrg?.profile.image
+                        ? selectedOrg.profile.image
+                        : require("../../../assets/png/default_icon.png")
+                    }
+                    alt="org"
+                    className="team-avatar"
+                    onClick={(e) => history.push("/dashboard")}
+                    height={36}
+                    width={36}
+                    loading="lazy"
+                  />
+                </LazyLoadedImage>
               ) : (
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}
@@ -111,13 +117,18 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
               onClick={(e) => (!userLoading ? setShowProfileDropdown(true) : null)}
             >
               {!userLoading ? (
-                <img
-                  src={user?.argo_profile.avatar}
-                  alt="address-blockie"
-                  className={`user-profile-blockie-icon ${
-                    showProfileDropdown ? "selected-profile" : ""
-                  }`}
-                />
+                <LazyLoadedImage height={42} once>
+                  <img
+                    src={user?.argo_profile.avatar}
+                    alt="address-blockie"
+                    className={`user-profile-blockie-icon ${
+                      showProfileDropdown ? "selected-profile" : ""
+                    }`}
+                    height={42}
+                    width={42}
+                    loading="lazy"
+                  />
+                </LazyLoadedImage>
               ) : (
                 <Skeleton circle={true} height={42} width={42} duration={2} />
               )}

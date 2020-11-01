@@ -3,7 +3,7 @@ import "./UserSettings.scss";
 import { SettingsGeneral, SettingsWallet } from "./routes";
 import { Route, useHistory, useLocation } from "react-router-dom";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 const UserDetailsCard = React.lazy(() => import("./components/UserDetailsCard"));
 
 function UserSettings() {

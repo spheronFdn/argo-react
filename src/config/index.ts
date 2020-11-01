@@ -29,9 +29,9 @@ const development: IConfig = {
     RECHARGE_ADDRESS:
       process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.dev",
-    PORT: 80,
-    PROTOCOL: "http",
+    HOST: "arweave.net",
+    PORT: 443,
+    PROTOCOL: "https",
   },
 };
 
