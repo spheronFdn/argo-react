@@ -11,6 +11,9 @@ export interface IConfig {
   arweave: {
     RECHARGE_ADDRESS: string;
     APP_NAME: string;
+    HOST: string;
+    PORT: number;
+    PROTOCOL: string;
   };
 }
 
@@ -26,6 +29,9 @@ const development: IConfig = {
     RECHARGE_ADDRESS:
       process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
+    HOST: "arweave.dev",
+    PORT: 80,
+    PROTOCOL: "http",
   },
 };
 
@@ -39,6 +45,9 @@ const production: IConfig = {
     RECHARGE_ADDRESS:
       process.env.RECHARGE_ADDRESS || "WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
+    HOST: "arweave.net",
+    PORT: 443,
+    PROTOCOL: "https",
   },
 };
 
@@ -52,6 +61,9 @@ const test: IConfig = {
     RECHARGE_ADDRESS:
       process.env.RECHARGE_ADDRESS || "OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g",
     APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
+    HOST: "arweave.dev",
+    PORT: 80,
+    PROTOCOL: "http",
   },
 };
 

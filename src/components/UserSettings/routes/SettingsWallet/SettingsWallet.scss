@@ -70,6 +70,10 @@
 
             .recharge-button {
               background: var(--fuelYellow) !important;
+
+              &:hover {
+                background: var(--fuelYellowDark) !important;
+              }
             }
           }
 

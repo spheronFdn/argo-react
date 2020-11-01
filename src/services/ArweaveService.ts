@@ -2,9 +2,9 @@ import Arweave from "arweave";
 import config from "../config";
 
 export const arweave: Arweave = Arweave.init({
-  host: "arweave.net",
-  port: 443,
-  protocol: "https",
+  host: config.arweave.HOST,
+  port: config.arweave.PORT,
+  protocol: config.arweave.PROTOCOL,
 });
 
 export const getWalletAddress = (wallet: any) => {

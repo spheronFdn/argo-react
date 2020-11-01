@@ -93,6 +93,17 @@ function WalletRecharge() {
                   To start deploying your application, minimum balance required is
                   0.2 AR.
                 </label>
+                <label className="wallet-recharge-form-keypoint">
+                  If you don’t yet have a keyfile, you can get one by creating an
+                  <a
+                    href="https://www.arweave.org/wallet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Arweave Wallet
+                  </a>
+                  .
+                </label>
                 <div className="current-wallet-details">
                   <div className="current-wallet-details-title">
                     Current Balance:

@@ -59,11 +59,30 @@
               color: var(--grey3Color);
             }
 
+            .wallet-recharge-form-keypoint {
+              font-size: 17px;
+              color: var(--grey5Color);
+              margin-top: 0.5rem;
+              font-weight: 500;
+
+              a {
+                color: var(--themeColor);
+                margin-left: 4px;
+                text-decoration: none;
+                border-bottom: 1px dotted var(--themeColor);
+
+                &:hover {
+                  color: var(--themeColorDark);
+                  border-bottom: 1px dotted var(--themeColorDark);
+                }
+              }
+            }
+
             .current-wallet-details {
               display: flex;
               align-items: center;
               width: 100%;
-              margin-top: 0.5rem;
+              margin-top: 1rem;
               font-size: 18px;
               .current-wallet-details-title {
                 font-weight: 500;
@@ -105,8 +124,14 @@
                 cursor: pointer;
               }
 
+              input#file-upload-button {
+                width: 97px;
+                height: 33px;
+                cursor: pointer;
+              }
+
               .file-upload-button {
-                background: var(--grey5Color);
+                background: var(--grey4Color);
                 text-decoration: none;
                 color: white;
                 font-size: 14px;
@@ -123,14 +148,6 @@
                 transition: all 0.3s ease-in-out;
                 width: fit-content;
                 z-index: 1;
-
-                div {
-                  margin-right: 8px;
-                }
-
-                &:hover {
-                  background: var(--black);
-                }
 
                 &:disabled {
                   background: var(--grey4Color);
