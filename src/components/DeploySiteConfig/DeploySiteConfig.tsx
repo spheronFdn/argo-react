@@ -140,15 +140,24 @@ function DeploySiteConfig() {
     setRepoLoading(true);
     ApiService.getAllGithubAppInstallation().subscribe((res) => {
       if (componentIsMounted.current) {
-        const repoOwners = res.installations.map((installation: any) => ({
+        const repoOwners: any[] = res.installations.map((installation: any) => ({
           name: installation.account.login,
           avatar: installation.account.avatar_url,
           installationId: installation.id,
         }));
         setReposOwnerDetails(repoOwners);
-        setSelectedRepoOwner(repoOwners[0]);
+        let newRepoOwner = null;
+
+        if (selectedRepoOwner) {
+          newRepoOwner = repoOwners.filter(
+            (repoOwner) => repoOwner.name === selectedRepoOwner.name,
+          )[0];
+        } else {
+          newRepoOwner = repoOwners[0];
+        }
+        setSelectedRepoOwner(newRepoOwner);
         setOwnerLoading(false);
-        getOwnerRepos(repoOwners[0].installationId);
+        getOwnerRepos(newRepoOwner.installationId);
       }
     });
   };
