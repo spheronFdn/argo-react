@@ -7,6 +7,7 @@ import { StateContext, ActionContext } from "../../../../../../hooks";
 import { ApiService } from "../../../../../../services";
 import "./SettingsGeneral.scss";
 import BounceLoader from "react-spinners/BounceLoader";
+import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const SettingsGeneral = () => {
   // const history = useHistory();
@@ -160,17 +161,20 @@ const SettingsGeneral = () => {
                         e.target.files ? fileUpload(e.target.files[0]) : undefined
                       }
                     />
-                    <img
-                      src={
-                        orgAvatar
-                          ? orgAvatar
-                          : require("../../../../../../assets/svg/camera_grad.svg")
-                      }
-                      alt="avatar"
-                      className="settings-avatar"
-                      height={64}
-                      width={64}
-                    />
+                    <LazyLoadedImage height={64} once>
+                      <img
+                        src={
+                          orgAvatar
+                            ? orgAvatar
+                            : require("../../../../../../assets/svg/camera_grad.svg")
+                        }
+                        alt="avatar"
+                        className="settings-avatar"
+                        height={64}
+                        width={64}
+                        loading="lazy"
+                      />
+                    </LazyLoadedImage>
                   </>
                 ) : (
                   <Skeleton circle={true} height={64} width={64} duration={2} />

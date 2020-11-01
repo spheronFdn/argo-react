@@ -2,6 +2,7 @@ import React from "react";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./LandingAboutButtons.scss";
+import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const LandingAboutButtons = () => {
   return (
@@ -24,12 +25,15 @@ const LandingAboutButtons = () => {
         onClick={(e) => window.open("https://www.arweave.org", "_blank", "noopener")}
       >
         <span className="button-icon">
-          <img
-            src={require("../../../../../../assets/png/ar_light.png")}
-            alt="ar"
-            height={20}
-            width={20}
-          />
+          <LazyLoadedImage height={20} once>
+            <img
+              src={require("../../../../../../assets/png/ar_light.png")}
+              alt="ar"
+              height={20}
+              width={20}
+              loading="lazy"
+            />
+          </LazyLoadedImage>
         </span>
         <span>Learn More about Arweave</span>
       </button>

@@ -4,7 +4,7 @@ import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./InviteCallback.scss";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function InviteCallback() {
   const location = useLocation();

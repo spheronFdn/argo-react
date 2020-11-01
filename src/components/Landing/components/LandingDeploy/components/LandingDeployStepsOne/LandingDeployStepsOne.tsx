@@ -1,4 +1,5 @@
 import React from "react";
+import { LazyLoadedImage } from "../../../../../_SharedComponents";
 import "./LandingDeployStepsOne.scss";
 
 const LandingDeployStepsOne = () => {
@@ -23,27 +24,50 @@ const LandingDeployStepsOne = () => {
         <div className="jamstack-support-title">WORKS WITH JAMSTACK FRAMEWORKS</div>
         <div className="jamstack-support-icons-container">
           <div className="jamstack-support-icon">
-            <img
-              src={require("../../../../../../assets/svg/React.svg")}
-              alt="React"
-            />
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/React.svg")}
+                alt="React"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
           </div>
           <div className="jamstack-support-icon icon-disabled">
-            <img
-              src={require("../../../../../../assets/svg/Next.svg")}
-              alt="React"
-            />
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/Next.svg")}
+                alt="React"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
             <div>Coming soon</div>
           </div>
           <div className="jamstack-support-icon icon-disabled">
-            <img src={require("../../../../../../assets/svg/Vue.svg")} alt="React" />
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/Vue.svg")}
+                alt="React"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
             <div>Coming soon</div>
           </div>
           <div className="jamstack-support-icon icon-disabled">
-            <img
-              src={require("../../../../../../assets/svg/Angular.svg")}
-              alt="React"
-            />
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/Angular.svg")}
+                alt="React"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
             <div>Coming soon</div>
           </div>
         </div>

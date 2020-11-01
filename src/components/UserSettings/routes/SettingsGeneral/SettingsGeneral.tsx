@@ -7,6 +7,7 @@ import Skeleton from "react-loading-skeleton";
 // import { useHistory } from "react-router-dom";
 import { StateContext, ActionContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const SettingsGeneral = () => {
   // const history = useHistory();
@@ -157,15 +158,20 @@ const SettingsGeneral = () => {
                         e.target.files ? fileUpload(e.target.files[0]) : undefined
                       }
                     />
-                    <img
-                      src={
-                        avatar
-                          ? avatar
-                          : require("../../../../assets/svg/camera_grad.svg")
-                      }
-                      alt="avatar"
-                      className="settings-avatar"
-                    />
+                    <LazyLoadedImage height={64} once>
+                      <img
+                        src={
+                          avatar
+                            ? avatar
+                            : require("../../../../assets/svg/camera_grad.svg")
+                        }
+                        alt="avatar"
+                        className="settings-avatar"
+                        height={64}
+                        width={64}
+                        loading="lazy"
+                      />
+                    </LazyLoadedImage>
                   </>
                 ) : (
                   <Skeleton circle={true} height={64} width={64} duration={2} />

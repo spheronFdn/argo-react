@@ -15,6 +15,7 @@ import "./Overview.scss";
 import en from "javascript-time-ago/locale/en";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -46,17 +47,20 @@ const Overview = () => {
       <div className="overview-container">
         <div className="overview-team-avatar-container">
           {!orgLoading ? (
-            <img
-              src={
-                selectedOrg?.profile.image
-                  ? selectedOrg.profile.image
-                  : require("../../../../assets/png/default_icon.png")
-              }
-              alt="org"
-              className="team-avatar"
-              height={120}
-              width={120}
-            ></img>
+            <LazyLoadedImage height={120} once>
+              <img
+                src={
+                  selectedOrg?.profile.image
+                    ? selectedOrg.profile.image
+                    : require("../../../../assets/png/default_icon.png")
+                }
+                alt="org"
+                className="team-avatar"
+                height={120}
+                width={120}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
           ) : (
             <Skeleton circle={true} height={120} width={120} duration={2} />
           )}

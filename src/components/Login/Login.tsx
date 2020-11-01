@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.scss";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 const GithubIcon = React.lazy(() => import("./components/SVGIcons/GithubIcon"));
 
 function Login() {

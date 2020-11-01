@@ -1,4 +1,5 @@
 import React from "react";
+import { LazyLoadedImage } from "../../../../../_SharedComponents";
 import "./LandingDeployStepsTwo.scss";
 
 const LandingDeployStepsTwo = () => {
@@ -6,11 +7,16 @@ const LandingDeployStepsTwo = () => {
     <div className="deploy-steps-two">
       <div className="deploy-steps-image-container">
         <span className="path-line"></span>
-        <img
-          src={require("../../../../../../assets/svg/num_2.svg")}
-          alt="num_1"
-          className="numbers"
-        />
+        <LazyLoadedImage height={80} once>
+          <img
+            src={require("../../../../../../assets/svg/num_2.svg")}
+            alt="num_1"
+            className="numbers"
+            height={80}
+            width={80}
+            loading="lazy"
+          />
+        </LazyLoadedImage>
       </div>
       <div className="deploy-steps-title">DEPLOY</div>
       <div className="deploy-steps-description">

@@ -1,15 +1,15 @@
+import React, { useContext, useEffect, useState } from "react";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import { ApiService, ArweaveService } from "../../services";
 import "./WalletRecharge.scss";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function WalletRecharge() {
   const history = useHistory();

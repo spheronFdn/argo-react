@@ -3,7 +3,7 @@ import "./NotFound.scss";
 import animationData from "../../assets/lotties/404.json";
 import Lottie from "react-lottie";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function NotFound() {
   const defaultOptions = {
