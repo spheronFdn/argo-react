@@ -26,11 +26,11 @@ const LandingDeployStepsTwo = () => {
       </div>
       <div className="deploy-steps-features-container">
         <div className="deploy-steps-features">
-          <div className="deploy-steps-feature">◆ &nbsp;Permanent site</div>
+          <div className="deploy-steps-feature">◆ &nbsp;Permanent hosting</div>
           <div className="deploy-steps-feature">◆ &nbsp;Push to deploy</div>
         </div>
         <div className="deploy-steps-features">
-          <div className="deploy-steps-feature">◆ &nbsp;Deploy Preview URL</div>
+          <div className="deploy-steps-feature">◆ &nbsp;Deploy Preview</div>
           <div className="deploy-steps-feature">◆ &nbsp;Share and Collaborate</div>
         </div>
       </div>
