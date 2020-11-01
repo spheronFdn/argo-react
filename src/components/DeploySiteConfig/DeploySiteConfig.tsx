@@ -113,6 +113,11 @@ function DeploySiteConfig() {
           .split("/")[1],
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
+      setSelectedRepoOwner({
+        name: selectedRepoForTriggerDeployment.github_url
+          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+          .split("/")[0],
+      });
       setBranch(selectedRepoForTriggerDeployment.branch);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
