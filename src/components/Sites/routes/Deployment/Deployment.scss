@@ -40,6 +40,7 @@
         color: var(--themeColorDark);
         display: flex;
         align-items: center;
+        font-family: var(--headerFont) !important;
 
         div {
           display: flex;
@@ -63,6 +64,7 @@
     }
 
     .site-deployment-header-title {
+      font-family: var(--headerFont) !important;
       padding: 0.6rem 24px;
       font-size: 18px;
       font-weight: 500;
@@ -128,6 +130,8 @@
     display: flex;
     align-items: center;
     padding: 0.8rem 24px !important;
+    font-family: var(--headerFont) !important;
+
     .card-header-deploy-title {
       flex: 1;
       font-size: 18px;

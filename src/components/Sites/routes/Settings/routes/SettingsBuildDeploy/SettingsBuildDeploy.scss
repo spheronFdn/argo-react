@@ -12,6 +12,7 @@
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
       .settings-project-header {
+        font-family: var(--headerFont) !important;
         display: flex;
         min-height: 32px;
         align-items: center;
