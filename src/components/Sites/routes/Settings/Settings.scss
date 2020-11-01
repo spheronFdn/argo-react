@@ -9,7 +9,6 @@
       border-radius: 8px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       .settings-bar-item {
-        font-family: var(--headerFont) !important;
         padding: 8px 12px;
         border-bottom: 1px solid var(--grey2Color);
         cursor: pointer;
@@ -36,7 +35,6 @@
       .selected {
         border-left: 3px solid #6b93d8;
         color: var(--textColor);
-        font-family: var(--headerFont) !important;
       }
     }
   }
