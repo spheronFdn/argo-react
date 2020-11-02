@@ -151,7 +151,6 @@ function DeploySiteConfig() {
           installationId: installation.id,
         }));
         setReposOwnerDetails(repoOwners);
-        setOwnerLoading(false);
         if (repoOwners.length) {
           let newRepoOwner = null;
           if (selectedRepoOwner) {
@@ -162,7 +161,10 @@ function DeploySiteConfig() {
             newRepoOwner = repoOwners[0];
           }
           setSelectedRepoOwner(newRepoOwner);
+          setOwnerLoading(false);
           getOwnerRepos(newRepoOwner.installationId);
+        } else {
+          setOwnerLoading(false);
         }
       }
     });
@@ -342,7 +344,7 @@ function DeploySiteConfig() {
                           </button>
                         </div>
                       </div>
-                    ) : reposOwnerDetails.length ? (
+                    ) : reposOwnerDetails.length || ownerLoading ? (
                       <div className="deploy-site-item-repo-list-container">
                         <div className="deploy-site-item-repo-header">
                           <div
