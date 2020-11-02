@@ -109,7 +109,10 @@ function WalletRecharge() {
                     Current Balance:
                   </div>
                   <div className="current-wallet-details-desc">
-                    {user?.argo_wallet.wallet_balance}
+                    {user?.argo_wallet?.wallet_balance
+                      ? user?.argo_wallet?.wallet_balance
+                      : 0}{" "}
+                    AR
                   </div>
                 </div>
                 <div className="wallet-choose-container">
