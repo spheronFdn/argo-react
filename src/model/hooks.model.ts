@@ -70,6 +70,7 @@ export interface IRepository {
   publish_dir: string;
   branch: string;
   sitePreview: string;
+  framework: string;
 }
 
 export interface IDeployment {

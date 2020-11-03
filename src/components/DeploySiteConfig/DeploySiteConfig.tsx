@@ -75,7 +75,7 @@ function DeploySiteConfig() {
       selectedRepo &&
       owner &&
       branch &&
-      framework &&
+      framework !== "static" &&
       packageManager &&
       buildCommand &&
       publishDirectory &&
@@ -84,7 +84,18 @@ function DeploySiteConfig() {
     ) {
       setDeployDisabled(false);
     } else {
-      setDeployDisabled(true);
+      if (
+        selectedRepo &&
+        owner &&
+        branch &&
+        framework === "static" &&
+        user?.argo_wallet?.wallet_balance &&
+        user?.argo_wallet?.wallet_balance >= 0.2
+      ) {
+        setDeployDisabled(false);
+      } else {
+        setDeployDisabled(true);
+      }
     }
   }, [
     selectedRepo,
@@ -96,6 +107,22 @@ function DeploySiteConfig() {
     publishDirectory,
     user,
   ]);
+
+  useEffect(() => {
+    if (framework === "static") {
+      setPackageManager("");
+      setBuildCommand("");
+      setPublishDirectory("");
+    } else if (framework === "react") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("build");
+    } else if (framework === "vue") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("dist");
+    }
+  }, [framework]);
 
   useEffect(() => {
     if (selectedOrg) {
@@ -556,48 +583,52 @@ function DeploySiteConfig() {
                             </span>
                           </div>
                         </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Package Manager</label>
-                          <div className="deploy-site-item-select-container">
-                            <select
-                              className="deploy-site-item-select"
-                              value={packageManager}
-                              onChange={(e) => setPackageManager(e.target.value)}
-                            >
-                              <option value="npm">NPM</option>
-                              <option value="yarn">YARN</option>
-                            </select>
-                            <span className="select-down-icon">
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            </span>
-                          </div>
-                        </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Build command</label>
-                          <div className="deploy-site-item-input-container">
-                            <input
-                              type="text"
-                              className="deploy-site-item-input-disabled"
-                              value={buildCommandPrefix}
-                              disabled
-                            />
-                            <input
-                              type="text"
-                              className="deploy-site-item-input-build"
-                              value={buildCommand}
-                              onChange={(e) => setBuildCommand(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Publish directory</label>
-                          <input
-                            type="text"
-                            className="deploy-site-item-input"
-                            value={publishDirectory}
-                            onChange={(e) => setPublishDirectory(e.target.value)}
-                          />
-                        </div>
+                        {framework !== "static" && (
+                          <>
+                            <div className="deploy-site-item-form-item">
+                              <label>Package Manager</label>
+                              <div className="deploy-site-item-select-container">
+                                <select
+                                  className="deploy-site-item-select"
+                                  value={packageManager}
+                                  onChange={(e) => setPackageManager(e.target.value)}
+                                >
+                                  <option value="npm">NPM</option>
+                                  <option value="yarn">YARN</option>
+                                </select>
+                                <span className="select-down-icon">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Build command</label>
+                              <div className="deploy-site-item-input-container">
+                                <input
+                                  type="text"
+                                  className="deploy-site-item-input-disabled"
+                                  value={buildCommandPrefix}
+                                  disabled
+                                />
+                                <input
+                                  type="text"
+                                  className="deploy-site-item-input-build"
+                                  value={buildCommand}
+                                  onChange={(e) => setBuildCommand(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Publish directory</label>
+                              <input
+                                type="text"
+                                className="deploy-site-item-input"
+                                value={publishDirectory}
+                                onChange={(e) => setPublishDirectory(e.target.value)}
+                              />
+                            </div>
+                          </>
+                        )}
                       </div>
                       {user?.argo_wallet?.wallet_balance &&
                       user?.argo_wallet?.wallet_balance < 0.2 ? (
