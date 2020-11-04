@@ -20,9 +20,9 @@ const LandingDeployStepsTwo = () => {
       </div>
       <div className="deploy-steps-title">DEPLOY</div>
       <div className="deploy-steps-description">
-        Frontend development is not meant to be a solo activity. The ArGo platform
-        makes it a collaborative experience with deploy previews for every code
-        change, by seamlessly integrating with GitHub & GitLab.
+        Frontend development is not meant to be a solo activity. ArGo makes it a
+        collaborative experience with deploy previews for every code change and a
+        seamless integration with GitHub & GitLab
       </div>
       <div className="deploy-steps-features-container">
         <div className="deploy-steps-features">
