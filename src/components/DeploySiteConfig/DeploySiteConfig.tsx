@@ -206,6 +206,7 @@ function DeploySiteConfig() {
           name: repo.name,
           fullName: repo.full_name,
           private: repo.private,
+          repositoryId: repo.id,
         }));
         setReposSelectedOwnerRepoDetails(repositories);
         setRepoLoading(false);
@@ -231,6 +232,9 @@ function DeploySiteConfig() {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
       owner: selectedRepoOwner.name,
+      installationId: selectedRepoOwner.installationId,
+      isPrivate: selectedRepo.private,
+      repositoryId: selectedRepo.repositoryId,
       orgId: owner._id,
       // project_name: projectName,
       branch,

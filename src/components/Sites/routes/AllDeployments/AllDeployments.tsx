@@ -3,17 +3,16 @@ import "./AllDeployments.scss";
 import Skeleton from "react-loading-skeleton";
 import { ProjectTopCard } from "../_SharedComponent";
 // import Switch from "react-switch";
-import { ActionContext, StateContext } from "../../../../hooks";
-import { IActionModel, IStateModel } from "../../../../model/hooks.model";
+import { StateContext } from "../../../../hooks";
+import { IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
 
 const AllDeployments = () => {
-  const history = useHistory();
+  // const history = useHistory();
   // const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
-  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
+  // const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   const sortedDeployments = projectLoading
     ? []
@@ -21,16 +20,16 @@ const AllDeployments = () => {
         moment(b.createdAt).diff(moment(a.createdAt)),
       );
 
-  const triggerDeployment = () => {
-    setRepoForTriggerDeployment({
-      github_url: selectedProject?.url,
-      branch: selectedProject?.branch,
-      publish_dir: selectedProject?.publish_dir,
-      package_manager: selectedProject?.package_manager,
-      build_command: selectedProject?.build_command,
-    });
-    history.push("/deploy/new");
-  };
+  // const triggerDeployment = () => {
+  //   setRepoForTriggerDeployment({
+  //     github_url: selectedProject?.url,
+  //     branch: selectedProject?.branch,
+  //     publish_dir: selectedProject?.publish_dir,
+  //     package_manager: selectedProject?.package_manager,
+  //     build_command: selectedProject?.build_command,
+  //   });
+  //   history.push("/deploy/new");
+  // };
 
   return (
     <div className="AllDeployments">
@@ -113,9 +112,9 @@ const AllDeployments = () => {
       <div className="site-deployment-card-container deploy-container">
         <div className="site-deployment-header-title">
           <span>Deployments</span>
-          <button className="trigger-deploy-button" onClick={triggerDeployment}>
+          {/* <button className="trigger-deploy-button" onClick={triggerDeployment}>
             Trigger deploy
-          </button>
+          </button> */}
         </div>
         <div className="deploy-summary-item">
           {!projectLoading ? (
