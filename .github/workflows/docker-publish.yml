@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master, dev-deployment, dev-docker ]
+  pull_request:
+    branches: [ master, dev-deployment, dev-docker ]
+
+jobs:
+
+   push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER_NAME }}
+          password: ${{ secrets.DOCKER_HUB_SECRET }}
+          repository: prashatmaurya/argo-react
+          tag_with_ref: true
