@@ -10,7 +10,6 @@ import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 
 const ProjectItem: React.FC<IProjectItemProps> = ({
-  index,
   type,
   projectName,
   latestDeployment,
@@ -29,7 +28,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   }
 
   return (
-    <div className="project-item" key={index}>
+    <div className="project-item">
       {type === "filled" && (
         <>
           <div className="project-item-header">
@@ -46,7 +45,9 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
               <button
                 type="button"
                 className="project-item-visit-button"
-                onClick={(e) => window.open(`${latestDeployment}`, "_blank")}
+                onClick={(e) =>
+                  window.open(`${latestDeployment}`, "_blank", "noopener")
+                }
               >
                 Visit
               </button>

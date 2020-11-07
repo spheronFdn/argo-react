@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Members.scss";
 import { StateContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
@@ -7,12 +7,16 @@ import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { IUser } from "../../../../model/hooks.model";
 import { IMemberModel } from "../../../../model/member.model";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const Members = () => {
   const history = useHistory();
   const { userLoading, selectedOrg } = useContext(StateContext);
   const [memberLoading, setMemberLoading] = useState(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
+
+  const componentIsMounted = useRef(true);
+
   useEffect(() => {
     setMemberLoading(true);
 
@@ -20,18 +24,21 @@ const Members = () => {
       const subscription = ApiService.getOrganization(
         `${selectedOrg?._id}`,
       ).subscribe((data) => {
-        const members: IMemberModel[] = data.users.map((user: IUser) => ({
-          name: user.argo_profile.name,
-          email: user.argo_profile.email,
-          avatar: user.argo_profile.avatar,
-          username: user.argo_profile.username,
-        }));
-        setMembers(members);
-        setMemberLoading(false);
+        if (componentIsMounted.current) {
+          const members: IMemberModel[] = data.users.map((user: IUser) => ({
+            name: user.argo_profile.name,
+            email: user.argo_profile.email,
+            avatar: user.argo_profile.avatar,
+            username: user.argo_profile.username,
+          }));
+          setMembers(members);
+          setMemberLoading(false);
+        }
       });
 
       return () => {
         subscription.unsubscribe();
+        componentIsMounted.current = false;
       };
     }
   }, [selectedOrg]);
@@ -66,11 +73,16 @@ const Members = () => {
                     <div className="tr" key={index}>
                       <div className="td">
                         <div className="avatar-container">
-                          <img
-                            src={member.avatar}
-                            alt="avatar"
-                            className="profile-avatar"
-                          />
+                          <LazyLoadedImage height={32} once>
+                            <img
+                              src={member.avatar}
+                              alt="avatar"
+                              className="profile-avatar"
+                              height={32}
+                              width={32}
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
                         </div>
                       </div>
                       <div className="td">

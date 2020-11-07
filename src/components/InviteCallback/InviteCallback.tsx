@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { RootHeader } from "../SharedComponents";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./InviteCallback.scss";
+
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function InviteCallback() {
   const location = useLocation();

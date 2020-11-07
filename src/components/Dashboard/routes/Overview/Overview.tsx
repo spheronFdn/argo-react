@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   IActionModel,
   IRepository,
@@ -13,6 +13,9 @@ import "./Overview.scss";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -22,23 +25,42 @@ const Overview = () => {
 
   const history = useHistory();
 
-  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading, user, userLoading } = useContext<IStateModel>(
+    StateContext,
+  );
   const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   return (
     <div className="Overview">
+      {(!user?.argo_wallet || user?.argo_wallet?.wallet_balance < 0.2) &&
+      !userLoading ? (
+        <div className="overview-alert">
+          <span className="exclamation-icon">
+            <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+          </span>
+          <span>
+            You do not have minimum 0.2 AR balance to deploy any site.{" "}
+            <Link to="/wallet/recharge">Recharge here</Link>
+          </span>
+        </div>
+      ) : null}
       <div className="overview-container">
         <div className="overview-team-avatar-container">
           {!orgLoading ? (
-            <img
-              src={
-                selectedOrg?.profile.image
-                  ? selectedOrg.profile.image
-                  : require("../../../../assets/png/default_icon.png")
-              }
-              alt="org"
-              className="team-avatar"
-            ></img>
+            <LazyLoadedImage height={120} once>
+              <img
+                src={
+                  selectedOrg?.profile.image
+                    ? selectedOrg.profile.image
+                    : require("../../../../assets/png/default_icon.png")
+                }
+                alt="org"
+                className="team-avatar"
+                height={120}
+                width={120}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
           ) : (
             <Skeleton circle={true} height={120} width={120} duration={2} />
           )}
@@ -107,19 +129,19 @@ const Overview = () => {
           {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
               selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
-                <ProjectItem
-                  index={index}
-                  type="filled"
-                  projectName={repo.name}
-                  latestDeployment={repo.sitePreview}
-                  githubUrl={repo.url}
-                  updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
-                  repo={repo}
-                />
+                <div key={index}>
+                  <ProjectItem
+                    type="filled"
+                    projectName={repo.name}
+                    latestDeployment={repo.sitePreview}
+                    githubUrl={repo.url}
+                    updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
+                    repo={repo}
+                  />
+                </div>
               ))
             ) : (
               <ProjectItem
-                index={1}
                 type="empty"
                 projectName={null}
                 latestDeployment={null}
@@ -130,7 +152,6 @@ const Overview = () => {
             )
           ) : (
             <ProjectItem
-              index={1}
               type="skeleton"
               projectName={null}
               latestDeployment={null}

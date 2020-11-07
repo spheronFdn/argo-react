@@ -2,7 +2,7 @@ import React from "react";
 import "./Logo.scss";
 import ILogoProps from "./model";
 
-const Logo: React.SFC<ILogoProps> = ({ theme }) => {
+const Logo: React.FC<ILogoProps> = ({ theme }) => {
   return (
     <div className="Logo">
       <img
@@ -11,6 +11,8 @@ const Logo: React.SFC<ILogoProps> = ({ theme }) => {
           : "../../assets/png/logo-white.png")}
         alt={`ArGo ${theme === "light" ? "light" : "dark"} version`}
         className="logo-image"
+        height={42}
+        loading="lazy"
       />
       <span
         className={`logo-text ${theme === "light" ? "logo-light" : "logo-dark"}`}

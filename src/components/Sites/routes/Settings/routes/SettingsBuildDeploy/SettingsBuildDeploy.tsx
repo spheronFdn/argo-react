@@ -9,7 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { ApiService } from "../../../../../../services";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const SettingsBuildDeploy = () => {
   const { selectedProject, projectLoading } = useContext<IStateModel>(StateContext);
@@ -89,6 +89,17 @@ const SettingsBuildDeploy = () => {
     buildCommandPrefix = "yarn";
   }
 
+  let framework: string = "";
+  if (selectedProject?.framework === "static") {
+    framework = "No Framework - Simple JavaScript App";
+  } else if (selectedProject?.framework === "react") {
+    framework = "Create React App";
+  } else if (selectedProject?.framework === "vue") {
+    framework = "Vue App";
+  } else {
+    framework = "Create React App";
+  }
+
   return (
     <div className="SettingsBuildDeploy">
       <div className="settings-right-container">
@@ -112,77 +123,85 @@ const SettingsBuildDeploy = () => {
                 This is your project framework.
               </label>
               {!projectLoading ? (
-                <div className="settings-project-value">Create React App</div>
+                <div className="settings-project-value">{framework}</div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
             </div>
-            <div className="settings-project-item">
-              <label className="settings-project-item-title">Package Manager</label>
-              <label className="settings-project-item-subtitle">
-                This is your project's package manager. You can use any one of them
-                to deploy your project.
-              </label>
-              {!projectLoading ? (
-                <div className="deploy-site-item-select-container">
-                  <select
-                    className="deploy-site-item-select"
-                    value={packageManager}
-                    onChange={(e) => setPackageManager(e.target.value)}
-                  >
-                    <option value="npm">NPM</option>
-                    <option value="yarn">YARN</option>
-                  </select>
-                  <span className="select-down-icon">
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </span>
+            {selectedProject?.framework !== "static" && (
+              <>
+                <div className="settings-project-item">
+                  <label className="settings-project-item-title">
+                    Package Manager
+                  </label>
+                  <label className="settings-project-item-subtitle">
+                    This is your project's package manager. You can use any one of
+                    them to deploy your project.
+                  </label>
+                  {!projectLoading ? (
+                    <div className="deploy-site-item-select-container">
+                      <select
+                        className="deploy-site-item-select"
+                        value={packageManager}
+                        onChange={(e) => setPackageManager(e.target.value)}
+                      >
+                        <option value="npm">NPM</option>
+                        <option value="yarn">YARN</option>
+                      </select>
+                      <span className="select-down-icon">
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      </span>
+                    </div>
+                  ) : (
+                    <Skeleton width={326} height={36} duration={2} />
+                  )}
                 </div>
-              ) : (
-                <Skeleton width={326} height={36} duration={2} />
-              )}
-            </div>
-            <div className="settings-project-item">
-              <label className="settings-project-item-title">Build Command</label>
-              <label className="settings-project-item-subtitle">
-                This is your project's build command.
-              </label>
-              {!projectLoading ? (
-                <div className="settings-project-item-input-container">
-                  <input
-                    type="text"
-                    className="settings-project-item-input-disabled"
-                    value={buildCommandPrefix}
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    className="settings-project-item-input-build"
-                    value={buildCommand}
-                    onChange={(e) => setBuildCommand(e.target.value)}
-                  />
+                <div className="settings-project-item">
+                  <label className="settings-project-item-title">
+                    Build Command
+                  </label>
+                  <label className="settings-project-item-subtitle">
+                    This is your project's build command.
+                  </label>
+                  {!projectLoading ? (
+                    <div className="settings-project-item-input-container">
+                      <input
+                        type="text"
+                        className="settings-project-item-input-disabled"
+                        value={buildCommandPrefix}
+                        disabled
+                      />
+                      <input
+                        type="text"
+                        className="settings-project-item-input-build"
+                        value={buildCommand}
+                        onChange={(e) => setBuildCommand(e.target.value)}
+                      />
+                    </div>
+                  ) : (
+                    <Skeleton width={326} height={36} duration={2} />
+                  )}
                 </div>
-              ) : (
-                <Skeleton width={326} height={36} duration={2} />
-              )}
-            </div>
-            <div className="settings-project-item">
-              <label className="settings-project-item-title">
-                Publish directory
-              </label>
-              <label className="settings-project-item-subtitle">
-                This is the project's publish directory
-              </label>
-              {!projectLoading ? (
-                <input
-                  type="text"
-                  className="settings-project-item-input"
-                  value={publishDirectory}
-                  onChange={(e) => setPublishDirectory(e.target.value)}
-                />
-              ) : (
-                <Skeleton width={326} height={36} duration={2} />
-              )}
-            </div>
+                <div className="settings-project-item">
+                  <label className="settings-project-item-title">
+                    Publish directory
+                  </label>
+                  <label className="settings-project-item-subtitle">
+                    This is the project's publish directory
+                  </label>
+                  {!projectLoading ? (
+                    <input
+                      type="text"
+                      className="settings-project-item-input"
+                      value={publishDirectory}
+                      onChange={(e) => setPublishDirectory(e.target.value)}
+                    />
+                  ) : (
+                    <Skeleton width={326} height={36} duration={2} />
+                  )}
+                </div>
+              </>
+            )}
           </div>
           <div className="settings-project-footer">
             <div className="warning-text-container">

@@ -10,7 +10,7 @@
     height: 100%;
     width: 50%;
     // background-image: url("../../assets/jpg/argo 1.2.jpg");
-    background-color: var(--themeColor);
+    background-color: var(--themeColorDark);
     background-size: cover;
     background-repeat: no-repeat;
     z-index: 0;
@@ -68,6 +68,7 @@
             font-size: 48px;
             color: var(--themeColor);
             margin: 0;
+            font-family: var(--headerFont) !important;
           }
 
           .sign-in-right-button-container {
