@@ -3,6 +3,8 @@ import "./RepoOrgDropdown.scss";
 import IRepoOrgDropdownProps from "./model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import config from "../../../../config";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
   setShowDropdown,
@@ -23,11 +25,16 @@ const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
             key={index}
             onClick={(e) => setSelectedRepoOwner(owner)}
           >
-            <img
-              src={owner.avatar}
-              alt="camera"
-              className="dropdown-item-org-avatar"
-            />
+            <LazyLoadedImage height={32} once>
+              <img
+                src={owner.avatar}
+                alt="camera"
+                className="dropdown-item-org-avatar"
+                height={32}
+                width={32}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
             <span className="dropdown-item-org-name">{owner.name}</span>
             {selectedRepoOwner.name === owner.name && (
               <span>
@@ -36,6 +43,15 @@ const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
             )}
           </div>
         ))}
+        <div
+          className="dropdown-item top-border"
+          key={repoOwner.length}
+          onClick={(e) =>
+            window.open(`${config.urls.API_URL}/auth/github/app/new`, "_blank")
+          }
+        >
+          <span className="dropdown-item-org-name">Add another Org</span>
+        </div>
       </div>
     </>
   );

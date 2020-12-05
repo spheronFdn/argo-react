@@ -11,6 +11,7 @@ import { ApiService } from "../../../../../../services";
 import { useHistory, useParams } from "react-router-dom";
 import { ActionContext } from "../../../../../../hooks";
 import { IActionModel } from "../../../../../../model/hooks.model";
+import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   index,
@@ -86,11 +87,16 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   {deployment?.deploymentStatus.toLowerCase() === "pending" ? (
                     <Lottie options={defaultOptions} height={42} width={58} />
                   ) : (
-                    <img
-                      src={require("../../../../../../assets/svg/rocket_background.svg")}
-                      alt="rocket"
-                      className="rocket-icon"
-                    />
+                    <LazyLoadedImage height={16} once>
+                      <img
+                        src={require("../../../../../../assets/svg/rocket_background.svg")}
+                        alt="rocket"
+                        className="rocket-icon"
+                        height={16}
+                        width={16}
+                        loading="lazy"
+                      />
+                    </LazyLoadedImage>
                   )}
                 </span>
                 {deployment?.deploymentStatus}

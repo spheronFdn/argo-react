@@ -1,3 +1,8 @@
-import { GithubCallback, GithubSignup } from "./components";
+import {
+  GithubCallback,
+  GithubSignup,
+  GithubApp,
+  GithubAppCallback,
+} from "./components";
 
-export { GithubSignup, GithubCallback };
+export { GithubSignup, GithubCallback, GithubApp, GithubAppCallback };

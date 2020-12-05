@@ -19,6 +19,7 @@
 
     .project-top-card-header {
       .project-top-card-header-title {
+        font-family: var(--headerFont) !important;
         margin: 0px;
         color: var(--themeColorDark);
         display: flex;

@@ -1,7 +1,6 @@
 import { IRepository } from "../../../../../../model/hooks.model";
 
 export default interface IProjectItemProps {
-  index: number;
   type: string;
   projectName: string | null;
   latestDeployment: string | null;

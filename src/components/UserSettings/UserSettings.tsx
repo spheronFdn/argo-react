@@ -1,9 +1,10 @@
 import React from "react";
-import { RootHeader } from "../SharedComponents";
 import "./UserSettings.scss";
-import { UserDetailsCard } from "./components";
-import { SettingsGeneral } from "./routes";
+import { SettingsGeneral, SettingsWallet } from "./routes";
 import { Route, useHistory, useLocation } from "react-router-dom";
+
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
+const UserDetailsCard = React.lazy(() => import("./components/UserDetailsCard"));
 
 function UserSettings() {
   const location = useLocation();
@@ -25,11 +26,24 @@ function UserSettings() {
               >
                 General
               </div>
+              <div
+                className={`settings-bar-item ${
+                  location.pathname.indexOf("wallet") !== -1 ? "selected" : ""
+                }`}
+                onClick={(e) => history.push("/user/settings/wallet")}
+              >
+                Wallet
+              </div>
             </div>
             <Route
               path="/user/settings/general"
               exact
               render={() => <SettingsGeneral />}
+            />
+            <Route
+              path="/user/settings/wallet"
+              exact
+              render={() => <SettingsWallet />}
             />
           </div>
         </div>

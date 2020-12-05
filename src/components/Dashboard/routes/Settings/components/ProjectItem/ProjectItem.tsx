@@ -18,6 +18,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({ index }) => {
         <a
           href="https://arweave.net/SgR5PmbNpDEb3nXB1VnvxoT8FtFpfQxVqRejTPrnYqg"
           className="project-item-live-value"
+          rel="noopener noreferrer"
         >
           https://arweave.net/SgR5PmbNpDEb3nXB1VnvxoT8FtFpfQxVqRejTPrnYqg
         </a>

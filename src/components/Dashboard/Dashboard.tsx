@@ -1,13 +1,15 @@
 import React from "react";
 import "./Dashboard.scss";
-import { Header } from "../SharedComponents";
 import { Redirect, Route } from "react-router-dom";
 import { InviteMembers, Members, Overview, Settings } from "./routes";
+
+const Header = React.lazy(() => import("../_SharedComponents/Header"));
+const MemoedHeader = React.memo(Header);
 
 function Dashboard() {
   return (
     <div className="Dashboard">
-      <Header parent="dashboard" />
+      <MemoedHeader parent="dashboard" />
       <main className="app-main">
         <div className="home-container">
           <Route path="/dashboard/overview" exact render={() => <Overview />} />

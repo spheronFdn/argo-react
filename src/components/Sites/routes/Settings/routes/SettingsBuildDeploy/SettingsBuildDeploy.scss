@@ -12,6 +12,7 @@
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
       .settings-project-header {
+        font-family: var(--headerFont) !important;
         display: flex;
         min-height: 32px;
         align-items: center;
@@ -148,35 +149,6 @@
             font-size: 18px;
             margin-top: 0.5rem;
           }
-
-          .settings-project-item-avatar-container {
-            display: flex;
-            flex-direction: column;
-          }
-
-          .settings-project-avatar-image-container {
-            display: flex;
-            .file-upload {
-              position: absolute;
-              width: 64px;
-              height: 64px;
-              z-index: 100;
-              cursor: pointer;
-              opacity: 0;
-            }
-            .settings-avatar {
-              height: 64px;
-              width: 64px;
-              border-radius: 50%;
-              border: 2px solid var(--themeColor);
-            }
-          }
-        }
-
-        .avatar-container {
-          flex-direction: row !important;
-          align-items: center;
-          justify-content: space-between;
         }
       }
 
@@ -237,14 +209,14 @@
         }
 
         .delete-button {
-          background: #fc2c2c;
+          background: var(--red);
 
           &:hover {
-            background: #921818;
+            background: var(--redDark);
           }
 
           &:disabled {
-            background: #fc7979;
+            background: var(--redDisabled) !important;
             cursor: not-allowed;
           }
         }
