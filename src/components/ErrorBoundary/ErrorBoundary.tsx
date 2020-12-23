@@ -3,7 +3,7 @@ import "./ErrorBoundary.scss";
 import animationData from "../../assets/lotties/went-wrong.json";
 import Lottie from "react-lottie";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 const defaultOptions = {
   loop: true,

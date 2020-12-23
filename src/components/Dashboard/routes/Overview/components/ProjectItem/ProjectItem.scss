@@ -51,11 +51,12 @@
     .project-item-title {
       margin: 0;
       font-size: 22px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       overflow: hidden;
       margin-right: 1rem;
       text-overflow: ellipsis;
+      font-family: var(--headerFont) !important;
     }
 
     .project-item-visit-button {

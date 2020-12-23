@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./CreateOrg.scss";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function CreateOrg() {
   const history = useHistory();
@@ -120,6 +120,7 @@ function CreateOrg() {
                     className="create-org-avatar"
                     height={82}
                     width={82}
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -127,7 +128,7 @@ function CreateOrg() {
                 <button
                   type="button"
                   className="primary-button"
-                  disabled={!isFormFilled}
+                  disabled={!isFormFilled || createOrgLoading}
                   onClick={createOrg}
                 >
                   {createOrgLoading && (

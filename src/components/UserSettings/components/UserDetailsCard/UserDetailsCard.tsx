@@ -7,6 +7,7 @@ import Skeleton from "react-loading-skeleton";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -63,11 +64,16 @@ const UserDetailsCard: React.FC<any> = () => {
       </div>
       <div className="user-details-avatar-container">
         {!userLoading ? (
-          <img
-            src={user?.argo_profile.avatar}
-            alt="avatar"
-            className="user-details-avatar"
-          />
+          <LazyLoadedImage height={132} once>
+            <img
+              src={user?.argo_profile.avatar}
+              alt="avatar"
+              className="user-details-avatar"
+              height={132}
+              width={132}
+              loading="lazy"
+            />
+          </LazyLoadedImage>
         ) : (
           <Skeleton circle={true} height={132} width={132} duration={2} />
         )}

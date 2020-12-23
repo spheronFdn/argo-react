@@ -16,7 +16,7 @@
 
 ArGo is a one-click ☝️  deployment service platform on top of Arweave Permaweb. It offers a Vercel-like seamless experience for the developer to deploy web apps to Arweave Permaweb directly from the ArGo dashboard.
 
-## Installation
+## Installation Instructions
 
 > Note: Our current latest stable branch is dev. After clone make sure to checkout to dev branch
 
@@ -30,17 +30,29 @@ ArGo Web App will start running on http://localhost:3000/
 
 > Note: To run the app you need to run our api, you can follow the api setup provided in [argoapp-live/argo-api](https://github.com/argoapp-live/argo-api)
 
-## Demo Link
+## Docker Installation Instructions
 
-To see the demo of the ArGo you visit at:
-https://youtu.be/68SwcLDteTM
+- Fork or Clone this repository
 
-## Pitch Link
+```
+git clone https://github.com/argoapp-live/argo-react.git
+```
 
-To view ArGo Pitch Video, visit at:
-https://youtu.be/DikhRVcPgiE
+- Docker build - 
 
-## Contact
+```
+docker build -t argo-react .
+```
 
-You can reach out to ArGo team in ArGo Discord server using this invite link:
-https://discord.gg/ahxuCtm
+- Docker run - 
+
+```
+docker run -p 3000:3000 argo-react
+```
+
+## Contributing
+Any contributions are very much welcomed. Feel free to fork and make a PR with any additions (or fixes)!
+
+## Have questions?
+
+Reach out to @rekpero#3898 on the ArGo Discord ([https://discord.gg/HTMqYAm](https://discord.gg/HTMqYAm)) or head to the #contributors-forum channel for further discussion!

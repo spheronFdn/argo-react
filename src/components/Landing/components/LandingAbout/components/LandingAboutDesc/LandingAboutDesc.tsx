@@ -5,7 +5,7 @@ const LandingAboutDesc = () => {
   return (
     <div className="landing-about-paragraphs">
       <p>
-        ArGo is built on Arweave, a new type of storage that backs data with
+        ArGo is built on the Arweave, a new type of storage that backs data with
         sustainable and perpetual endowments. This allows developers to truly store
         data forever – for the very first time.
       </p>
@@ -14,8 +14,8 @@ const LandingAboutDesc = () => {
         remember and preserve apps and version records indefinitely.
       </p>
       <p>
-        ArGo is the first service to provide all your frontend deployment on permaweb
-        in one place.
+        ArGo is the first service to provide all of your frontend deployment on the
+        permaweb in one place.
       </p>
     </div>
   );

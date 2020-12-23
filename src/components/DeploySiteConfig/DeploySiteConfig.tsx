@@ -1,23 +1,30 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ApiService } from "../../services";
+import { BroadcastChannel } from "broadcast-channel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faCheck,
   faChevronDown,
   faChevronUp,
-  // faExclamationCircle,
-  // faSearch,
+  faExclamationCircle,
+  faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
-import { RepoOrgDropdown, RepoItem } from "./components";
-import Skeleton from "react-loading-skeleton";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
+import { GithubIcon } from "../SignUp/components";
+import config from "../../config";
+import Skeleton from "react-loading-skeleton";
+import { RepoOrgDropdown, RepoItem } from "./components";
+import { LazyLoadedImage } from "../_SharedComponents";
 
-const RootHeader = React.lazy(() => import("../SharedComponents/RootHeader"));
+const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
+const MemoRepoItem = React.memo(RepoItem);
+
+const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 
 function DeploySiteConfig() {
   const history = useHistory();
@@ -27,20 +34,22 @@ function DeploySiteConfig() {
   >(StateContext);
   const {
     setLatestDeploymentSocketTopic,
-    setSelectedProject,
     setLatestDeploymentConfig,
     setSelectedOrganization,
   } = useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
   const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
-  const [reposDetails, setReposDetails] = useState<any[]>([]);
+  const [reposOwnerDetails, setReposOwnerDetails] = useState<any[]>([]);
+  const [reposSelectedOwnerRepoDetails, setReposSelectedOwnerRepoDetails] = useState<
+    any[]
+  >([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
+  const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
 
   // const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
-  const [projectName, setProjectName] = useState<string>("");
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
   const [framework, setFramework] = useState<string>("react");
@@ -50,41 +59,13 @@ function DeploySiteConfig() {
   const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
     false,
   );
-  // const [walletFileName, setWalletFileName] = useState<string>("");
-  // const [walletKey, setWalletKey] = useState<any>();
-  // const [walletAddress, setWalletAddress] = useState<string>("");
-  // const [argoBal, setArgoBal] = useState<number>(0);
-  // const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
+  const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
 
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    const repoSvc = ApiService.getAllRepos().subscribe((repos: any) => {
-      if (componentIsMounted.current) {
-        const repositories: any[] = repos.data.map((repo: any) => ({
-          clone_url: repo.clone_url,
-          name: repo.name,
-          fullName: repo.full_name,
-          private: repo.private,
-          owner: { name: repo.owner.login, avatar: repo.owner.avatar_url },
-        }));
-        const owners = repositories.flatMap((repo) => repo.owner);
-        const uniqueOwners = owners.filter(
-          (owner, index) =>
-            owners.map((owner) => owner.name).indexOf(owner.name) === index,
-        );
-        const completeRepoData = uniqueOwners.map((owner) => ({
-          ...owner,
-          repos: repositories.filter((repo) => repo.owner.name === owner.name),
-        }));
-        setReposDetails(completeRepoData);
-        setSelectedRepoOwner(completeRepoData[0]);
-        setRepoLoading(false);
-      }
-    });
     return () => {
-      repoSvc.unsubscribe();
       componentIsMounted.current = false;
     };
   }, []);
@@ -94,16 +75,27 @@ function DeploySiteConfig() {
       selectedRepo &&
       owner &&
       branch &&
-      framework &&
+      framework !== "static" &&
       packageManager &&
       buildCommand &&
-      publishDirectory
-      // walletKey &&
-      // argoBal >= 1
+      publishDirectory &&
+      user?.argo_wallet?.wallet_balance &&
+      user?.argo_wallet?.wallet_balance >= 0.2
     ) {
       setDeployDisabled(false);
     } else {
-      setDeployDisabled(true);
+      if (
+        selectedRepo &&
+        owner &&
+        branch &&
+        framework === "static" &&
+        user?.argo_wallet?.wallet_balance &&
+        user?.argo_wallet?.wallet_balance >= 0.2
+      ) {
+        setDeployDisabled(false);
+      } else {
+        setDeployDisabled(true);
+      }
     }
   }, [
     selectedRepo,
@@ -113,9 +105,24 @@ function DeploySiteConfig() {
     packageManager,
     buildCommand,
     publishDirectory,
-    // walletKey,
-    // argoBal,
+    user,
   ]);
+
+  useEffect(() => {
+    if (framework === "static") {
+      setPackageManager("");
+      setBuildCommand("");
+      setPublishDirectory("");
+    } else if (framework === "react") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("build");
+    } else if (framework === "vue") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("dist");
+    }
+  }, [framework]);
 
   useEffect(() => {
     if (selectedOrg) {
@@ -133,6 +140,11 @@ function DeploySiteConfig() {
           .split("/")[1],
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
+      setSelectedRepoOwner({
+        name: selectedRepoForTriggerDeployment.github_url
+          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+          .split("/")[0],
+      });
       setBranch(selectedRepoForTriggerDeployment.branch);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
@@ -141,14 +153,75 @@ function DeploySiteConfig() {
     }
   }, [selectedRepoForTriggerDeployment]);
 
+  useEffect(() => {
+    const bc = new BroadcastChannel("github_app_auth");
+    bc.onmessage = (msg: string) => {
+      if (msg === "authorized") {
+        setShowGithubRepos(true);
+        getAllGithubInstallations();
+      }
+    };
+    return () => {
+      bc.close();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getAllGithubInstallations = () => {
+    setOwnerLoading(true);
+    setRepoLoading(true);
+    ApiService.getAllGithubAppInstallation().subscribe((res) => {
+      if (componentIsMounted.current) {
+        const repoOwners: any[] = res.installations.map((installation: any) => ({
+          name: installation.account.login,
+          avatar: installation.account.avatar_url,
+          installationId: installation.id,
+        }));
+        setReposOwnerDetails(repoOwners);
+        if (repoOwners.length) {
+          let newRepoOwner = null;
+          if (selectedRepoOwner) {
+            newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === selectedRepoOwner.name,
+            )[0];
+          } else {
+            newRepoOwner = repoOwners[0];
+          }
+          setSelectedRepoOwner(newRepoOwner);
+          setOwnerLoading(false);
+          getOwnerRepos(newRepoOwner.installationId);
+        } else {
+          setOwnerLoading(false);
+        }
+      }
+    });
+  };
+
+  const getOwnerRepos = (installationId: string) => {
+    setRepoLoading(true);
+    ApiService.getAllOwnerRepos(installationId).subscribe((res) => {
+      if (componentIsMounted.current) {
+        const repositories: any[] = res.repositories.map((repo: any) => ({
+          clone_url: repo.clone_url,
+          name: repo.name,
+          fullName: repo.full_name,
+          private: repo.private,
+          repositoryId: repo.id,
+        }));
+        setReposSelectedOwnerRepoDetails(repositories);
+        setRepoLoading(false);
+      }
+    });
+  };
+
   const selectRepoOwner = (repoOwner: any) => {
+    getOwnerRepos(repoOwner.installationId);
     setSelectedRepoOwner(repoOwner);
     setShowRepoOrgDropdown(false);
   };
 
   const selectRepositories = (repo: any) => {
     setSelectedRepo(repo);
-    setProjectName(repo.name);
     setCreateDeployProgress(2);
   };
 
@@ -158,8 +231,12 @@ function DeploySiteConfig() {
     const deployment = {
       github_url: selectedRepo.clone_url,
       folder_name: selectedRepo.name,
+      owner: selectedRepoOwner.name,
+      installationId: selectedRepoOwner.installationId,
+      isPrivate: selectedRepo.private,
+      repositoryId: selectedRepo.repositoryId,
       orgId: owner._id,
-      project_name: projectName,
+      // project_name: projectName,
       branch,
       framework,
       package_manager: packageManager,
@@ -168,35 +245,21 @@ function DeploySiteConfig() {
       auto_publish: false,
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
-      setLatestDeploymentSocketTopic(result.topic);
-      setSelectedProject({ name: projectName });
-      setLatestDeploymentConfig(deployment);
-      setStartDeploymentLoading(false);
-      history.push(
-        `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
-      );
+      if (componentIsMounted.current) {
+        setLatestDeploymentSocketTopic(result.topic);
+        setLatestDeploymentConfig(deployment);
+        setStartDeploymentLoading(false);
+        history.push(
+          `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
+        );
+      }
     });
   };
 
-  // load file to json
-  // const walletLogin = (file: any) => {
-  //   setWalletLoader(true);
-  //   setWalletFileName(file.name);
-  //   const fileReader = new FileReader();
-  //   fileReader.onloadend = handleFileRead;
-  //   fileReader.readAsText(file);
-  // };
-
-  // set pk json to state
-  // const handleFileRead = async (evt: any) => {
-  //   const jwk = JSON.parse(evt.target.result);
-  //   setWalletKey(jwk);
-  //   const address = await ArweaveService.getWalletAddress(jwk);
-  //   setWalletAddress(address);
-  //   const argoBal = await ArweaveService.getArgoTokenBalance(address);
-  //   setArgoBal(argoBal);
-  //   setWalletLoader(false);
-  // };
+  const openGithubAppAuth = async () => {
+    const githubSignInUrl = `${config.urls.BASE_URL}/github/app/${user?._id}`;
+    window.open(githubSignInUrl, "_blank");
+  };
 
   let buildCommandPrefix: string = "";
   if (packageManager === "npm") {
@@ -295,95 +358,153 @@ function DeploySiteConfig() {
                         run your build tool on our services and deploy the result.
                       </span>
                     </div> */}
-                    <div className="deploy-site-item-repo-list-container">
-                      <div className="deploy-site-item-repo-header">
-                        <div
-                          className="deploy-site-item-repo-header-left"
-                          onClick={(e) =>
-                            !repoLoading ? setShowRepoOrgDropdown(true) : null
-                          }
-                        >
-                          {!repoLoading ? (
-                            <img
-                              src={selectedRepoOwner.avatar}
-                              alt="camera"
-                              className="deploy-site-item-repo-org-avatar"
-                              height={32}
-                              width={32}
-                            />
-                          ) : (
-                            <Skeleton
-                              circle={true}
-                              height={32}
-                              width={32}
-                              duration={2}
+                    {!showGithubRepos ? (
+                      <div className="deployment-provider-container">
+                        <div className="deployment-provider-title">
+                          Connect with your favorite provider
+                        </div>
+                        <div className="deployment-provider-buttons">
+                          <button
+                            className="github-button"
+                            onClick={openGithubAppAuth}
+                          >
+                            <span className="github-icon">
+                              <GithubIcon />
+                            </span>
+                            <span>Github</span>
+                          </button>
+                        </div>
+                      </div>
+                    ) : reposOwnerDetails.length || ownerLoading ? (
+                      <div className="deploy-site-item-repo-list-container">
+                        <div className="deploy-site-item-repo-header">
+                          <div
+                            className="deploy-site-item-repo-header-left"
+                            onClick={(e) =>
+                              !ownerLoading ? setShowRepoOrgDropdown(true) : null
+                            }
+                          >
+                            {!ownerLoading ? (
+                              <LazyLoadedImage height={32} once>
+                                <img
+                                  src={selectedRepoOwner.avatar}
+                                  alt="camera"
+                                  className="deploy-site-item-repo-org-avatar"
+                                  height={32}
+                                  width={32}
+                                  loading="lazy"
+                                />
+                              </LazyLoadedImage>
+                            ) : (
+                              <Skeleton
+                                circle={true}
+                                height={32}
+                                width={32}
+                                duration={2}
+                              />
+                            )}
+                            <span className="deploy-site-item-repo-org-name">
+                              {!ownerLoading ? (
+                                selectedRepoOwner.name
+                              ) : (
+                                <Skeleton width={140} height={24} duration={2} />
+                              )}
+                            </span>
+                            <span className="deploy-site-item-repo-down">
+                              <FontAwesomeIcon
+                                icon={
+                                  showRepoOrgDropdown ? faChevronUp : faChevronDown
+                                }
+                              />
+                            </span>
+                          </div>
+                          <div className="deploy-site-item-repo-header-right">
+                            {/* <div className="deploy-site-item-repo-search-container">
+                              <span className="deploy-site-item-repo-search-icon">
+                                <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                              </span>
+                              <input
+                                type="text"
+                                className="deploy-site-item-repo-search-input"
+                                placeholder="Search repos"
+                              />
+                            </div> */}
+                            <div
+                              className="refresh-control"
+                              onClick={getAllGithubInstallations}
+                            >
+                              <FontAwesomeIcon icon={faSyncAlt}></FontAwesomeIcon>
+                            </div>
+                          </div>
+                          {showRepoOrgDropdown && (
+                            <MemoRepoOrgDropdown
+                              setShowDropdown={setShowRepoOrgDropdown}
+                              repoOwner={reposOwnerDetails}
+                              selectedRepoOwner={selectedRepoOwner}
+                              setSelectedRepoOwner={selectRepoOwner}
                             />
                           )}
-                          <span className="deploy-site-item-repo-org-name">
-                            {!repoLoading ? (
-                              selectedRepoOwner.name
-                            ) : (
-                              <Skeleton width={140} height={24} duration={2} />
-                            )}
-                          </span>
-                          <span className="deploy-site-item-repo-down">
-                            <FontAwesomeIcon
-                              icon={
-                                showRepoOrgDropdown ? faChevronUp : faChevronDown
-                              }
-                            />
-                          </span>
                         </div>
-                        <div className="deploy-site-item-repo-header-right">
-                          {/* <div className="deploy-site-item-repo-search-container">
-                            <span className="deploy-site-item-repo-search-icon">
-                              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                        <div className="deploy-site-item-repo-body">
+                          {!repoLoading ? (
+                            reposSelectedOwnerRepoDetails.map(
+                              (repo: any, index: number) => (
+                                <MemoRepoItem
+                                  skeleton={false}
+                                  name={repo.fullName}
+                                  privateRepo={repo.private}
+                                  key={index}
+                                  onClick={() => selectRepositories(repo)}
+                                />
+                              ),
+                            )
+                          ) : (
+                            <>
+                              <MemoRepoItem
+                                skeleton={true}
+                                name={""}
+                                privateRepo={false}
+                                onClick={() => null}
+                              />
+                              <MemoRepoItem
+                                skeleton={true}
+                                name={""}
+                                privateRepo={false}
+                                onClick={() => null}
+                              />
+                            </>
+                          )}
+                        </div>
+                        <div className="deploy-site-item-repo-body">
+                          Can’t see your repo here?
+                          <a
+                            href={`${config.urls.API_URL}/auth/github/app/new`}
+                            // eslint-disable-next-line react/jsx-no-target-blank
+                            target="_blank"
+                          >
+                            Configure the ArGo app on GitHub.
+                          </a>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="deployment-provider-container">
+                        <div className="deployment-provider-title">
+                          You don't have any configured owner, Configure it now to
+                          view your repositories
+                        </div>
+                        <div className="deployment-provider-buttons">
+                          <button
+                            className="github-button"
+                            onClick={openGithubAppAuth}
+                          >
+                            <span className="github-icon">
+                              <GithubIcon />
                             </span>
-                            <input
-                              type="text"
-                              className="deploy-site-item-repo-search-input"
-                              placeholder="Search repos"
-                            />
-                          </div> */}
+                            <span>Github</span>
+                          </button>
                         </div>
-                        {showRepoOrgDropdown && (
-                          <RepoOrgDropdown
-                            setShowDropdown={setShowRepoOrgDropdown}
-                            repoOwner={reposDetails}
-                            selectedRepoOwner={selectedRepoOwner}
-                            setSelectedRepoOwner={selectRepoOwner}
-                          />
-                        )}
                       </div>
-                      <div className="deploy-site-item-repo-body">
-                        {!repoLoading ? (
-                          selectedRepoOwner.repos.map((repo: any, index: number) => (
-                            <RepoItem
-                              skeleton={false}
-                              name={repo.fullName}
-                              privateRepo={repo.private}
-                              key={index}
-                              onClick={() => selectRepositories(repo)}
-                            />
-                          ))
-                        ) : (
-                          <>
-                            <RepoItem
-                              skeleton={true}
-                              name={""}
-                              privateRepo={false}
-                              onClick={() => null}
-                            />
-                            <RepoItem
-                              skeleton={true}
-                              name={""}
-                              privateRepo={false}
-                              onClick={() => null}
-                            />
-                          </>
-                        )}
-                      </div>
-                    </div>
+                    )}
                   </div>
                 )}
                 {createDeployProgress === 2 && (
@@ -397,19 +518,6 @@ function DeploySiteConfig() {
                         with these settings.
                       </label>
                       <div className="deploy-site-item-form">
-                        {/* <div className="deploy-site-item-form-item">
-                          <label>Project Name</label>
-                          {true ? (
-                            <input
-                              type="text"
-                              className="deploy-site-item-input"
-                              value={projectName}
-                              onChange={(e) => setProjectName(e.target.value)}
-                            />
-                          ) : (
-                            <Skeleton width={326} height={36} duration={2} />
-                          )}
-                        </div> */}
                         <div className="deploy-site-item-form-item">
                           <label>Owner</label>
                           <div className="deploy-site-item-select-container">
@@ -479,139 +587,72 @@ function DeploySiteConfig() {
                             </span>
                           </div>
                         </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Package Manager</label>
-                          <div className="deploy-site-item-select-container">
-                            <select
-                              className="deploy-site-item-select"
-                              value={packageManager}
-                              onChange={(e) => setPackageManager(e.target.value)}
-                            >
-                              <option value="npm">NPM</option>
-                              <option value="yarn">YARN</option>
-                            </select>
-                            <span className="select-down-icon">
-                              <FontAwesomeIcon icon={faChevronDown} />
+                        {framework !== "static" && (
+                          <>
+                            <div className="deploy-site-item-form-item">
+                              <label>Package Manager</label>
+                              <div className="deploy-site-item-select-container">
+                                <select
+                                  className="deploy-site-item-select"
+                                  value={packageManager}
+                                  onChange={(e) => setPackageManager(e.target.value)}
+                                >
+                                  <option value="npm">NPM</option>
+                                  <option value="yarn">YARN</option>
+                                </select>
+                                <span className="select-down-icon">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Build command</label>
+                              <div className="deploy-site-item-input-container">
+                                <input
+                                  type="text"
+                                  className="deploy-site-item-input-disabled"
+                                  value={buildCommandPrefix}
+                                  disabled
+                                />
+                                <input
+                                  type="text"
+                                  className="deploy-site-item-input-build"
+                                  value={buildCommand}
+                                  onChange={(e) => setBuildCommand(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Publish directory</label>
+                              <input
+                                type="text"
+                                className="deploy-site-item-input"
+                                value={publishDirectory}
+                                onChange={(e) => setPublishDirectory(e.target.value)}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      {user?.argo_wallet?.wallet_balance &&
+                      user?.argo_wallet?.wallet_balance < 0.2 ? (
+                        <div className="wallet-details-container">
+                          <div className="wallet-details-items">
+                            <span className="exclamation-icon">
+                              <FontAwesomeIcon
+                                icon={faExclamationCircle}
+                              ></FontAwesomeIcon>
+                            </span>
+                            <span>
+                              You do not have enough balance to deploy your site. To
+                              deploy a site you have to have minimum 0.2 AR in your
+                              wallet.
+                              <Link to="/wallet/recharge">Recharge here</Link>
                             </span>
                           </div>
                         </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Build command</label>
-                          <div className="deploy-site-item-input-container">
-                            <input
-                              type="text"
-                              className="deploy-site-item-input-disabled"
-                              value={buildCommandPrefix}
-                              disabled
-                            />
-                            <input
-                              type="text"
-                              className="deploy-site-item-input-build"
-                              value={buildCommand}
-                              onChange={(e) => setBuildCommand(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        <div className="deploy-site-item-form-item">
-                          <label>Publish directory</label>
-                          <input
-                            type="text"
-                            className="deploy-site-item-input"
-                            value={publishDirectory}
-                            onChange={(e) => setPublishDirectory(e.target.value)}
-                          />
-                        </div>
-                      </div>
+                      ) : null}
                     </div>
-                    {/* <div className="deploy-site-form-item">
-                      <label className="deploy-site-item-title">
-                        Wallet configuration
-                      </label>
-                      <label className="deploy-site-item-subtitle">
-                        Your arweave wallet is required to start the deployment.
-                        We'll be charging 1 ARGO token per deployment.
-                      </label>
-                      <label className="deploy-site-item-subtitle">
-                        Please be aware that ArGo is in alpha stage and deployment
-                        may fail sometimes, so contact us if your fund is lost after
-                        deployment
-                      </label>
-                      <div className="deploy-site-item-form">
-                        <div className="deploy-site-item-form-item">
-                          <label>Arweave Wallet</label>
-                          <div className="wallet-choose-container">
-                            <button type="button" className="file-upload-button">
-                              Choose
-                            </button>
-                            <input
-                              type="file"
-                              className="file-upload"
-                              accept="application/JSON"
-                              onChange={(e: any) => walletLogin(e.target.files[0])}
-                            />
-                            {walletFileName && (
-                              <span className="file-upload-name">
-                                {walletFileName}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        {walletFileName && (
-                          <div className="deploy-site-item-form-item">
-                            <label>Wallet Details</label>
-                            <div className="wallet-details-container">
-                              <div className="wallet-details-items">
-                                <div className="wallet-details-item-title">
-                                  Wallet Address
-                                </div>
-                                <div className="wallet-details-item-desc">
-                                  {!walletLoader ? (
-                                    walletAddress
-                                  ) : (
-                                    <Skeleton width={300} duration={2} />
-                                  )}
-                                </div>
-                              </div>
-                              <div className="wallet-details-items">
-                                <div className="wallet-details-item-title">
-                                  ArGo Token Balance
-                                </div>
-                                <div className="wallet-details-item-desc">
-                                  {!walletLoader ? (
-                                    `${argoBal} ARGO Token`
-                                  ) : (
-                                    <Skeleton width={150} duration={2} />
-                                  )}
-                                </div>
-                              </div>
-                              <div className="wallet-details-items">
-                                <div className="wallet-details-item-title">Fees</div>
-                                <div className="wallet-details-item-desc">
-                                  {!walletLoader ? (
-                                    "1 ARGO Token"
-                                  ) : (
-                                    <Skeleton width={150} duration={2} />
-                                  )}
-                                </div>
-                              </div>
-                              {argoBal < 1 && !walletLoader && (
-                                <div className="wallet-details-items">
-                                  <span className="exclamation-icon">
-                                    <FontAwesomeIcon
-                                      icon={faExclamationCircle}
-                                    ></FontAwesomeIcon>
-                                  </span>
-                                  <span>
-                                    You do not have enough balance to deploy your
-                                    site
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div> */}
                     <div className="button-container">
                       <button
                         type="button"

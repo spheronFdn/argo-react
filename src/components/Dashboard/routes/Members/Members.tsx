@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { IUser } from "../../../../model/hooks.model";
 import { IMemberModel } from "../../../../model/member.model";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const Members = () => {
   const history = useHistory();
@@ -72,13 +73,16 @@ const Members = () => {
                     <div className="tr" key={index}>
                       <div className="td">
                         <div className="avatar-container">
-                          <img
-                            src={member.avatar}
-                            alt="avatar"
-                            className="profile-avatar"
-                            height={32}
-                            width={32}
-                          />
+                          <LazyLoadedImage height={32} once>
+                            <img
+                              src={member.avatar}
+                              alt="avatar"
+                              className="profile-avatar"
+                              height={32}
+                              width={32}
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
                         </div>
                       </div>
                       <div className="td">

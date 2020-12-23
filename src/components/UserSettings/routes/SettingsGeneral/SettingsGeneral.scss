@@ -22,6 +22,7 @@
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom: 1px solid var(--themeColorDark);
+        font-family: var(--headerFont) !important;
       }
 
       .delete-containers {
@@ -170,14 +171,14 @@
         }
 
         .delete-button {
-          background: #fc2c2c;
+          background: var(--red);
 
           &:hover {
-            background: #921818;
+            background: var(--redDark);
           }
 
           &:disabled {
-            background: #fc2c2c;
+            background: var(--redDisabled);
             cursor: not-allowed;
           }
         }

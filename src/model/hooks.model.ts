@@ -39,13 +39,21 @@ export interface IProvider {
   name: string;
 }
 
+export interface IArgoWalletModel {
+  wallet_address: string;
+  wallet_balance: number;
+}
+
 export interface IUser {
+  _id: string;
   provider_profile: IProfile;
   argo_profile: IArgoUser;
+  argo_wallet: IArgoWalletModel;
   provider: IProvider;
   dateOfEntry?: Date;
   lastUpdated?: Date;
   organizations?: IOrganization[];
+  totalDepTime?: number;
 }
 
 export interface IRepository {
@@ -62,6 +70,7 @@ export interface IRepository {
   publish_dir: string;
   branch: string;
   sitePreview: string;
+  framework: string;
 }
 
 export interface IDeployment {

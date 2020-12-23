@@ -4,8 +4,8 @@ import "./LandingDeployDesc.scss";
 const LandingDeployDesc = () => {
   return (
     <div className="argo-desc-text">
-      ArGo is a one-click deployment service platform on top of Arweave permaweb. Our
-      process is simple:
+      ArGo is a one-click deployment service platform on top of the Arweave permaweb.
+      Our process is simple:
     </div>
   );
 };

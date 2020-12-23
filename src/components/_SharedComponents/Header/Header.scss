@@ -1,4 +1,4 @@
-.RootHeader {
+.Header {
   padding: 20px 40px;
   color: var(--white);
   // background: var(--themeColor);
@@ -23,7 +23,6 @@
             .logo-image {
               height: 32px;
             }
-
             .logo-badge {
               margin-left: 4px;
               font-size: 9px;
@@ -65,14 +64,28 @@
             height: 36px;
             width: 36px;
             border-radius: 50%;
-            margin-right: 1rem;
             border: 2px solid var(--themeColor);
+            background-color: var(--white);
+            cursor: pointer;
           }
 
           .team-name {
             font-size: 18px;
             font-weight: 500;
             margin: 0;
+            margin-left: 0.5rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: var(--headerFont) !important;
+          }
+
+          .project-name {
+            border-radius: 6px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #3261b873;
+            }
           }
 
           .team-up-down-arrow {
@@ -93,6 +106,16 @@
               background-color: #3261b89e;
               border-radius: 6px;
             }
+          }
+
+          .selected-team-arrow {
+            background-color: #3261b89e;
+            border-radius: 6px;
+          }
+
+          .disabled-team-arrow {
+            background-color: transparent !important;
+            cursor: not-allowed;
           }
         }
       }
@@ -149,54 +172,81 @@
           .selected-profile {
             border: 2px solid var(--white) !important;
           }
-        }
 
-        .login-container {
-          font-size: 18px;
-          font-weight: 500;
-          margin-left: 2rem;
-          cursor: pointer;
-          text-decoration: none;
-          color: #fff;
-        }
-
-        .disable-login {
-          cursor: not-allowed;
-        }
-
-        .primary-button {
-          background: #040c34;
-          text-decoration: none;
-          box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.12);
-          color: white;
-          font-size: 16px;
-          font-weight: 600;
-          border-radius: 8px;
-          padding: 0.5rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 2px solid transparent;
-          outline: none;
-          cursor: pointer;
-          transition: all 0.3s ease-in-out;
-          margin-left: 2rem;
-          width: 104px;
-
-          &:hover {
-            background: #735386;
+          .disabled-profile {
+            border: 2px solid var(--themeColor) !important;
           }
-
-          &:disabled {
-            background: #040c34;
-            cursor: not-allowed;
-          }
-        }
-
-        .menu-button {
-          display: none;
         }
       }
+    }
+  }
+}
+
+$information-phone: "only screen and (max-width : 414px)";
+$information-pad: "only screen and (max-width : 1024px) and (min-width: 414px)";
+@media #{$information-phone} {
+  .header {
+    .logo-container {
+      width: 25% !important;
+      margin-right: 10px;
+      .logo-name {
+        padding-inline-start: 1em !important;
+        font-size: 18px !important;
+      }
+    }
+    .search-bar-container {
+      width: 70%;
+
+      .search-bar {
+        width: 75% !important;
+        padding: 0.5em 1em !important;
+        .search-bar-input {
+          font-size: 14px !important;
+          padding-inline-start: 0.5em !important;
+          width: 100% !important;
+        }
+      }
+    }
+    .user-profile-blockie-icon {
+      height: 32px !important;
+      width: 32px !important;
+    }
+
+    .toolbar-dropdown-box {
+      font-size: 12px !important;
+    }
+  }
+}
+
+@media #{$information-pad} {
+  .header {
+    .logo-container {
+      width: 25% !important;
+      margin-right: 10px;
+      .logo-name {
+        padding-inline-start: 1em !important;
+        font-size: 24px !important;
+      }
+    }
+    .search-bar-container {
+      width: 70%;
+
+      .search-bar {
+        width: 75% !important;
+        padding: 0.5em 1em !important;
+        .search-bar-input {
+          font-size: 16px !important;
+          padding-inline-start: 0.5em !important;
+          width: 100% !important;
+        }
+      }
+    }
+    .user-profile-blockie-icon {
+      height: 32px !important;
+      width: 32px !important;
+    }
+    .toolbar-dropdown-box {
+      font-size: 12px !important;
     }
   }
 }

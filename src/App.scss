@@ -1,12 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:100,300,400,600,700|Roboto:100,200,300,400,500,600");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap");
 :root {
   --headlinesFont: "Josefin Sans", sans-serif;
+  --headerFont: "Inter", sans-serif;
   --bodyFont: "Rubik", sans-serif;
   --appNameFont: "Nunito", sans-serif;
   --wildWatermelon: #fc2424;
   --fuelYellow: #f0a035;
+  --fuelYellowDark: #eb8a0b;
   --textColor: #323232;
   --bodyBg: #c7c7c7;
   --white: #fff;
@@ -20,6 +23,9 @@
   --primaryDisabled: #6c98e4;
   --logoColor: #3463ae;
   --themeColorDark: #0a3669;
+  --red: #ee0902;
+  --redDark: #811515;
+  --redDisabled: #fc7979;
   --themeColorSelected: #1563bb27;
   --labelColor: #737373;
   --hoverBackground: rgba(197, 197, 197, 0.28);

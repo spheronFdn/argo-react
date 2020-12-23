@@ -44,10 +44,13 @@
         margin: -10px -10px !important;
       }
 
-      .rocket-icon {
-        height: 16px;
-        width: 16px;
-        margin-right: 10px;
+      .lazyload-wrapper {
+        margin: auto !important;
+        .rocket-icon {
+          height: 16px;
+          width: 16px;
+          margin-right: 10px;
+        }
       }
     }
   }

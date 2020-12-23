@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { IRootHeaderModel } from "./model";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LazyLoadedImage } from "..";
 
 const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
   const history = useHistory();
@@ -27,6 +28,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   alt="logo"
                   className="logo-image"
                   height={32}
+                  loading="lazy"
                 />
                 <span className="logo-badge">Alpha</span>
               </Link>
@@ -45,13 +47,18 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   }
                 >
                   {!userLoading ? (
-                    <img
-                      src={user?.argo_profile.avatar}
-                      alt="address-blockie"
-                      className={`user-profile-blockie-icon ${
-                        showProfileDropdown ? "selected-profile" : ""
-                      }`}
-                    />
+                    <LazyLoadedImage height={42} once>
+                      <img
+                        src={user?.argo_profile.avatar}
+                        alt="address-blockie"
+                        className={`user-profile-blockie-icon ${
+                          showProfileDropdown ? "selected-profile" : ""
+                        }`}
+                        height={42}
+                        width={42}
+                        loading="lazy"
+                      />
+                    </LazyLoadedImage>
                   ) : (
                     <Skeleton circle={true} height={42} width={42} duration={2} />
                   )}

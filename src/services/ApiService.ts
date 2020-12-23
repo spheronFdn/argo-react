@@ -141,10 +141,22 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
   });
 };
 
-export const getAllRepos = (): Observable<any> => {
+export const getAllOwnerRepos = (installationId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/github/repo/`, {
+      fetch(`${config.urls.API_URL}/repository/installations/${installationId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const getAllGithubAppInstallation = (): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/auth/github/app`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
@@ -214,6 +226,36 @@ export const updateProject = (id: string, project: any): Observable<any> => {
         },
         method: "PUT",
         body: JSON.stringify(project),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const rechargeWallet = (recharge: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/profile/wallet/balance`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(recharge),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const updateWalletAddress = (address: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/profile/wallet/address`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(address),
       }).then((res) => res.json()),
     );
   });

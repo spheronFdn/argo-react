@@ -1,9 +1,32 @@
 .Overview {
+  .overview-alert {
+    padding: 6px 1rem;
+    background-color: var(--red);
+    border-radius: 4px;
+    margin-top: 1rem;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+
+    .exclamation-icon {
+      margin-right: 0.5rem;
+    }
+
+    a {
+      color: #dddddd;
+      text-decoration: none;
+      border-bottom: 1px dotted #dddddd;
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
   .overview-container {
     display: flex;
     align-items: center;
     color: var(--white);
-    margin-top: 3rem;
+    margin-top: 2.5rem;
 
     .overview-team-avatar-container {
       display: flex;
@@ -22,6 +45,7 @@
       .overview-team-name {
         margin: 0;
         font-weight: 500;
+        font-family: var(--headerFont) !important;
       }
 
       .overview-team-misc-container {

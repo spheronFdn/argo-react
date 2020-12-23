@@ -18,6 +18,7 @@ import Lottie from "react-lottie";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
 import config from "../../../../config";
+import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -79,7 +80,6 @@ const Deployment = () => {
           });
           if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
             socket.on(result.deployment.topic, (data: any) => {
-              // console.log(data);
               data.split("\n").forEach((line: string) => {
                 if (line.trim()) {
                   currentSiteDeployLogs.push({
@@ -210,11 +210,16 @@ const Deployment = () => {
                 {!isDeployed ? (
                   <Lottie options={defaultOptions} height={54} width={76} />
                 ) : (
-                  <img
-                    src={require("../../../../assets/svg/rocket_background.svg")}
-                    alt="rocket"
-                    className="rocket-icon"
-                  />
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/rocket_background.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={24}
+                      width={24}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
                 )}
               </>
             ) : (
@@ -259,11 +264,16 @@ const Deployment = () => {
             )}
           </div>
           <div className="site-deployment-card-fields">
-            <img
-              src={require("../../../../assets/png/ar_light.png")}
-              alt="github"
-              className="site-deployment-logo"
-            />
+            <LazyLoadedImage height={24} once>
+              <img
+                src={require("../../../../assets/png/ar_light.png")}
+                alt="github"
+                className="site-deployment-logo"
+                height={24}
+                width={24}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
 
             {!deploymentLoading ? (
               isDeployed ? (
