@@ -58,7 +58,7 @@ const Reducers = (dispatch: any, history: any) => ({
   resetUser: () => {
     dispatch({
       type: Actions.SET_USER,
-      selectedOrg: null,
+      user: null,
     });
   },
   setLatestDeploymentConfig: (config: any) => {
