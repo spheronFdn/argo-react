@@ -1,3 +1,5 @@
+@import "../../styles/mixin";
+
 .WalletRecharge {
   display: flex;
   flex-direction: column;
@@ -187,64 +189,34 @@
             display: flex;
             padding: 1rem 24px;
             .primary-button {
-              background: var(--themeColor);
-              text-decoration: none;
-              color: white;
-              font-size: 16px;
-              font-weight: 600;
-              border: 0;
-              border-radius: 8px;
-              padding: 0.5rem 1rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border: 2px solid transparent;
-              outline: none;
-              cursor: pointer;
-              transition: all 0.3s ease-in-out;
+              @include primaryButton(
+                white,
+                var(--themeColor),
+                0.5rem 1rem,
+                none,
+                8px,
+                var(--themeColorDark),
+                var(--primaryDisabled)
+              );
               width: 132px;
               margin-right: 1rem;
 
               div {
                 margin-right: 4px;
               }
-
-              &:hover {
-                background: var(--themeColorDark);
-              }
-
-              &:disabled {
-                background: var(--primaryDisabled) !important;
-                cursor: not-allowed;
-              }
             }
 
             .cancel-button {
-              background: var(--grey2Color);
-              text-decoration: none;
-              color: var(--textColor);
-              font-size: 16px;
-              font-weight: 600;
-              border: 0;
-              border-radius: 8px;
-              padding: 0.5rem 1rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border: 2px solid transparent;
-              outline: none;
-              cursor: pointer;
-              transition: all 0.3s ease-in-out;
+              @include primaryButton(
+                var(--textColor),
+                var(--grey2Color),
+                0.5rem 1rem,
+                none,
+                8px,
+                var(--grey3Color),
+                var(--grey1Color)
+              );
               width: 132px;
-
-              &:hover {
-                background: var(--grey3Color);
-              }
-
-              &:disabled {
-                background: var(--grey1Color) !important;
-                cursor: not-allowed;
-              }
             }
           }
         }
@@ -252,288 +224,3 @@
     }
   }
 }
-
-// $information-phone: "only screen and (max-width : 464px)";
-// $information-pad: "only screen and (max-width : 1024px) and (min-width: 464px)";
-// $information-xl: "only screen and (min-width: 1920px)";
-// @media #{$information-phone} {
-//   .Landing {
-//     .bg-animation {
-//       li {
-//         width: 50px;
-//         height: 50px;
-
-//         &::before {
-//           transform: rotate(-135deg);
-//         }
-
-//         &:nth-child(1) {
-//           left: 5%;
-//           animation-duration: 20s;
-//         }
-
-//         &:nth-child(2) {
-//           left: 20%;
-//           width: 60px;
-//           height: 60px;
-//           animation-delay: 2s;
-//           animation-duration: 25s;
-//         }
-
-//         &:nth-child(3) {
-//           left: 35%;
-//           width: 30px;
-//           height: 30px;
-//           animation-delay: 17s;
-//         }
-
-//         &:nth-child(4) {
-//           left: 55%;
-//           width: 70px;
-//           height: 70px;
-//           animation-delay: 6s;
-//           animation-duration: 22s;
-//           background-color: transparent;
-//         }
-
-//         &:nth-child(5) {
-//           left: 65%;
-//         }
-
-//         &:nth-child(6) {
-//           left: 75%;
-//           width: 40px;
-//           height: 40px;
-//           animation-delay: 3s;
-//           background-color: transparent;
-//         }
-
-//         &:nth-child(7) {
-//           left: 82%;
-//           width: 60px;
-//           height: 60px;
-//           animation-delay: 9s;
-//         }
-
-//         &:nth-child(8) {
-//           left: 91%;
-//           width: 60px;
-//           height: 60px;
-//           background-color: transparent;
-//           animation-delay: 15s;
-//         }
-
-//         &:nth-child(9) {
-//           display: none;
-//         }
-//       }
-//     }
-
-//     .landing-container {
-//       padding: 0.5rem 0px !important;
-//       height: 98vh !important;
-
-//       .header {
-//         &::after {
-//           display: none;
-//         }
-
-//         .top-message {
-//           max-width: 172px !important;
-//           font-size: 1rem !important;
-//         }
-
-//         .join-button {
-//           padding: 0.4rem 2rem !important;
-//           .join-text {
-//             font-size: 1rem !important;
-//           }
-//         }
-//       }
-
-//       .main {
-//         transform: translate(-50%, -50%) !important;
-//         .introducing-text {
-//           font-size: 18px !important;
-//           top: -12px !important;
-//           left: 11% !important;
-//         }
-//         .logo-container {
-//           padding: 1rem 2rem !important;
-//           border: 4px solid #fff !important;
-//           border-radius: 32px !important;
-
-//           .logo-image {
-//             height: 42px !important;
-//           }
-//           .logo-text {
-//             font-size: 36px !important;
-//             margin-left: 1rem !important;
-//           }
-//         }
-//       }
-
-//       .footer {
-//         bottom: 0rem !important;
-//         width: 82.5% !important;
-//       }
-//     }
-//   }
-// }
-
-// @media #{$information-pad} {
-//   .Landing {
-//     .bg-animation {
-//       li {
-//         width: 50px;
-//         height: 50px;
-
-//         &::before {
-//           transform: rotate(-135deg);
-//         }
-
-//         &:nth-child(1) {
-//           left: 5%;
-//           animation-duration: 20s;
-//         }
-
-//         &:nth-child(2) {
-//           left: 20%;
-//           width: 60px;
-//           height: 60px;
-//           animation-delay: 2s;
-//           animation-duration: 25s;
-//         }
-
-//         &:nth-child(3) {
-//           left: 35%;
-//           width: 30px;
-//           height: 30px;
-//           animation-delay: 17s;
-//         }
-
-//         &:nth-child(4) {
-//           left: 55%;
-//           width: 70px;
-//           height: 70px;
-//           animation-delay: 6s;
-//           animation-duration: 22s;
-//           background-color: transparent;
-//         }
-
-//         &:nth-child(5) {
-//           left: 65%;
-//         }
-
-//         &:nth-child(6) {
-//           left: 75%;
-//           width: 40px;
-//           height: 40px;
-//           animation-delay: 3s;
-//           background-color: transparent;
-//         }
-
-//         &:nth-child(7) {
-//           left: 82%;
-//           width: 60px;
-//           height: 60px;
-//           animation-delay: 9s;
-//         }
-
-//         &:nth-child(8) {
-//           left: 91%;
-//           width: 60px;
-//           height: 60px;
-//           background-color: transparent;
-//           animation-delay: 15s;
-//         }
-
-//         &:nth-child(9) {
-//           display: none;
-//         }
-//       }
-//     }
-
-//     @-webkit-keyframes square {
-//       0% {
-//         transform: translateY(0);
-//       }
-//       100% {
-//         transform: translateY(-1800px);
-//       }
-//     }
-//     @keyframes square {
-//       0% {
-//         transform: translateY(0);
-//       }
-//       100% {
-//         transform: translateY(-1800px);
-//       }
-//     }
-
-//     .landing-container {
-//       padding: 0.5rem 0px !important;
-//       height: 99vh !important;
-
-//       .header {
-//         &::after {
-//           display: none;
-//         }
-
-//         .top-message {
-//           font-size: 1.2rem !important;
-//         }
-
-//         .join-button {
-//           padding: 0.5rem 2.5rem !important;
-//           .join-text {
-//             font-size: 1.2rem !important;
-//           }
-//         }
-//       }
-
-//       .main {
-//         transform: translate(-50%, -50%) !important;
-//         .introducing-text {
-//           font-size: 28px !important;
-//           top: -20px !important;
-//           left: 11% !important;
-//         }
-//         .logo-container {
-//           padding: 1rem 2rem !important;
-//           border: 4px solid #fff !important;
-//           border-radius: 32px !important;
-
-//           .logo-image {
-//             height: 72px !important;
-//           }
-//           .logo-text {
-//             font-size: 70px !important;
-//             margin-left: 1rem !important;
-//           }
-//         }
-//       }
-
-//       .footer {
-//         bottom: 1rem !important;
-//         width: 91.5% !important;
-//       }
-//     }
-//   }
-// }
-
-// @media #{$information-xl} {
-//   .Landing {
-//     .landing-container {
-//       padding: 0.5rem 0px !important;
-//       height: 98.5vh !important;
-
-//       .header {
-//         &::after {
-//           width: 70% !important;
-//           left: 20% !important;
-//         }
-//       }
-//     }
-//   }
-// }

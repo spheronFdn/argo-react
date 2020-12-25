@@ -1,0 +1,253 @@
+@import "../../../../../../styles/mixin";
+
+.domain-item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid var(--grey1Color);
+  border-radius: 6px;
+  margin: 0.75rem 0px;
+
+  .domain-general-domain-item-header-container {
+    border-bottom: 1px solid var(--grey1Color);
+    width: 100%;
+    display: flex;
+
+    .domain-general-domain-item-header {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 1rem;
+
+      .domain-general-domain-item-header-left {
+        flex: 1;
+        a {
+          font-size: 20px;
+          font-weight: bold;
+          color: var(--themeColorDark);
+
+          &:hover {
+            text-decoration: none !important;
+          }
+        }
+      }
+
+      .domain-general-domain-item-header-right {
+        display: flex;
+        align-items: center;
+        .edit-button {
+          // @include primaryButton(
+          //   white,
+          //   var(--themeColor),
+          //   0.3rem 1rem,
+          //   none,
+          //   4px,
+          //   var(--themeColorDark),
+          //   var(--primaryDisabled)
+          // );
+          @include secondaryButton(
+            var(--themeColor),
+            transparent,
+            var(--themeColor),
+            0.3rem 1rem,
+            none,
+            4px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
+          border: 1px solid var(--themeColor);
+          font-weight: 500;
+          margin-left: 1rem;
+          min-width: 86px;
+
+          &:hover {
+            border: 1px solid var(--themeColorDark);
+          }
+
+          &:disabled {
+            border: 1px solid var(--primaryDisabled);
+          }
+        }
+
+        .remove-button {
+          // @include primaryButton(
+          //   white,
+          //   var(--red),
+          //   0.3rem 1rem,
+          //   none,
+          //   4px,
+          //   var(--redDark),
+          //   var(--redDisabled)
+          // );
+          @include secondaryButton(
+            var(--red),
+            transparent,
+            var(--red),
+            0.3rem 1rem,
+            none,
+            4px,
+            var(--redDark),
+            var(--redDisabled)
+          );
+          border: 1px solid var(--red);
+          font-weight: 500;
+          margin-left: 1rem;
+          min-width: 86px;
+
+          &:hover {
+            border: 1px solid var(--redDark);
+          }
+
+          &:disabled {
+            border: 1px solid var(--redDisabled);
+          }
+        }
+      }
+    }
+  }
+
+  .domain-general-domain-item-body-container {
+    width: 100%;
+    display: flex;
+    .domain-general-domain-item-body {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 1rem;
+
+      .domain-general-domain-item-body-item {
+        &:nth-child(1) {
+          margin-bottom: 1rem;
+        }
+        h3 {
+          margin: 0;
+          color: var(--grey5Color);
+          font-size: 16px;
+        }
+        p {
+          margin: 0;
+          font-size: 14px;
+          color: var(--grey3Color);
+        }
+
+        .configure-domain-records-table {
+          margin-top: 0.5rem;
+          background-color: #fafafa;
+          padding: 12px;
+          border-radius: 6px;
+          overflow-x: auto;
+
+          .thead {
+            .tr {
+              display: flex;
+              width: 100%;
+              font-size: 12px;
+              .th {
+                font-weight: bold;
+                padding: 4px;
+                &:nth-child(1) {
+                  width: 8%;
+                }
+                &:nth-child(2) {
+                  width: 37%;
+                }
+                &:nth-child(3) {
+                  width: 55%;
+                  overflow: auto;
+                }
+              }
+            }
+          }
+
+          .tbody {
+            .tr {
+              display: flex;
+              width: 100%;
+              font-size: 12px;
+
+              .td {
+                padding: 4px;
+
+                &:nth-child(1) {
+                  width: 8%;
+                }
+                &:nth-child(2) {
+                  width: 37%;
+                }
+                &:nth-child(3) {
+                  width: 55%;
+                  overflow: auto;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .domain-general-domain-item-edit {
+    width: 100%;
+    display: flex;
+    .domain-general-domain-item-edit-container {
+      width: 100%;
+      padding: 1rem;
+      .domain-general-domain-item-edit-form {
+        display: flex;
+        align-items: center;
+        .form-label {
+          line-height: 40px;
+          width: 20%;
+          font-size: 15px;
+          font-weight: 500;
+        }
+
+        .form-input {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 14px;
+          border: 1px solid var(--grey2Color);
+          outline: none;
+          flex: 1;
+
+          &:focus {
+            border: 1px solid var(--grey5Color);
+          }
+        }
+      }
+
+      .domain-general-domain-item-edit-button {
+        display: flex;
+        align-items: center;
+        margin-top: 2rem;
+
+        .save-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
+          width: 100px;
+          margin-right: 1rem;
+        }
+
+        .cancel-button {
+          @include primaryButton(
+            var(--textColor),
+            var(--grey2Color),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--grey3Color),
+            var(--grey1Color)
+          );
+          width: 100px;
+        }
+      }
+    }
+  }
+}

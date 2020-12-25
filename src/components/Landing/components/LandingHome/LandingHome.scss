@@ -1,3 +1,5 @@
+@import "../../../../styles/mixin";
+
 .landing-home {
   min-height: 600px;
   display: flex;
@@ -55,22 +57,16 @@
     }
 
     .primary-button {
-      background: #040c34;
-      text-decoration: none;
-      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.12);
-      color: white;
+      @include primaryButton(
+        white,
+        #040c34,
+        0.75rem 2.5rem,
+        0px 0px 4px 1px rgba(0, 0, 0, 0.12),
+        8px,
+        #735386,
+        rgb(101, 116, 192)
+      );
       font-size: 18px;
-      font-weight: 600;
-      border: 0;
-      border-radius: 8px;
-      padding: 0.75rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid transparent;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
       margin: 1rem auto;
       margin-top: 2rem;
 

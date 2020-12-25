@@ -237,7 +237,7 @@ const SettingsGeneral = () => {
             </div>
             <button
               type="button"
-              className="primary-button delete-button"
+              className="delete-button"
               disabled={!deleteConfirmed}
               onClick={deleteOrg}
             >

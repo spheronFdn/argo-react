@@ -1,3 +1,5 @@
+@import "../../../../styles/mixin";
+
 .UserSettingsGeneral {
   flex: 1;
   .settings-right-container {
@@ -175,48 +177,38 @@
       }
 
       .primary-button {
-        background: var(--themeColor);
-        text-decoration: none;
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        border: 0;
-        border-radius: 8px;
-        padding: 0.3rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid transparent;
-        outline: none;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
+        @include primaryButton(
+          white,
+          var(--themeColor),
+          0.3rem 1rem,
+          none,
+          8px,
+          var(--themeColorDark),
+          var(--primaryDisabled)
+        );
         margin-left: 1rem;
         min-width: 86px;
 
         div {
           margin-right: 4px;
         }
-
-        &:hover {
-          background: var(--themeColorDark);
-        }
-
-        &:disabled {
-          background: var(--primaryDisabled) !important;
-          cursor: not-allowed;
-        }
       }
 
       .delete-button {
-        background: var(--red);
+        @include primaryButton(
+          white,
+          var(--red),
+          0.3rem 1rem,
+          none,
+          8px,
+          var(--redDark),
+          var(--redDisabled)
+        );
+        margin-left: 1rem;
+        min-width: 86px;
 
-        &:hover {
-          background: var(--redDark);
-        }
-
-        &:disabled {
-          background: var(--redDisabled);
-          cursor: not-allowed;
+        div {
+          margin-right: 4px;
         }
       }
     }
