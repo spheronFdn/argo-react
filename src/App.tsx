@@ -36,7 +36,8 @@ function App() {
     return () => {
       bc.close();
     };
-  }, [history, fetchUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const isJWTPresent = localStorage.getItem("jwt-token");
@@ -48,7 +49,8 @@ function App() {
         fetchUser();
       }
     }
-  }, [fetchUser, location.pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SkeletonTheme color="#ebebeb" highlightColor="#787878">

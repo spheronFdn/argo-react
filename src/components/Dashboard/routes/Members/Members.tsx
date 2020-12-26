@@ -18,9 +18,8 @@ const Members = () => {
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    setMemberLoading(true);
-
     if (selectedOrg) {
+      setMemberLoading(true);
       const subscription = ApiService.getOrganization(
         `${selectedOrg?._id}`,
       ).subscribe((data) => {
@@ -38,10 +37,15 @@ const Members = () => {
 
       return () => {
         subscription.unsubscribe();
-        componentIsMounted.current = false;
       };
     }
   }, [selectedOrg]);
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    };
+  }, []);
 
   return (
     <div className="Members">
