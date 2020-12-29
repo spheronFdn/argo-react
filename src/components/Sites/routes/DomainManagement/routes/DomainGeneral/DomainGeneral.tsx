@@ -3,13 +3,41 @@ import "./DomainGeneral.scss";
 // import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DomainItem } from "../../components";
-import { StateContext } from "../../../../../../hooks";
-import { IStateModel } from "../../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
+import { ApiService } from "../../../../../../services";
 
 const DomainGeneral = () => {
-  const { projectLoading } = useContext<IStateModel>(StateContext);
+  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
+  const [deployedSite, setDeployedSite] = useState<string>("");
+  const sortedDeployments = projectLoading
+    ? []
+    : selectedProject?.deployments
+        .filter((dep) => dep.sitePreview)
+        .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
+  const addDomainDetails = () => {
+    const domain = {
+      repositoryId: selectedProject?._id,
+      domain: domainName,
+      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+    };
+    ApiService.addDomain(domain).subscribe((result) => {
+      if (result.success) {
+        setDomainName("");
+        setDeployedSite("");
+        fetchProject(`${selectedProject?._id}`);
+      } else {
+        setDomainName("");
+        setDeployedSite("");
+      }
+    });
+  };
   return (
     <div className="DomainGeneral">
       <div className="domain-general-right-container">
@@ -39,30 +67,51 @@ const DomainGeneral = () => {
                   value={domainName}
                   onChange={(e) => setDomainName(e.target.value)}
                 />
-                <button className="add-domain-button" disabled={!domainName}>
+                <div className="add-domain-select-container">
+                  <select
+                    className="add-domain-select"
+                    value={deployedSite}
+                    onChange={(e) => setDeployedSite(e.target.value)}
+                  >
+                    <option value="">Select Site</option>
+                    {(sortedDeployments ? sortedDeployments : []).map(
+                      (dep, index) => (
+                        <option value={dep.sitePreview} key={index}>
+                          {dep.sitePreview}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                  <span className="select-down-icon">
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                </div>
+                <button
+                  className="add-domain-button"
+                  disabled={!domainName || !deployedSite}
+                  onClick={addDomainDetails}
+                >
                   Add
                 </button>
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  <DomainItem
-                    index={1}
-                    type="filled"
-                    domain="contactprashant.xyz"
-                    isSubdomain={false}
-                  />
+                  selectedProject?.domain && (
+                    <DomainItem
+                      index={1}
+                      type="filled"
+                      domain={`${selectedProject?.domain}`}
+                      transactionId={`${selectedProject?.transactionId}`}
+                      isSubdomain={false}
+                    />
+                  )
                 ) : (
                   <>
                     <DomainItem
                       index={1}
                       type="skeleton"
                       domain=""
-                      isSubdomain={false}
-                    />
-                    <DomainItem
-                      index={1}
-                      type="skeleton"
-                      domain=""
+                      transactionId=""
                       isSubdomain={false}
                     />
                   </>

@@ -76,20 +76,27 @@
     }
   }
 
+  .less-bottom-margin {
+    margin-bottom: 1rem !important;
+  }
+
   .project-item-body {
     margin: 1.5rem;
     margin-top: 0;
-    display: flex;
-    flex-direction: column;
     word-break: break-all;
     flex: 1;
     .project-item-live-key {
       font-weight: 500;
+
+      width: fit-content;
     }
 
     .project-item-live-value {
       text-decoration: none;
       color: var(--logoColor);
+      width: fit-content;
+      margin-left: 0.5rem;
+
       &:hover {
         text-decoration: underline;
       }

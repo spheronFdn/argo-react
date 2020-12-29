@@ -44,6 +44,22 @@
       border-bottom: 1px solid var(--grey2Color);
     }
 
+    .project-top-card-header-domain {
+      text-decoration: none;
+      color: var(--logoColor);
+
+      ul {
+        padding: 0 1rem;
+        margin: 0;
+        margin-top: 6px;
+        font-size: 18px;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .project-top-card-content {
       margin-top: 6px;
       .project-top-card-fields {

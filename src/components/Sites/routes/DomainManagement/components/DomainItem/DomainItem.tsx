@@ -1,18 +1,62 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./DomainItem.scss";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
+import { ActionContext, StateContext } from "../../../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import { ApiService } from "../../../../../../services";
 
 const DomainItem: React.FC<IDeploymentItemProps> = ({
   index,
   type,
   domain,
+  transactionId,
   isSubdomain,
 }) => {
+  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
+
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
+  const [deployedSite, setDeployedSite] = useState<string>("");
+  const sortedDeployments = projectLoading
+    ? []
+    : selectedProject?.deployments
+        .filter((dep) => dep.sitePreview)
+        .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+
+  useEffect(() => {
+    if (domain) {
+      setEditDomainName(domain);
+    }
+    if (transactionId) {
+      setDeployedSite(`https://arweave.net/${transactionId}`);
+    }
+  }, [domain, transactionId]);
+
+  const editDomainDetails = () => {
+    const domain = {
+      repositoryId: selectedProject?._id,
+      domain: editDomainName,
+      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+    };
+    ApiService.editDomain(domain).subscribe((result) => {
+      if (result.success) {
+        setEditMode(false);
+        setEditDomainName("");
+        setDeployedSite("");
+        fetchProject(`${selectedProject?._id}`);
+      } else {
+        setEditMode(false);
+        setEditDomainName("");
+        setDeployedSite("");
+      }
+    });
+  };
+
   return (
     <div className="domain-item" key={index}>
       {type === "filled" &&
@@ -21,7 +65,11 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
             <div className="domain-general-domain-item-header-container">
               <div className="domain-general-domain-item-header">
                 <div className="domain-general-domain-item-header-left">
-                  <a href={`https://${domain}`}>
+                  <a
+                    href={`https://${domain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {domain}
                     <span>
                       <FontAwesomeIcon icon={faExternalLinkAlt} />
@@ -57,14 +105,12 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="tr">
                           <div className="td">A</div>
                           <div className="td">@</div>
-                          <div className="td">76.76.21.21</div>
+                          <div className="td">52.191.214.142</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
-                          <div className="td">arweavetx.mydomain.com</div>
-                          <div className="td">
-                            bW4dD3ozqGTADVGGHJF5DlXzCH3cj2mzV2Oc1h8cgQM
-                          </div>
+                          <div className="td">arweavetx.{domain}</div>
+                          <div className="td">{transactionId}</div>
                         </div>
                       </div>
                     </div>
@@ -87,15 +133,13 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                       <div className="tbody">
                         <div className="tr">
                           <div className="td">CNAME</div>
-                          <div className="td">subdomain.mydomain.com</div>
+                          <div className="td">{domain}</div>
                           <div className="td">dns.perma.online</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
-                          <div className="td">arweavetx.subdomain.mydomain.com</div>
-                          <div className="td">
-                            bW4dD3ozqGTADVGGHJF5DlXzCH3cj2mzV2Oc1h8cgQM
-                          </div>
+                          <div className="td">arweavetx.{domain}</div>
+                          <div className="td">{transactionId}</div>
                         </div>
                       </div>
                     </div>
@@ -117,8 +161,36 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   onChange={(e) => setEditDomainName(e.target.value)}
                 />
               </div>
+              <div className="domain-general-domain-item-edit-form">
+                <span className="form-label">Site</span>
+                <div className="form-select-container">
+                  <select
+                    className="form-select"
+                    value={deployedSite}
+                    onChange={(e) => setDeployedSite(e.target.value)}
+                  >
+                    <option value="">Select Site</option>
+                    {(sortedDeployments ? sortedDeployments : []).map(
+                      (dep, index) => (
+                        <option value={dep.sitePreview} key={index}>
+                          {dep.sitePreview}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                  <span className="select-down-icon">
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </span>
+                </div>
+              </div>
               <div className="domain-general-domain-item-edit-button">
-                <button className="save-button">Save</button>
+                <button
+                  className="save-button"
+                  disabled={!editDomainName || !deployedSite}
+                  onClick={editDomainDetails}
+                >
+                  Save
+                </button>
                 <button
                   className="cancel-button"
                   onClick={(e) => setEditMode(false)}

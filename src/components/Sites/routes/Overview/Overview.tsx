@@ -5,8 +5,14 @@ import moment from "moment";
 import { StateContext } from "../../../../hooks";
 import { IStateModel } from "../../../../model/hooks.model";
 import Skeleton from "react-loading-skeleton";
+import { faArrowRight, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useHistory, useParams } from "react-router-dom";
 
 const Overview = () => {
+  const history = useHistory();
+  const params = useParams<any>();
+
   const { projectLoading, selectedProject, selectedOrg } = useContext<IStateModel>(
     StateContext,
   );
@@ -46,6 +52,32 @@ const Overview = () => {
   return (
     <div className="SiteOverview">
       <ProjectTopCard />
+      <div
+        className="site-overview-card-container domain-container"
+        onClick={(e) =>
+          history.push(`/org/${params.orgid}/sites/${params.siteid}/domain`)
+        }
+      >
+        <div className="domain-container-left">
+          <h2>Set up a custom domain with ArGo</h2>
+          <p>
+            Setup a domain you already own. All domains come with a free SSL cert.
+          </p>
+        </div>
+        {!projectLoading && (
+          <div className="domain-container-right">
+            {!selectedProject?.domain ? (
+              <span className="blue-color">
+                <FontAwesomeIcon icon={faArrowRight} />
+              </span>
+            ) : (
+              <span className="green-color">
+                <FontAwesomeIcon icon={faCheck} />
+              </span>
+            )}
+          </div>
+        )}
+      </div>
       <div className="site-overview-card-container deploy-container">
         <div className="site-overview-header-title">Project Overview</div>
         <div className="deploy-summary-item">

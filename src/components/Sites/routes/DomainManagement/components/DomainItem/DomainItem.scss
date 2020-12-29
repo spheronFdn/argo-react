@@ -36,15 +36,6 @@
         display: flex;
         align-items: center;
         .edit-button {
-          // @include primaryButton(
-          //   white,
-          //   var(--themeColor),
-          //   0.3rem 1rem,
-          //   none,
-          //   4px,
-          //   var(--themeColorDark),
-          //   var(--primaryDisabled)
-          // );
           @include secondaryButton(
             var(--themeColor),
             transparent,
@@ -70,15 +61,6 @@
         }
 
         .remove-button {
-          // @include primaryButton(
-          //   white,
-          //   var(--red),
-          //   0.3rem 1rem,
-          //   none,
-          //   4px,
-          //   var(--redDark),
-          //   var(--redDisabled)
-          // );
           @include secondaryButton(
             var(--red),
             transparent,
@@ -195,6 +177,9 @@
       .domain-general-domain-item-edit-form {
         display: flex;
         align-items: center;
+        &:nth-child(2) {
+          margin-top: 0.5rem;
+        }
         .form-label {
           line-height: 40px;
           width: 20%;
@@ -212,6 +197,39 @@
 
           &:focus {
             border: 1px solid var(--grey5Color);
+          }
+        }
+
+        .form-select-container {
+          position: relative;
+          width: 80%;
+          .form-select {
+            width: 100%;
+            padding: 5.51px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            border: 1px solid var(--grey2Color);
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+            z-index: 100;
+
+            &:focus {
+              border: 1px solid var(--grey5Color);
+            }
+
+            &::-ms-expand {
+              display: none;
+            }
+          }
+
+          .select-down-icon {
+            position: absolute;
+            right: 12px;
+            top: 8px;
+            cursor: pointer;
+            height: fit-content;
+            display: flex;
           }
         }
       }

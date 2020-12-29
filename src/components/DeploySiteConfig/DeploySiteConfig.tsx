@@ -29,9 +29,11 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment } = useContext<
-    IStateModel
-  >(StateContext);
+  const {
+    user,
+    selectedOrg,
+    selectedRepoForTriggerDeployment,
+  } = useContext<IStateModel>(StateContext);
   const {
     setLatestDeploymentSocketTopic,
     setLatestDeploymentConfig,

@@ -50,6 +50,22 @@ const ProjectTopCard = () => {
               <Skeleton width={200} duration={2} />
             )}
           </h2>
+          {selectedProject?.domain && (
+            <a
+              className="project-top-card-header-domain"
+              href={`https://${selectedProject?.domain}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {!projectLoading ? (
+                <ul>
+                  <li>https://{selectedProject?.domain}</li>
+                </ul>
+              ) : (
+                <Skeleton width={400} duration={2} />
+              )}
+            </a>
+          )}
           <p className="project-top-card-header-description">
             {!projectLoading ? (
               <>

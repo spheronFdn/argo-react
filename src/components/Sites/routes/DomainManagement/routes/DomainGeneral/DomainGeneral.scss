@@ -70,11 +70,46 @@
               border: 1px solid var(--grey2Color);
               outline: none;
               flex: 1;
+              margin-right: 1rem;
 
               &:focus {
                 border: 1px solid var(--grey5Color);
               }
             }
+
+            .add-domain-select-container {
+              position: relative;
+
+              .add-domain-select {
+                width: 200px;
+                padding: 9px 12px;
+                border-radius: 4px;
+                font-size: 16px;
+                border: 1px solid var(--grey2Color);
+                outline: none;
+                appearance: none;
+                cursor: pointer;
+                z-index: 100;
+
+                &:focus {
+                  border: 1px solid var(--grey5Color);
+                }
+
+                &::-ms-expand {
+                  display: none;
+                }
+              }
+
+              .select-down-icon {
+                position: absolute;
+                right: 12px;
+                top: 12px;
+                cursor: pointer;
+                height: fit-content;
+                display: flex;
+              }
+            }
+
             .add-domain-button {
               @include primaryButton(
                 white,

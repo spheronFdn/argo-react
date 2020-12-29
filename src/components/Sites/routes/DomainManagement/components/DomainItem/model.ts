@@ -1,6 +1,7 @@
 export default interface IDeploymentItemProps {
   index: number;
   type: string;
-  domain: any;
+  domain: string;
+  transactionId: string;
   isSubdomain: boolean;
 }

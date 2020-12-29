@@ -40,7 +40,7 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
                   }`}
                   to={`/org/${params.orgid}/sites/${params.slug1}/domain`}
                 >
-                  Domain Management
+                  Domain
                 </Link>
               </li>
               <li className="nav-item">

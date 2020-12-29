@@ -128,25 +128,24 @@ const Overview = () => {
         <ul className="project-list">
           {!orgLoading ? (
             selectedOrg?.repositories?.length ? (
-              selectedOrg?.repositories?.map(
-                (repo: IRepository, index: number) =>
-                  repo.name && (
-                    <div key={index}>
-                      <ProjectItem
-                        type="filled"
-                        projectName={repo.name}
-                        latestDeployment={repo.sitePreview}
-                        githubUrl={repo.url}
-                        updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
-                        repo={repo}
-                      />
-                    </div>
-                  ),
-              )
+              selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
+                <div key={index}>
+                  <ProjectItem
+                    type="filled"
+                    projectName={repo.name}
+                    domain={repo.domain}
+                    latestDeployment={repo.sitePreview}
+                    githubUrl={repo.url}
+                    updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
+                    repo={repo}
+                  />
+                </div>
+              ))
             ) : (
               <ProjectItem
                 type="empty"
                 projectName={null}
+                domain={null}
                 latestDeployment={null}
                 githubUrl={null}
                 updateTime={null}
@@ -157,6 +156,7 @@ const Overview = () => {
             <ProjectItem
               type="skeleton"
               projectName={null}
+              domain={null}
               latestDeployment={null}
               githubUrl={null}
               updateTime={null}
