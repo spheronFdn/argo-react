@@ -20,28 +20,28 @@ const UserDetailsCard: React.FC<any> = () => {
     <div className="user-details-container">
       <div className="user-details-text">
         <h1 className="user-details-title">
-          {!userLoading ? (
+          {!userLoading && user ? (
             user?.argo_profile.name
           ) : (
             <Skeleton width={200} duration={2} />
           )}
         </h1>
         <p className="user-details-subtitle">
-          {!userLoading ? (
+          {!userLoading && user ? (
             user?.argo_profile.username
           ) : (
             <Skeleton width={100} duration={2} />
           )}
         </p>
         <p className="user-details-subtitle">
-          {!userLoading ? (
+          {!userLoading && user ? (
             user?.argo_profile.email
           ) : (
             <Skeleton width={150} duration={2} />
           )}
         </p>
         <p className="user-details-subtitle">
-          {!userLoading ? (
+          {!userLoading && user ? (
             `Joined ArGo on ${moment(`${user?.dateOfEntry}`).format(
               "MMMM DD, YYYY",
             )} (
@@ -51,7 +51,7 @@ const UserDetailsCard: React.FC<any> = () => {
           )}
         </p>
         <p className="user-details-subtitle">
-          {!userLoading ? (
+          {!userLoading && user ? (
             `Created ${user?.organizations
               ?.map((org) => (org?.repositories ? org.repositories.length : 0))
               .reduce((prev, curr) => prev + curr)} projects. Collaborates on ${
@@ -63,7 +63,7 @@ const UserDetailsCard: React.FC<any> = () => {
         </p>
       </div>
       <div className="user-details-avatar-container">
-        {!userLoading ? (
+        {!userLoading && user ? (
           <LazyLoadedImage height={132} once>
             <img
               src={user?.argo_profile.avatar}

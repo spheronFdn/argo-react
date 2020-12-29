@@ -121,6 +121,10 @@ function DeploySiteConfig() {
       setPackageManager("npm");
       setBuildCommand("build");
       setPublishDirectory("dist");
+    } else if (framework === "angular") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("dist/your-app-name");
     }
   }, [framework]);
 
@@ -581,6 +585,7 @@ function DeploySiteConfig() {
                               </option>
                               <option value="react">Create React App</option>
                               <option value="vue">Vue App</option>
+                              <option value="angular">Angular App</option>
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
