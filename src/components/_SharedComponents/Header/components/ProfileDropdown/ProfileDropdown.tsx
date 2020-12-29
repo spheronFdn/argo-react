@@ -7,7 +7,7 @@ import { Subscription } from "rxjs";
 import { ActionContext } from "../../../../../hooks";
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) => {
-  let logoutSvc: Subscription;
+  let logoutSvc: Subscription | null = null;
   const history = useHistory();
   const { resetUser } = useContext(ActionContext);
 
@@ -29,8 +29,7 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) =
         logoutSvc.unsubscribe();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [logoutSvc]);
 
   const redirectUrl = (path: string) => {
     history.push(path);
