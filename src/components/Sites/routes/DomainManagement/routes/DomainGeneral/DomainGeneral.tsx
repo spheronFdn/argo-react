@@ -96,20 +96,24 @@ const DomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.domain && (
-                    <DomainItem
-                      index={1}
-                      type="filled"
-                      domain={`${selectedProject?.domain}`}
-                      transactionId={`${selectedProject?.transactionId}`}
-                      isSubdomain={false}
-                    />
-                  )
+                  selectedProject?.domains.length ? (
+                    selectedProject?.domains.map((domain) => (
+                      <DomainItem
+                        index={1}
+                        type="filled"
+                        domainId={`${domain._id}`}
+                        domain={`${domain.name}`}
+                        transactionId={`${domain.transactionId}`}
+                        isSubdomain={false}
+                      />
+                    ))
+                  ) : null
                 ) : (
                   <>
                     <DomainItem
                       index={1}
                       type="skeleton"
+                      domainId=""
                       domain=""
                       transactionId=""
                       isSubdomain={false}

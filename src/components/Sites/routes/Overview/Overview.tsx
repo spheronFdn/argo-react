@@ -66,7 +66,7 @@ const Overview = () => {
         </div>
         {!projectLoading && (
           <div className="domain-container-right">
-            {!selectedProject?.domain ? (
+            {!selectedProject?.domains.length ? (
               <span className="blue-color">
                 <FontAwesomeIcon icon={faArrowRight} />
               </span>

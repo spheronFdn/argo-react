@@ -24,10 +24,10 @@ const SubdomainGeneral = () => {
   const addDomainDetails = () => {
     const domain = {
       repositoryId: selectedProject?._id,
-      subdomain: subdomainName,
+      domain: subdomainName,
       transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
     };
-    ApiService.addDomain(domain).subscribe((result) => {
+    ApiService.addSubdomain(domain).subscribe((result) => {
       if (result.success) {
         fetchProject(`${selectedProject?._id}`);
       } else {
@@ -94,20 +94,24 @@ const SubdomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.subdomain && (
-                    <DomainItem
-                      index={1}
-                      type="filled"
-                      domain={`${selectedProject?.subdomain}`}
-                      transactionId={`${selectedProject?.subdomainTransactionId}`}
-                      isSubdomain={true}
-                    />
-                  )
+                  selectedProject?.subDomains.length ? (
+                    selectedProject?.subDomains.map((subdomain) => (
+                      <DomainItem
+                        index={1}
+                        type="filled"
+                        domainId={`${subdomain._id}`}
+                        domain={`${subdomain.name}`}
+                        transactionId={`${subdomain.transactionId}`}
+                        isSubdomain={true}
+                      />
+                    ))
+                  ) : null
                 ) : (
                   <>
                     <DomainItem
                       index={1}
                       type="skeleton"
+                      domainId=""
                       domain=""
                       transactionId=""
                       isSubdomain={true}

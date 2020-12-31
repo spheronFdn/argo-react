@@ -12,6 +12,7 @@ import { ApiService } from "../../../../../../services";
 const DomainItem: React.FC<IDeploymentItemProps> = ({
   index,
   type,
+  domainId,
   domain,
   transactionId,
   isSubdomain,
@@ -39,22 +40,37 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
 
   const editDomainDetails = () => {
     const domain = {
-      repositoryId: selectedProject?._id,
+      domainId,
       domain: editDomainName,
       transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
     };
-    ApiService.editDomain(domain).subscribe((result) => {
-      if (result.success) {
-        setEditMode(false);
-        setEditDomainName("");
-        setDeployedSite("");
-        fetchProject(`${selectedProject?._id}`);
-      } else {
-        setEditMode(false);
-        setEditDomainName("");
-        setDeployedSite("");
-      }
-    });
+    if (!isSubdomain) {
+      ApiService.editDomain(domain).subscribe((result) => {
+        if (result.success) {
+          setEditMode(false);
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditMode(false);
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+      });
+    } else {
+      ApiService.editSubdomain(domain).subscribe((result) => {
+        if (result.success) {
+          setEditMode(false);
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditMode(false);
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+      });
+    }
   };
 
   return (

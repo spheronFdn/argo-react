@@ -133,7 +133,7 @@ const Overview = () => {
                   <ProjectItem
                     type="filled"
                     projectName={repo.name}
-                    domain={repo.domain}
+                    domain={repo.domains.length ? repo.domains[0].name : ""}
                     latestDeployment={repo.sitePreview}
                     githubUrl={repo.url}
                     updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}

@@ -71,12 +71,15 @@ export interface IRepository {
   branch: string;
   sitePreview: string;
   framework: string;
-  domain: string;
-  transactionId: string;
-  subdomain?: string;
-  subdomainTransactionId?: string;
+  domains: IDomain[];
+  subDomains: IDomain[];
 }
 
+export interface IDomain {
+  _id?: string;
+  name: string;
+  transactionId: string;
+}
 export interface IDeployment {
   _id?: string;
   sitePreview: string;
