@@ -10,6 +10,9 @@ function UserSettings() {
   const location = useLocation();
   const history = useHistory();
 
+  const urls = location.pathname.split("/");
+  const lastPath = urls[urls.length - 1];
+
   return (
     <div className="UserSettings">
       <RootHeader parent={"UserSettings"} />
@@ -20,7 +23,7 @@ function UserSettings() {
             <div className="settings-left-side-bar">
               <div
                 className={`settings-bar-item ${
-                  location.pathname.indexOf("general") !== -1 ? "selected" : ""
+                  lastPath === "general" ? "selected" : ""
                 }`}
                 onClick={(e) => history.push("/user/settings/general")}
               >
@@ -28,7 +31,7 @@ function UserSettings() {
               </div>
               <div
                 className={`settings-bar-item ${
-                  location.pathname.indexOf("wallet") !== -1 ? "selected" : ""
+                  lastPath === "wallet" ? "selected" : ""
                 }`}
                 onClick={(e) => history.push("/user/settings/wallet")}
               >

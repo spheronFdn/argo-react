@@ -1,0 +1,41 @@
+.DomainManagement {
+  .domain-management-container {
+    display: flex;
+    margin-top: 24px;
+    .domain-management-left-side-bar {
+      width: 25%;
+      height: fit-content;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      .domain-management-bar-item {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--grey2Color);
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--grey3Color);
+        border-left: 3px solid transparent;
+
+        &:nth-last-child(1) {
+          border-bottom: 0px;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+
+        &:nth-child(1) {
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+        }
+
+        &:hover {
+          background-color: var(--grey1Color);
+        }
+      }
+
+      .selected {
+        border-left: 3px solid #6b93d8;
+        color: var(--textColor);
+      }
+    }
+  }
+}
