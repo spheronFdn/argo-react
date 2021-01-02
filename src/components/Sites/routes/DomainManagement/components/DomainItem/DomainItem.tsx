@@ -81,6 +81,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   const deleteDomain = () => {
     const domain = {
       domainId,
+      repositoryId: selectedProject?._id,
     };
     if (!isSubdomain) {
       ApiService.deleteDomain(domain).subscribe((result) => {
