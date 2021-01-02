@@ -8,6 +8,7 @@ import moment from "moment";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
 import { ApiService } from "../../../../../../services";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const DomainItem: React.FC<IDeploymentItemProps> = ({
   index,
@@ -21,6 +22,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [editDomainLoading, setEditDomainLoading] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
   const [deployedSite, setDeployedSite] = useState<string>("");
   const sortedDeployments = projectLoading
@@ -39,6 +41,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   }, [domain, transactionId]);
 
   const editDomainDetails = () => {
+    setEditDomainLoading(true);
     const domain = {
       domainId,
       domain: editDomainName,
@@ -56,6 +59,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
+        setEditDomainLoading(false);
       });
     } else {
       ApiService.editSubdomain(domain).subscribe((result) => {
@@ -69,6 +73,38 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
+        setEditDomainLoading(false);
+      });
+    }
+  };
+
+  const deleteDomain = () => {
+    const domain = {
+      domainId,
+    };
+    if (!isSubdomain) {
+      ApiService.deleteDomain(domain).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setEditDomainLoading(false);
+      });
+    } else {
+      ApiService.deleteSubdomain(domain).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setEditDomainLoading(false);
       });
     }
   };
@@ -96,7 +132,9 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
                     Edit
                   </button>
-                  <button className="remove-button">Remove</button>
+                  <button className="remove-button" onClick={deleteDomain}>
+                    Remove
+                  </button>
                 </div>
               </div>
             </div>
@@ -205,6 +243,9 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   disabled={!editDomainName || !deployedSite}
                   onClick={editDomainDetails}
                 >
+                  {editDomainLoading && (
+                    <BounceLoader size={20} color={"#fff"} loading={true} />
+                  )}
                   Save
                 </button>
                 <button

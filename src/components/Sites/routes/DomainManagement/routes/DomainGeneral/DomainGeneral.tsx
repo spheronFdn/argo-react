@@ -9,12 +9,14 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
+import BounceLoader from "react-spinners/BounceLoader";
 
 const DomainGeneral = () => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
+  const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
     : selectedProject?.deployments
@@ -22,6 +24,7 @@ const DomainGeneral = () => {
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
   const addDomainDetails = () => {
+    setDomainLoading(true);
     const domain = {
       repositoryId: selectedProject?._id,
       domain: domainName,
@@ -36,6 +39,7 @@ const DomainGeneral = () => {
         setDomainName("");
         setDeployedSite("");
       }
+      setDomainLoading(false);
     });
   };
   return (
@@ -91,21 +95,27 @@ const DomainGeneral = () => {
                   disabled={!domainName || !deployedSite}
                   onClick={addDomainDetails}
                 >
-                  Add
+                  {domainLoading ? (
+                    <BounceLoader size={20} color={"#fff"} loading={true} />
+                  ) : (
+                    "Add"
+                  )}
                 </button>
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
                   selectedProject?.domains.length ? (
-                    selectedProject?.domains.map((domain) => (
-                      <DomainItem
-                        index={1}
-                        type="filled"
-                        domainId={`${domain._id}`}
-                        domain={`${domain.name}`}
-                        transactionId={`${domain.transactionId}`}
-                        isSubdomain={false}
-                      />
+                    selectedProject?.domains.map((domain, index) => (
+                      <div key={index}>
+                        <DomainItem
+                          index={index}
+                          type="filled"
+                          domainId={`${domain._id}`}
+                          domain={`${domain.name}`}
+                          transactionId={`${domain.transactionId}`}
+                          isSubdomain={false}
+                        />
+                      </div>
                     ))
                   ) : null
                 ) : (
