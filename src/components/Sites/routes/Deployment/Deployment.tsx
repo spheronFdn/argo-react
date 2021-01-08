@@ -119,7 +119,9 @@ const Deployment = () => {
               }
             });
             // CLEAN UP THE EFFECT
-          } else {
+          } else if (
+            result.deployment.deploymentStatus.toLowerCase() === "deployed"
+          ) {
             setDeployedLink(result.deployment.sitePreview);
             setIsDeployed(true);
             const buildMins = Number.parseInt(
