@@ -26,6 +26,40 @@
     }
   }
 
+  .domain-container {
+    min-height: auto !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    .domain-container-left {
+      flex: 1;
+      h2 {
+        font-family: var(--headerFont) !important;
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0;
+      }
+      p {
+        color: #666666;
+        font-size: 15px;
+        padding: 4px 0px;
+        margin: 0;
+      }
+    }
+
+    .domain-container-right {
+      font-size: 32px;
+      display: flex;
+      .blue-color {
+        color: var(--themeColorDark);
+      }
+      .green-color {
+        color: #219653;
+      }
+    }
+  }
+
   .deploy-container {
     padding: 0 !important;
     min-height: auto !important;

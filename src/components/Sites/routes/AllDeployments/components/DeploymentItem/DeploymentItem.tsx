@@ -84,9 +84,10 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               </div>
               <div className="deployment-status">
                 <span className="deployment-status-icon">
-                  {deployment?.deploymentStatus.toLowerCase() === "pending" ? (
+                  {deployment?.deploymentStatus.toLowerCase() === "pending" && (
                     <Lottie options={defaultOptions} height={42} width={58} />
-                  ) : (
+                  )}
+                  {deployment?.deploymentStatus.toLowerCase() === "deployed" && (
                     <LazyLoadedImage height={16} once>
                       <img
                         src={require("../../../../../../assets/svg/rocket_background.svg")}

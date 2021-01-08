@@ -1,3 +1,5 @@
+@import "../../styles/mixin";
+
 .InviteCallback {
   display: flex;
   flex-direction: column;
@@ -66,60 +68,31 @@
             display: flex;
             padding: 1rem 24px;
             .accept-button {
-              background: #13aa52;
-              text-decoration: none;
-              color: white;
-              font-size: 16px;
-              font-weight: 600;
-              border: 0;
-              border-radius: 8px;
-              padding: 0.5rem 1rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border: 2px solid transparent;
-              outline: none;
-              cursor: pointer;
-              transition: all 0.3s ease-in-out;
+              @include primaryButton(
+                white,
+                #13aa52,
+                0.5rem 1rem,
+                none,
+                8px,
+                #0c6833,
+                #14fc75
+              );
               width: 120px;
               margin-right: 1rem;
-
-              &:hover {
-                background: #0c6833;
-              }
-
-              &:disabled {
-                background: #14fc75;
-                cursor: not-allowed;
-              }
             }
 
             .decline-button {
-              background: var(--red);
-              text-decoration: none;
-              color: white;
-              font-size: 16px;
-              font-weight: 600;
-              border: 0;
-              border-radius: 8px;
-              padding: 0.5rem 1rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border: 2px solid transparent;
-              outline: none;
-              cursor: pointer;
+              @include primaryButton(
+                white,
+                var(--red),
+                0.5rem 1rem,
+                none,
+                8px,
+                var(--redDark),
+                var(--redDisabled)
+              );
               transition: all 0.3s ease-in-out;
               width: 120px;
-
-              &:hover {
-                background: var(--redDark);
-              }
-
-              &:disabled {
-                background: var(--redDisabled);
-                cursor: not-allowed;
-              }
             }
           }
         }

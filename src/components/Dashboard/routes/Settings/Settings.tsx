@@ -7,13 +7,16 @@ const Settings = () => {
   const location = useLocation();
   const history = useHistory();
 
+  const urls = location.pathname.split("/");
+  const lastPath = urls[urls.length - 1];
+
   return (
     <div className="OrgSettings">
       <div className="settings-container">
         <div className="settings-left-side-bar">
           <div
             className={`settings-bar-item ${
-              location.pathname.indexOf("general") !== -1 ? "selected" : ""
+              lastPath === "general" ? "selected" : ""
             }`}
             onClick={(e) => history.push("/dashboard/settings/general")}
           >
