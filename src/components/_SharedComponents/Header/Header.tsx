@@ -40,7 +40,7 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                   height={32}
                   loading="lazy"
                 />
-                <span className="logo-badge">Alpha</span>
+                <span className="logo-badge">Beta</span>
               </Link>
             </div>
             <div className="teams-container">
