@@ -31,7 +31,7 @@ const LandingHome = () => {
           </span>
           <span>Start Deploying</span>
         </button>
-        <div className="alpha-text">Alpha release now available</div>
+        <div className="alpha-text">Beta release now available</div>
       </div>
     </div>
   );

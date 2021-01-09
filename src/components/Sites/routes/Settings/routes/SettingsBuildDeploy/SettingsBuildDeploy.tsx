@@ -96,8 +96,12 @@ const SettingsBuildDeploy = () => {
     framework = "Create React App";
   } else if (selectedProject?.framework === "vue") {
     framework = "Vue App";
+  } else if (selectedProject?.framework === "angular") {
+    framework = "Angular App";
+  } else if (selectedProject?.framework === "next") {
+    framework = "Next.js App";
   } else {
-    framework = "Create React App";
+    framework = "N.A";
   }
 
   return (
@@ -130,32 +134,34 @@ const SettingsBuildDeploy = () => {
             </div>
             {selectedProject?.framework !== "static" && (
               <>
-                <div className="settings-project-item">
-                  <label className="settings-project-item-title">
-                    Package Manager
-                  </label>
-                  <label className="settings-project-item-subtitle">
-                    This is your project's package manager. You can use any one of
-                    them to deploy your project.
-                  </label>
-                  {!projectLoading ? (
-                    <div className="deploy-site-item-select-container">
-                      <select
-                        className="deploy-site-item-select"
-                        value={packageManager}
-                        onChange={(e) => setPackageManager(e.target.value)}
-                      >
-                        <option value="npm">NPM</option>
-                        <option value="yarn">YARN</option>
-                      </select>
-                      <span className="select-down-icon">
-                        <FontAwesomeIcon icon={faChevronDown} />
-                      </span>
-                    </div>
-                  ) : (
-                    <Skeleton width={326} height={36} duration={2} />
-                  )}
-                </div>
+                {selectedProject?.framework !== "next" ? (
+                  <div className="settings-project-item">
+                    <label className="settings-project-item-title">
+                      Package Manager
+                    </label>
+                    <label className="settings-project-item-subtitle">
+                      This is your project's package manager. You can use any one of
+                      them to deploy your project.
+                    </label>
+                    {!projectLoading ? (
+                      <div className="deploy-site-item-select-container">
+                        <select
+                          className="deploy-site-item-select"
+                          value={packageManager}
+                          onChange={(e) => setPackageManager(e.target.value)}
+                        >
+                          <option value="npm">NPM</option>
+                          <option value="yarn">YARN</option>
+                        </select>
+                        <span className="select-down-icon">
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        </span>
+                      </div>
+                    ) : (
+                      <Skeleton width={326} height={36} duration={2} />
+                    )}
+                  </div>
+                ) : null}
                 <div className="settings-project-item">
                   <label className="settings-project-item-title">
                     Build Command
@@ -165,18 +171,29 @@ const SettingsBuildDeploy = () => {
                   </label>
                   {!projectLoading ? (
                     <div className="settings-project-item-input-container">
-                      <input
-                        type="text"
-                        className="settings-project-item-input-disabled"
-                        value={buildCommandPrefix}
-                        disabled
-                      />
-                      <input
-                        type="text"
-                        className="settings-project-item-input-build"
-                        value={buildCommand}
-                        onChange={(e) => setBuildCommand(e.target.value)}
-                      />
+                      {selectedProject?.framework !== "next" ? (
+                        <>
+                          <input
+                            type="text"
+                            className="settings-project-item-input-disabled"
+                            value={buildCommandPrefix}
+                            disabled
+                          />
+                          <input
+                            type="text"
+                            className="settings-project-item-input-build"
+                            value={buildCommand}
+                            onChange={(e) => setBuildCommand(e.target.value)}
+                          />
+                        </>
+                      ) : (
+                        <input
+                          type="text"
+                          className="settings-project-item-input"
+                          value={buildCommand}
+                          onChange={(e) => setBuildCommand(e.target.value)}
+                        />
+                      )}
                     </div>
                   ) : (
                     <Skeleton width={326} height={36} duration={2} />
