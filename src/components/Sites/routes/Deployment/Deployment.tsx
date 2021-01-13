@@ -55,6 +55,7 @@ const Deployment = () => {
 
   useEffect(() => {
     setLatestDeploymentLogs([]);
+    fetchProject(params.siteid);
     const socket = socketIOClient(config.urls.BACKEND_URL);
     const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
       (result) => {
