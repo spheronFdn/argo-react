@@ -54,6 +54,7 @@ function DeploySiteConfig() {
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
+  const [workspace, setWorkspace] = useState<string>();
   const [framework, setFramework] = useState<string>("react");
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
@@ -249,6 +250,7 @@ function DeploySiteConfig() {
       // project_name: projectName,
       branch,
       framework,
+      workspace,
       package_manager: packageManager,
       build_command: buildCommand,
       publish_dir: publishDirectory,
@@ -565,6 +567,15 @@ function DeploySiteConfig() {
                             className="deploy-site-item-input"
                             value={branch}
                             onChange={(e) => setBranch(e.target.value)}
+                          />
+                        </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Workspace to deploy</label>
+                          <input
+                            type="text"
+                            className="deploy-site-item-input"
+                            value={workspace}
+                            onChange={(e) => setWorkspace(e.target.value)}
                           />
                         </div>
                       </div>
