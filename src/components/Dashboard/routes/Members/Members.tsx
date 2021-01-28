@@ -5,22 +5,21 @@ import { ApiService } from "../../../../services";
 // import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { IUser } from "../../../../model/hooks.model";
+import { IStateModel, IUser } from "../../../../model/hooks.model";
 import { IMemberModel } from "../../../../model/member.model";
 import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const Members = () => {
   const history = useHistory();
-  const { userLoading, selectedOrg } = useContext(StateContext);
-  const [memberLoading, setMemberLoading] = useState(false);
+  const { userLoading, selectedOrg } = useContext<IStateModel>(StateContext);
+  const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
 
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    setMemberLoading(true);
-
     if (selectedOrg) {
+      setMemberLoading(true);
       const subscription = ApiService.getOrganization(
         `${selectedOrg?._id}`,
       ).subscribe((data) => {
@@ -38,10 +37,15 @@ const Members = () => {
 
       return () => {
         subscription.unsubscribe();
-        componentIsMounted.current = false;
       };
     }
   }, [selectedOrg]);
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    };
+  }, []);
 
   return (
     <div className="Members">

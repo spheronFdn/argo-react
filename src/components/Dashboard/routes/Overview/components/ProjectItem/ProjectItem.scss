@@ -1,3 +1,5 @@
+@import "../../../../../../styles/mixin";
+
 .project-item {
   display: flex;
   flex-direction: column;
@@ -60,49 +62,41 @@
     }
 
     .project-item-visit-button {
-      background: transparent;
-      text-decoration: none;
-      color: #3677e994;
-      font-size: 16px;
-      font-weight: 600;
-      border: 2px solid #3677e994;
-      border-radius: 5px;
-      padding: 0.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
+      @include secondaryButton(
+        #3677e994,
+        transparent,
+        #3677e994,
+        0.3rem,
+        none,
+        5px,
+        var(--themeColor),
+        #3677e994
+      );
       min-width: 80px;
-
-      &:hover {
-        color: var(--themeColor);
-        border: 2px solid var(--themeColor);
-      }
-
-      &:disabled {
-        color: #3677e994;
-        border: 2px solid #3677e994;
-        cursor: not-allowed;
-      }
     }
+  }
+
+  .less-bottom-margin {
+    margin-bottom: 1rem !important;
   }
 
   .project-item-body {
     margin: 1.5rem;
     margin-top: 0;
-    display: flex;
-    flex-direction: column;
     word-break: break-all;
     flex: 1;
     .project-item-live-key {
       font-weight: 500;
+
+      width: fit-content;
     }
 
     .project-item-live-value {
       text-decoration: none;
       color: var(--logoColor);
+      width: fit-content;
+      margin-left: 0.5rem;
+
       &:hover {
         text-decoration: underline;
       }

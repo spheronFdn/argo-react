@@ -64,29 +64,51 @@ const LandingDeployStepsOne = () => {
               />
             </LazyLoadedImage>
           </div>
-          <div className="jamstack-support-icon icon-disabled">
+          <div className="jamstack-support-icon">
             <LazyLoadedImage height={60} noFlex={true} once>
               <img
-                src={require("../../../../../../assets/svg/Next.svg")}
-                alt="React"
+                src={require("../../../../../../assets/svg/Angular.svg")}
+                alt="Angular"
                 height={60}
                 width={60}
                 loading="lazy"
               />
             </LazyLoadedImage>
-            <div>Coming soon</div>
+          </div>
+          <div className="jamstack-support-icon">
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/Next.svg")}
+                alt="Next"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
           </div>
           <div className="jamstack-support-icon icon-disabled">
             <LazyLoadedImage height={60} noFlex={true} once>
               <img
-                src={require("../../../../../../assets/svg/Angular.svg")}
-                alt="React"
+                src={require("../../../../../../assets/svg/Jekyll.svg")}
+                alt="Jekyll"
                 height={60}
                 width={60}
                 loading="lazy"
               />
             </LazyLoadedImage>
-            <div>Coming soon</div>
+            <div className="icon-text">Coming soon</div>
+          </div>
+          <div className="jamstack-support-icon icon-disabled">
+            <LazyLoadedImage height={60} noFlex={true} once>
+              <img
+                src={require("../../../../../../assets/svg/Hugo.svg")}
+                alt="Jekyll"
+                height={60}
+                width={60}
+                loading="lazy"
+              />
+            </LazyLoadedImage>
+            <div className="icon-text">Coming soon</div>
           </div>
         </div>
       </div>

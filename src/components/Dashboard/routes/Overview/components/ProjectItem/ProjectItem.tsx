@@ -13,6 +13,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   type,
   projectName,
   latestDeployment,
+  domain,
   githubUrl,
   updateTime,
   repo,
@@ -46,15 +47,36 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                 type="button"
                 className="project-item-visit-button"
                 onClick={(e) =>
-                  window.open(`${latestDeployment}`, "_blank", "noopener")
+                  window.open(
+                    `${domain ? `https://${domain}` : latestDeployment}`,
+                    "_blank",
+                    "noopener",
+                  )
                 }
               >
                 Visit
               </button>
             )}
           </div>
+          {domain && (
+            <div className="project-item-body less-bottom-margin">
+              <span className="project-item-live-key">
+                {domain ? "Site live at" : ""}
+              </span>
+              <a
+                href={`https://${domain}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-item-live-value"
+              >
+                {domain ? `https://${domain}` : ""}
+              </a>
+            </div>
+          )}
           <div className="project-item-body">
-            <span className="project-item-live-key">Latest deployed at</span>
+            <span className="project-item-live-key">
+              {latestDeployment ? "Latest deployed at" : ""}
+            </span>
             <a
               href={`${latestDeployment}`}
               target="_blank"

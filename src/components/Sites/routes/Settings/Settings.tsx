@@ -9,6 +9,9 @@ const Settings = () => {
   const history = useHistory();
   const params = useParams<any>();
 
+  const urls = location.pathname.split("/");
+  const lastPath = urls[urls.length - 1];
+
   return (
     <div className="Settings">
       <ProjectTopCard />
@@ -16,7 +19,7 @@ const Settings = () => {
         <div className="settings-left-side-bar">
           <div
             className={`settings-bar-item ${
-              location.pathname.indexOf("general") !== -1 ? "selected" : ""
+              lastPath === "general" ? "selected" : ""
             }`}
             onClick={(e) =>
               history.push(
@@ -28,7 +31,7 @@ const Settings = () => {
           </div>
           <div
             className={`settings-bar-item ${
-              location.pathname.indexOf("deploys") !== -1 ? "selected" : ""
+              lastPath === "deploys" ? "selected" : ""
             }`}
             onClick={(e) =>
               history.push(

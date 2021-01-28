@@ -29,9 +29,11 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment } = useContext<
-    IStateModel
-  >(StateContext);
+  const {
+    user,
+    selectedOrg,
+    selectedRepoForTriggerDeployment,
+  } = useContext<IStateModel>(StateContext);
   const {
     setLatestDeploymentSocketTopic,
     setLatestDeploymentConfig,
@@ -52,6 +54,7 @@ function DeploySiteConfig() {
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
+  const [workspace, setWorkspace] = useState<string>();
   const [framework, setFramework] = useState<string>("react");
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
@@ -121,6 +124,14 @@ function DeploySiteConfig() {
       setPackageManager("npm");
       setBuildCommand("build");
       setPublishDirectory("dist");
+    } else if (framework === "angular") {
+      setPackageManager("npm");
+      setBuildCommand("build");
+      setPublishDirectory("dist/your-app-name");
+    } else if (framework === "next") {
+      setPackageManager("yarn");
+      setBuildCommand("next build && next export");
+      setPublishDirectory("out");
     }
   }, [framework]);
 
@@ -239,6 +250,7 @@ function DeploySiteConfig() {
       // project_name: projectName,
       branch,
       framework,
+      workspace,
       package_manager: packageManager,
       build_command: buildCommand,
       publish_dir: publishDirectory,
@@ -557,6 +569,15 @@ function DeploySiteConfig() {
                             onChange={(e) => setBranch(e.target.value)}
                           />
                         </div>
+                        <div className="deploy-site-item-form-item">
+                          <label>Workspace to deploy</label>
+                          <input
+                            type="text"
+                            className="deploy-site-item-input"
+                            value={workspace}
+                            onChange={(e) => setWorkspace(e.target.value)}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="deploy-site-form-item">
@@ -581,6 +602,8 @@ function DeploySiteConfig() {
                               </option>
                               <option value="react">Create React App</option>
                               <option value="vue">Vue App</option>
+                              <option value="angular">Angular App</option>
+                              <option value="next">Next.js App</option>
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
@@ -589,38 +612,51 @@ function DeploySiteConfig() {
                         </div>
                         {framework !== "static" && (
                           <>
-                            <div className="deploy-site-item-form-item">
-                              <label>Package Manager</label>
-                              <div className="deploy-site-item-select-container">
-                                <select
-                                  className="deploy-site-item-select"
-                                  value={packageManager}
-                                  onChange={(e) => setPackageManager(e.target.value)}
-                                >
-                                  <option value="npm">NPM</option>
-                                  <option value="yarn">YARN</option>
-                                </select>
-                                <span className="select-down-icon">
-                                  <FontAwesomeIcon icon={faChevronDown} />
-                                </span>
+                            {framework !== "next" ? (
+                              <div className="deploy-site-item-form-item">
+                                <label>Package Manager</label>
+                                <div className="deploy-site-item-select-container">
+                                  <select
+                                    className="deploy-site-item-select"
+                                    value={packageManager}
+                                    onChange={(e) =>
+                                      setPackageManager(e.target.value)
+                                    }
+                                  >
+                                    <option value="npm">NPM</option>
+                                    <option value="yarn">YARN</option>
+                                  </select>
+                                  <span className="select-down-icon">
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                  </span>
+                                </div>
                               </div>
-                            </div>
+                            ) : null}
                             <div className="deploy-site-item-form-item">
                               <label>Build command</label>
-                              <div className="deploy-site-item-input-container">
+                              {framework !== "next" ? (
+                                <div className="deploy-site-item-input-container">
+                                  <input
+                                    type="text"
+                                    className="deploy-site-item-input-disabled"
+                                    value={buildCommandPrefix}
+                                    disabled
+                                  />
+                                  <input
+                                    type="text"
+                                    className="deploy-site-item-input-build"
+                                    value={buildCommand}
+                                    onChange={(e) => setBuildCommand(e.target.value)}
+                                  />
+                                </div>
+                              ) : (
                                 <input
                                   type="text"
-                                  className="deploy-site-item-input-disabled"
-                                  value={buildCommandPrefix}
-                                  disabled
-                                />
-                                <input
-                                  type="text"
-                                  className="deploy-site-item-input-build"
+                                  className="deploy-site-item-input"
                                   value={buildCommand}
                                   onChange={(e) => setBuildCommand(e.target.value)}
                                 />
-                              </div>
+                              )}
                             </div>
                             <div className="deploy-site-item-form-item">
                               <label>Publish directory</label>

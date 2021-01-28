@@ -33,16 +33,16 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
                   Deploys
                 </Link>
               </li>
-              {/* <li className="nav-item">
-              <Link
-                className={`${
-                  location.pathname.indexOf("domains") !== -1 ? "selected" : ""
-                }`}
-                to="/dashboard/domains"
-              >
-                Domains
-              </Link>
-            </li> */}
+              <li className="nav-item">
+                <Link
+                  className={`${
+                    location.pathname.indexOf("domain") !== -1 ? "selected" : ""
+                  }`}
+                  to={`/org/${params.orgid}/sites/${params.slug1}/domain`}
+                >
+                  Domain
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link
                   className={`${

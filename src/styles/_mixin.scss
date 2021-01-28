@@ -1,0 +1,97 @@
+@mixin primaryButton(
+  $color,
+  $backgroundColor,
+  $padding,
+  $boxShadow,
+  $borderRadius,
+  $hoverBackground,
+  $disabledBackground
+) {
+  background: $backgroundColor;
+  text-decoration: none;
+  box-shadow: $boxShadow;
+  color: $color;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: $borderRadius;
+  padding: $padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: $hoverBackground;
+  }
+
+  &:disabled {
+    background: $disabledBackground;
+    cursor: not-allowed;
+  }
+}
+
+@mixin secondaryButton(
+  $color,
+  $backgroundColor,
+  $borderColor,
+  $padding,
+  $boxShadow,
+  $borderRadius,
+  $hoverColor,
+  $disabledColor
+) {
+  background: $backgroundColor;
+  text-decoration: none;
+  box-shadow: $boxShadow;
+  color: $color;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: $borderRadius;
+  padding: $padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $borderColor;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: $hoverColor;
+    border: 2px solid $hoverColor;
+  }
+
+  &:disabled {
+    color: $disabledColor;
+    border: 2px solid $disabledColor;
+    cursor: not-allowed;
+  }
+}
+
+@mixin socialButton($color, $backgroundColor, $width) {
+  background: $backgroundColor;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  padding: 0.75rem 1rem;
+  width: $width;
+  border: 0px;
+  color: $color;
+  line-height: 18px;
+  font-size: 15px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: darken($color: $backgroundColor, $amount: 5);
+  }
+
+  &:disabled {
+    border: 1px solid #bdbdbd;
+    color: #bdbdbd;
+    cursor: not-allowed;
+  }
+}

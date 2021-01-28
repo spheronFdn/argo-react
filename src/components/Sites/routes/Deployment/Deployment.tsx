@@ -55,6 +55,7 @@ const Deployment = () => {
 
   useEffect(() => {
     setLatestDeploymentLogs([]);
+    fetchProject(params.siteid);
     const socket = socketIOClient(config.urls.BACKEND_URL);
     const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
       (result) => {
@@ -119,7 +120,9 @@ const Deployment = () => {
               }
             });
             // CLEAN UP THE EFFECT
-          } else {
+          } else if (
+            result.deployment.deploymentStatus.toLowerCase() === "deployed"
+          ) {
             setDeployedLink(result.deployment.sitePreview);
             setIsDeployed(true);
             const buildMins = Number.parseInt(

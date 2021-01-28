@@ -5,6 +5,7 @@ import { Redirect, Route, useParams } from "react-router-dom";
 import { AllDeployments, Deployment, Overview, Settings } from "./routes";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
+import DomainManagement from "./routes/DomainManagement";
 
 function Sites() {
   const params = useParams<any>();
@@ -38,6 +39,20 @@ function Sites() {
             path="/org/:orgid/sites/:siteid/deployments/"
             exact
             render={() => <AllDeployments />}
+          />
+          <Route
+            path="/org/:orgid/sites/:siteid/domain/:slug"
+            exact
+            render={() => <DomainManagement />}
+          />
+          <Route
+            path="/org/:orgid/sites/:siteid/domain/"
+            exact
+            render={() => (
+              <Redirect
+                to={`/org/${params.orgid}/sites/${params.slug1}/domain/domains`}
+              />
+            )}
           />
           <Route
             path="/org/:orgid/sites/:siteid/settings/:slug"

@@ -77,8 +77,10 @@ export const AppProvider = (props: any) => {
           ...prevState,
           selectedRepoForTriggerDeployment: action.selectedRepoForTriggerDeployment,
         };
-
       default:
+        return {
+          prevState,
+        };
     }
   }, stateInitialValue);
 
