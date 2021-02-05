@@ -28,7 +28,10 @@ const DomainGeneral = () => {
     const domain = {
       repositoryId: selectedProject?._id,
       domain: domainName,
-      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+      transactionId:
+        deployedSite !== "latest"
+          ? deployedSite.split("/")[deployedSite.split("/").length - 1]
+          : deployedSite,
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
@@ -78,6 +81,7 @@ const DomainGeneral = () => {
                     onChange={(e) => setDeployedSite(e.target.value)}
                   >
                     <option value="">Select Site</option>
+                    <option value="latest">Latest Deployed</option>
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -114,6 +118,7 @@ const DomainGeneral = () => {
                           domain={`${domain.name}`}
                           transactionId={`${domain.transactionId}`}
                           isSubdomain={false}
+                          autoDns={!!domain.autoDns}
                         />
                       </div>
                     ))
@@ -127,6 +132,7 @@ const DomainGeneral = () => {
                       domain=""
                       transactionId=""
                       isSubdomain={false}
+                      autoDns={false}
                     />
                   </>
                 )}

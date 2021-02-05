@@ -115,6 +115,7 @@ const SubdomainGeneral = () => {
                           domain={`${subdomain.name}`}
                           transactionId={`${subdomain.transactionId}`}
                           isSubdomain={true}
+                          autoDns={!!subdomain.autoDns}
                         />
                       </div>
                     ))
@@ -128,6 +129,7 @@ const SubdomainGeneral = () => {
                       domain=""
                       transactionId=""
                       isSubdomain={true}
+                      autoDns={false}
                     />
                   </>
                 )}

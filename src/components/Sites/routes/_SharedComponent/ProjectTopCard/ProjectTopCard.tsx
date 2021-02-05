@@ -6,7 +6,6 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { StateContext } from "../../../../../hooks";
 import { IStateModel } from "../../../../../model/hooks.model";
 import moment from "moment";
-import { LazyLoadedImage } from "../../../../_SharedComponents";
 
 const ProjectTopCard = () => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
@@ -98,17 +97,14 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            <LazyLoadedImage height={24} once>
-              <img
-                src={require("../../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="project-top-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
-            </LazyLoadedImage>
-
+            <img
+              src={require("../../../../../assets/png/ar_light.png")}
+              alt="github"
+              className="project-top-logo"
+              height={24}
+              width={24}
+              loading="lazy"
+            />
             {latestDeployment?.sitePreview ? (
               <a
                 href={latestDeployment?.sitePreview}

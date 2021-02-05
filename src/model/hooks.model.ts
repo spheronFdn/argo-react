@@ -79,6 +79,7 @@ export interface IDomain {
   _id?: string;
   name: string;
   transactionId: string;
+  autoDns: boolean;
 }
 export interface IDeployment {
   _id?: string;
