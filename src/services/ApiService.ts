@@ -350,3 +350,18 @@ export const deleteSubdomain = (subdomainDetails: any): Observable<any> => {
     );
   });
 };
+
+export const getGithubRepoBranches = (branchUrl: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(
+        `${config.urls.API_URL}/repository/installations/repo/branch?branches=${branchUrl}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+          },
+        },
+      ).then((res) => res.json()),
+    );
+  });
+};
