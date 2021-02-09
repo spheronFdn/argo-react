@@ -69,6 +69,7 @@ export interface IRepository {
   build_command: string;
   publish_dir: string;
   branch: string;
+  workspace: string;
   sitePreview: string;
   framework: string;
   domains: IDomain[];

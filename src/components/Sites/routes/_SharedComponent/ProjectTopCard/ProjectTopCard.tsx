@@ -3,13 +3,16 @@ import "./ProjectTopCard.scss";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { StateContext } from "../../../../../hooks";
-import { IStateModel } from "../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../../model/hooks.model";
 import moment from "moment";
-import { LazyLoadedImage } from "../../../../_SharedComponents";
+import { useHistory } from "react-router-dom";
 
 const ProjectTopCard = () => {
+  const history = useHistory();
+
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   const sortedDeployments = projectLoading
     ? []
@@ -38,6 +41,19 @@ const ProjectTopCard = () => {
       selectedProject.url.length - 4,
     )}/tree/${selectedProject.branch}`;
   }
+
+  const triggerDeployment = () => {
+    setRepoForTriggerDeployment({
+      github_url: selectedProject?.url,
+      branch: latestDeployment?.branch,
+      framework: selectedProject?.framework,
+      publish_dir: latestDeployment?.publish_dir,
+      package_manager: latestDeployment?.package_manager,
+      build_command: latestDeployment?.build_command,
+      workspace: latestDeployment?.workspace,
+    });
+    history.push("/deploy/new");
+  };
 
   return (
     <div className="ProjectTopCard">
@@ -98,16 +114,14 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            <LazyLoadedImage height={24} once>
-              <img
-                src={require("../../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="project-top-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
-            </LazyLoadedImage>
+            <img
+              src={require("../../../../../assets/png/ar_light.png")}
+              alt="github"
+              className="project-top-logo"
+              height={24}
+              width={24}
+              loading="lazy"
+            />
 
             {latestDeployment?.sitePreview ? (
               <a
@@ -125,6 +139,11 @@ const ProjectTopCard = () => {
             ) : (
               <span>Site preview not available</span>
             )}
+          </div>
+          <div className="project-top-card-fields">
+            <button className="trigger-deploy-button" onClick={triggerDeployment}>
+              Redeploy Latest
+            </button>
           </div>
         </div>
       </div>
