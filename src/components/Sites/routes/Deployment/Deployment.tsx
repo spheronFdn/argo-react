@@ -4,8 +4,17 @@ import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faChevronLeft, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { IActionModel, IStateModel } from "../../../../model/hooks.model";
+import {
+  faChevronLeft,
+  faGlobe,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  IActionModel,
+  IDomain,
+  IStateModel,
+  ISubdomain,
+} from "../../../../model/hooks.model";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
@@ -38,9 +47,11 @@ const Deployment = () => {
     },
   };
 
-  const { currentSiteDeployConfig, currentSiteDeployLogs } = useContext<IStateModel>(
-    StateContext,
-  );
+  const {
+    currentSiteDeployConfig,
+    currentSiteDeployLogs,
+    selectedProject,
+  } = useContext<IStateModel>(StateContext);
   const {
     setLatestDeploymentLogs,
     setLatestDeploymentConfig,
@@ -175,6 +186,20 @@ const Deployment = () => {
     )}/tree/${currentSiteDeployConfig.branch}`;
   }
 
+  const domains = selectedProject
+    ? selectedProject.domains.filter(
+        (d) => deployedLink.indexOf(d.transactionId) !== -1,
+      )
+    : [{ name: "meetrekpero.xyz", isLatestDomain: true, transactionId: "xyz" }];
+
+  const subdomains = selectedProject
+    ? selectedProject.subDomains.filter(
+        (d) => deployedLink.indexOf(d.transactionId) !== -1,
+      )
+    : [];
+
+  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
   const scrollToWithContainer = (index: number) => {
     window.scrollTo({
       top: document.getElementById("deploy-logs-container")?.scrollHeight,
@@ -249,6 +274,47 @@ const Deployment = () => {
           </p>
         </div>
         <div className="site-deployment-card-content">
+          {isDomainOrSubPresent && (
+            <div className="site-deployment-card-fields">
+              <span className="site-deployment-github-icon">
+                <FontAwesomeIcon icon={faGlobe} />
+              </span>
+              {!deploymentLoading ? (
+                <>
+                  {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`https://${d.name}`}
+                        className="site-deployment-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {d.name}
+                      </a>
+                      {(i !== a.length - 1 || subdomains.length > 0) && (
+                        <span className="comma-sep">,</span>
+                      )}
+                    </>
+                  ))}
+                  {subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                    <>
+                      <a
+                        href={`https://${s.name}`}
+                        className="site-deployment-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                    </>
+                  ))}
+                </>
+              ) : (
+                <Skeleton width={300} duration={2} />
+              )}
+            </div>
+          )}
           <div className="site-deployment-card-fields">
             <span className="site-deployment-github-icon">
               <FontAwesomeIcon icon={faGithub} />

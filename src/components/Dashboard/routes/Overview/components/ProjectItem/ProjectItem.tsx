@@ -58,18 +58,16 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
               </button>
             )}
           </div>
-          {domain && (
+          {!!domain && (
             <div className="project-item-body less-bottom-margin">
-              <span className="project-item-live-key">
-                {domain ? "Site live at" : ""}
-              </span>
+              <span className="project-item-live-key">Site live at</span>
               <a
                 href={`https://${domain}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="project-item-live-value"
               >
-                {domain ? `https://${domain}` : ""}
+                {`https://${domain}`}
               </a>
             </div>
           )}

@@ -119,16 +119,23 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
             <div className="domain-general-domain-item-header-container">
               <div className="domain-general-domain-item-header">
                 <div className="domain-general-domain-item-header-left">
-                  <a
-                    href={`https://${domain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {domain}
-                    <span>
-                      <FontAwesomeIcon icon={faExternalLinkAlt} />
-                    </span>
-                  </a>
+                  <div>
+                    <a
+                      href={`https://${domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {domain}
+                      <span>
+                        <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      </span>
+                    </a>
+                  </div>
+                  {autoDns ? (
+                    <div className="domain-tag-container">
+                      <span className="domain-tag">Automated</span>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="domain-general-domain-item-header-right">
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
@@ -144,16 +151,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
               <div className="domain-general-domain-item-body">
                 {!isSubdomain ? (
                   <div className="domain-general-domain-item-body-item">
-                    <div>
-                      <span>Deployments Type:</span>
-                      <span>
-                        Automated ({"Latest Pointing to -> "}{" "}
-                        <a href={`https://arweave.net/${transactionId}`}>
-                          {transactionId}
-                        </a>
-                        )
-                      </span>
-                    </div>
                     <h3>Domain Configuration</h3>
                     <p>
                       Set the following record on your DNS provider to configure your
@@ -200,7 +197,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
                             <div className="td">
-                              arweave=jeNnvxnU0qguF-xj3k1hMYlSHgEOMAxtpeYBwKy1r9k
+                              arweave=OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g
                             </div>
                           </div>
                         </div>

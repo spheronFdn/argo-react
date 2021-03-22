@@ -16,6 +16,7 @@ const DomainGeneral = () => {
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
+  const [isLatest, setIsLatest] = useState<boolean>(false);
   const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
@@ -28,23 +29,34 @@ const DomainGeneral = () => {
     const domain = {
       repositoryId: selectedProject?._id,
       domain: domainName,
-      transactionId:
-        deployedSite !== "latest"
-          ? deployedSite.split("/")[deployedSite.split("/").length - 1]
-          : deployedSite,
+      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+      isLatest,
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
         setDomainName("");
         setDeployedSite("");
+        setIsLatest(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setDomainName("");
         setDeployedSite("");
+        setIsLatest(false);
       }
       setDomainLoading(false);
     });
   };
+
+  const setTransaction = (tx: string) => {
+    if (tx === "latest") {
+      setDeployedSite(sortedDeployments ? sortedDeployments[0].sitePreview : "");
+      setIsLatest(true);
+    } else {
+      setDeployedSite(tx);
+      setIsLatest(false);
+    }
+  };
+
   return (
     <div className="DomainGeneral">
       <div className="domain-general-right-container">
@@ -78,7 +90,7 @@ const DomainGeneral = () => {
                   <select
                     className="add-domain-select"
                     value={deployedSite}
-                    onChange={(e) => setDeployedSite(e.target.value)}
+                    onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
                     <option value="latest">Latest Deployed</option>
@@ -118,7 +130,7 @@ const DomainGeneral = () => {
                           domain={`${domain.name}`}
                           transactionId={`${domain.transactionId}`}
                           isSubdomain={false}
-                          autoDns={!!domain.autoDns}
+                          autoDns={!!domain.isLatestDomain}
                         />
                       </div>
                     ))

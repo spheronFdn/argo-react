@@ -72,14 +72,21 @@ export interface IRepository {
   sitePreview: string;
   framework: string;
   domains: IDomain[];
-  subDomains: IDomain[];
+  subDomains: ISubdomain[];
 }
 
 export interface IDomain {
   _id?: string;
   name: string;
   transactionId: string;
-  autoDns: boolean;
+  isLatestDomain?: boolean;
+}
+
+export interface ISubdomain {
+  _id?: string;
+  name: string;
+  transactionId: string;
+  isLatestSubDomain?: boolean;
 }
 export interface IDeployment {
   _id?: string;
