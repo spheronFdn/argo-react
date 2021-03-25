@@ -29,7 +29,13 @@ const DomainGeneral = () => {
     const domain = {
       repositoryId: selectedProject?._id,
       domain: domainName,
-      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+      transactionId: isLatest
+        ? sortedDeployments?.length
+          ? sortedDeployments[0].sitePreview.split("/")[
+              sortedDeployments[0].sitePreview.split("/").length - 1
+            ]
+          : ""
+        : deployedSite.split("/")[deployedSite.split("/").length - 1],
       isLatest,
     };
     ApiService.addDomain(domain).subscribe((result) => {
@@ -48,11 +54,11 @@ const DomainGeneral = () => {
   };
 
   const setTransaction = (tx: string) => {
+    setDeployedSite(tx);
+
     if (tx === "latest") {
-      setDeployedSite(sortedDeployments ? sortedDeployments[0].sitePreview : "");
       setIsLatest(true);
     } else {
-      setDeployedSite(tx);
       setIsLatest(false);
     }
   };
