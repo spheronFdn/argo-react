@@ -66,14 +66,6 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
               </>
             ) : (
               <>
-                <a
-                  className={`login-container`}
-                  href="https://discord.gg/ahxuCtm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Contact
-                </a>
                 <Link
                   className={`login-container ${
                     parent === "Login" ? "disable-login" : ""

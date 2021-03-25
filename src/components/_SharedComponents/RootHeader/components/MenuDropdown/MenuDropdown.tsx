@@ -14,14 +14,6 @@ const MenuDropdown: React.FC<IMenuDropdownProps> = ({ setShowDropdown }) => {
       ></div>
       <div className="menu-dropdown-box">
         <div className="menu-dropdown-triangle"></div>
-        <div
-          className="menu-dropdown-item"
-          onClick={(e) =>
-            window.open("https://discord.gg/ahxuCtm", "_blank", "noopener")
-          }
-        >
-          Contact
-        </div>
         <div className="menu-dropdown-item" onClick={(e) => history.push("/login")}>
           Login
         </div>
