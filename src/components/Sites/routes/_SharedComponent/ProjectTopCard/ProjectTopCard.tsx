@@ -4,7 +4,12 @@ import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { ActionContext, StateContext } from "../../../../../hooks";
-import { IActionModel, IStateModel, ISubdomain, IDomain } from "../../../../../model/hooks.model";
+import {
+  IActionModel,
+  IStateModel,
+  ISubdomain,
+  IDomain,
+} from "../../../../../model/hooks.model";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +48,6 @@ const ProjectTopCard = () => {
     )}/tree/${selectedProject.branch}`;
   }
 
-
   const domains = selectedProject ? selectedProject.domains : [];
   const subdomains = selectedProject ? selectedProject.subDomains : [];
 
@@ -61,7 +65,6 @@ const ProjectTopCard = () => {
     });
     history.push("/deploy/new");
   };
-
 
   return (
     <div className="ProjectTopCard">
