@@ -30,6 +30,16 @@
             text-decoration: none !important;
           }
         }
+
+        .domain-tag-container {
+          margin-top: 0.25rem;
+          .domain-tag {
+            padding: 2px 12px;
+            background-color: var(--themeColorDark);
+            color: var(--white);
+            border-radius: 12px;
+          }
+        }
       }
 
       .domain-general-domain-item-header-right {

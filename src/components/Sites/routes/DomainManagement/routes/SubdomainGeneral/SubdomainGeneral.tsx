@@ -16,6 +16,7 @@ const SubdomainGeneral = () => {
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [subdomainName, setSubdomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
+  const [isLatest, setIsLatest] = useState<boolean>(false);
   const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
@@ -23,26 +24,40 @@ const SubdomainGeneral = () => {
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
-  const addDomainDetails = () => {
+  const addSubdomainDetails = () => {
     setDomainLoading(true);
 
     const domain = {
       repositoryId: selectedProject?._id,
       domain: subdomainName,
       transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+      isLatest,
     };
     ApiService.addSubdomain(domain).subscribe((result) => {
       if (result.success) {
         setSubdomainName("");
         setDeployedSite("");
+        setIsLatest(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setSubdomainName("");
         setDeployedSite("");
+        setIsLatest(false);
       }
       setDomainLoading(false);
     });
   };
+
+  const setTransaction = (tx: string) => {
+    if (tx === "latest") {
+      setDeployedSite(sortedDeployments ? sortedDeployments[0].sitePreview : "");
+      setIsLatest(true);
+    } else {
+      setDeployedSite(tx);
+      setIsLatest(false);
+    }
+  };
+
   return (
     <div className="SubdomainGeneral">
       <div className="domain-general-right-container">
@@ -76,9 +91,10 @@ const SubdomainGeneral = () => {
                   <select
                     className="add-domain-select"
                     value={deployedSite}
-                    onChange={(e) => setDeployedSite(e.target.value)}
+                    onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select deployment</option>
+                    <option value="latest">Latest Deployed</option>
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -94,7 +110,7 @@ const SubdomainGeneral = () => {
                 <button
                   className="add-domain-button"
                   disabled={!subdomainName || !deployedSite}
-                  onClick={addDomainDetails}
+                  onClick={addSubdomainDetails}
                 >
                   {domainLoading ? (
                     <BounceLoader size={20} color={"#fff"} loading={true} />
@@ -115,6 +131,7 @@ const SubdomainGeneral = () => {
                           domain={`${subdomain.name}`}
                           transactionId={`${subdomain.transactionId}`}
                           isSubdomain={true}
+                          autoDns={!!subdomain.isLatestSubDomain}
                         />
                       </div>
                     ))
@@ -128,6 +145,7 @@ const SubdomainGeneral = () => {
                       domain=""
                       transactionId=""
                       isSubdomain={true}
+                      autoDns={false}
                     />
                   </>
                 )}
