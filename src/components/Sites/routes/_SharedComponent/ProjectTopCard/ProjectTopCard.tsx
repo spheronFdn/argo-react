@@ -3,13 +3,17 @@ import "./ProjectTopCard.scss";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { StateContext } from "../../../../../hooks";
-import { IDomain, IStateModel, ISubdomain } from "../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../hooks";
+import { IActionModel, IStateModel, ISubdomain, IDomain } from "../../../../../model/hooks.model";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 const ProjectTopCard = () => {
+  const history = useHistory();
+
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   const sortedDeployments = projectLoading
     ? []
@@ -39,10 +43,25 @@ const ProjectTopCard = () => {
     )}/tree/${selectedProject.branch}`;
   }
 
+
   const domains = selectedProject ? selectedProject.domains : [];
   const subdomains = selectedProject ? selectedProject.subDomains : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
+  const triggerDeployment = () => {
+    setRepoForTriggerDeployment({
+      github_url: selectedProject?.url,
+      branch: latestDeployment?.branch,
+      framework: selectedProject?.framework,
+      publish_dir: latestDeployment?.publish_dir,
+      package_manager: latestDeployment?.package_manager,
+      build_command: latestDeployment?.build_command,
+      workspace: latestDeployment?.workspace,
+    });
+    history.push("/deploy/new");
+  };
+
 
   return (
     <div className="ProjectTopCard">
@@ -155,6 +174,7 @@ const ProjectTopCard = () => {
               width={24}
               loading="lazy"
             />
+
             {latestDeployment?.sitePreview ? (
               <a
                 href={latestDeployment?.sitePreview}
@@ -171,6 +191,11 @@ const ProjectTopCard = () => {
             ) : (
               <span>Site preview not available</span>
             )}
+          </div>
+          <div className="project-top-card-fields">
+            <button className="trigger-deploy-button" onClick={triggerDeployment}>
+              Redeploy Latest
+            </button>
           </div>
         </div>
       </div>

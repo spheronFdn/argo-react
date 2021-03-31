@@ -1,19 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SettingsGeneral.scss";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { StateContext } from "../../../../../../hooks";
+import { ActionContext, StateContext } from "../../../../../../hooks";
 import moment from "moment";
-import { IStateModel } from "../../../../../../model/hooks.model";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import BounceLoader from "react-spinners/BounceLoader";
+import { ApiService } from "../../../../../../services";
 
 const SettingsGeneral = () => {
   const { selectedProject, projectLoading, selectedOrg } = useContext<IStateModel>(
     StateContext,
   );
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
 
-  // const [repoName, setRepoName] = useState<string>("");
-  // const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+  const [workspace, setWorkspace] = useState<string>("");
+  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+
   // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
   const lastPublishedDate = moment(selectedProject?.updateDate).format(
@@ -32,40 +37,42 @@ const SettingsGeneral = () => {
     );
   }
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     setRepoName(selectedProject.name);
-  //   }
-  // }, [selectedProject]);
+  useEffect(() => {
+    if (selectedProject) {
+      setWorkspace(selectedProject.workspace);
+    }
+  }, [selectedProject]);
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     if (selectedProject.name !== repoName) {
-  //       setIsDataChanged(true);
-  //     } else {
-  //       setIsDataChanged(false);
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedProject, repoName]);
+  useEffect(() => {
+    if (selectedProject) {
+      if (selectedProject.workspace !== workspace) {
+        setIsDataChanged(true);
+      } else {
+        setIsDataChanged(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProject, workspace]);
 
-  // const updateOrganization = () => {
-  //   if (selectedProject) {
-  //     const org = {
-  //       username: orgUsername,
-  //       name: orgName,
-  //       image: orgAvatar,
-  //     };
+  const updateProject = () => {
+    if (selectedProject) {
+      setUpdateLoading(true);
+      const project = {
+        package_manager: selectedProject.package_manager,
+        build_command: selectedProject.build_command,
+        publish_dir: selectedProject.publish_dir,
+        branch: selectedProject.branch,
+        workspace,
+      };
 
-  //     ApiService.updateOrganization(`${selectedOrg?._id}`, org).subscribe(
-  //       (result) => {
-  //         // eslint-disable-next-line no-console
-  //         console.log(result);
-  //         fetchUser();
-  //       },
-  //     );
-  //   }
-  // };
+      ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
+        (result) => {
+          setUpdateLoading(false);
+          fetchProject(`${selectedProject?._id}`);
+        },
+      );
+    }
+  };
 
   // const deleteOrg = () => {
   //   if (selectedOrg && deleteConfirmed) {
@@ -128,6 +135,25 @@ const SettingsGeneral = () => {
               )}
             </div>
             <div className="settings-project-item">
+              <label className="settings-project-item-title">
+                Workspace directory
+              </label>
+              <label className="settings-project-item-subtitle">
+                This is the project's client side workspace if you have a monorepo
+                like structure.
+              </label>
+              {!projectLoading ? (
+                <input
+                  type="text"
+                  className="settings-project-item-input"
+                  value={workspace}
+                  onChange={(e) => setWorkspace(e.target.value)}
+                />
+              ) : (
+                <Skeleton width={326} height={36} duration={2} />
+              )}
+            </div>
+            <div className="settings-project-item">
               <label className="settings-project-item-title">Creation Date</label>
               <label className="settings-project-item-subtitle">
                 This is the creation date of this project.
@@ -150,7 +176,7 @@ const SettingsGeneral = () => {
               )}
             </div>
           </div>
-          {/* <div className="settings-project-footer">
+          <div className="settings-project-footer">
             <div className="warning-text-container">
               <span className="exclamation-icon">
                 <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
@@ -161,11 +187,14 @@ const SettingsGeneral = () => {
               type="button"
               className="primary-button"
               disabled={projectLoading || !isDataChanged}
-              // onClick={updateOrganization}
+              onClick={updateProject}
             >
+              {updateLoading && (
+                <BounceLoader size={20} color={"#fff"} loading={true} />
+              )}
               Save
             </button>
-          </div> */}
+          </div>
         </div>
         {/* <div className="settings-project-details">
           <div className="settings-project-header delete-containers">

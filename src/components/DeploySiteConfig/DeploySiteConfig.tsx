@@ -147,22 +147,35 @@ function DeploySiteConfig() {
 
   useEffect(() => {
     if (selectedRepoForTriggerDeployment) {
+      const repoName = selectedRepoForTriggerDeployment.github_url
+        .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+        .split("/")[1];
+      const ownerName = selectedRepoForTriggerDeployment.github_url
+        .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+        .split("/")[0];
+
       setSelectedRepo({
-        name: selectedRepoForTriggerDeployment.github_url
-          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
-          .split("/")[1],
+        name: repoName,
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
       setSelectedRepoOwner({
-        name: selectedRepoForTriggerDeployment.github_url
-          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
-          .split("/")[0],
+        name: ownerName,
       });
-      setBranch(selectedRepoForTriggerDeployment.branch);
+      setFramework(selectedRepoForTriggerDeployment.framework);
+      setWorkspace(selectedRepoForTriggerDeployment.workspace);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
       setPublishDirectory(selectedRepoForTriggerDeployment.publish_dir);
       setCreateDeployProgress(2);
+
+      const branchUrl = `https://api.github.com/repos/${ownerName}/${repoName}/branches`;
+      ApiService.getGithubRepoBranches(branchUrl).subscribe((res) => {
+        if (componentIsMounted.current) {
+          setRepoBranches(res.branches);
+          setBranch(selectedRepoForTriggerDeployment.branch);
+          setRepoBranchesLoading(false);
+        }
+      });
     }
   }, [selectedRepoForTriggerDeployment]);
 
