@@ -17,6 +17,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   domain,
   transactionId,
   isSubdomain,
+  autoDns,
 }) => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
@@ -118,16 +119,23 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
             <div className="domain-general-domain-item-header-container">
               <div className="domain-general-domain-item-header">
                 <div className="domain-general-domain-item-header-left">
-                  <a
-                    href={`https://${domain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {domain}
-                    <span>
-                      <FontAwesomeIcon icon={faExternalLinkAlt} />
-                    </span>
-                  </a>
+                  <div>
+                    <a
+                      href={`https://${domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {domain}
+                      <span>
+                        <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      </span>
+                    </a>
+                  </div>
+                  {autoDns ? (
+                    <div className="domain-tag-container">
+                      <span className="domain-tag">Automated</span>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="domain-general-domain-item-header-right">
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
@@ -148,27 +156,53 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                       Set the following record on your DNS provider to configure your
                       domain:
                     </p>
-                    <div className="configure-domain-records-table">
-                      <div className="thead">
-                        <div className="tr">
-                          <div className="th">Type</div>
-                          <div className="th">Name</div>
-                          <div className="th">Value</div>
+                    {!autoDns ? (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
+                        </div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">@</div>
+                            <div className="td">52.191.214.142</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">arweavetx.{domain}</div>
+                            <div className="td">{transactionId}</div>
+                          </div>
                         </div>
                       </div>
-                      <div className="tbody">
-                        <div className="tr">
-                          <div className="td">A</div>
-                          <div className="td">@</div>
-                          <div className="td">52.191.214.142</div>
+                    ) : (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
                         </div>
-                        <div className="tr">
-                          <div className="td">TXT</div>
-                          <div className="td">arweavetx.{domain}</div>
-                          <div className="td">{transactionId}</div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">35.224.71.8</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">
+                              arweave=OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ) : (
                   <div className="domain-general-domain-item-body-item">
@@ -177,27 +211,53 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                       Set the following record on your DNS provider to configure your
                       subdomain:
                     </p>
-                    <div className="configure-domain-records-table">
-                      <div className="thead">
-                        <div className="tr">
-                          <div className="th">Type</div>
-                          <div className="th">Name</div>
-                          <div className="th">Value</div>
+                    {!autoDns ? (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
+                        </div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">CNAME</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">dns.perma.online</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">arweavetx.{domain}</div>
+                            <div className="td">{transactionId}</div>
+                          </div>
                         </div>
                       </div>
-                      <div className="tbody">
-                        <div className="tr">
-                          <div className="td">CNAME</div>
-                          <div className="td">{domain}</div>
-                          <div className="td">dns.perma.online</div>
+                    ) : (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
                         </div>
-                        <div className="tr">
-                          <div className="td">TXT</div>
-                          <div className="td">arweavetx.{domain}</div>
-                          <div className="td">{transactionId}</div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">35.224.71.8</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">
+                              arweave=jeNnvxnU0qguF-xj3k1hMYlSHgEOMAxtpeYBwKy1r9k
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>

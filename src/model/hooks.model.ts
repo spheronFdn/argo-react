@@ -69,16 +69,25 @@ export interface IRepository {
   build_command: string;
   publish_dir: string;
   branch: string;
+  workspace: string;
   sitePreview: string;
   framework: string;
   domains: IDomain[];
-  subDomains: IDomain[];
+  subDomains: ISubdomain[];
 }
 
 export interface IDomain {
   _id?: string;
   name: string;
   transactionId: string;
+  isLatestDomain?: boolean;
+}
+
+export interface ISubdomain {
+  _id?: string;
+  name: string;
+  transactionId: string;
+  isLatestSubDomain?: boolean;
 }
 export interface IDeployment {
   _id?: string;

@@ -9,8 +9,13 @@ import animationData from "../../../../../../assets/lotties/rotating-settings.js
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import { useHistory, useParams } from "react-router-dom";
-import { ActionContext } from "../../../../../../hooks";
-import { IActionModel } from "../../../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../../../hooks";
+import {
+  IActionModel,
+  IDomain,
+  IStateModel,
+  ISubdomain,
+} from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
@@ -30,6 +35,21 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   const params = useParams<any>();
   const history = useHistory();
   const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
+  const { selectedProject } = useContext<IStateModel>(StateContext);
+
+  const domains = selectedProject
+    ? selectedProject.domains.filter(
+        (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+      )
+    : [];
+
+  const subdomains = selectedProject
+    ? selectedProject.subDomains.filter(
+        (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+      )
+    : [];
+
+  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
   const openDeployment = () => {
     ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
@@ -45,8 +65,49 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         <>
           <div className="deployment-left">
             <div className="deployment-left-detail">
+              {isDomainOrSubPresent && (
+                <div className="deployment-domains-detail">
+                  <span className="bold-text">Published at: </span>
+                  {
+                    <>
+                      {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${d.name}`}
+                            className="commit-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {d.name}
+                          </a>
+                          {(i !== a.length - 1 || subdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {subdomains.map(
+                        (s: ISubdomain, i: number, a: ISubdomain[]) => (
+                          <>
+                            <a
+                              href={`https://${s.name}`}
+                              className="commit-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {i !== a.length - 1 && (
+                              <span className="comma-sep">", "</span>
+                            )}
+                          </>
+                        ),
+                      )}
+                    </>
+                  }
+                </div>
+              )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Published at: </span>
+                <span className="bold-text">Arweave Link: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}
