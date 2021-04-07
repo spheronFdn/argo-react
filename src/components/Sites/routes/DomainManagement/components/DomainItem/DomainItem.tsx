@@ -191,13 +191,13 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="tr">
                             <div className="td">A</div>
                             <div className="td">{domain}</div>
-                            <div className="td">35.224.71.8</div>
+                            <div className="td">35.202.158.174</div>
                           </div>
                           <div className="tr">
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
                             <div className="td">
-                              arweave=OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g
+                              arweave=WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA
                             </div>
                           </div>
                         </div>
@@ -246,13 +246,13 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="tr">
                             <div className="td">A</div>
                             <div className="td">{domain}</div>
-                            <div className="td">35.224.71.8</div>
+                            <div className="td">35.202.158.174</div>
                           </div>
                           <div className="tr">
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
                             <div className="td">
-                              arweave=jeNnvxnU0qguF-xj3k1hMYlSHgEOMAxtpeYBwKy1r9k
+                              arweave=WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA
                             </div>
                           </div>
                         </div>
