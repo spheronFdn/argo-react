@@ -136,7 +136,9 @@ const DomainGeneral = () => {
                           domain={`${domain.name}`}
                           transactionId={`${domain.transactionId}`}
                           isSubdomain={false}
-                          autoDns={!!domain.isLatestDomain}
+                          autoDns={domain.isLatestDomain}
+                          uuid={`${domain.uuid}`}
+                          ownerVerified={domain.ownerVerified}
                         />
                       </div>
                     ))
@@ -149,8 +151,10 @@ const DomainGeneral = () => {
                       domainId=""
                       domain=""
                       transactionId=""
+                      uuid=""
                       isSubdomain={false}
                       autoDns={false}
+                      ownerVerified={true}
                     />
                   </>
                 )}

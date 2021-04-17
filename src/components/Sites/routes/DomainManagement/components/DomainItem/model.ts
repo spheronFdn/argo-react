@@ -6,4 +6,6 @@ export default interface IDeploymentItemProps {
   transactionId: string;
   isSubdomain: boolean;
   autoDns: boolean;
+  uuid: string;
+  ownerVerified: boolean;
 }

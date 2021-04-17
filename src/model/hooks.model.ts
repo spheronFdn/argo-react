@@ -79,14 +79,18 @@ export interface IDomain {
   _id?: string;
   name: string;
   transactionId: string;
-  isLatestDomain?: boolean;
+  isLatestDomain: boolean;
+  uuid: string;
+  ownerVerified: boolean;
 }
 
 export interface ISubdomain {
   _id?: string;
   name: string;
   transactionId: string;
-  isLatestSubDomain?: boolean;
+  isLatestSubDomain: boolean;
+  uuid: string;
+  ownerVerified: boolean;
 }
 export interface IDeployment {
   _id?: string;
