@@ -80,7 +80,7 @@ export interface IDomain {
   name: string;
   transactionId: string;
   isLatestDomain: boolean;
-  uuid: string;
+  argoDomainKey: string;
   ownerVerified: boolean;
 }
 
@@ -89,7 +89,7 @@ export interface ISubdomain {
   name: string;
   transactionId: string;
   isLatestSubDomain: boolean;
-  uuid: string;
+  argoDomainKey: string;
   ownerVerified: boolean;
 }
 export interface IDeployment {

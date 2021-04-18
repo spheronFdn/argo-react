@@ -234,7 +234,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="tr">
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
-                            <div className="td">uuid={uuid}</div>
+                            <div className="td">argo={uuid}</div>
                           </div>
                         </div>
                       </div>
@@ -313,9 +313,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="tr">
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
-                            <div className="td">
-                              arweave=WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA
-                            </div>
+                            <div className="td">argo={uuid}</div>
                           </div>
                         </div>
                       </div>
