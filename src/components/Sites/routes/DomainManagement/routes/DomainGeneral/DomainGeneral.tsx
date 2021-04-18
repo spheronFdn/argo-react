@@ -137,7 +137,7 @@ const DomainGeneral = () => {
                           transactionId={`${domain.transactionId}`}
                           isSubdomain={false}
                           autoDns={domain.isLatestDomain}
-                          uuid={`${domain.uuid}`}
+                          uuid={`${domain.argoDomainKey}`}
                           ownerVerified={domain.ownerVerified}
                         />
                       </div>
