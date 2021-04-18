@@ -276,10 +276,40 @@ export const addDomain = (domainDetails: any): Observable<any> => {
   });
 };
 
+export const verifyDomain = (domainDetails: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/domain/verify`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(domainDetails),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
 export const addSubdomain = (subdomainDetails: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
       fetch(`${config.urls.API_URL}/domain/subdomain/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(subdomainDetails),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const verifySubdomain = (subdomainDetails: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/domain/subdomain/verify`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,

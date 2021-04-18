@@ -190,7 +190,7 @@ const Deployment = () => {
     ? selectedProject.domains.filter(
         (d) => deployedLink.indexOf(d.transactionId) !== -1,
       )
-    : [{ name: "meetrekpero.xyz", isLatestDomain: true, transactionId: "xyz" }];
+    : [];
 
   const subdomains = selectedProject
     ? selectedProject.subDomains.filter(

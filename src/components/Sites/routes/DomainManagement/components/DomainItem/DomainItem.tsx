@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import "./DomainItem.scss";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
-import { faChevronDown, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faExternalLinkAlt,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ActionContext, StateContext } from "../../../../../../hooks";
@@ -18,12 +22,15 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   transactionId,
   isSubdomain,
   autoDns,
+  uuid,
+  ownerVerified,
 }) => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editDomainLoading, setEditDomainLoading] = useState<boolean>(false);
+  const [verifyDomainLoading, setVerifyDomainLoading] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
   const [deployedSite, setDeployedSite] = useState<string>("");
   const sortedDeployments = projectLoading
@@ -94,7 +101,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
-        setEditDomainLoading(false);
       });
     } else {
       ApiService.deleteSubdomain(domain).subscribe((result) => {
@@ -106,7 +112,39 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
-        setEditDomainLoading(false);
+      });
+    }
+  };
+
+  const verifyDomain = () => {
+    setVerifyDomainLoading(true);
+    const verify = {
+      domain,
+      repositoryId: selectedProject?._id,
+    };
+    if (!isSubdomain) {
+      ApiService.verifyDomain(verify).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setVerifyDomainLoading(false);
+      });
+    } else {
+      ApiService.verifySubdomain(verify).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setVerifyDomainLoading(false);
       });
     }
   };
@@ -154,7 +192,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     <h3>Domain Configuration</h3>
                     <p>
                       Set the following record on your DNS provider to configure your
-                      domain:
+                      domain and verify your ownership:
                     </p>
                     {!autoDns ? (
                       <div className="configure-domain-records-table">
@@ -196,13 +234,37 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="tr">
                             <div className="td">TXT</div>
                             <div className="td">{domain}</div>
-                            <div className="td">
-                              arweave=WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA
-                            </div>
+                            <div className="td">uuid={uuid}</div>
                           </div>
                         </div>
                       </div>
                     )}
+                    {!ownerVerified ? (
+                      <div className="verify-domain-container">
+                        <div className="verify-domain-text">
+                          <span>
+                            <FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon>
+                          </span>
+                          <span>Owner Not Verified</span>
+                        </div>
+                        <div>
+                          <button
+                            className="verify-domain-button"
+                            onClick={verifyDomain}
+                          >
+                            {verifyDomainLoading ? (
+                              <BounceLoader
+                                size={20}
+                                color={"#fff"}
+                                loading={true}
+                              />
+                            ) : (
+                              "Verify"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : (
                   <div className="domain-general-domain-item-body-item">
