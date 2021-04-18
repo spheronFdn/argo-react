@@ -132,6 +132,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
+        setVerifyDomainLoading(false);
       });
     } else {
       ApiService.verifySubdomain(verify).subscribe((result) => {
@@ -143,6 +144,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
+        setVerifyDomainLoading(false);
       });
     }
   };
