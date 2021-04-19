@@ -1,3 +1,5 @@
+@import "../../../../../styles/mixin";
+
 .ProjectTopCard {
   .max-width-set {
     max-width: 50%;
@@ -84,6 +86,21 @@
           &:hover {
             text-decoration: underline;
           }
+        }
+
+        .comma-sep {
+          margin-right: 4px;
+        }
+        .trigger-deploy-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.5rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
         }
       }
     }

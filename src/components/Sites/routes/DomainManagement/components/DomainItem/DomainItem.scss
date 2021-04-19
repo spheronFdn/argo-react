@@ -30,6 +30,16 @@
             text-decoration: none !important;
           }
         }
+
+        .domain-tag-container {
+          margin-top: 0.25rem;
+          .domain-tag {
+            padding: 2px 12px;
+            background-color: var(--themeColorDark);
+            color: var(--white);
+            border-radius: 12px;
+          }
+        }
       }
 
       .domain-general-domain-item-header-right {
@@ -162,6 +172,39 @@
                 }
               }
             }
+          }
+        }
+
+        .verify-domain-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 1rem;
+
+          .verify-domain-text {
+            display: flex;
+            align-items: center;
+            color: var(--red);
+
+            span:nth-child(1) {
+              font-size: 24px;
+              margin-right: 0.5rem;
+            }
+          }
+
+          .verify-domain-button {
+            @include primaryButton(
+              white,
+              #040c34,
+              0.5rem 3rem,
+              none,
+              4px,
+              #735386,
+              var(--grey1Color)
+            );
+            border: 1px solid transparent;
+            font-weight: 500;
+            width: 63px;
           }
         }
       }

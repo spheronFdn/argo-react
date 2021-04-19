@@ -5,4 +5,7 @@ export default interface IDeploymentItemProps {
   domain: string;
   transactionId: string;
   isSubdomain: boolean;
+  autoDns: boolean;
+  uuid: string;
+  ownerVerified: boolean;
 }

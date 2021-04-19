@@ -133,7 +133,8 @@ const Overview = () => {
                   <ProjectItem
                     type="filled"
                     projectName={repo.name}
-                    domain={repo.domains.length ? repo.domains[0].name : ""}
+                    domains={repo.domains.length ? repo.domains : []}
+                    subdomains={repo.subDomains.length ? repo.subDomains : []}
                     latestDeployment={repo.sitePreview}
                     githubUrl={repo.url}
                     updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
@@ -145,7 +146,8 @@ const Overview = () => {
               <ProjectItem
                 type="empty"
                 projectName={null}
-                domain={null}
+                domains={null}
+                subdomains={null}
                 latestDeployment={null}
                 githubUrl={null}
                 updateTime={null}
@@ -156,7 +158,8 @@ const Overview = () => {
             <ProjectItem
               type="skeleton"
               projectName={null}
-              domain={null}
+              domains={null}
+              subdomains={null}
               latestDeployment={null}
               githubUrl={null}
               updateTime={null}

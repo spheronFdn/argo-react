@@ -6,14 +6,20 @@ import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import IProjectItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
-import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
+import {
+  IActionModel,
+  IDomain,
+  IStateModel,
+  ISubdomain,
+} from "../../../../../../model/hooks.model";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 
 const ProjectItem: React.FC<IProjectItemProps> = ({
   type,
   projectName,
   latestDeployment,
-  domain,
+  domains,
+  subdomains,
   githubUrl,
   updateTime,
   repo,
@@ -27,6 +33,9 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   if (githubUrl) {
     displayGithubRepo = githubUrl.substring(19, githubUrl.length - 4);
   }
+
+  const isDomainOrSubPresent =
+    (domains && domains.length > 0) || (subdomains && subdomains.length > 0);
 
   return (
     <div className="project-item">
@@ -48,7 +57,11 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                 className="project-item-visit-button"
                 onClick={(e) =>
                   window.open(
-                    `${domain ? `https://${domain}` : latestDeployment}`,
+                    `${
+                      domains && domains.length > 0
+                        ? `https://${domains[0].name}`
+                        : latestDeployment
+                    }`,
                     "_blank",
                     "noopener",
                   )
@@ -58,19 +71,40 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
               </button>
             )}
           </div>
-          {domain && (
+          {isDomainOrSubPresent && (
             <div className="project-item-body less-bottom-margin">
-              <span className="project-item-live-key">
-                {domain ? "Site live at" : ""}
-              </span>
-              <a
-                href={`https://${domain}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-item-live-value"
-              >
-                {domain ? `https://${domain}` : ""}
-              </a>
+              <span className="project-item-live-key">Site live at</span>
+              {domains &&
+                domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`https://${d.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {d.name}
+                    </a>
+                    {(i !== a.length - 1 ||
+                      (subdomains && subdomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {subdomains &&
+                subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                  <>
+                    <a
+                      href={`https://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {s.name}
+                    </a>
+                    {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                  </>
+                ))}
             </div>
           )}
           <div className="project-item-body">

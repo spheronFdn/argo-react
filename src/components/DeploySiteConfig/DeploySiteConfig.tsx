@@ -49,6 +49,8 @@ function DeploySiteConfig() {
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
+  const [repoBranches, setRepoBranches] = useState<any[]>([]);
+  const [repoBranchesLoading, setRepoBranchesLoading] = useState<boolean>(true);
 
   // const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
@@ -145,22 +147,35 @@ function DeploySiteConfig() {
 
   useEffect(() => {
     if (selectedRepoForTriggerDeployment) {
+      const repoName = selectedRepoForTriggerDeployment.github_url
+        .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+        .split("/")[1];
+      const ownerName = selectedRepoForTriggerDeployment.github_url
+        .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
+        .split("/")[0];
+
       setSelectedRepo({
-        name: selectedRepoForTriggerDeployment.github_url
-          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
-          .split("/")[1],
+        name: repoName,
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
       setSelectedRepoOwner({
-        name: selectedRepoForTriggerDeployment.github_url
-          .substring(19, selectedRepoForTriggerDeployment.github_url.length - 4)
-          .split("/")[0],
+        name: ownerName,
       });
-      setBranch(selectedRepoForTriggerDeployment.branch);
+      setFramework(selectedRepoForTriggerDeployment.framework);
+      setWorkspace(selectedRepoForTriggerDeployment.workspace);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
       setPublishDirectory(selectedRepoForTriggerDeployment.publish_dir);
       setCreateDeployProgress(2);
+
+      const branchUrl = `https://api.github.com/repos/${ownerName}/${repoName}/branches`;
+      ApiService.getGithubRepoBranches(branchUrl).subscribe((res) => {
+        if (componentIsMounted.current) {
+          setRepoBranches(res.branches);
+          setBranch(selectedRepoForTriggerDeployment.branch);
+          setRepoBranchesLoading(false);
+        }
+      });
     }
   }, [selectedRepoForTriggerDeployment]);
 
@@ -214,6 +229,7 @@ function DeploySiteConfig() {
       if (componentIsMounted.current) {
         const repositories: any[] = res.repositories.map((repo: any) => ({
           clone_url: repo.clone_url,
+          branches_url: repo.branches_url.split("{")[0],
           name: repo.name,
           fullName: repo.full_name,
           private: repo.private,
@@ -234,6 +250,14 @@ function DeploySiteConfig() {
   const selectRepositories = (repo: any) => {
     setSelectedRepo(repo);
     setCreateDeployProgress(2);
+    setRepoBranchesLoading(true);
+    ApiService.getGithubRepoBranches(repo.branches_url).subscribe((res) => {
+      if (componentIsMounted.current) {
+        setRepoBranches(res.branches);
+        setBranch(res.branches[0].name);
+        setRepoBranchesLoading(false);
+      }
+    });
   };
 
   const startDeployment = async () => {
@@ -273,6 +297,14 @@ function DeploySiteConfig() {
     window.open(githubSignInUrl, "_blank");
   };
 
+  const goBackAction = () => {
+    if (createDeployProgress === 1) {
+      history.goBack();
+    } else {
+      setCreateDeployProgress(1);
+    }
+  };
+
   let buildCommandPrefix: string = "";
   if (packageManager === "npm") {
     buildCommandPrefix = "npm run";
@@ -287,7 +319,7 @@ function DeploySiteConfig() {
         <div className="deploy-site-container">
           <div className="deploy-site-card">
             <div className="deploy-site-card-inner">
-              <div className="go-back" onClick={(e) => history.goBack()}>
+              <div className="go-back" onClick={goBackAction}>
                 <span>
                   <FontAwesomeIcon icon={faArrowLeft} />
                 </span>
@@ -562,12 +594,30 @@ function DeploySiteConfig() {
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Branch to deploy</label>
-                          <input
-                            type="text"
-                            className="deploy-site-item-input"
-                            value={branch}
-                            onChange={(e) => setBranch(e.target.value)}
-                          />
+                          <div className="deploy-site-item-select-container">
+                            <select
+                              className="deploy-site-item-select"
+                              value={branch}
+                              onChange={(e) => setBranch(e.target.value)}
+                            >
+                              {repoBranches.map((branch, index) => (
+                                <option value={branch.name} key={index}>
+                                  {branch.name}
+                                </option>
+                              ))}
+                            </select>
+                            <span className="select-down-icon">
+                              {!repoBranchesLoading ? (
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              ) : (
+                                <BounceLoader
+                                  size={20}
+                                  color={"#0a3669"}
+                                  loading={true}
+                                />
+                              )}
+                            </span>
+                          </div>
                         </div>
                         <div className="deploy-site-item-form-item">
                           <label>Workspace to deploy</label>

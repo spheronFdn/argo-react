@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import "./DomainItem.scss";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
-import { faChevronDown, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faExternalLinkAlt,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ActionContext, StateContext } from "../../../../../../hooks";
@@ -17,12 +21,16 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   domain,
   transactionId,
   isSubdomain,
+  autoDns,
+  uuid,
+  ownerVerified,
 }) => {
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editDomainLoading, setEditDomainLoading] = useState<boolean>(false);
+  const [verifyDomainLoading, setVerifyDomainLoading] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
   const [deployedSite, setDeployedSite] = useState<string>("");
   const sortedDeployments = projectLoading
@@ -93,7 +101,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
-        setEditDomainLoading(false);
       });
     } else {
       ApiService.deleteSubdomain(domain).subscribe((result) => {
@@ -105,7 +112,39 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           setEditDomainName("");
           setDeployedSite("");
         }
-        setEditDomainLoading(false);
+      });
+    }
+  };
+
+  const verifyDomain = () => {
+    setVerifyDomainLoading(true);
+    const verify = {
+      domain,
+      repositoryId: selectedProject?._id,
+    };
+    if (!isSubdomain) {
+      ApiService.verifyDomain(verify).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setVerifyDomainLoading(false);
+      });
+    } else {
+      ApiService.verifySubdomain(verify).subscribe((result) => {
+        if (result.success) {
+          setEditDomainName("");
+          setDeployedSite("");
+          fetchProject(`${selectedProject?._id}`);
+        } else {
+          setEditDomainName("");
+          setDeployedSite("");
+        }
+        setVerifyDomainLoading(false);
       });
     }
   };
@@ -118,16 +157,23 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
             <div className="domain-general-domain-item-header-container">
               <div className="domain-general-domain-item-header">
                 <div className="domain-general-domain-item-header-left">
-                  <a
-                    href={`https://${domain}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {domain}
-                    <span>
-                      <FontAwesomeIcon icon={faExternalLinkAlt} />
-                    </span>
-                  </a>
+                  <div>
+                    <a
+                      href={`https://${domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {domain}
+                      <span>
+                        <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      </span>
+                    </a>
+                  </div>
+                  {autoDns ? (
+                    <div className="domain-tag-container">
+                      <span className="domain-tag">Automated</span>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="domain-general-domain-item-header-right">
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
@@ -146,29 +192,79 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     <h3>Domain Configuration</h3>
                     <p>
                       Set the following record on your DNS provider to configure your
-                      domain:
+                      domain and verify your ownership:
                     </p>
-                    <div className="configure-domain-records-table">
-                      <div className="thead">
-                        <div className="tr">
-                          <div className="th">Type</div>
-                          <div className="th">Name</div>
-                          <div className="th">Value</div>
+                    {!autoDns ? (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
+                        </div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">@</div>
+                            <div className="td">52.191.214.142</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">arweavetx.{domain}</div>
+                            <div className="td">{transactionId}</div>
+                          </div>
                         </div>
                       </div>
-                      <div className="tbody">
-                        <div className="tr">
-                          <div className="td">A</div>
-                          <div className="td">@</div>
-                          <div className="td">52.191.214.142</div>
+                    ) : (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
                         </div>
-                        <div className="tr">
-                          <div className="td">TXT</div>
-                          <div className="td">arweavetx.{domain}</div>
-                          <div className="td">{transactionId}</div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">35.202.158.174</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">argo={uuid}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                    {!ownerVerified ? (
+                      <div className="verify-domain-container">
+                        <div className="verify-domain-text">
+                          <span>
+                            <FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon>
+                          </span>
+                          <span>Owner Not Verified</span>
+                        </div>
+                        <div>
+                          <button
+                            className="verify-domain-button"
+                            onClick={verifyDomain}
+                          >
+                            {verifyDomainLoading ? (
+                              <BounceLoader
+                                size={20}
+                                color={"#fff"}
+                                loading={true}
+                              />
+                            ) : (
+                              "Verify"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : (
                   <div className="domain-general-domain-item-body-item">
@@ -177,27 +273,51 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                       Set the following record on your DNS provider to configure your
                       subdomain:
                     </p>
-                    <div className="configure-domain-records-table">
-                      <div className="thead">
-                        <div className="tr">
-                          <div className="th">Type</div>
-                          <div className="th">Name</div>
-                          <div className="th">Value</div>
+                    {!autoDns ? (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
+                        </div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">CNAME</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">dns.perma.online</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">arweavetx.{domain}</div>
+                            <div className="td">{transactionId}</div>
+                          </div>
                         </div>
                       </div>
-                      <div className="tbody">
-                        <div className="tr">
-                          <div className="td">CNAME</div>
-                          <div className="td">{domain}</div>
-                          <div className="td">dns.perma.online</div>
+                    ) : (
+                      <div className="configure-domain-records-table">
+                        <div className="thead">
+                          <div className="tr">
+                            <div className="th">Type</div>
+                            <div className="th">Name</div>
+                            <div className="th">Value</div>
+                          </div>
                         </div>
-                        <div className="tr">
-                          <div className="td">TXT</div>
-                          <div className="td">arweavetx.{domain}</div>
-                          <div className="td">{transactionId}</div>
+                        <div className="tbody">
+                          <div className="tr">
+                            <div className="td">A</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">35.202.158.174</div>
+                          </div>
+                          <div className="tr">
+                            <div className="td">TXT</div>
+                            <div className="td">{domain}</div>
+                            <div className="td">argo={uuid}</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>
