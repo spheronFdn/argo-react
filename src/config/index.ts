@@ -17,7 +17,7 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = "development";
+const NODE_ENV: string = "production";
 
 const development: IConfig = {
   urls: {
@@ -37,7 +37,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    BASE_URL: process.env.BASE_URL || "https://argoapp.live",
+    BASE_URL: process.env.BASE_URL || "https://app.argoapp.live",
     API_URL: process.env.API_URL || "https://api.argoapp.live",
     BACKEND_URL: process.env.BACKEND_URL || "https://internal.argoapp.live",
   },
