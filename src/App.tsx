@@ -6,7 +6,6 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { BroadcastChannel } from "broadcast-channel";
 import Loading from "./components/Loading";
 
-const Landing = lazy(() => import("./components/Landing"));
 const SignUp = lazy(() => import("./components/SignUp"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
 const SignupWorkflows = lazy(() => import("./components/SignupWorkflows"));
@@ -62,9 +61,7 @@ function App() {
               exact
               render={() => {
                 return !localStorage.getItem("jwt-token") ? (
-                  <ErrorBoundary>
-                    <Landing />
-                  </ErrorBoundary>
+                  <Redirect to="/login" />
                 ) : (
                   <Redirect to="/dashboard" />
                 );
