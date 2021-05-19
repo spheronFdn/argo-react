@@ -107,7 +107,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 </div>
               )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Arweave Link: </span>
+                <span className="bold-text">Preview: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}

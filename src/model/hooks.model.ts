@@ -72,6 +72,7 @@ export interface IRepository {
   workspace: string;
   sitePreview: string;
   framework: string;
+  protocol: string;
   domains: IDomain[];
   subDomains: ISubdomain[];
 }
@@ -105,6 +106,7 @@ export interface IDeployment {
   package_manager: string;
   build_command: string;
   publish_dir: string;
+  protocol: string;
 }
 
 export interface IOrganization {

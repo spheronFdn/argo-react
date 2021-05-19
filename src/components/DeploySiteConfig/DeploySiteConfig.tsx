@@ -29,11 +29,8 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const {
-    user,
-    selectedOrg,
-    selectedRepoForTriggerDeployment,
-  } = useContext<IStateModel>(StateContext);
+  const { user, selectedOrg, selectedRepoForTriggerDeployment } =
+    useContext<IStateModel>(StateContext);
   const {
     setLatestDeploymentSocketTopic,
     setLatestDeploymentConfig,
@@ -61,9 +58,9 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
-  const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
-    false,
-  );
+  const [protocol, setProtocol] = useState<string>("");
+  const [startDeploymentLoading, setStartDeploymentLoading] =
+    useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
   const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
 
@@ -144,6 +141,8 @@ function DeploySiteConfig() {
       setOwner(user.organizations[0]);
     }
   }, [user, selectedOrg]);
+
+  //Redeploy
 
   useEffect(() => {
     if (selectedRepoForTriggerDeployment) {
@@ -275,6 +274,7 @@ function DeploySiteConfig() {
       branch,
       framework,
       workspace,
+      protocol,
       package_manager: packageManager,
       build_command: buildCommand,
       publish_dir: publishDirectory,
@@ -300,8 +300,10 @@ function DeploySiteConfig() {
   const goBackAction = () => {
     if (createDeployProgress === 1) {
       history.goBack();
-    } else {
+    } else if (createDeployProgress === 2) {
       setCreateDeployProgress(1);
+    } else {
+      setCreateDeployProgress(2);
     }
   };
 
@@ -327,7 +329,7 @@ function DeploySiteConfig() {
               </div>
               <h1 className="deploy-site-title">Create a new site</h1>
               <div className="deploy-site-subtitle">
-                Just follow these 2 step to deploy your website to ArGo
+                Just follow these 3 step to deploy your website to ArGo
               </div>
               <div className="deploy-site-progress-bar">
                 <div className="deploy-site-progress-number-container">
@@ -371,6 +373,30 @@ function DeploySiteConfig() {
                   <div
                     className={`deploy-site-progress-text ${
                       createDeployProgress === 2
+                        ? "deploy-site-progress-text-active"
+                        : ""
+                    }`}
+                  >
+                    Pick a Protocol
+                  </div>
+                </div>
+                <div className="deploy-site-progress-number-container">
+                  {createDeployProgress <= 3 ? (
+                    <div
+                      className={`deploy-site-progress-number ${
+                        createDeployProgress === 3 ? "active" : ""
+                      }`}
+                    >
+                      3
+                    </div>
+                  ) : (
+                    <div className="deploy-site-progress-done">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  )}
+                  <div
+                    className={`deploy-site-progress-text ${
+                      createDeployProgress === 3
                         ? "deploy-site-progress-text-active"
                         : ""
                     }`}
@@ -552,6 +578,55 @@ function DeploySiteConfig() {
                   </div>
                 )}
                 {createDeployProgress === 2 && (
+                  <>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Select the protocol to deploy {selectedRepo.name}
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Select protocol in which you want ArGo to deploy your site.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          {/* currently adding dropdown for Protocol testing */}
+
+                          <label>Protocol to Deploy</label>
+                          <div className="deploy-site-item-select-container">
+                            <select
+                              className="deploy-site-item-select"
+                              value={protocol}
+                              onChange={(e) => setProtocol(e.target.value)}
+                            >
+                              <option value="arweave">Arweave</option>
+                              <option value="skynet">Skynet</option>
+                            </select>
+                            <span className="select-down-icon">
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="button-container">
+                      <button
+                        type="button"
+                        className="primary-button"
+                        onClick={(e) => setCreateDeployProgress(3)}
+                      >
+                        Continue
+                      </button>
+                      <button
+                        type="button"
+                        className="cancel-button"
+                        onClick={(e) => setCreateDeployProgress(1)}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </>
+                )}
+                {/* console.log({protocol}); */}
+                {createDeployProgress === 3 && (
                   <>
                     <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">

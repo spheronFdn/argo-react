@@ -47,16 +47,10 @@ const Deployment = () => {
     },
   };
 
-  const {
-    currentSiteDeployConfig,
-    currentSiteDeployLogs,
-    selectedProject,
-  } = useContext<IStateModel>(StateContext);
-  const {
-    setLatestDeploymentLogs,
-    setLatestDeploymentConfig,
-    fetchProject,
-  } = useContext<IActionModel>(ActionContext);
+  const { currentSiteDeployConfig, currentSiteDeployLogs, selectedProject } =
+    useContext<IStateModel>(StateContext);
+  const { setLatestDeploymentLogs, setLatestDeploymentConfig, fetchProject } =
+    useContext<IActionModel>(ActionContext);
 
   const [isDeployed, setIsDeployed] = useState<boolean>(false);
   const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
@@ -103,15 +97,18 @@ const Deployment = () => {
               setLatestDeploymentLogs(currentSiteDeployLogs);
               scrollToWithContainer(currentSiteDeployLogs.length - 1);
               if (
-                currentSiteDeployLogs.length &&
-                currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
-                  "https://arweave.net/",
-                ) !== -1
+                (currentSiteDeployLogs.length &&
+                  currentSiteDeployLogs[
+                    currentSiteDeployLogs.length - 1
+                  ].log.indexOf("https://arweave.net/") !== -1) ||
+                (currentSiteDeployLogs.length &&
+                  currentSiteDeployLogs[
+                    currentSiteDeployLogs.length - 1
+                  ].log.indexOf("https://siasky.net/") !== -1)
               ) {
                 setIsDeployed(true);
-                const arweaveLink = currentSiteDeployLogs[
-                  currentSiteDeployLogs.length - 1
-                ].log.trim();
+                const arweaveLink =
+                  currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.trim();
                 setDeployedLink(arweaveLink);
                 const buildMins = Number.parseInt(
                   `${
@@ -352,7 +349,7 @@ const Deployment = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Preview deploy on Arweave
+                  Preview deploy
                 </a>
               ) : (
                 <span className="site-deployment-link">
@@ -403,7 +400,8 @@ const Deployment = () => {
                   key={i}
                 >
                   {currLog.time}:{" "}
-                  {currLog.log.indexOf("https://arweave.net/") !== -1 ? (
+                  {currLog.log.indexOf("https://arweave.net/") !== -1 ||
+                  currLog.log.indexOf("https://siasky.net/") !== -1 ? (
                     <a
                       href={currLog.log.trim()}
                       className="log-site-link"

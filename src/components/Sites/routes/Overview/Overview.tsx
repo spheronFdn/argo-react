@@ -13,9 +13,8 @@ const Overview = () => {
   const history = useHistory();
   const params = useParams<any>();
 
-  const { projectLoading, selectedProject, selectedOrg } = useContext<IStateModel>(
-    StateContext,
-  );
+  const { projectLoading, selectedProject, selectedOrg } =
+    useContext<IStateModel>(StateContext);
 
   const sortedDeployments = projectLoading
     ? []
@@ -112,7 +111,7 @@ const Overview = () => {
             </a>
           </div>
           <div className="deploy-summary-body-item">
-            <label>Latest deploy site on Arweave:</label>
+            <label>Latest deployed site:</label>
             {!projectLoading ? (
               latestDeployment?.sitePreview ? (
                 <a

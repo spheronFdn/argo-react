@@ -62,6 +62,7 @@ const ProjectTopCard = () => {
       package_manager: latestDeployment?.package_manager,
       build_command: latestDeployment?.build_command,
       workspace: latestDeployment?.workspace,
+      protocol: latestDeployment?.protocol,
     });
     history.push("/deploy/new");
   };
@@ -169,8 +170,30 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
+            {/* switch (protocol) {
+              case arweave: <img
+                              src={require("../../../../../assets/png/skynet.png")}
+                               alt="github"
+                              className="project-top-logo"
+                              height={24}
+                              width={24}
+                              loading="lazy"
+                            />
+                
+                break;
+            
+                case skynet: <img
+                                src={require("../../../../../assets/png/ar_light.png")}
+                                alt="github"
+                                className="project-top-logo"
+                                height={24}
+                                width={24}
+                                loading="lazy"
+                              />
+                              break;
+            } */}
             <img
-              src={require("../../../../../assets/png/ar_light.png")}
+              src={require("../../../../../assets/png/skynet.png")}
               alt="github"
               className="project-top-logo"
               height={24}
