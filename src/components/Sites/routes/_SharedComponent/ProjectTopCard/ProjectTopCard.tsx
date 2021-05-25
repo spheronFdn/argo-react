@@ -30,6 +30,8 @@ const ProjectTopCard = () => {
     latestDeployment = sortedDeployments[0];
   }
 
+  const isArweave = latestDeployment?.protocol === "arweave" ? true : false;
+
   const lastPublishedDate = moment(selectedProject?.updateDate).format(
     "MMM DD, YYYY hh:mm A",
   );
@@ -170,36 +172,25 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            {/* switch (protocol) {
-              case arweave: <img
-                              src={require("../../../../../assets/png/skynet.png")}
-                               alt="github"
-                              className="project-top-logo"
-                              height={24}
-                              width={24}
-                              loading="lazy"
-                            />
-                
-                break;
-            
-                case skynet: <img
-                                src={require("../../../../../assets/png/ar_light.png")}
-                                alt="github"
-                                className="project-top-logo"
-                                height={24}
-                                width={24}
-                                loading="lazy"
-                              />
-                              break;
-            } */}
-            <img
-              src={require("../../../../../assets/png/skynet.png")}
-              alt="github"
-              className="project-top-logo"
-              height={24}
-              width={24}
-              loading="lazy"
-            />
+            {isArweave ? (
+              <img
+                src={require("../../../../../assets/png/ar_light.png")}
+                alt="github"
+                className="project-top-logo"
+                height={24}
+                width={24}
+                loading="lazy"
+              />
+            ) : (
+              <img
+                src={require("../../../../../assets/png/skynet.png")}
+                alt="github"
+                className="project-top-logo"
+                height={24}
+                width={24}
+                loading="lazy"
+              />
+            )}
 
             {latestDeployment?.sitePreview ? (
               <a
@@ -209,7 +200,7 @@ const ProjectTopCard = () => {
                 rel="noopener noreferrer"
               >
                 {!projectLoading ? (
-                  "Latest deployment preview on Arweave"
+                  "Latest deployment preview"
                 ) : (
                   <Skeleton width={300} duration={2} />
                 )}

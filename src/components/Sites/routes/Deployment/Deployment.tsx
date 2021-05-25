@@ -69,7 +69,9 @@ const Deployment = () => {
             github_url: result.deployment.github_url,
             branch: result.deployment.branch,
             createdAt: result.deployment.createdAt,
+            protocol: result.deployment.protocol,
           };
+
           setLatestDeploymentConfig(deployment);
           currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
           result.deployment.logs.forEach((logItem: any) => {
@@ -107,9 +109,9 @@ const Deployment = () => {
                   ].log.indexOf("https://siasky.net/") !== -1)
               ) {
                 setIsDeployed(true);
-                const arweaveLink =
+                const protocolLink =
                   currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.trim();
-                setDeployedLink(arweaveLink);
+                setDeployedLink(protocolLink);
                 const buildMins = Number.parseInt(
                   `${
                     moment
@@ -211,6 +213,8 @@ const Deployment = () => {
         : 0;
     }
   };
+
+  const isArweave = currentSiteDeployConfig?.protocol === "arweave" ? true : false;
 
   return (
     <div className="SiteDeployment">
@@ -330,16 +334,29 @@ const Deployment = () => {
             )}
           </div>
           <div className="site-deployment-card-fields">
-            <LazyLoadedImage height={24} once>
-              <img
-                src={require("../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="site-deployment-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
-            </LazyLoadedImage>
+            {isArweave ? (
+              <LazyLoadedImage height={24} once>
+                <img
+                  src={require("../../../../assets/png/ar_light.png")}
+                  alt="github"
+                  className="site-deployment-logo"
+                  height={24}
+                  width={24}
+                  loading="lazy"
+                />
+              </LazyLoadedImage>
+            ) : (
+              <LazyLoadedImage height={24} once>
+                <img
+                  src={require("../../../../assets/png/skynet.png")}
+                  alt="github"
+                  className="site-deployment-logo"
+                  height={24}
+                  width={24}
+                  loading="lazy"
+                />
+              </LazyLoadedImage>
+            )}
 
             {!deploymentLoading ? (
               isDeployed ? (
@@ -351,9 +368,13 @@ const Deployment = () => {
                 >
                   Preview deploy
                 </a>
-              ) : (
+              ) : isArweave ? (
                 <span className="site-deployment-link">
                   Deploying on Arweave, Preview in a minute
+                </span>
+              ) : (
+                <span className="site-deployment-link">
+                  Deploying on Skynet, Preview in a minute
                 </span>
               )
             ) : (

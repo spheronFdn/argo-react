@@ -314,6 +314,15 @@ function DeploySiteConfig() {
     buildCommandPrefix = "yarn";
   }
 
+  function clickArweave() {
+    setProtocol("arweave");
+    setCreateDeployProgress(3);
+  }
+  function clickSkynet() {
+    setProtocol("skynet");
+    setCreateDeployProgress(3);
+  }
+
   return (
     <div className="DeploySiteConfig">
       <RootHeader parent={"DeploySiteConfig"} />
@@ -584,37 +593,45 @@ function DeploySiteConfig() {
                         Select the protocol to deploy {selectedRepo.name}
                       </label>
                       <label className="deploy-site-item-subtitle">
-                        Select protocol in which you want ArGo to deploy your site.
+                        Click on the protocol in which you want ArGo to deploy your
+                        site.
                       </label>
-                      <div className="deploy-site-item-form">
-                        <div className="deploy-site-item-form-item">
-                          {/* currently adding dropdown for Protocol testing */}
-
-                          <label>Protocol to Deploy</label>
-                          <div className="deploy-site-item-select-container">
-                            <select
-                              className="deploy-site-item-select"
-                              value={protocol}
-                              onChange={(e) => setProtocol(e.target.value)}
-                            >
-                              <option value="arweave">Arweave</option>
-                              <option value="skynet">Skynet</option>
-                            </select>
-                            <span className="select-down-icon">
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            </span>
+                      <div className="deploy-protocol-list-container">
+                        <ul className="deploy-protocol-list">
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => clickArweave()}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/arweave_logo.png")}
+                                alt="Arweave"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
                           </div>
-                        </div>
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => clickSkynet()}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/skynet_logo.png")}
+                                alt="Skynet"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </div>
+                        </ul>
                       </div>
                     </div>
                     <div className="button-container">
-                      <button
-                        type="button"
-                        className="primary-button"
-                        onClick={(e) => setCreateDeployProgress(3)}
-                      >
-                        Continue
-                      </button>
                       <button
                         type="button"
                         className="cancel-button"
@@ -625,7 +642,6 @@ function DeploySiteConfig() {
                     </div>
                   </>
                 )}
-                {/* console.log({protocol}); */}
                 {createDeployProgress === 3 && (
                   <>
                     <div className="deploy-site-form-item">
@@ -829,7 +845,7 @@ function DeploySiteConfig() {
                       <button
                         type="button"
                         className="cancel-button"
-                        onClick={(e) => setCreateDeployProgress(1)}
+                        onClick={(e) => setCreateDeployProgress(2)}
                       >
                         Back
                       </button>

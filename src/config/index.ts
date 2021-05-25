@@ -17,7 +17,7 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = "production";
+const NODE_ENV: string = "development";
 
 const development: IConfig = {
   urls: {

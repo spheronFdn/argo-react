@@ -72,7 +72,6 @@ export interface IRepository {
   workspace: string;
   sitePreview: string;
   framework: string;
-  protocol: string;
   domains: IDomain[];
   subDomains: ISubdomain[];
 }
