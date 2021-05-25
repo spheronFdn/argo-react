@@ -20,6 +20,7 @@ import config from "../../config";
 import Skeleton from "react-loading-skeleton";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import { LazyLoadedImage } from "../_SharedComponents";
+import { v4 as uuidv4 } from "uuid";
 
 const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
 const MemoRepoItem = React.memo(RepoItem);
@@ -29,16 +30,10 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const {
-    user,
-    selectedOrg,
-    selectedRepoForTriggerDeployment,
-  } = useContext<IStateModel>(StateContext);
-  const {
-    setLatestDeploymentSocketTopic,
-    setLatestDeploymentConfig,
-    setSelectedOrganization,
-  } = useContext<IActionModel>(ActionContext);
+  const { user, selectedOrg, selectedRepoForTriggerDeployment } =
+    useContext<IStateModel>(StateContext);
+  const { setLatestDeploymentConfig, setSelectedOrganization } =
+    useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
   const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
@@ -61,9 +56,8 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
-  const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
-    false,
-  );
+  const [startDeploymentLoading, setStartDeploymentLoading] =
+    useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
   const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
 
@@ -262,6 +256,7 @@ function DeploySiteConfig() {
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
+    const uniqueTopicId = uuidv4();
     // await ArweaveService.payArgoFee(walletKey);
     const deployment = {
       github_url: selectedRepo.clone_url,
@@ -271,6 +266,7 @@ function DeploySiteConfig() {
       isPrivate: selectedRepo.private,
       repositoryId: selectedRepo.repositoryId,
       orgId: owner._id,
+      uniqueTopicId,
       // project_name: projectName,
       branch,
       framework,
@@ -282,7 +278,6 @@ function DeploySiteConfig() {
     };
     ApiService.startDeployment(deployment).subscribe((result) => {
       if (componentIsMounted.current) {
-        setLatestDeploymentSocketTopic(result.topic);
         setLatestDeploymentConfig(deployment);
         setStartDeploymentLoading(false);
         history.push(

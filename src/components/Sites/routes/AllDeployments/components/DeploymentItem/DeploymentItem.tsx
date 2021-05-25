@@ -37,17 +37,19 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
   const { selectedProject } = useContext<IStateModel>(StateContext);
 
-  const domains = selectedProject
-    ? selectedProject.domains.filter(
-        (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const domains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.domains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+        )
+      : [];
 
-  const subdomains = selectedProject
-    ? selectedProject.subDomains.filter(
-        (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const subdomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.subDomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+        )
+      : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 

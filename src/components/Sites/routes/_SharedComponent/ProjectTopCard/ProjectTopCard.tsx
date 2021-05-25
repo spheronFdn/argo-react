@@ -22,9 +22,9 @@ const ProjectTopCard = () => {
 
   const sortedDeployments = projectLoading
     ? []
-    : selectedProject?.deployments.sort((a, b) =>
-        moment(b.createdAt).diff(moment(a.createdAt)),
-      );
+    : selectedProject?.deployments
+        .filter((d) => d.deploymentStatus.toLowerCase() === "deployed")
+        .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
   let latestDeployment: any = {};
   if (sortedDeployments) {
     latestDeployment = sortedDeployments[0];
@@ -186,7 +186,7 @@ const ProjectTopCard = () => {
                 rel="noopener noreferrer"
               >
                 {!projectLoading ? (
-                  "Latest deployment preview on Arweave"
+                  "Latest Successful Site Preview on Arweave"
                 ) : (
                   <Skeleton width={300} duration={2} />
                 )}

@@ -57,6 +57,30 @@
               font-weight: bold;
             }
 
+            .wallet-recharge-form-title-container {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 0.5rem;
+
+              .refresh-control {
+                color: var(--grey4Color);
+                cursor: pointer;
+                margin-right: 0.5rem;
+                font-size: 18px;
+                border-radius: 6px;
+                height: 32px;
+                width: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                  background-color: var(--grey1Color);
+                }
+              }
+            }
+
             .wallet-recharge-form-subtitle {
               font-size: 16px;
               color: var(--grey3Color);
@@ -111,59 +135,6 @@
               }
             }
 
-            .wallet-choose-container {
-              position: relative;
-              margin-top: 2rem;
-              display: flex;
-              align-items: center;
-
-              .file-upload {
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                width: 97px;
-                height: 33px;
-                z-index: 100;
-                cursor: pointer;
-              }
-
-              input#file-upload-button {
-                width: 97px;
-                height: 33px;
-                cursor: pointer;
-              }
-
-              .file-upload-button {
-                background: var(--grey4Color);
-                text-decoration: none;
-                color: white;
-                font-size: 14px;
-                font-weight: 600;
-                border-radius: 4px;
-                padding: 0.4rem 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 2px solid transparent;
-                outline: none;
-                cursor: pointer;
-                text-transform: uppercase;
-                transition: all 0.3s ease-in-out;
-                width: fit-content;
-                z-index: 1;
-
-                &:disabled {
-                  background: var(--grey4Color);
-                  cursor: not-allowed;
-                }
-              }
-
-              .file-upload-name {
-                margin-left: 1rem;
-                font-size: 14px;
-              }
-            }
-
             .wallet-details-container {
               .wallet-details-items {
                 margin-top: 0.3rem;
@@ -183,6 +154,12 @@
                 }
               }
             }
+          }
+
+          .note-container {
+            padding: 0.5rem 24px;
+            color: var(--red);
+            font-weight: 500;
           }
 
           .button-container {

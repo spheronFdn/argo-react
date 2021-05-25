@@ -15,9 +15,21 @@ export interface IConfig {
     PORT: number;
     PROTOCOL: string;
   };
+  web3: {
+    argoERC20: {
+      address: string;
+    };
+    paymentContract: {
+      address: string;
+    };
+    onboard: {
+      dappId: string;
+      networkId: number;
+    };
+  };
 }
 
-const NODE_ENV: string = "production";
+const NODE_ENV: string = "development";
 
 const development: IConfig = {
   urls: {
@@ -32,6 +44,18 @@ const development: IConfig = {
     HOST: "arweave.net",
     PORT: 443,
     PROTOCOL: "https",
+  },
+  web3: {
+    argoERC20: {
+      address: "0x02f95e68f345dfbfc69e1ed662bafacb8749e5ab",
+    },
+    paymentContract: {
+      address: "0x6fE31B1B05715Cb52C6348f25eA5b02d700323ea",
+    },
+    onboard: {
+      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      networkId: 4,
+    },
   },
 };
 
@@ -49,6 +73,18 @@ const production: IConfig = {
     PORT: 443,
     PROTOCOL: "https",
   },
+  web3: {
+    argoERC20: {
+      address: "0xbla",
+    },
+    paymentContract: {
+      address: "0xbla",
+    },
+    onboard: {
+      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      networkId: 1,
+    },
+  },
 };
 
 const test: IConfig = {
@@ -64,6 +100,18 @@ const test: IConfig = {
     HOST: "arweave.dev",
     PORT: 80,
     PROTOCOL: "http",
+  },
+  web3: {
+    argoERC20: {
+      address: "0xbla",
+    },
+    paymentContract: {
+      address: "0xbla",
+    },
+    onboard: {
+      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      networkId: 1,
+    },
   },
 };
 

@@ -395,3 +395,18 @@ export const getGithubRepoBranches = (branchUrl: string): Observable<any> => {
     );
   });
 };
+
+export const enableWallet = (wallet: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/wallet`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(wallet),
+      }).then((res) => res.json()),
+    );
+  });
+};

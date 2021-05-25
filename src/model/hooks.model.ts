@@ -105,6 +105,13 @@ export interface IDeployment {
   package_manager: string;
   build_command: string;
   publish_dir: string;
+  buildTime: string;
+}
+
+export interface IWallet {
+  address: string;
+  updateDate: Date;
+  createDate: Date;
 }
 
 export interface IOrganization {
@@ -114,8 +121,9 @@ export interface IOrganization {
     image: string;
     username: string;
   };
-  repositories?: IRepository[];
-  users?: string[];
+  repositories: IRepository[];
+  users: IUser[];
+  wallet: IWallet;
 }
 
 export interface IModalConfig {
@@ -138,7 +146,6 @@ export interface IStateModel {
   currentSiteDeployConfig: any;
   currentSiteDeployLogs: any[];
   selectedProject: IRepository | null;
-  currentSiteDeploySocketTopic: string;
   selectedDeployment: IDeployment | null;
   selectedRepoForTriggerDeployment: any | null;
 }
@@ -150,7 +157,6 @@ export interface IActionModel {
   resetUser: () => void;
   setLatestDeploymentConfig: (config: any) => void;
   setLatestDeploymentLogs: (logs: any[]) => void;
-  setLatestDeploymentSocketTopic: (topic: string) => void;
   setSelectedProject: (project: any) => void;
   setPojectLoading: (loading: boolean) => void;
   setOrgLoading: (loading: boolean) => void;

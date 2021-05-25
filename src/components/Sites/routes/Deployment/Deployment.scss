@@ -128,6 +128,28 @@
         }
       }
     }
+
+    .site-deployment-body {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 1rem;
+
+      .site-deployment-body-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 0.5rem;
+        label {
+          color: var(--grey3Color);
+          width: 30%;
+        }
+
+        span {
+          font-weight: 500;
+        }
+      }
+    }
   }
 
   .deploy-logs-card-title {

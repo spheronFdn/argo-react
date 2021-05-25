@@ -13,4 +13,5 @@ export default interface IProjectItemProps {
   githubUrl: string | null;
   updateTime: string | null;
   repo: IRepository | null;
+  index: number;
 }

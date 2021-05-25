@@ -47,18 +47,12 @@ const Deployment = () => {
     },
   };
 
-  const {
-    currentSiteDeployConfig,
-    currentSiteDeployLogs,
-    selectedProject,
-  } = useContext<IStateModel>(StateContext);
-  const {
-    setLatestDeploymentLogs,
-    setLatestDeploymentConfig,
-    fetchProject,
-  } = useContext<IActionModel>(ActionContext);
+  const { currentSiteDeployConfig, currentSiteDeployLogs, selectedProject } =
+    useContext<IStateModel>(StateContext);
+  const { setLatestDeploymentLogs, setLatestDeploymentConfig, fetchProject } =
+    useContext<IActionModel>(ActionContext);
 
-  const [isDeployed, setIsDeployed] = useState<boolean>(false);
+  const [deploymentStatus, setDeploymentStatus] = useState<string>("pending");
   const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
@@ -67,7 +61,7 @@ const Deployment = () => {
   useEffect(() => {
     setLatestDeploymentLogs([]);
     fetchProject(params.siteid);
-    const socket = socketIOClient(config.urls.BACKEND_URL);
+    const socket = socketIOClient(config.urls.API_URL);
     const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
       (result) => {
         if (componentIsMounted.current) {
@@ -91,73 +85,34 @@ const Deployment = () => {
             scrollToWithContainer(currentSiteDeployLogs.length - 1);
           });
           if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
-            socket.on(result.deployment.topic, (data: any) => {
-              data.split("\n").forEach((line: string) => {
-                if (line.trim()) {
-                  currentSiteDeployLogs.push({
-                    log: line,
-                    time: moment().format("hh:mm:ss A MM-DD-YYYY"),
-                  });
-                }
-              });
-              setLatestDeploymentLogs(currentSiteDeployLogs);
-              scrollToWithContainer(currentSiteDeployLogs.length - 1);
-              if (
-                currentSiteDeployLogs.length &&
-                currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
-                  "https://arweave.net/",
-                ) !== -1
-              ) {
-                setIsDeployed(true);
-                const arweaveLink = currentSiteDeployLogs[
-                  currentSiteDeployLogs.length - 1
-                ].log.trim();
+            socket.on(`deployment.${result.deployment.topic}`, (stream: any) => {
+              if (stream.type === 1) {
+                stream.data.split("\n").forEach((line: string) => {
+                  if (line.trim()) {
+                    currentSiteDeployLogs.push({
+                      log: line,
+                      time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+                    });
+                  }
+                });
+                setDeploymentStatus("pending");
+                setLatestDeploymentLogs(currentSiteDeployLogs);
+                scrollToWithContainer(currentSiteDeployLogs.length - 1);
+              } else if (stream.type === 2) {
+                const arweaveLink = stream.data.logsToCapture.sitePreview;
                 setDeployedLink(arweaveLink);
-                const buildMins = Number.parseInt(
-                  `${
-                    moment
-                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
-                      .asSeconds() / 60
-                  }`,
-                );
-                const buildSecs = Number.parseInt(
-                  `${
-                    moment
-                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
-                      .asSeconds() % 60
-                  }`,
-                );
+                setDeploymentStatus(arweaveLink ? "deployed" : "failed");
+                const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
+                const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
                 setBuildTime({ min: buildMins, sec: buildSecs });
               }
             });
             // CLEAN UP THE EFFECT
-          } else if (
-            result.deployment.deploymentStatus.toLowerCase() === "deployed"
-          ) {
+          } else {
             setDeployedLink(result.deployment.sitePreview);
-            setIsDeployed(true);
-            const buildMins = Number.parseInt(
-              `${
-                moment
-                  .duration(
-                    moment(
-                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                    ).diff(moment(currentSiteDeployLogs[0].time)),
-                  )
-                  .asSeconds() / 60
-              }`,
-            );
-            const buildSecs = Number.parseInt(
-              `${
-                moment
-                  .duration(
-                    moment(
-                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                    ).diff(moment(currentSiteDeployLogs[0].time)),
-                  )
-                  .asSeconds() % 60
-              }`,
-            );
+            setDeploymentStatus(result.deployment.deploymentStatus.toLowerCase());
+            const buildMins = Number.parseInt(`${result.deployment.buildTime / 60}`);
+            const buildSecs = Number.parseInt(`${result.deployment.buildTime % 60}`);
             setBuildTime({ min: buildMins, sec: buildSecs });
           }
           setDeploymentLoading(false);
@@ -186,17 +141,19 @@ const Deployment = () => {
     )}/tree/${currentSiteDeployConfig.branch}`;
   }
 
-  const domains = selectedProject
-    ? selectedProject.domains.filter(
-        (d) => deployedLink.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const domains =
+    selectedProject && deployedLink
+      ? selectedProject.domains.filter(
+          (d) => deployedLink.indexOf(d.transactionId) !== -1,
+        )
+      : [];
 
-  const subdomains = selectedProject
-    ? selectedProject.subDomains.filter(
-        (d) => deployedLink.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const subdomains =
+    selectedProject && deployedLink
+      ? selectedProject.subDomains.filter(
+          (d) => deployedLink.indexOf(d.transactionId) !== -1,
+        )
+      : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
@@ -234,10 +191,16 @@ const Deployment = () => {
           <h2 className="site-deployment-card-header-title">
             {!deploymentLoading ? (
               <>
-                <span>{isDeployed ? "Published deploy" : "Deploy in Progress"}</span>
-                {!isDeployed ? (
+                <span>
+                  {deploymentStatus === "pending"
+                    ? "Deploy in Progress"
+                    : deploymentStatus === "deployed"
+                    ? "Deployment successful"
+                    : "Deployment failed"}
+                </span>
+                {deploymentStatus === "pending" ? (
                   <Lottie options={defaultOptions} height={54} width={76} />
-                ) : (
+                ) : deploymentStatus === "deployed" ? (
                   <LazyLoadedImage height={24} once>
                     <img
                       src={require("../../../../assets/svg/rocket_background.svg")}
@@ -248,7 +211,7 @@ const Deployment = () => {
                       loading="lazy"
                     />
                   </LazyLoadedImage>
-                )}
+                ) : null}
               </>
             ) : (
               <Skeleton width={200} duration={2} />
@@ -258,13 +221,13 @@ const Deployment = () => {
             {!deploymentLoading ? (
               <>
                 <u>Production</u>: {currentSiteDeployConfig?.branch}
-                {!isDeployed
+                {deploymentStatus === "pending"
                   ? currentSiteDeployLogs[0]?.time
                     ? ` - Deployment started ${timeAgo.format(
                         moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
                       )}`
                     : null
-                  : ` - Deployed at ${moment(
+                  : ` - Deployment done at ${moment(
                       currentSiteDeployConfig.createdAt,
                     ).format("MMM DD, YYYY hh:mm a")}`}
               </>
@@ -345,7 +308,7 @@ const Deployment = () => {
             </LazyLoadedImage>
 
             {!deploymentLoading ? (
-              isDeployed ? (
+              deploymentStatus === "deployed" ? (
                 <a
                   href={deployedLink}
                   className="site-deployment-link"
@@ -354,9 +317,13 @@ const Deployment = () => {
                 >
                   Preview deploy on Arweave
                 </a>
-              ) : (
+              ) : deploymentStatus === "pending" ? (
                 <span className="site-deployment-link">
                   Deploying on Arweave, Preview in a minute
+                </span>
+              ) : (
+                <span className="site-deployment-link">
+                  Deploying failed, no link available
                 </span>
               )
             ) : (
@@ -365,7 +332,7 @@ const Deployment = () => {
           </div>
         </div>
       </div>
-      {isDeployed && (
+      {deploymentStatus !== "pending" && (
         <div className="site-deployment-card-container deploy-container">
           <div className="site-deployment-header-title">Deploy Summary</div>
           <div className="deploy-summary-item">
@@ -380,6 +347,35 @@ const Deployment = () => {
                 Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}
                 {currentSiteDeployLogs[currentSiteDeployLogs.length - 1]?.time}.
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {deploymentStatus !== "pending" && (
+        <div className="site-deployment-card-container deploy-container">
+          <div className="site-deployment-header-title">Payment Summary</div>
+          <div className="site-deployment-body">
+            <div className="site-deployment-body-item">
+              <label>Build Time:</label>
+              <span>
+                {buildTime?.min}m {buildTime?.sec}s
+              </span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>Provider Fee:</label>
+              <span>0.0012 AR</span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>Total Fee:</label>
+              <span>12 $ARGO</span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>Discount:</label>
+              <span>0 $ARGO</span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>Final Payment:</label>
+              <span>12 $ARGO</span>
             </div>
           </div>
         </div>

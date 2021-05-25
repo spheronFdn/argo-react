@@ -25,9 +25,8 @@ const Overview = () => {
 
   const history = useHistory();
 
-  const { selectedOrg, orgLoading, user, userLoading } = useContext<IStateModel>(
-    StateContext,
-  );
+  const { selectedOrg, orgLoading, user, userLoading } =
+    useContext<IStateModel>(StateContext);
   const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   return (
@@ -139,6 +138,7 @@ const Overview = () => {
                     githubUrl={repo.url}
                     updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
                     repo={repo}
+                    index={index}
                   />
                 </div>
               ))
@@ -152,6 +152,7 @@ const Overview = () => {
                 githubUrl={null}
                 updateTime={null}
                 repo={null}
+                index={1}
               />
             )
           ) : (
@@ -164,6 +165,7 @@ const Overview = () => {
               githubUrl={null}
               updateTime={null}
               repo={null}
+              index={1}
             />
           )}
         </ul>
