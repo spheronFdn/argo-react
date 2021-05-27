@@ -19,6 +19,7 @@ const Wallet = () => {
   const [orgWallet, setOrgWallet] = useState<string>("");
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
+  const [argoAllowance, setArgoAllowance] = useState<number>(0);
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [enableLoader, setEnableLoader] = useState<boolean>(false);
 
@@ -67,6 +68,20 @@ const Wallet = () => {
       console.log(err);
     }
     setWalletBal(walletBal);
+    setWalletLoader(false);
+  };
+
+  const checkAllowance = async () => {
+    setWalletLoader(true);
+    await Web3Service.getAccount();
+    let walletApproval = 0;
+    try {
+      walletApproval = await Web3Service.getArgoAllowances(orgWallet);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+    setArgoAllowance(walletApproval);
     setWalletLoader(false);
   };
 
@@ -182,6 +197,36 @@ const Wallet = () => {
                       )}
                     </span>
                   </div>
+                  <div className="wallet-details-item">
+                    <label>Allowance</label>
+                    <span>
+                      {!walletLoading ? (
+                        <div>
+                          {!argoAllowance ? (
+                            <button
+                              type="button"
+                              className="primary-button"
+                              disabled={walletLoader}
+                              onClick={checkAllowance}
+                            >
+                              {walletLoader && (
+                                <BounceLoader
+                                  size={20}
+                                  color={"#fff"}
+                                  loading={true}
+                                />
+                              )}
+                              Check Allowance
+                            </button>
+                          ) : (
+                            `${argoAllowance} $ARGO`
+                          )}
+                        </div>
+                      ) : (
+                        <Skeleton width={150} duration={2} />
+                      )}
+                    </span>
+                  </div>
                 </div>
               </>
             )}
@@ -210,7 +255,7 @@ const Wallet = () => {
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{}</div>
+                            <div className="user-text">{payment.projectName}</div>
                           </div>
                         </div>
                         <div className="td">
@@ -220,7 +265,7 @@ const Wallet = () => {
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{0} s</div>
+                            <div className="user-text">{payment.buildTime} s</div>
                           </div>
                         </div>
                         <div className="td">
