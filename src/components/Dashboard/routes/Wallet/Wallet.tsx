@@ -16,11 +16,7 @@ const Wallet = () => {
   const [walletLoading, setWalletLoading] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [payments, setPayments] = useState<IPaymentModel[]>([]);
-  const [orgWallet, setOrgWallet] =
-    useState<{
-      address: string;
-      allowances: string;
-    } | null>(null);
+  const [orgWallet, setOrgWallet] = useState<string>("");
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
@@ -38,14 +34,9 @@ const Wallet = () => {
         `${selectedOrg?._id}`,
       ).subscribe(async (data) => {
         if (componentIsMounted.current) {
-          const approvalAmount = await Web3Service.getArgoAllowances(
-            data.wallet.address,
-          );
-          setOrgWallet({
-            address: data.wallet.address,
-            allowances: approvalAmount,
-          });
+          setOrgWallet(data.wallet.address);
           setWalletLoading(false);
+          setPayments(data.payments);
           setPaymentsLoading(false);
         }
       });
@@ -185,17 +176,7 @@ const Wallet = () => {
                     <label>Address</label>
                     <span>
                       {!walletLoading ? (
-                        `${orgWallet?.address}`
-                      ) : (
-                        <Skeleton width={150} duration={2} />
-                      )}
-                    </span>
-                  </div>
-                  <div className="wallet-details-item">
-                    <label>Allowance</label>
-                    <span>
-                      {!walletLoading ? (
-                        `${orgWallet?.allowances} $ARGO`
+                        `${orgWallet}`
                       ) : (
                         <Skeleton width={150} duration={2} />
                       )}
@@ -229,7 +210,7 @@ const Wallet = () => {
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.projectName}</div>
+                            <div className="user-text">{}</div>
                           </div>
                         </div>
                         <div className="td">
@@ -239,22 +220,24 @@ const Wallet = () => {
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.buildTime} s</div>
+                            <div className="user-text">{0} s</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.uploadFee} AR</div>
+                            <div className="user-text">{payment.providerFee} AR</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.amount} $ARGO</div>
+                            <div className="user-text">
+                              {payment.finalArgoFee.toFixed(3)} $ARGO
+                            </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.date}</div>
+                            <div className="user-text">{payment.createDate}</div>
                           </div>
                         </div>
                       </div>

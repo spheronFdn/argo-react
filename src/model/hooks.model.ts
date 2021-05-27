@@ -124,6 +124,7 @@ export interface IOrganization {
   repositories: IRepository[];
   users: IUser[];
   wallet: IWallet;
+  payments: any[];
 }
 
 export interface IModalConfig {

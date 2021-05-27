@@ -23,6 +23,7 @@ import { ApiService } from "../../../../services";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "javascript-time-ago";
 import Lottie from "react-lottie";
+import PulseLoader from "react-spinners/PulseLoader";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
@@ -53,7 +54,18 @@ const Deployment = () => {
     useContext<IActionModel>(ActionContext);
 
   const [deploymentStatus, setDeploymentStatus] = useState<string>("pending");
-  const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
+  const [buildTime, setBuildTime] = useState<{ min: number; sec: number }>({
+    min: 0,
+    sec: 0,
+  });
+  const [paymentStatus, setPaymentStatus] = useState<string>("waiting");
+  const [paymentMessage, setPaymentMessage] = useState<string>("");
+  const [paymentDetails, setPaymentDetails] = useState<{
+    providerFee: number;
+    argoFee: number;
+    discount: number;
+    finalArgoFee: number;
+  }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const componentIsMounted = useRef(true);
@@ -105,15 +117,50 @@ const Deployment = () => {
                 const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
                 const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
                 setBuildTime({ min: buildMins, sec: buildSecs });
+              } else if (stream.type === 3) {
+                setDeployedLink("");
+                setDeploymentStatus("failed");
+                setBuildTime({ min: 0, sec: 0 });
               }
             });
-            // CLEAN UP THE EFFECT
           } else {
             setDeployedLink(result.deployment.sitePreview);
             setDeploymentStatus(result.deployment.deploymentStatus.toLowerCase());
             const buildMins = Number.parseInt(`${result.deployment.buildTime / 60}`);
             const buildSecs = Number.parseInt(`${result.deployment.buildTime % 60}`);
             setBuildTime({ min: buildMins, sec: buildSecs });
+          }
+          const paymentSocketOpeningCondition = result.deployment.payment
+            ? result.deployment.payment.status !== "success" &&
+              result.deployment.payment.status !== "failed"
+            : true;
+          if (paymentSocketOpeningCondition) {
+            socket.on(`payment.${result.deployment.topic}`, (stream: any) => {
+              if (stream.type === 1) {
+                setPaymentStatus("started");
+              } else if (stream.type === 2) {
+                const paymentDetails = stream.payload;
+                setPaymentDetails(paymentDetails);
+                setPaymentStatus("success");
+              } else if (stream.type === 3) {
+                setPaymentStatus("failed");
+                setPaymentMessage(stream.payload);
+              }
+            });
+          } else {
+            if (result.deployment.payment.status === "success") {
+              const paymentDetails = {
+                providerFee: result.deployment.payment.providerFee,
+                argoFee: result.deployment.payment.argoFee,
+                discount: result.deployment.payment.discount,
+                finalArgoFee: result.deployment.payment.finalArgoFee,
+              };
+              setPaymentDetails(paymentDetails);
+              setPaymentStatus("success");
+            } else {
+              setPaymentStatus("failed");
+              setPaymentMessage(result.deployment.payment.failedMessage);
+            }
           }
           setDeploymentLoading(false);
         }
@@ -355,28 +402,65 @@ const Deployment = () => {
         <div className="site-deployment-card-container deploy-container">
           <div className="site-deployment-header-title">Payment Summary</div>
           <div className="site-deployment-body">
-            <div className="site-deployment-body-item">
-              <label>Build Time:</label>
-              <span>
-                {buildTime?.min}m {buildTime?.sec}s
-              </span>
-            </div>
-            <div className="site-deployment-body-item">
-              <label>Provider Fee:</label>
-              <span>0.0012 AR</span>
-            </div>
-            <div className="site-deployment-body-item">
-              <label>Total Fee:</label>
-              <span>12 $ARGO</span>
-            </div>
-            <div className="site-deployment-body-item">
-              <label>Discount:</label>
-              <span>0 $ARGO</span>
-            </div>
-            <div className="site-deployment-body-item">
-              <label>Final Payment:</label>
-              <span>12 $ARGO</span>
-            </div>
+            {paymentStatus === "waiting" && (
+              <div className="payment-loading">
+                <span>
+                  <PulseLoader size={20} color={"#3664ae"} />
+                </span>
+                <span>Waiting for the payment to be processed...</span>
+              </div>
+            )}
+            {paymentStatus === "started" && (
+              <div className="payment-loading">
+                <span>
+                  <PulseLoader size={20} color={"#3664ae"} />
+                </span>
+                <span>Processing Payment...</span>
+              </div>
+            )}
+            {paymentStatus === "failed" && (
+              <div className="payment-failed">
+                <span>
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/error.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={36}
+                      width={36}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
+                </span>
+                <span>{paymentMessage}</span>
+              </div>
+            )}
+            {paymentStatus === "success" && (
+              <>
+                <div className="site-deployment-body-item">
+                  <label>Build Time:</label>
+                  <span>
+                    {buildTime?.min}m {buildTime?.sec}s
+                  </span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Provider Fee:</label>
+                  <span>{paymentDetails?.providerFee || 0} AR</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Total Fee:</label>
+                  <span>{paymentDetails?.argoFee || 0} $ARGO</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Discount:</label>
+                  <span>{paymentDetails?.discount || 0} $ARGO</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Final Payment:</label>
+                  <span>{paymentDetails?.finalArgoFee || 0} $ARGO</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

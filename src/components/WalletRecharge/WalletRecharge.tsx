@@ -18,15 +18,12 @@ function WalletRecharge() {
 
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
+  const [walletApproval, setWalletApproval] = useState<number>(0);
   const [rechargeAmount, setRechargeAmount] = useState<string>("");
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [rechargeLoader, setRechargeLoader] = useState<boolean>(false);
   const [walletLoading, setWalletLoading] = useState<boolean>(false);
-  const [orgWallet, setOrgWallet] =
-    useState<{
-      address: string;
-      allowances: string;
-    } | null>(null);
+  const [orgWallet, setOrgWallet] = useState<string>("");
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
@@ -36,13 +33,7 @@ function WalletRecharge() {
         `${selectedOrg?._id}`,
       ).subscribe(async (data) => {
         if (componentIsMounted.current) {
-          const approvalAmount = await Web3Service.getArgoAllowances(
-            data.wallet.address,
-          );
-          setOrgWallet({
-            address: data.wallet.address,
-            allowances: approvalAmount,
-          });
+          setOrgWallet(data.wallet.address);
           setWalletLoading(false);
         }
       });
@@ -58,9 +49,11 @@ function WalletRecharge() {
     if (!wallet) {
       setWalletLoader(true);
       const wallet = await Web3Service.getAccount();
-      const walletBal = await Web3Service.getArgoBalance(wallet);
       setWallet(wallet);
+      const walletBal = await Web3Service.getArgoBalance(wallet);
+      const walletApproval = await Web3Service.getArgoAllowances(wallet);
       setWalletBal(walletBal);
+      setWalletApproval(walletApproval);
       setWalletLoader(false);
     } else {
       setRechargeLoader(true);
@@ -75,8 +68,10 @@ function WalletRecharge() {
     setWalletLoader(true);
     const wallet = await Web3Service.getCurrentAccount();
     const walletBal = await Web3Service.getArgoBalance(wallet);
+    const walletApproval = await Web3Service.getArgoAllowances(wallet);
     setWallet(wallet);
     setWalletBal(walletBal);
+    setWalletApproval(walletApproval);
     setWalletLoader(false);
   };
 
@@ -88,9 +83,7 @@ function WalletRecharge() {
   }, []);
 
   const rechargeDisable =
-    rechargeLoader || wallet
-      ? !rechargeAmount || wallet !== orgWallet?.address
-      : false;
+    rechargeLoader || wallet ? !rechargeAmount || wallet !== orgWallet : false;
 
   return (
     <div className="WalletRecharge">
@@ -113,17 +106,7 @@ function WalletRecharge() {
                   <div className="current-wallet-details-title">Owner Address:</div>
                   <div className="current-wallet-details-desc">
                     {!walletLoading ? (
-                      `${orgWallet?.address}`
-                    ) : (
-                      <Skeleton width={150} duration={2} />
-                    )}
-                  </div>
-                </div>
-                <div className="current-wallet-details">
-                  <div className="current-wallet-details-title">Approval:</div>
-                  <div className="current-wallet-details-desc">
-                    {!walletLoading ? (
-                      `${orgWallet?.allowances} $ARGO`
+                      `${orgWallet}`
                     ) : (
                       <Skeleton width={150} duration={2} />
                     )}
@@ -164,6 +147,18 @@ function WalletRecharge() {
                           )}
                         </div>
                       </div>
+                      <div className="wallet-details-items">
+                        <div className="wallet-details-item-title">
+                          ARGO Allowance
+                        </div>
+                        <div className="wallet-details-item-desc">
+                          {!walletLoader ? (
+                            `${walletApproval} $ARGO`
+                          ) : (
+                            <Skeleton width={150} duration={2} />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="wallet-recharge-form">
@@ -182,7 +177,7 @@ function WalletRecharge() {
                   </div>
                 </>
               )}
-              {wallet && wallet !== orgWallet?.address ? (
+              {wallet && wallet !== orgWallet ? (
                 <div className="note-container">
                   Note: only owner can increase the allowance amount
                 </div>

@@ -105,6 +105,34 @@
     padding: 0 !important;
     min-height: auto !important;
 
+    .payment-loading {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      span {
+        display: flex;
+        font-weight: 500;
+        margin-right: 1.5rem;
+      }
+
+      span:nth-child(2) {
+        margin-bottom: 8px;
+      }
+    }
+
+    .payment-failed {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      span {
+        display: flex;
+        font-weight: 500;
+        margin-right: 1rem;
+      }
+    }
+
     .deploy-summary-item {
       display: flex;
       align-items: center;
@@ -133,7 +161,7 @@
       display: flex;
       align-items: center;
       flex-direction: column;
-      padding: 1rem;
+      padding: 1rem 24px;
 
       .site-deployment-body-item {
         display: flex;

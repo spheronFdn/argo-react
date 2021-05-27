@@ -2,7 +2,7 @@ export interface IPaymentModel {
   projectName: string;
   deploymentId: string;
   buildTime: string;
-  uploadFee: string;
-  amount: string;
-  date: string;
+  providerFee: number;
+  finalArgoFee: number;
+  createDate: string;
 }
