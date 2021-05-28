@@ -7,6 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
 import { IPaymentModel } from "../../../../model/payment.model";
+import moment from "moment";
 
 const Wallet = () => {
   const history = useHistory();
@@ -282,7 +283,11 @@ const Wallet = () => {
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.createDate}</div>
+                            <div className="user-text">
+                              {moment(payment.createDate).format(
+                                "DD-MM-YYYY hh:mm A",
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
