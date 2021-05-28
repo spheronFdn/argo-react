@@ -2,7 +2,7 @@ import React from "react";
 import "./DomainManagement.scss";
 import { ProjectTopCard } from "../_SharedComponent";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
-import { DomainGeneral, SubdomainGeneral } from "./routes";
+import { DomainGeneral, HandshakeGeneral, SubdomainGeneral } from "./routes";
 
 const DomainManagement = () => {
   const location = useLocation();
@@ -41,6 +41,18 @@ const DomainManagement = () => {
           >
             Subdomains
           </div>
+          <div
+            className={`domain-management-bar-item ${
+              lastPath === "handshake" ? "selected" : ""
+            }`}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/domain/handshake`,
+              )
+            }
+          >
+            Handshake
+          </div>
         </div>
         <Route
           path="/org/:orgid/sites/:siteid/domain/domains"
@@ -51,6 +63,11 @@ const DomainManagement = () => {
           path="/org/:orgid/sites/:siteid/domain/subdomains"
           exact
           render={() => <SubdomainGeneral />}
+        />
+        <Route
+          path="/org/:orgid/sites/:siteid/domain/handshake"
+          exact
+          render={() => <HandshakeGeneral />}
         />
       </div>
     </div>
