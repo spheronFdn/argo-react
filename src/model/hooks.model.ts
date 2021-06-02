@@ -48,7 +48,6 @@ export interface IUser {
   _id: string;
   provider_profile: IProfile;
   argo_profile: IArgoUser;
-  argo_wallet: IArgoWalletModel;
   provider: IProvider;
   dateOfEntry?: Date;
   lastUpdated?: Date;
@@ -56,24 +55,27 @@ export interface IUser {
   totalDepTime?: number;
 }
 
-export interface IRepository {
+export interface IConfiguration {
+  branch: string;
+  buildCommand: string;
+  workspace: string;
+  publishDir: string;
+  packageManager: string;
+  framework: string;
+}
+
+export interface IProject {
   _id?: string;
   name: string;
-  url: string;
-  webHook: string;
-  deployments: IDeployment[];
-  updateDate: Date;
-  createDate: Date;
-  orgId: string;
-  package_manager: string;
-  build_command: string;
-  publish_dir: string;
-  branch: string;
-  workspace: string;
+  githubUrl: string;
   sitePreview: string;
-  framework: string;
+  deployments: IDeployment[];
+  organizationId: string;
   domains: IDomain[];
-  subDomains: ISubdomain[];
+  subdomains: ISubdomain[];
+  configuration: IConfiguration;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface IDomain {
@@ -98,14 +100,14 @@ export interface IDeployment {
   sitePreview: string;
   commitId: string;
   log: string[];
-  createdAt: any;
   topic: string;
-  branch: string;
-  deploymentStatus: string;
-  package_manager: string;
-  build_command: string;
-  publish_dir: string;
+  status: string;
+  paymentId: string;
   buildTime: string;
+  configuration: IConfiguration;
+  project: IProject;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface IWallet {
@@ -121,7 +123,7 @@ export interface IOrganization {
     image: string;
     username: string;
   };
-  repositories: IRepository[];
+  projects: IProject[];
   users: IUser[];
   wallet: IWallet;
   payments: any[];
@@ -146,7 +148,7 @@ export interface IStateModel {
   projectLoading: boolean;
   currentSiteDeployConfig: any;
   currentSiteDeployLogs: any[];
-  selectedProject: IRepository | null;
+  selectedProject: IProject | null;
   selectedDeployment: IDeployment | null;
   selectedRepoForTriggerDeployment: any | null;
 }

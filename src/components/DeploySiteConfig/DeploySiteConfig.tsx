@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ApiService } from "../../services";
 import { BroadcastChannel } from "broadcast-channel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,6 @@ import {
   faCheck,
   faChevronDown,
   faChevronUp,
-  faExclamationCircle,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
@@ -77,20 +76,11 @@ function DeploySiteConfig() {
       framework !== "static" &&
       packageManager &&
       buildCommand &&
-      publishDirectory &&
-      user?.argo_wallet?.wallet_balance &&
-      user?.argo_wallet?.wallet_balance >= 0.2
+      publishDirectory
     ) {
       setDeployDisabled(false);
     } else {
-      if (
-        selectedRepo &&
-        owner &&
-        branch &&
-        framework === "static" &&
-        user?.argo_wallet?.wallet_balance &&
-        user?.argo_wallet?.wallet_balance >= 0.2
-      ) {
+      if (selectedRepo && owner && branch && framework === "static") {
         setDeployDisabled(false);
       } else {
         setDeployDisabled(true);
@@ -256,35 +246,43 @@ function DeploySiteConfig() {
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
-    const uniqueTopicId = uuidv4();
-    // await ArweaveService.payArgoFee(walletKey);
-    const deployment = {
-      github_url: selectedRepo.clone_url,
-      folder_name: selectedRepo.name,
-      owner: selectedRepoOwner.name,
-      installationId: selectedRepoOwner.installationId,
-      isPrivate: selectedRepo.private,
-      repositoryId: selectedRepo.repositoryId,
-      orgId: owner._id,
-      uniqueTopicId,
-      // project_name: projectName,
-      branch,
+    const configuration = {
       framework,
       workspace,
-      package_manager: packageManager,
-      build_command: buildCommand,
-      publish_dir: publishDirectory,
-      auto_publish: false,
+      packageManager,
+      buildCommand,
+      publishDirectory,
+      branch,
     };
-    ApiService.startDeployment(deployment).subscribe((result) => {
+    ApiService.createConfiguration(configuration).subscribe((result) => {
       if (componentIsMounted.current) {
-        setLatestDeploymentConfig(deployment);
-        setStartDeploymentLoading(false);
-        history.push(
-          `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
-        );
+        const uniqueTopicId = uuidv4();
+
+        const deployment = {
+          githubUrl: selectedRepo.clone_url,
+          folderName: selectedRepo.name,
+          owner: selectedRepoOwner.name,
+          installationId: selectedRepoOwner.installationId,
+          isPrivate: selectedRepo.private,
+          repositoryId: selectedRepo.repositoryId,
+          organizationId: owner._id,
+          uniqueTopicId,
+          auto_publish: false,
+          configurationId: result._id,
+        };
+
+        ApiService.startDeployment(deployment).subscribe((result) => {
+          if (componentIsMounted.current) {
+            setLatestDeploymentConfig(deployment);
+            setStartDeploymentLoading(false);
+            history.push(
+              `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
+            );
+          }
+        });
       }
     });
+    // await ArweaveService.payArgoFee(walletKey);
   };
 
   const openGithubAppAuth = async () => {
@@ -715,24 +713,6 @@ function DeploySiteConfig() {
                           </>
                         )}
                       </div>
-                      {user?.argo_wallet?.wallet_balance &&
-                      user?.argo_wallet?.wallet_balance < 0.2 ? (
-                        <div className="wallet-details-container">
-                          <div className="wallet-details-items">
-                            <span className="exclamation-icon">
-                              <FontAwesomeIcon
-                                icon={faExclamationCircle}
-                              ></FontAwesomeIcon>
-                            </span>
-                            <span>
-                              You do not have enough balance to deploy your site. To
-                              deploy a site you have to have minimum 0.2 AR in your
-                              wallet.
-                              <Link to="/wallet/recharge">Recharge here</Link>
-                            </span>
-                          </div>
-                        </div>
-                      ) : null}
                     </div>
                     <div className="button-container">
                       <button

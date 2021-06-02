@@ -121,8 +121,8 @@ const SubdomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.subDomains.length ? (
-                    selectedProject?.subDomains.map((subdomain, index) => (
+                  selectedProject?.subdomains.length ? (
+                    selectedProject?.subdomains.map((subdomain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={1}

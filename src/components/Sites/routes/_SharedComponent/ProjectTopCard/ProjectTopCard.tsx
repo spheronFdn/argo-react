@@ -23,45 +23,54 @@ const ProjectTopCard = () => {
   const sortedDeployments = projectLoading
     ? []
     : selectedProject?.deployments
-        .filter((d) => d.deploymentStatus.toLowerCase() === "deployed")
+        .filter((d) => d.status.toLowerCase() === "deployed")
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
   let latestDeployment: any = {};
   if (sortedDeployments) {
     latestDeployment = sortedDeployments[0];
   }
 
-  const lastPublishedDate = moment(selectedProject?.updateDate).format(
+  const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
   );
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
   if (selectedProject) {
-    displayGithubRepo = selectedProject.url.substring(
+    displayGithubRepo = selectedProject.githubUrl.substring(
       19,
-      selectedProject.url.length - 4,
+      selectedProject.githubUrl.length - 4,
     );
 
-    githubBranchLink = `${selectedProject.url.substring(
+    githubBranchLink = `${selectedProject.githubUrl.substring(
       0,
-      selectedProject.url.length - 4,
-    )}/tree/${selectedProject.branch}`;
+      selectedProject.githubUrl.length - 4,
+    )}/tree/${selectedProject.configuration.branch}`;
   }
 
   const domains = selectedProject ? selectedProject.domains : [];
-  const subdomains = selectedProject ? selectedProject.subDomains : [];
+  const subdomains = selectedProject ? selectedProject.subdomains : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
   const triggerDeployment = () => {
+    let latest = null;
+    const sortedDeployments = projectLoading
+      ? []
+      : selectedProject?.deployments.sort((a, b) =>
+          moment(b.createdAt).diff(moment(a.createdAt)),
+        );
+    if (sortedDeployments) {
+      latest = sortedDeployments[0];
+    }
     setRepoForTriggerDeployment({
-      github_url: selectedProject?.url,
-      branch: latestDeployment?.branch,
-      framework: selectedProject?.framework,
-      publish_dir: latestDeployment?.publish_dir,
-      package_manager: latestDeployment?.package_manager,
-      build_command: latestDeployment?.build_command,
-      workspace: latestDeployment?.workspace,
+      github_url: selectedProject?.githubUrl,
+      branch: latest?.configuration.branch,
+      framework: selectedProject?.configuration.framework,
+      publish_dir: latest?.configuration.publishDir,
+      package_manager: latest?.configuration.packageManager,
+      build_command: latest?.configuration.buildCommand,
+      workspace: latest?.configuration.workspace,
     });
     history.push("/deploy/new");
   };
@@ -80,8 +89,8 @@ const ProjectTopCard = () => {
           <p className="project-top-card-header-description">
             {!projectLoading ? (
               <>
-                <u>Production</u>: {selectedProject?.branch} - Last published at{" "}
-                {lastPublishedDate}
+                <u>Production</u>: {selectedProject?.configuration.branch} - Last
+                published at {lastPublishedDate}
               </>
             ) : (
               <Skeleton width={400} duration={2} />
@@ -161,7 +170,8 @@ const ProjectTopCard = () => {
             >
               {!projectLoading ? (
                 <>
-                  {displayGithubRepo} (branch: {selectedProject?.branch})
+                  {displayGithubRepo} (branch:{" "}
+                  {selectedProject?.configuration.branch})
                 </>
               ) : (
                 <Skeleton width={300} duration={2} />

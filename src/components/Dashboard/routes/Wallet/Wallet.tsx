@@ -20,7 +20,7 @@ const Wallet = () => {
   const [orgWallet, setOrgWallet] = useState<string>("");
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
-  const [argoAllowance, setArgoAllowance] = useState<number>(0);
+  const [argoAllowance, setArgoAllowance] = useState<number>(-1);
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [enableLoader, setEnableLoader] = useState<boolean>(false);
 
@@ -36,9 +36,9 @@ const Wallet = () => {
         `${selectedOrg?._id}`,
       ).subscribe(async (data) => {
         if (componentIsMounted.current) {
-          setOrgWallet(data.wallet.address);
+          setOrgWallet(data.wallet ? data.wallet.address : "");
           setWalletLoading(false);
-          setPayments(data.payments);
+          setPayments(data.payments || []);
           setPaymentsLoading(false);
         }
       });
@@ -203,7 +203,7 @@ const Wallet = () => {
                     <span>
                       {!walletLoading ? (
                         <div>
-                          {!argoAllowance ? (
+                          {argoAllowance === -1 ? (
                             <button
                               type="button"
                               className="primary-button"

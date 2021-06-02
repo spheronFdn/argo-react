@@ -13,9 +13,8 @@ const Overview = () => {
   const history = useHistory();
   const params = useParams<any>();
 
-  const { projectLoading, selectedProject, selectedOrg } = useContext<IStateModel>(
-    StateContext,
-  );
+  const { projectLoading, selectedProject, selectedOrg } =
+    useContext<IStateModel>(StateContext);
 
   const sortedDeployments = projectLoading
     ? []
@@ -31,21 +30,21 @@ const Overview = () => {
     "MMM DD, YYYY hh:mm A",
   );
 
-  const lastCreatedDate = moment(selectedProject?.createDate).format(
+  const lastCreatedDate = moment(selectedProject?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
   );
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
   if (selectedProject) {
-    displayGithubRepo = selectedProject.url.substring(
+    displayGithubRepo = selectedProject.githubUrl.substring(
       19,
-      selectedProject.url.length - 4,
+      selectedProject.githubUrl.length - 4,
     );
 
-    githubBranchLink = `${selectedProject.url.substring(
+    githubBranchLink = `${selectedProject.githubUrl.substring(
       0,
-      selectedProject.url.length - 4,
+      selectedProject.githubUrl.length - 4,
     )}/tree/${"master"}`;
   }
 
@@ -105,7 +104,7 @@ const Overview = () => {
             <label>GitHub Repo/Branch:</label>
             <a href={githubBranchLink} target="_blank" rel="noopener noreferrer">
               {!projectLoading ? (
-                `${displayGithubRepo} (branch: ${selectedProject?.branch})`
+                `${displayGithubRepo} (branch: ${selectedProject?.configuration.branch})`
               ) : (
                 <Skeleton width={200} duration={2} />
               )}

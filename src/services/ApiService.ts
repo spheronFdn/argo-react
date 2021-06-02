@@ -180,6 +180,21 @@ export const startDeployment = (deployment: any): Observable<any> => {
   });
 };
 
+export const createConfiguration = (configuration: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/configuration/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(configuration),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
 export const getAllProjects = (orgId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
