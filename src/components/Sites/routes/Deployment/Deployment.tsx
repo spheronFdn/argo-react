@@ -190,16 +190,12 @@ const Deployment = () => {
 
   const domains =
     selectedProject && deployedLink
-      ? selectedProject.domains.filter(
-          (d) => deployedLink.indexOf(d.transactionId) !== -1,
-        )
+      ? selectedProject.domains.filter((d) => deployedLink.indexOf(d.link) !== -1)
       : [];
 
   const subdomains =
     selectedProject && deployedLink
-      ? selectedProject.subdomains.filter(
-          (d) => deployedLink.indexOf(d.transactionId) !== -1,
-        )
+      ? selectedProject.subdomains.filter((d) => deployedLink.indexOf(d.link) !== -1)
       : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;

@@ -40,14 +40,14 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   const domains =
     selectedProject && deployment?.sitePreview
       ? selectedProject.domains.filter(
-          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
 
   const subdomains =
     selectedProject && deployment?.sitePreview
       ? selectedProject.subdomains.filter(
-          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
 

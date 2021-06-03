@@ -12,7 +12,8 @@ import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
 const SubdomainGeneral = () => {
-  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { projectLoading, selectedProject, selectedOrg } =
+    useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [subdomainName, setSubdomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
@@ -26,14 +27,19 @@ const SubdomainGeneral = () => {
 
   const addSubdomainDetails = () => {
     setDomainLoading(true);
-
     const domain = {
-      repositoryId: selectedProject?._id,
-      domain: subdomainName,
-      transactionId: deployedSite.split("/")[deployedSite.split("/").length - 1],
+      orgId: selectedOrg?._id,
+      projectId: selectedProject?._id,
+      name: subdomainName,
+      link: isLatest
+        ? sortedDeployments?.length
+          ? sortedDeployments[0].sitePreview
+          : ""
+        : deployedSite,
       isLatest,
+      type: "subdomain",
     };
-    ApiService.addSubdomain(domain).subscribe((result) => {
+    ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
         setSubdomainName("");
         setDeployedSite("");
@@ -49,11 +55,11 @@ const SubdomainGeneral = () => {
   };
 
   const setTransaction = (tx: string) => {
+    setDeployedSite(tx);
+
     if (tx === "latest") {
-      setDeployedSite(sortedDeployments ? sortedDeployments[0].sitePreview : "");
       setIsLatest(true);
     } else {
-      setDeployedSite(tx);
       setIsLatest(false);
     }
   };
@@ -129,11 +135,11 @@ const SubdomainGeneral = () => {
                           type="filled"
                           domainId={`${subdomain._id}`}
                           domain={`${subdomain.name}`}
-                          transactionId={`${subdomain.transactionId}`}
-                          isSubdomain={true}
-                          autoDns={!!subdomain.isLatestSubDomain}
-                          uuid={`${subdomain.argoDomainKey}`}
-                          ownerVerified={subdomain.ownerVerified}
+                          link={`${subdomain.link}`}
+                          isSubdomain={subdomain.type === "subdomain"}
+                          autoDns={!!subdomain.isLatest}
+                          uuid={`${subdomain.argoKey}`}
+                          ownerVerified={subdomain.verified}
                         />
                       </div>
                     ))
@@ -145,7 +151,7 @@ const SubdomainGeneral = () => {
                       type="skeleton"
                       domainId=""
                       domain=""
-                      transactionId=""
+                      link=""
                       uuid=""
                       isSubdomain={true}
                       autoDns={false}

@@ -71,6 +71,16 @@ export const getArgoAllowances = async (address: string) => {
   return 0;
 };
 
+export const signRemoveWallet = async () => {
+  if (payment) {
+    const sign = await payment.vendor.signMessage(
+      "I'm the owner of this wallet and want to remove it from the organization.",
+    );
+    return sign;
+  }
+  return "";
+};
+
 export const giveAllowance = async (amount: string) => {
   if (payment) {
     const tx: any = await payment.setNewApprovals(amount);

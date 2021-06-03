@@ -81,19 +81,23 @@ export interface IProject {
 export interface IDomain {
   _id?: string;
   name: string;
-  transactionId: string;
-  isLatestDomain: boolean;
-  argoDomainKey: string;
-  ownerVerified: boolean;
+  link: string;
+  isLatest: boolean;
+  argoKey: string;
+  verified: boolean;
+  projectId: string;
+  type: string;
 }
 
 export interface ISubdomain {
   _id?: string;
   name: string;
-  transactionId: string;
-  isLatestSubDomain: boolean;
-  argoDomainKey: string;
-  ownerVerified: boolean;
+  link: string;
+  isLatest: boolean;
+  argoKey: string;
+  verified: boolean;
+  projectId: string;
+  type: string;
 }
 export interface IDeployment {
   _id?: string;
@@ -111,6 +115,7 @@ export interface IDeployment {
 }
 
 export interface IWallet {
+  _id?: string;
   address: string;
   updateDate: Date;
   createDate: Date;

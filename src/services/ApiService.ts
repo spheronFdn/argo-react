@@ -306,40 +306,10 @@ export const verifyDomain = (domainDetails: any): Observable<any> => {
   });
 };
 
-export const addSubdomain = (subdomainDetails: any): Observable<any> => {
+export const editDomain = (id: string, domainDetails: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const verifySubdomain = (subdomainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/verify`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const editDomain = (domainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/`, {
+      fetch(`${config.urls.API_URL}/domain/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -351,46 +321,15 @@ export const editDomain = (domainDetails: any): Observable<any> => {
   });
 };
 
-export const editSubdomain = (subdomainDetails: any): Observable<any> => {
+export const deleteDomain = (id: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const deleteDomain = (domainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/`, {
+      fetch(`${config.urls.API_URL}/domain/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "DELETE",
-        body: JSON.stringify(domainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const deleteSubdomain = (subdomainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "DELETE",
-        body: JSON.stringify(subdomainDetails),
       }).then((res) => res.json()),
     );
   });
@@ -420,6 +359,21 @@ export const enableWallet = (wallet: any): Observable<any> => {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "POST",
+        body: JSON.stringify(wallet),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const removeWallet = (wallet: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/wallet`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "DELETE",
         body: JSON.stringify(wallet),
       }).then((res) => res.json()),
     );

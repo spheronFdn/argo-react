@@ -23,6 +23,7 @@ const Wallet = () => {
   const [argoAllowance, setArgoAllowance] = useState<number>(-1);
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [enableLoader, setEnableLoader] = useState<boolean>(false);
+  const [removalLoader, setRemovalLoader] = useState<boolean>(false);
 
   const componentIsMounted = useRef(true);
 
@@ -98,6 +99,28 @@ const Wallet = () => {
         fetchUser();
       }
     });
+  };
+
+  const removeWallet = async () => {
+    setRemovalLoader(true);
+    await Web3Service.getAccount();
+    try {
+      const signature = await Web3Service.signRemoveWallet();
+      const removeBody = {
+        id: selectedOrg?.wallet._id,
+        signature,
+      };
+      ApiService.removeWallet(removeBody).subscribe((res) => {
+        if (componentIsMounted.current) {
+          setRemovalLoader(false);
+          fetchUser();
+        }
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setRemovalLoader(false);
+    }
   };
 
   return (
@@ -176,7 +199,18 @@ const Wallet = () => {
                       Note: Only onwer of this wallet can increase allowance
                     </div>
                   </div>
-                  <div>
+                  <div className="button-container">
+                    <button
+                      type="button"
+                      className="primary-button remove-button"
+                      disabled={userLoading}
+                      onClick={removeWallet}
+                    >
+                      {removalLoader && (
+                        <BounceLoader size={20} color={"#fff"} loading={true} />
+                      )}
+                      Remove
+                    </button>
                     <button
                       type="button"
                       className="primary-button recharge-button"
