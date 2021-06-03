@@ -1,8 +1,4 @@
-import {
-  IDomain,
-  IRepository,
-  ISubdomain,
-} from "../../../../../../model/hooks.model";
+import { IDomain, IProject, ISubdomain } from "../../../../../../model/hooks.model";
 
 export default interface IProjectItemProps {
   type: string;
@@ -12,5 +8,6 @@ export default interface IProjectItemProps {
   subdomains: ISubdomain[] | null;
   githubUrl: string | null;
   updateTime: string | null;
-  repo: IRepository | null;
+  repo: IProject | null;
+  index: number;
 }

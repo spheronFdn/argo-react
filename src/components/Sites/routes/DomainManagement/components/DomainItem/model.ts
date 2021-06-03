@@ -3,7 +3,7 @@ export default interface IDeploymentItemProps {
   type: string;
   domainId: string;
   domain: string;
-  transactionId: string;
+  link: string;
   isSubdomain: boolean;
   autoDns: boolean;
   uuid: string;

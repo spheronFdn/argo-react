@@ -10,9 +10,8 @@ import BounceLoader from "react-spinners/BounceLoader";
 import { ApiService } from "../../../../../../services";
 
 const SettingsGeneral = () => {
-  const { selectedProject, projectLoading, selectedOrg } = useContext<IStateModel>(
-    StateContext,
-  );
+  const { selectedProject, projectLoading, selectedOrg } =
+    useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [workspace, setWorkspace] = useState<string>("");
@@ -21,31 +20,31 @@ const SettingsGeneral = () => {
 
   // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
-  const lastPublishedDate = moment(selectedProject?.updateDate).format(
+  const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
   );
 
-  const lastCreatedDate = moment(selectedProject?.createDate).format(
+  const lastCreatedDate = moment(selectedProject?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
   );
 
   let displayGithubRepo = "";
   if (selectedProject) {
-    displayGithubRepo = selectedProject.url.substring(
+    displayGithubRepo = selectedProject.githubUrl.substring(
       19,
-      selectedProject.url.length - 4,
+      selectedProject.githubUrl.length - 4,
     );
   }
 
   useEffect(() => {
     if (selectedProject) {
-      setWorkspace(selectedProject.workspace);
+      setWorkspace(selectedProject.configuration.workspace);
     }
   }, [selectedProject]);
 
   useEffect(() => {
     if (selectedProject) {
-      if (selectedProject.workspace !== workspace) {
+      if (selectedProject.configuration.workspace !== workspace) {
         setIsDataChanged(true);
       } else {
         setIsDataChanged(false);
@@ -58,10 +57,10 @@ const SettingsGeneral = () => {
     if (selectedProject) {
       setUpdateLoading(true);
       const project = {
-        package_manager: selectedProject.package_manager,
-        build_command: selectedProject.build_command,
-        publish_dir: selectedProject.publish_dir,
-        branch: selectedProject.branch,
+        package_manager: selectedProject.configuration.packageManager,
+        build_command: selectedProject.configuration.buildCommand,
+        publish_dir: selectedProject.configuration.publishDir,
+        branch: selectedProject.configuration.branch,
         workspace,
       };
 
@@ -128,7 +127,8 @@ const SettingsGeneral = () => {
               </label>
               {!projectLoading ? (
                 <div className="settings-project-value">
-                  {displayGithubRepo} (branch: {selectedProject?.branch})
+                  {displayGithubRepo} (branch:{" "}
+                  {selectedProject?.configuration.branch})
                 </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />

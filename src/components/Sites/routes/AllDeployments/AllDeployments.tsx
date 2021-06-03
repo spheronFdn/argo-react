@@ -52,8 +52,7 @@ const AllDeployments = () => {
             <span>
               {!projectLoading ? (
                 selectedProject?.deployments?.filter(
-                  (deployment) =>
-                    deployment.deploymentStatus.toLowerCase() === "pending",
+                  (deployment) => deployment.status.toLowerCase() === "pending",
                 ).length
               ) : (
                 <Skeleton width={20} duration={2} />
@@ -65,8 +64,7 @@ const AllDeployments = () => {
             <span>
               {!projectLoading ? (
                 selectedProject?.deployments?.filter(
-                  (deployment) =>
-                    deployment.deploymentStatus.toLowerCase() === "deployed",
+                  (deployment) => deployment.status.toLowerCase() === "deployed",
                 ).length
               ) : (
                 <Skeleton width={20} duration={2} />
@@ -78,8 +76,7 @@ const AllDeployments = () => {
             <span>
               {!projectLoading ? (
                 selectedProject?.deployments?.filter(
-                  (deployment) =>
-                    deployment.deploymentStatus.toLowerCase() === "failed",
+                  (deployment) => deployment.status.toLowerCase() === "failed",
                 ).length
               ) : (
                 <Skeleton width={20} duration={2} />

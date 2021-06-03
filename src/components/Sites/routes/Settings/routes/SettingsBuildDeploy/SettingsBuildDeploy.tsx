@@ -26,9 +26,9 @@ const SettingsBuildDeploy = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      setPackageManager(selectedProject.package_manager);
-      setBuildCommand(selectedProject.build_command);
-      setPublishDirectory(selectedProject.publish_dir);
+      setPackageManager(selectedProject.configuration.packageManager);
+      setBuildCommand(selectedProject.configuration.buildCommand);
+      setPublishDirectory(selectedProject.configuration.publishDir);
       // setProductionBranch("master");
     }
   }, [selectedProject]);
@@ -36,9 +36,9 @@ const SettingsBuildDeploy = () => {
   useEffect(() => {
     if (selectedProject) {
       if (
-        selectedProject.package_manager !== packageManager ||
-        selectedProject.build_command !== buildCommand ||
-        selectedProject.publish_dir !== publishDirectory
+        selectedProject.configuration.packageManager !== packageManager ||
+        selectedProject.configuration.buildCommand !== buildCommand ||
+        selectedProject.configuration.publishDir !== publishDirectory
       ) {
         setIsDataChanged1(true);
       } else {
@@ -60,7 +60,7 @@ const SettingsBuildDeploy = () => {
         package_manager: packageManager,
         build_command: buildCommand,
         publish_dir: publishDirectory,
-        branch: selectedProject.branch,
+        branch: selectedProject.configuration.branch,
       };
 
       ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
@@ -90,15 +90,16 @@ const SettingsBuildDeploy = () => {
   }
 
   let framework: string = "";
-  if (selectedProject?.framework === "static") {
+  const foundFrameworks = selectedProject?.configuration.framework;
+  if (foundFrameworks === "static") {
     framework = "No Framework - Simple JavaScript App";
-  } else if (selectedProject?.framework === "react") {
+  } else if (foundFrameworks === "react") {
     framework = "Create React App";
-  } else if (selectedProject?.framework === "vue") {
+  } else if (foundFrameworks === "vue") {
     framework = "Vue App";
-  } else if (selectedProject?.framework === "angular") {
+  } else if (foundFrameworks === "angular") {
     framework = "Angular App";
-  } else if (selectedProject?.framework === "next") {
+  } else if (foundFrameworks === "next") {
     framework = "Next.js App";
   } else {
     framework = "N.A";
@@ -116,7 +117,9 @@ const SettingsBuildDeploy = () => {
                 This is your project repository.
               </label>
               {!projectLoading ? (
-                <div className="settings-project-value">{selectedProject?.url}</div>
+                <div className="settings-project-value">
+                  {selectedProject?.githubUrl}
+                </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
@@ -132,9 +135,9 @@ const SettingsBuildDeploy = () => {
                 <Skeleton width={326} height={36} duration={2} />
               )}
             </div>
-            {selectedProject?.framework !== "static" && (
+            {selectedProject?.configuration.framework !== "static" && (
               <>
-                {selectedProject?.framework !== "next" ? (
+                {selectedProject?.configuration.framework !== "next" ? (
                   <div className="settings-project-item">
                     <label className="settings-project-item-title">
                       Package Manager
@@ -171,7 +174,7 @@ const SettingsBuildDeploy = () => {
                   </label>
                   {!projectLoading ? (
                     <div className="settings-project-item-input-container">
-                      {selectedProject?.framework !== "next" ? (
+                      {selectedProject?.configuration.framework !== "next" ? (
                         <>
                           <input
                             type="text"

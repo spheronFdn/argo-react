@@ -23,6 +23,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   githubUrl,
   updateTime,
   repo,
+  index,
 }) => {
   const history = useHistory();
 
@@ -38,7 +39,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
     (domains && domains.length > 0) || (subdomains && subdomains.length > 0);
 
   return (
-    <div className="project-item">
+    <div className="project-item" key={index}>
       {type === "filled" && (
         <>
           <div className="project-item-header">
@@ -82,6 +83,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                       className="project-item-live-value"
                       target="_blank"
                       rel="noopener noreferrer"
+                      key={i}
                     >
                       {d.name}
                     </a>
@@ -99,6 +101,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                       className="project-item-live-value"
                       target="_blank"
                       rel="noopener noreferrer"
+                      key={i}
                     >
                       {s.name}
                     </a>

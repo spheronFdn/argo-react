@@ -83,12 +83,6 @@ const Reducers = (dispatch: any, history: any) => ({
       currentSiteDeployLogs: logs,
     });
   },
-  setLatestDeploymentSocketTopic: (topic: string) => {
-    dispatch({
-      type: Actions.SET_LATEST_DEPLOY_SOCKET_TOPIC,
-      currentSiteDeploySocketTopic: topic,
-    });
-  },
   setPojectLoading: (loading: boolean) => {
     dispatch({
       type: Actions.SET_PROJECT_LOADING,

@@ -48,7 +48,6 @@ export interface IUser {
   _id: string;
   provider_profile: IProfile;
   argo_profile: IArgoUser;
-  argo_wallet: IArgoWalletModel;
   provider: IProvider;
   dateOfEntry?: Date;
   lastUpdated?: Date;
@@ -56,55 +55,70 @@ export interface IUser {
   totalDepTime?: number;
 }
 
-export interface IRepository {
+export interface IConfiguration {
+  branch: string;
+  buildCommand: string;
+  workspace: string;
+  publishDir: string;
+  packageManager: string;
+  framework: string;
+}
+
+export interface IProject {
   _id?: string;
   name: string;
-  url: string;
-  webHook: string;
-  deployments: IDeployment[];
-  updateDate: Date;
-  createDate: Date;
-  orgId: string;
-  package_manager: string;
-  build_command: string;
-  publish_dir: string;
-  branch: string;
-  workspace: string;
+  githubUrl: string;
   sitePreview: string;
-  framework: string;
+  deployments: IDeployment[];
+  organizationId: string;
   domains: IDomain[];
-  subDomains: ISubdomain[];
+  subdomains: ISubdomain[];
+  configuration: IConfiguration;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface IDomain {
   _id?: string;
   name: string;
-  transactionId: string;
-  isLatestDomain: boolean;
-  argoDomainKey: string;
-  ownerVerified: boolean;
+  link: string;
+  isLatest: boolean;
+  argoKey: string;
+  verified: boolean;
+  projectId: string;
+  type: string;
 }
 
 export interface ISubdomain {
   _id?: string;
   name: string;
-  transactionId: string;
-  isLatestSubDomain: boolean;
-  argoDomainKey: string;
-  ownerVerified: boolean;
+  link: string;
+  isLatest: boolean;
+  argoKey: string;
+  verified: boolean;
+  projectId: string;
+  type: string;
 }
 export interface IDeployment {
   _id?: string;
   sitePreview: string;
   commitId: string;
   log: string[];
-  createdAt: any;
   topic: string;
-  branch: string;
-  deploymentStatus: string;
-  package_manager: string;
-  build_command: string;
-  publish_dir: string;
+  status: string;
+  paymentId: string;
+  buildTime: string;
+  configuration: IConfiguration;
+  project: IProject;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface IWallet {
+  _id?: string;
+  address: string;
+  updateDate: Date;
+  createDate: Date;
 }
 
 export interface IOrganization {
@@ -114,8 +128,10 @@ export interface IOrganization {
     image: string;
     username: string;
   };
-  repositories?: IRepository[];
-  users?: string[];
+  projects: IProject[];
+  users: IUser[];
+  wallet: IWallet;
+  payments: any[];
 }
 
 export interface IModalConfig {
@@ -137,8 +153,7 @@ export interface IStateModel {
   projectLoading: boolean;
   currentSiteDeployConfig: any;
   currentSiteDeployLogs: any[];
-  selectedProject: IRepository | null;
-  currentSiteDeploySocketTopic: string;
+  selectedProject: IProject | null;
   selectedDeployment: IDeployment | null;
   selectedRepoForTriggerDeployment: any | null;
 }
@@ -150,7 +165,6 @@ export interface IActionModel {
   resetUser: () => void;
   setLatestDeploymentConfig: (config: any) => void;
   setLatestDeploymentLogs: (logs: any[]) => void;
-  setLatestDeploymentSocketTopic: (topic: string) => void;
   setSelectedProject: (project: any) => void;
   setPojectLoading: (loading: boolean) => void;
   setOrgLoading: (loading: boolean) => void;

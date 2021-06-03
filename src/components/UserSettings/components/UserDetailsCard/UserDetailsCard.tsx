@@ -53,7 +53,7 @@ const UserDetailsCard: React.FC<any> = () => {
         <p className="user-details-subtitle">
           {!userLoading && user ? (
             `Created ${user?.organizations
-              ?.map((org) => (org?.repositories ? org.repositories.length : 0))
+              ?.map((org) => (org?.projects ? org.projects.length : 0))
               .reduce((prev, curr) => prev + curr)} projects. Collaborates on ${
               user?.organizations?.length
             } organization.`

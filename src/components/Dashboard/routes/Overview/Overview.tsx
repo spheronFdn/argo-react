@@ -2,19 +2,13 @@ import React, { useContext } from "react";
 import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-import { Link, useHistory } from "react-router-dom";
-import {
-  IActionModel,
-  IRepository,
-  IStateModel,
-} from "../../../../model/hooks.model";
+import { useHistory } from "react-router-dom";
+import { IActionModel, IProject, IStateModel } from "../../../../model/hooks.model";
 import TimeAgo from "javascript-time-ago";
 import "./Overview.scss";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
@@ -25,25 +19,11 @@ const Overview = () => {
 
   const history = useHistory();
 
-  const { selectedOrg, orgLoading, user, userLoading } = useContext<IStateModel>(
-    StateContext,
-  );
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
   const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   return (
     <div className="Overview">
-      {(!user?.argo_wallet || user?.argo_wallet?.wallet_balance < 0.2) &&
-      !userLoading ? (
-        <div className="overview-alert">
-          <span className="exclamation-icon">
-            <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
-          </span>
-          <span>
-            You do not have minimum 0.2 AR balance to deploy any site.{" "}
-            <Link to="/wallet/recharge">Recharge here</Link>
-          </span>
-        </div>
-      ) : null}
       <div className="overview-container">
         <div className="overview-team-avatar-container">
           {!orgLoading ? (
@@ -87,7 +67,7 @@ const Overview = () => {
               <div className="overview-team-detail-container git-integration-container">
                 <label className="overview-team-detail-label">Projects</label>
                 <div className="overview-team-member-value">
-                  {selectedOrg?.repositories?.length}
+                  {selectedOrg?.projects?.length}
                 </div>
               </div>
               {/* <div className="overview-team-detail-container git-integration-container">
@@ -127,18 +107,19 @@ const Overview = () => {
       <div className="project-list-container">
         <ul className="project-list">
           {!orgLoading ? (
-            selectedOrg?.repositories?.length ? (
-              selectedOrg?.repositories?.map((repo: IRepository, index: number) => (
+            selectedOrg?.projects?.length ? (
+              selectedOrg?.projects?.map((repo: IProject, index: number) => (
                 <div key={index}>
                   <ProjectItem
                     type="filled"
                     projectName={repo.name}
-                    domains={repo.domains.length ? repo.domains : []}
-                    subdomains={repo.subDomains.length ? repo.subDomains : []}
+                    domains={repo.domains?.length ? repo.domains : []}
+                    subdomains={repo.subdomains?.length ? repo.subdomains : []}
                     latestDeployment={repo.sitePreview}
-                    githubUrl={repo.url}
-                    updateTime={timeAgo.format(new Date(`${repo.updateDate}`))}
+                    githubUrl={repo.githubUrl}
+                    updateTime={timeAgo.format(new Date(`${repo.updatedAt}`))}
                     repo={repo}
+                    index={index}
                   />
                 </div>
               ))
@@ -152,6 +133,7 @@ const Overview = () => {
                 githubUrl={null}
                 updateTime={null}
                 repo={null}
+                index={1}
               />
             )
           ) : (
@@ -164,6 +146,7 @@ const Overview = () => {
               githubUrl={null}
               updateTime={null}
               repo={null}
+              index={1}
             />
           )}
         </ul>

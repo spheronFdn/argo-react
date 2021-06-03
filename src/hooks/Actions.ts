@@ -22,7 +22,6 @@ export const actionInitialValue = {
   resetUser: () => {},
   setLatestDeploymentConfig: (config: any) => {},
   setLatestDeploymentLogs: (logs: any[]) => {},
-  setLatestDeploymentSocketTopic: (topic: string) => {},
   setSelectedProject: (project: any) => {},
   setPojectLoading: (loading: boolean) => {},
   setOrgLoading: (loading: boolean) => {},
