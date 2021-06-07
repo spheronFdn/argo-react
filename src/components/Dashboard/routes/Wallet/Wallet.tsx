@@ -290,35 +290,37 @@ const Wallet = () => {
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.projectName}</div>
+                            <div className="user-text">{payment?.projectName}</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.deploymentId}</div>
+                            <div className="user-text">{payment?.deploymentId}</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.buildTime} s</div>
-                          </div>
-                        </div>
-                        <div className="td">
-                          <div className="user-container">
-                            <div className="user-text">{payment.providerFee} AR</div>
+                            <div className="user-text">{payment?.buildTime} s</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment.finalArgoFee.toFixed(3)} $ARGO
+                              {payment?.providerFee} AR
                             </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {moment(payment.createDate).format(
+                              {payment?.finalArgoFee.toFixed(3)} $ARGO
+                            </div>
+                          </div>
+                        </div>
+                        <div className="td">
+                          <div className="user-container">
+                            <div className="user-text">
+                              {moment(payment?.createDate).format(
                                 "DD-MM-YYYY hh:mm A",
                               )}
                             </div>

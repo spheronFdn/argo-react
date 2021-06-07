@@ -38,13 +38,17 @@ const SettingsGeneral = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      setWorkspace(selectedProject.configuration.workspace);
+      setWorkspace(
+        selectedProject?.latestDeployment?.configuration.workspace
+          ? selectedProject?.latestDeployment?.configuration.workspace
+          : "",
+      );
     }
   }, [selectedProject]);
 
   useEffect(() => {
     if (selectedProject) {
-      if (selectedProject.configuration.workspace !== workspace) {
+      if (selectedProject?.latestDeployment?.configuration.workspace !== workspace) {
         setIsDataChanged(true);
       } else {
         setIsDataChanged(false);
@@ -57,10 +61,11 @@ const SettingsGeneral = () => {
     if (selectedProject) {
       setUpdateLoading(true);
       const project = {
-        package_manager: selectedProject.configuration.packageManager,
-        build_command: selectedProject.configuration.buildCommand,
-        publish_dir: selectedProject.configuration.publishDir,
-        branch: selectedProject.configuration.branch,
+        package_manager:
+          selectedProject?.latestDeployment?.configuration.packageManager,
+        build_command: selectedProject?.latestDeployment?.configuration.buildCommand,
+        publish_dir: selectedProject?.latestDeployment?.configuration.publishDir,
+        branch: selectedProject?.latestDeployment?.configuration.branch,
         workspace,
       };
 
@@ -128,7 +133,7 @@ const SettingsGeneral = () => {
               {!projectLoading ? (
                 <div className="settings-project-value">
                   {displayGithubRepo} (branch:{" "}
-                  {selectedProject?.configuration.branch})
+                  {selectedProject?.latestDeployment?.configuration.branch})
                 </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />

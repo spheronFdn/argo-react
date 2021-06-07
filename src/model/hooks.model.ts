@@ -68,12 +68,11 @@ export interface IProject {
   _id?: string;
   name: string;
   githubUrl: string;
-  sitePreview: string;
+  latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
   domains: IDomain[];
   subdomains: ISubdomain[];
-  configuration: IConfiguration;
   updatedAt: Date;
   createdAt: Date;
 }

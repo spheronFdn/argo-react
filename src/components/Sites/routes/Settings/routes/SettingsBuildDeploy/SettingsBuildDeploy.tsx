@@ -26,9 +26,21 @@ const SettingsBuildDeploy = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      setPackageManager(selectedProject.configuration.packageManager);
-      setBuildCommand(selectedProject.configuration.buildCommand);
-      setPublishDirectory(selectedProject.configuration.publishDir);
+      setPackageManager(
+        selectedProject?.latestDeployment?.configuration.packageManager
+          ? selectedProject?.latestDeployment?.configuration.packageManager
+          : "",
+      );
+      setBuildCommand(
+        selectedProject?.latestDeployment?.configuration.buildCommand
+          ? selectedProject?.latestDeployment?.configuration.buildCommand
+          : "",
+      );
+      setPublishDirectory(
+        selectedProject?.latestDeployment?.configuration.publishDir
+          ? selectedProject?.latestDeployment?.configuration.publishDir
+          : "",
+      );
       // setProductionBranch("master");
     }
   }, [selectedProject]);
@@ -36,9 +48,12 @@ const SettingsBuildDeploy = () => {
   useEffect(() => {
     if (selectedProject) {
       if (
-        selectedProject.configuration.packageManager !== packageManager ||
-        selectedProject.configuration.buildCommand !== buildCommand ||
-        selectedProject.configuration.publishDir !== publishDirectory
+        selectedProject?.latestDeployment?.configuration.packageManager !==
+          packageManager ||
+        selectedProject?.latestDeployment?.configuration.buildCommand !==
+          buildCommand ||
+        selectedProject?.latestDeployment?.configuration.publishDir !==
+          publishDirectory
       ) {
         setIsDataChanged1(true);
       } else {
@@ -60,7 +75,7 @@ const SettingsBuildDeploy = () => {
         package_manager: packageManager,
         build_command: buildCommand,
         publish_dir: publishDirectory,
-        branch: selectedProject.configuration.branch,
+        branch: selectedProject?.latestDeployment?.configuration.branch,
       };
 
       ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
@@ -90,7 +105,7 @@ const SettingsBuildDeploy = () => {
   }
 
   let framework: string = "";
-  const foundFrameworks = selectedProject?.configuration.framework;
+  const foundFrameworks = selectedProject?.latestDeployment?.configuration.framework;
   if (foundFrameworks === "static") {
     framework = "No Framework - Simple JavaScript App";
   } else if (foundFrameworks === "react") {
@@ -135,9 +150,11 @@ const SettingsBuildDeploy = () => {
                 <Skeleton width={326} height={36} duration={2} />
               )}
             </div>
-            {selectedProject?.configuration.framework !== "static" && (
+            {selectedProject?.latestDeployment?.configuration.framework !==
+              "static" && (
               <>
-                {selectedProject?.configuration.framework !== "next" ? (
+                {selectedProject?.latestDeployment?.configuration.framework !==
+                "next" ? (
                   <div className="settings-project-item">
                     <label className="settings-project-item-title">
                       Package Manager
@@ -174,7 +191,8 @@ const SettingsBuildDeploy = () => {
                   </label>
                   {!projectLoading ? (
                     <div className="settings-project-item-input-container">
-                      {selectedProject?.configuration.framework !== "next" ? (
+                      {selectedProject?.latestDeployment?.configuration.framework !==
+                      "next" ? (
                         <>
                           <input
                             type="text"

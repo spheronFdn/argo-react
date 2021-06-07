@@ -30,7 +30,7 @@ const Overview = () => {
             <LazyLoadedImage height={120} once>
               <img
                 src={
-                  selectedOrg?.profile.image
+                  selectedOrg?.profile?.image
                     ? selectedOrg.profile.image
                     : require("../../../../assets/png/default_icon.png")
                 }
@@ -48,7 +48,7 @@ const Overview = () => {
         <div className="overview-team-details-container">
           <h1 className="overview-team-name">
             {!orgLoading ? (
-              selectedOrg?.profile.name
+              selectedOrg?.profile?.name
             ) : (
               <Skeleton width={150} duration={2} />
             )}
@@ -112,12 +112,16 @@ const Overview = () => {
                 <div key={index}>
                   <ProjectItem
                     type="filled"
-                    projectName={repo.name}
+                    projectName={repo?.name}
                     domains={repo.domains?.length ? repo.domains : []}
                     subdomains={repo.subdomains?.length ? repo.subdomains : []}
-                    latestDeployment={repo.sitePreview}
-                    githubUrl={repo.githubUrl}
-                    updateTime={timeAgo.format(new Date(`${repo.updatedAt}`))}
+                    latestDeployment={
+                      repo?.latestDeployment?.sitePreview
+                        ? repo?.latestDeployment?.sitePreview
+                        : ""
+                    }
+                    githubUrl={repo?.githubUrl}
+                    updateTime={timeAgo.format(new Date(`${repo?.updatedAt}`))}
                     repo={repo}
                     index={index}
                   />
