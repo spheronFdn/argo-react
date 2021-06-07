@@ -15,15 +15,15 @@ const Reducers = (dispatch: any, history: any) => ({
       // eslint-disable-next-line no-console
       if (response.user) {
         dispatch({ type: Actions.SET_USER, user: response.user });
-        dispatch({
-          type: Actions.SET_SELECTED_ORG,
-          selectedOrg: response.user.organizations
-            ? orgId
-              ? response.user.organizations.filter((org) => org._id === orgId)[0]
-              : response.user.organizations[0]
-            : null,
-        });
-        ApiService.getAllProjects(
+        // dispatch({
+        //   type: Actions.SET_SELECTED_ORG,
+        //   selectedOrg: response.user.organizations
+        //     ? orgId
+        //       ? response.user.organizations.filter((org) => org._id === orgId)[0]
+        //       : response.user.organizations[0]
+        //     : null,
+        // });
+        ApiService.getOrganization(
           `${
             orgId
               ? orgId
@@ -47,7 +47,7 @@ const Reducers = (dispatch: any, history: any) => ({
   },
   setSelectedOrganization: (organization: any) => {
     dispatch({ type: Actions.SET_ORG_LOADING, orgLoading: true });
-    ApiService.getAllProjects(`${organization._id}`).subscribe((res) => {
+    ApiService.getOrganization(`${organization._id}`).subscribe((res) => {
       dispatch({
         type: Actions.SET_SELECTED_ORG,
         selectedOrg: res,

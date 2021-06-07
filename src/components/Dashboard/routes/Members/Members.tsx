@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Members.scss";
 import { StateContext } from "../../../../hooks";
-import { ApiService } from "../../../../services";
 // import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -20,24 +19,16 @@ const Members = () => {
   useEffect(() => {
     if (selectedOrg) {
       setMemberLoading(true);
-      const subscription = ApiService.getOrganization(
-        `${selectedOrg?._id}`,
-      ).subscribe((data) => {
-        if (componentIsMounted.current) {
-          const members: IMemberModel[] = data.users.map((user: IUser) => ({
-            name: user.argo_profile.name,
-            email: user.argo_profile.email,
-            avatar: user.argo_profile.avatar,
-            username: user.argo_profile.username,
-          }));
-          setMembers(members);
-          setMemberLoading(false);
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      if (componentIsMounted.current) {
+        const members: IMemberModel[] = selectedOrg.users.map((user: IUser) => ({
+          name: user.argo_profile.name,
+          email: user.argo_profile.email,
+          avatar: user.argo_profile.avatar,
+          username: user.argo_profile.username,
+        }));
+        setMembers(members);
+        setMemberLoading(false);
+      }
     }
   }, [selectedOrg]);
 

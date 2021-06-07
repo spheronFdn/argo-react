@@ -33,20 +33,13 @@ const Wallet = () => {
     if (selectedOrg) {
       setPaymentsLoading(true);
       setWalletLoading(true);
-      const subscription = ApiService.getOrganization(
-        `${selectedOrg?._id}`,
-      ).subscribe(async (data) => {
-        if (componentIsMounted.current) {
-          setOrgWallet(data.wallet ? data.wallet.address : "");
-          setWalletLoading(false);
-          setPayments(data.payments || []);
-          setPaymentsLoading(false);
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (componentIsMounted.current) {
+        setOrgWallet(selectedOrg.wallet ? selectedOrg.wallet.address : "");
+        setWalletLoading(false);
+        setPayments(selectedOrg.payments || []);
+        setPaymentsLoading(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOrg]);

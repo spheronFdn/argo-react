@@ -52,7 +52,6 @@ export interface IUser {
   dateOfEntry?: Date;
   lastUpdated?: Date;
   organizations?: IOrganization[];
-  totalDepTime?: number;
 }
 
 export interface IConfiguration {
