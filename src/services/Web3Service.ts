@@ -40,10 +40,16 @@ const onboard = Onboard({
 });
 
 export const getAccount = async () => {
-  await onboard.walletSelect();
-  await onboard.walletCheck();
-  const currentState = onboard.getState();
-  return currentState.address;
+  try {
+    await onboard.walletSelect();
+    await onboard.walletCheck();
+    const currentState = onboard.getState();
+    return currentState.address;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+    return "";
+  }
 };
 
 export const getCurrentAccount = async () => {

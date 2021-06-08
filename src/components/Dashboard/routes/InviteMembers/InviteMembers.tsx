@@ -21,7 +21,7 @@ const InviteMembers = () => {
       organization: selectedOrg?._id,
       orgName: selectedOrg?.profile.name,
       userEmail: member,
-      invitingUser: user?.argo_profile.name,
+      invitingUser: user?.argoProfile.name,
     }));
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(
       (res) =>

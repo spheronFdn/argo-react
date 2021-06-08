@@ -135,6 +135,9 @@ const Deployment = () => {
               result.deployment.payment.status !== "failed"
             : true;
           if (paymentSocketOpeningCondition) {
+            if (result.deployment.payment) {
+              setPaymentStatus(result.deployment.payment.status);
+            }
             socket.on(`payment.${result.deployment.topic}`, (stream: any) => {
               if (stream.type === 1) {
                 setPaymentStatus("started");

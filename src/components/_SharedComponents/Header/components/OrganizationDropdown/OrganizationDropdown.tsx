@@ -6,14 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { ActionContext, StateContext } from "../../../../../hooks";
-import { IOrganization } from "../../../../../model/hooks.model";
+import { IActionModel, IOrganization } from "../../../../../model/hooks.model";
 
 const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
   setShowDropdown,
 }) => {
   const history = useHistory();
 
-  const { setSelectedOrganization } = useContext(ActionContext);
+  const { setSelectedOrganization } = useContext<IActionModel>(ActionContext);
   const { user } = useContext(StateContext);
 
   return (
@@ -35,7 +35,7 @@ const OrganizationDropdown: React.FC<IOrganizationDropdownProps> = ({
             key={index}
             onClick={(e: Event) => {
               setSelectedOrganization(org);
-              history.push("/dashboard");
+              // history.push("/dashboard");
               setShowDropdown(false);
             }}
           />

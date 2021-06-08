@@ -46,13 +46,12 @@ export interface IArgoWalletModel {
 
 export interface IUser {
   _id: string;
-  provider_profile: IProfile;
-  argo_profile: IArgoUser;
+  providerProfile: IProfile;
+  argoProfile: IArgoUser;
   provider: IProvider;
-  dateOfEntry?: Date;
-  lastUpdated?: Date;
-  organizations?: IOrganization[];
-  totalDepTime?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  organizations: IOrganization[];
 }
 
 export interface IConfiguration {
@@ -68,12 +67,11 @@ export interface IProject {
   _id?: string;
   name: string;
   githubUrl: string;
-  sitePreview: string;
+  latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
   domains: IDomain[];
   subdomains: ISubdomain[];
-  configuration: IConfiguration;
   updatedAt: Date;
   createdAt: Date;
 }

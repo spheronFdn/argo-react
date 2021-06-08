@@ -49,7 +49,7 @@ const RootHeader: React.FC<IRootHeaderModel> = ({ parent }) => {
                   {!userLoading ? (
                     <LazyLoadedImage height={42} once>
                       <img
-                        src={user?.argo_profile.avatar}
+                        src={user?.argoProfile.avatar}
                         alt="address-blockie"
                         className={`user-profile-blockie-icon ${
                           showProfileDropdown ? "selected-profile" : ""

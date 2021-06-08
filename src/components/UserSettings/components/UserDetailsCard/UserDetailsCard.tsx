@@ -21,31 +21,29 @@ const UserDetailsCard: React.FC<any> = () => {
       <div className="user-details-text">
         <h1 className="user-details-title">
           {!userLoading && user ? (
-            user?.argo_profile.name
+            user?.argoProfile.name
           ) : (
             <Skeleton width={200} duration={2} />
           )}
         </h1>
         <p className="user-details-subtitle">
           {!userLoading && user ? (
-            user?.argo_profile.username
+            user?.argoProfile.username
           ) : (
             <Skeleton width={100} duration={2} />
           )}
         </p>
         <p className="user-details-subtitle">
           {!userLoading && user ? (
-            user?.argo_profile.email
+            user?.argoProfile.email
           ) : (
             <Skeleton width={150} duration={2} />
           )}
         </p>
         <p className="user-details-subtitle">
           {!userLoading && user ? (
-            `Joined ArGo on ${moment(`${user?.dateOfEntry}`).format(
-              "MMMM DD, YYYY",
-            )} (
-          ${timeAgo.format(new Date(`${user?.dateOfEntry}`))})`
+            `Joined ArGo on ${moment(`${user?.createdAt}`).format("MMMM DD, YYYY")} (
+          ${timeAgo.format(new Date(`${user?.createdAt}`))})`
           ) : (
             <Skeleton width={350} duration={2} />
           )}
@@ -66,7 +64,7 @@ const UserDetailsCard: React.FC<any> = () => {
         {!userLoading && user ? (
           <LazyLoadedImage height={132} once>
             <img
-              src={user?.argo_profile.avatar}
+              src={user?.argoProfile.avatar}
               alt="avatar"
               className="user-details-avatar"
               height={132}
