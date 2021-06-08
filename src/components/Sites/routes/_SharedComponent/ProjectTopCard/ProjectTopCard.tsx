@@ -202,15 +202,19 @@ const ProjectTopCard = () => {
                   <Skeleton width={300} duration={2} />
                 )}
               </a>
-            ) : (
+            ) : !projectLoading ? (
               <span>Site preview not available</span>
+            ) : (
+              <Skeleton width={300} duration={2} />
             )}
           </div>
-          <div className="project-top-card-fields">
-            <button className="trigger-deploy-button" onClick={triggerDeployment}>
-              Redeploy Latest
-            </button>
-          </div>
+          {!projectLoading && (
+            <div className="project-top-card-fields">
+              <button className="trigger-deploy-button" onClick={triggerDeployment}>
+                Redeploy Latest
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

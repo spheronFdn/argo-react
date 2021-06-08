@@ -46,12 +46,12 @@ export interface IArgoWalletModel {
 
 export interface IUser {
   _id: string;
-  provider_profile: IProfile;
-  argo_profile: IArgoUser;
+  providerProfile: IProfile;
+  argoProfile: IArgoUser;
   provider: IProvider;
-  dateOfEntry?: Date;
-  lastUpdated?: Date;
-  organizations?: IOrganization[];
+  createdAt: Date;
+  updatedAt: Date;
+  organizations: IOrganization[];
 }
 
 export interface IConfiguration {

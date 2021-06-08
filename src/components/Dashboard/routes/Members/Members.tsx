@@ -10,27 +10,33 @@ import { LazyLoadedImage } from "../../../_SharedComponents";
 
 const Members = () => {
   const history = useHistory();
-  const { userLoading, selectedOrg } = useContext<IStateModel>(StateContext);
+  const { userLoading, selectedOrg, orgLoading } =
+    useContext<IStateModel>(StateContext);
   const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
 
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    if (selectedOrg) {
-      setMemberLoading(true);
+    if (selectedOrg && !orgLoading) {
       if (componentIsMounted.current) {
         const members: IMemberModel[] = selectedOrg.users.map((user: IUser) => ({
-          name: user.argo_profile.name,
-          email: user.argo_profile.email,
-          avatar: user.argo_profile.avatar,
-          username: user.argo_profile.username,
+          name: user.argoProfile.name,
+          email: user.argoProfile.email,
+          avatar: user.argoProfile.avatar,
+          username: user.argoProfile.username,
         }));
         setMembers(members);
         setMemberLoading(false);
       }
+    } else {
+      if (orgLoading) {
+        setMemberLoading(true);
+      } else {
+        setMemberLoading(false);
+      }
     }
-  }, [selectedOrg]);
+  }, [selectedOrg, orgLoading]);
 
   useEffect(() => {
     return () => {
