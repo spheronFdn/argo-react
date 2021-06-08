@@ -30,6 +30,8 @@ const ProjectTopCard = () => {
     latestDeployment = sortedDeployments[0];
   }
 
+  const isArweave = latestDeployment?.protocol === "arweave" ? true : false;
+
   const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
   );
@@ -71,6 +73,7 @@ const ProjectTopCard = () => {
       package_manager: latest?.configuration.packageManager,
       build_command: latest?.configuration.buildCommand,
       workspace: latest?.configuration.workspace,
+      protocol: latest?.configuration.protocol,
     });
     history.push("/deploy/new");
   };
@@ -179,14 +182,25 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            <img
-              src={require("../../../../../assets/png/ar_light.png")}
-              alt="github"
-              className="project-top-logo"
-              height={24}
-              width={24}
-              loading="lazy"
-            />
+            {isArweave ? (
+              <img
+                src={require("../../../../../assets/png/ar_light.png")}
+                alt="github"
+                className="project-top-logo"
+                height={24}
+                width={24}
+                loading="lazy"
+              />
+            ) : (
+              <img
+                src={require("../../../../../assets/png/skynet.png")}
+                alt="github"
+                className="project-top-logo"
+                height={24}
+                width={24}
+                loading="lazy"
+              />
+            )}
 
             {latestDeployment?.sitePreview ? (
               <a
@@ -196,7 +210,7 @@ const ProjectTopCard = () => {
                 rel="noopener noreferrer"
               >
                 {!projectLoading ? (
-                  "Latest Successful Site Preview on Arweave"
+                  "Latest Successful Site Preview"
                 ) : (
                   <Skeleton width={300} duration={2} />
                 )}

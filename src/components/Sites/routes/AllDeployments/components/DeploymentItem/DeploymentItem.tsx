@@ -51,6 +51,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         )
       : [];
 
+  const isArweave = deployment?.protocol === "arweave" ? true : false;
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
   const openDeployment = () => {
@@ -109,7 +110,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 </div>
               )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Arweave Link: </span>
+                <span className="bold-text">Preview: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}
@@ -138,6 +139,13 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   </a>{" "}
                   - Updated feature */}
                 </span>
+              </div>
+              <div className="protocol-tag-container">
+                {isArweave ? (
+                  <span className="protocol-tag-arweave">Arweave</span>
+                ) : (
+                  <span className="protocol-tag-skynet">Skynet</span>
+                )}
               </div>
             </div>
             <div className="deployment-time-details">

@@ -55,6 +55,7 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
+  const [protocol, setProtocol] = useState<string>("");
   const [startDeploymentLoading, setStartDeploymentLoading] =
     useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
@@ -253,6 +254,7 @@ function DeploySiteConfig() {
       buildCommand,
       publishDirectory,
       branch,
+      protocol,
     };
     ApiService.createConfiguration(configuration).subscribe((result) => {
       if (componentIsMounted.current) {
@@ -293,8 +295,10 @@ function DeploySiteConfig() {
   const goBackAction = () => {
     if (createDeployProgress === 1) {
       history.goBack();
-    } else {
+    } else if (createDeployProgress === 2) {
       setCreateDeployProgress(1);
+    } else {
+      setCreateDeployProgress(2);
     }
   };
 
@@ -304,6 +308,18 @@ function DeploySiteConfig() {
   } else {
     buildCommandPrefix = "yarn";
   }
+
+  function clickArweave() {
+    setProtocol("arweave");
+    setCreateDeployProgress(3);
+  }
+  function clickSkynet() {
+    setProtocol("skynet");
+    setCreateDeployProgress(3);
+  }
+
+  // console.log(createDeployProgress);
+  // console.log(protocol);
 
   return (
     <div className="DeploySiteConfig">
@@ -364,6 +380,30 @@ function DeploySiteConfig() {
                   <div
                     className={`deploy-site-progress-text ${
                       createDeployProgress === 2
+                        ? "deploy-site-progress-text-active"
+                        : ""
+                    }`}
+                  >
+                    Pick a Protocol
+                  </div>
+                </div>
+                <div className="deploy-site-progress-number-container">
+                  {createDeployProgress <= 3 ? (
+                    <div
+                      className={`deploy-site-progress-number ${
+                        createDeployProgress === 3 ? "active" : ""
+                      }`}
+                    >
+                      3
+                    </div>
+                  ) : (
+                    <div className="deploy-site-progress-done">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  )}
+                  <div
+                    className={`deploy-site-progress-text ${
+                      createDeployProgress === 3
                         ? "deploy-site-progress-text-active"
                         : ""
                     }`}
@@ -548,6 +588,62 @@ function DeploySiteConfig() {
                   <>
                     <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">
+                        Select the protocol to deploy {selectedRepo.name}
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Click on the protocol in which you want ArGo to deploy your
+                        site.
+                      </label>
+                      <div className="deploy-protocol-list-container">
+                        <ul className="deploy-protocol-list">
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => clickArweave()}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/arweave_logo.png")}
+                                alt="Arweave"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </div>
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => clickSkynet()}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/skynet_logo.png")}
+                                alt="Skynet"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="button-container">
+                      <button
+                        type="button"
+                        className="cancel-button"
+                        onClick={(e) => setCreateDeployProgress(1)}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </>
+                )}
+                {createDeployProgress === 3 && (
+                  <>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
                         Deploy settings for {selectedRepo.name}
                       </label>
                       <label className="deploy-site-item-subtitle">
@@ -729,7 +825,7 @@ function DeploySiteConfig() {
                       <button
                         type="button"
                         className="cancel-button"
-                        onClick={(e) => setCreateDeployProgress(1)}
+                        onClick={(e) => setCreateDeployProgress(2)}
                       >
                         Back
                       </button>

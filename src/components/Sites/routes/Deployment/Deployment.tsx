@@ -81,6 +81,7 @@ const Deployment = () => {
             githubUrl: result.deployment.project.githubUrl,
             branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
+            protocol: result.deployment.protocol,
           };
           setLatestDeploymentConfig(deployment);
           currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
@@ -111,9 +112,9 @@ const Deployment = () => {
                 setLatestDeploymentLogs(currentSiteDeployLogs);
                 scrollToWithContainer(currentSiteDeployLogs.length - 1);
               } else if (stream.type === 2) {
-                const arweaveLink = stream.data.logsToCapture.sitePreview;
-                setDeployedLink(arweaveLink);
-                setDeploymentStatus(arweaveLink ? "deployed" : "failed");
+                const protocolLink = stream.data.logsToCapture.sitePreview;
+                setDeployedLink(protocolLink);
+                setDeploymentStatus(protocolLink ? "deployed" : "failed");
                 const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
                 const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
                 setBuildTime({ min: buildMins, sec: buildSecs });
@@ -214,6 +215,8 @@ const Deployment = () => {
         : 0;
     }
   };
+
+  const isArweave = currentSiteDeployConfig?.protocol === "arweave" ? true : false;
 
   return (
     <div className="SiteDeployment">
@@ -339,17 +342,29 @@ const Deployment = () => {
             )}
           </div>
           <div className="site-deployment-card-fields">
-            <LazyLoadedImage height={24} once>
-              <img
-                src={require("../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="site-deployment-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
-            </LazyLoadedImage>
-
+            {isArweave ? (
+              <LazyLoadedImage height={24} once>
+                <img
+                  src={require("../../../../assets/png/ar_light.png")}
+                  alt="github"
+                  className="site-deployment-logo"
+                  height={24}
+                  width={24}
+                  loading="lazy"
+                />
+              </LazyLoadedImage>
+            ) : (
+              <LazyLoadedImage height={24} once>
+                <img
+                  src={require("../../../../assets/png/skynet.png")}
+                  alt="github"
+                  className="site-deployment-logo"
+                  height={24}
+                  width={24}
+                  loading="lazy"
+                />
+              </LazyLoadedImage>
+            )}
             {!deploymentLoading ? (
               deploymentStatus === "deployed" ? (
                 <a
@@ -358,12 +373,18 @@ const Deployment = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Preview deploy on Arweave
+                  Preview deploy
                 </a>
               ) : deploymentStatus === "pending" ? (
-                <span className="site-deployment-link">
-                  Deploying on Arweave, Preview in a minute
-                </span>
+                isArweave ? (
+                  <span className="site-deployment-link">
+                    Deploying on Arweave, Preview in a minute
+                  </span>
+                ) : (
+                  <span className="site-deployment-link">
+                    Deploying on Skynet, Preview in a minute
+                  </span>
+                )
               ) : (
                 <span className="site-deployment-link">
                   Deploying failed, no link available
@@ -479,7 +500,8 @@ const Deployment = () => {
                   key={i}
                 >
                   {currLog.time}:{" "}
-                  {currLog.log.indexOf("https://arweave.net/") !== -1 ? (
+                  {currLog.log.indexOf("https://arweave.net/") !== -1 ||
+                  currLog.log.indexOf("https://siasky.net/") !== -1 ? (
                     <a
                       href={currLog.log.trim()}
                       className="log-site-link"
