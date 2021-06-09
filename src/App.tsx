@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, lazy, Suspense } from "react";
 import "./App.scss";
-import { Route, Redirect, useHistory, useLocation, Switch } from "react-router-dom";
+import { Route, Redirect, useHistory, Switch } from "react-router-dom";
 import { ActionContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { BroadcastChannel } from "broadcast-channel";
 import Loading from "./components/Loading";
+import { IActionModel } from "./model/hooks.model";
 
 const SignUp = lazy(() => import("./components/SignUp"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
@@ -21,8 +22,7 @@ const WalletRecharge = lazy(() => import("./components/WalletRecharge"));
 
 function App() {
   const history = useHistory();
-  const location = useLocation();
-  const { fetchUser } = useContext(ActionContext);
+  const { fetchUser } = useContext<IActionModel>(ActionContext);
 
   useEffect(() => {
     const bc = new BroadcastChannel("signin_channel");
@@ -41,12 +41,7 @@ function App() {
   useEffect(() => {
     const isJWTPresent = localStorage.getItem("jwt-token");
     if (isJWTPresent) {
-      const urls = location.pathname.split("/");
-      if (urls[1] === "org") {
-        fetchUser(urls[2]);
-      } else {
-        fetchUser();
-      }
+      fetchUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

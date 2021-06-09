@@ -47,14 +47,14 @@ const development: IConfig = {
   },
   web3: {
     argoERC20: {
-      address: "0x02f95e68f345dfbfc69e1ed662bafacb8749e5ab",
+      address: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
     },
     paymentContract: {
-      address: "0x6fE31B1B05715Cb52C6348f25eA5b02d700323ea",
+      address: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
     },
     onboard: {
       dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      networkId: 4,
+      networkId: 80001,
     },
   },
 };

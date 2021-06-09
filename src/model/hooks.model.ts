@@ -123,7 +123,7 @@ export interface IWallet {
 }
 
 export interface IOrganization {
-  _id?: string;
+  _id: string;
   profile: {
     name: string;
     image: string;
