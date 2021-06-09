@@ -47,7 +47,7 @@ const ProjectTopCard = () => {
     githubBranchLink = `${selectedProject.githubUrl.substring(
       0,
       selectedProject.githubUrl.length - 4,
-    )}/tree/${selectedProject.configuration.branch}`;
+    )}/tree/${selectedProject?.latestDeployment?.configuration.branch}`;
   }
 
   const domains = selectedProject ? selectedProject.domains : [];
@@ -68,7 +68,7 @@ const ProjectTopCard = () => {
     setRepoForTriggerDeployment({
       github_url: selectedProject?.githubUrl,
       branch: latest?.configuration.branch,
-      framework: selectedProject?.configuration.framework,
+      framework: selectedProject?.latestDeployment?.configuration.framework,
       publish_dir: latest?.configuration.publishDir,
       package_manager: latest?.configuration.packageManager,
       build_command: latest?.configuration.buildCommand,
@@ -92,7 +92,8 @@ const ProjectTopCard = () => {
           <p className="project-top-card-header-description">
             {!projectLoading ? (
               <>
-                <u>Production</u>: {selectedProject?.configuration.branch} - Last
+                <u>Production</u>:{" "}
+                {selectedProject?.latestDeployment?.configuration.branch} - Last
                 published at {lastPublishedDate}
               </>
             ) : (
@@ -174,7 +175,7 @@ const ProjectTopCard = () => {
               {!projectLoading ? (
                 <>
                   {displayGithubRepo} (branch:{" "}
-                  {selectedProject?.configuration.branch})
+                  {selectedProject?.latestDeployment?.configuration.branch})
                 </>
               ) : (
                 <Skeleton width={300} duration={2} />
@@ -215,15 +216,19 @@ const ProjectTopCard = () => {
                   <Skeleton width={300} duration={2} />
                 )}
               </a>
-            ) : (
+            ) : !projectLoading ? (
               <span>Site preview not available</span>
+            ) : (
+              <Skeleton width={300} duration={2} />
             )}
           </div>
-          <div className="project-top-card-fields">
-            <button className="trigger-deploy-button" onClick={triggerDeployment}>
-              Redeploy Latest
-            </button>
-          </div>
+          {!projectLoading && (
+            <div className="project-top-card-fields">
+              <button className="trigger-deploy-button" onClick={triggerDeployment}>
+                Redeploy Latest
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

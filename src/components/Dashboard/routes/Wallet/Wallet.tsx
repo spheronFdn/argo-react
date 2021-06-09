@@ -11,7 +11,8 @@ import moment from "moment";
 
 const Wallet = () => {
   const history = useHistory();
-  const { userLoading, selectedOrg } = useContext<IStateModel>(StateContext);
+  const { userLoading, selectedOrg, orgLoading } =
+    useContext<IStateModel>(StateContext);
   const { fetchUser } = useContext<IActionModel>(ActionContext);
   const [paymentsLoading, setPaymentsLoading] = useState<boolean>(false);
   const [walletLoading, setWalletLoading] = useState<boolean>(false);
@@ -30,26 +31,27 @@ const Wallet = () => {
   const isWalletPresent = !!selectedOrg?.wallet;
 
   useEffect(() => {
-    if (selectedOrg) {
+    if (selectedOrg && !orgLoading) {
       setPaymentsLoading(true);
       setWalletLoading(true);
-      const subscription = ApiService.getOrganization(
-        `${selectedOrg?._id}`,
-      ).subscribe(async (data) => {
-        if (componentIsMounted.current) {
-          setOrgWallet(data.wallet ? data.wallet.address : "");
-          setWalletLoading(false);
-          setPayments(data.payments || []);
-          setPaymentsLoading(false);
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (componentIsMounted.current) {
+        setOrgWallet(selectedOrg.wallet ? selectedOrg.wallet.address : "");
+        setWalletLoading(false);
+        setPayments(selectedOrg.payments || []);
+        setPaymentsLoading(false);
+      }
+    } else {
+      if (orgLoading) {
+        setPaymentsLoading(true);
+        setWalletLoading(true);
+      } else {
+        setPaymentsLoading(false);
+        setWalletLoading(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrg]);
+  }, [selectedOrg, orgLoading]);
 
   useEffect(() => {
     return () => {
@@ -131,10 +133,10 @@ const Wallet = () => {
             <span>Organisation Wallet</span>
           </div>
           <div className="wallet-body">
-            {!isWalletPresent ? (
+            {!isWalletPresent && !walletLoading ? (
               <>
                 <div className="wallet-subtitle">
-                  Enable your wallet for <b>{selectedOrg?.profile.username}</b>
+                  Enable your wallet for <b>{selectedOrg?.profile.name}</b>
                 </div>
                 {!wallet ? (
                   <button
@@ -200,25 +202,29 @@ const Wallet = () => {
                     </div>
                   </div>
                   <div className="button-container">
-                    <button
-                      type="button"
-                      className="primary-button remove-button"
-                      disabled={userLoading}
-                      onClick={removeWallet}
-                    >
-                      {removalLoader && (
-                        <BounceLoader size={20} color={"#fff"} loading={true} />
-                      )}
-                      Remove
-                    </button>
-                    <button
-                      type="button"
-                      className="primary-button recharge-button"
-                      disabled={userLoading}
-                      onClick={() => history.push("/wallet/recharge")}
-                    >
-                      Increase Allowance
-                    </button>
+                    {!walletLoading && (
+                      <>
+                        <button
+                          type="button"
+                          className="primary-button remove-button"
+                          disabled={walletLoading}
+                          onClick={removeWallet}
+                        >
+                          {removalLoader && (
+                            <BounceLoader size={20} color={"#fff"} loading={true} />
+                          )}
+                          Remove
+                        </button>
+                        <button
+                          type="button"
+                          className="primary-button recharge-button"
+                          disabled={walletLoading}
+                          onClick={() => history.push("/wallet/recharge")}
+                        >
+                          Increase Allowance
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="wallet-details-body">
@@ -290,35 +296,37 @@ const Wallet = () => {
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.projectName}</div>
+                            <div className="user-text">{payment?.projectName}</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.deploymentId}</div>
+                            <div className="user-text">{payment?.deploymentId}</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment.buildTime} s</div>
-                          </div>
-                        </div>
-                        <div className="td">
-                          <div className="user-container">
-                            <div className="user-text">{payment.providerFee} AR</div>
+                            <div className="user-text">{payment?.buildTime} s</div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment.finalArgoFee.toFixed(3)} $ARGO
+                              {payment?.providerFee} AR
                             </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {moment(payment.createDate).format(
+                              {payment?.finalArgoFee.toFixed(3)} $ARGO
+                            </div>
+                          </div>
+                        </div>
+                        <div className="td">
+                          <div className="user-container">
+                            <div className="user-text">
+                              {moment(payment?.createDate).format(
                                 "DD-MM-YYYY hh:mm A",
                               )}
                             </div>

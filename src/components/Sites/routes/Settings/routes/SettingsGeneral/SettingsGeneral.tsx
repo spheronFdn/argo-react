@@ -1,22 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./SettingsGeneral.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { ActionContext, StateContext } from "../../../../../../hooks";
+import { StateContext } from "../../../../../../hooks";
 import moment from "moment";
-import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import BounceLoader from "react-spinners/BounceLoader";
-import { ApiService } from "../../../../../../services";
+import { IStateModel } from "../../../../../../model/hooks.model";
 
 const SettingsGeneral = () => {
   const { selectedProject, projectLoading, selectedOrg } =
     useContext<IStateModel>(StateContext);
-  const { fetchProject } = useContext<IActionModel>(ActionContext);
 
   const [workspace, setWorkspace] = useState<string>("");
-  const [isDataChanged, setIsDataChanged] = useState<boolean>(false);
-  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
   // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
 
@@ -38,40 +31,45 @@ const SettingsGeneral = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      setWorkspace(selectedProject.configuration.workspace);
+      setWorkspace(
+        selectedProject?.latestDeployment?.configuration.workspace
+          ? selectedProject?.latestDeployment?.configuration.workspace
+          : "",
+      );
     }
   }, [selectedProject]);
 
-  useEffect(() => {
-    if (selectedProject) {
-      if (selectedProject.configuration.workspace !== workspace) {
-        setIsDataChanged(true);
-      } else {
-        setIsDataChanged(false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject, workspace]);
+  // useEffect(() => {
+  //   if (selectedProject) {
+  //     if (selectedProject?.latestDeployment?.configuration.workspace !== workspace) {
+  //       setIsDataChanged(true);
+  //     } else {
+  //       setIsDataChanged(false);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedProject, workspace]);
 
-  const updateProject = () => {
-    if (selectedProject) {
-      setUpdateLoading(true);
-      const project = {
-        package_manager: selectedProject.configuration.packageManager,
-        build_command: selectedProject.configuration.buildCommand,
-        publish_dir: selectedProject.configuration.publishDir,
-        branch: selectedProject.configuration.branch,
-        workspace,
-      };
+  // const updateProject = () => {
+  //   if (selectedProject) {
+  //     setUpdateLoading(true);
+  //     const project = {
+  //       package_manager:
+  //         selectedProject?.latestDeployment?.configuration.packageManager,
+  //       build_command: selectedProject?.latestDeployment?.configuration.buildCommand,
+  //       publish_dir: selectedProject?.latestDeployment?.configuration.publishDir,
+  //       branch: selectedProject?.latestDeployment?.configuration.branch,
+  //       workspace,
+  //     };
 
-      ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
-        (result) => {
-          setUpdateLoading(false);
-          fetchProject(`${selectedProject?._id}`);
-        },
-      );
-    }
-  };
+  //     ApiService.updateProject(`${selectedProject?._id}`, project).subscribe(
+  //       (result) => {
+  //         setUpdateLoading(false);
+  //         fetchProject(`${selectedProject?._id}`);
+  //       },
+  //     );
+  //   }
+  // };
 
   // const deleteOrg = () => {
   //   if (selectedOrg && deleteConfirmed) {
@@ -128,7 +126,7 @@ const SettingsGeneral = () => {
               {!projectLoading ? (
                 <div className="settings-project-value">
                   {displayGithubRepo} (branch:{" "}
-                  {selectedProject?.configuration.branch})
+                  {selectedProject?.latestDeployment?.configuration.branch})
                 </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
@@ -143,12 +141,9 @@ const SettingsGeneral = () => {
                 like structure.
               </label>
               {!projectLoading ? (
-                <input
-                  type="text"
-                  className="settings-project-item-input"
-                  value={workspace}
-                  onChange={(e) => setWorkspace(e.target.value)}
-                />
+                <div className="settings-project-value">
+                  {workspace ? workspace : "No Workspace"}
+                </div>
               ) : (
                 <Skeleton width={326} height={36} duration={2} />
               )}
@@ -176,7 +171,7 @@ const SettingsGeneral = () => {
               )}
             </div>
           </div>
-          <div className="settings-project-footer">
+          {/* <div className="settings-project-footer">
             <div className="warning-text-container">
               <span className="exclamation-icon">
                 <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
@@ -194,7 +189,7 @@ const SettingsGeneral = () => {
               )}
               Save
             </button>
-          </div>
+          </div> */}
         </div>
         {/* <div className="settings-project-details">
           <div className="settings-project-header delete-containers">

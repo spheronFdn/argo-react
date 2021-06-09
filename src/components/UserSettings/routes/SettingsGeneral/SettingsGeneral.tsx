@@ -26,19 +26,19 @@ const SettingsGeneral = () => {
 
   useEffect(() => {
     if (user) {
-      setUsername(user.argo_profile.username);
-      setName(user.argo_profile.name);
-      setEmail(user.argo_profile.email ? user.argo_profile.email : undefined);
-      setAvatar(user.argo_profile.avatar);
+      setUsername(user.argoProfile.username);
+      setName(user.argoProfile.name);
+      setEmail(user.argoProfile.email ? user.argoProfile.email : undefined);
+      setAvatar(user.argoProfile.avatar);
     }
   }, [user]);
 
   useEffect(() => {
     if (user) {
       if (
-        user.argo_profile.username !== username ||
-        user.argo_profile.name !== name ||
-        user.argo_profile.avatar !== avatar
+        user.argoProfile.username !== username ||
+        user.argoProfile.name !== name ||
+        user.argoProfile.avatar !== avatar
       ) {
         setIsDataChanged(true);
       } else {
@@ -60,7 +60,7 @@ const SettingsGeneral = () => {
   const updateProfile = () => {
     setUpdateLoading(true);
     const profile = {
-      ...user?.argo_profile,
+      ...user?.argoProfile,
       username,
       name,
       avatar,

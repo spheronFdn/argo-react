@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
-import { ApiService, Web3Service } from "../../services";
+import { Web3Service } from "../../services";
 import "./WalletRecharge.scss";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
@@ -14,7 +14,7 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function WalletRecharge() {
   const history = useHistory();
   const { fetchUser } = useContext<IActionModel>(ActionContext);
-  const { selectedOrg } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
 
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
@@ -27,23 +27,21 @@ function WalletRecharge() {
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    if (selectedOrg) {
+    if (selectedOrg && !orgLoading) {
       setWalletLoading(true);
-      const subscription = ApiService.getOrganization(
-        `${selectedOrg?._id}`,
-      ).subscribe(async (data) => {
-        if (componentIsMounted.current) {
-          setOrgWallet(data.wallet.address);
-          setWalletLoading(false);
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      if (componentIsMounted.current) {
+        setOrgWallet(selectedOrg.wallet.address);
+        setWalletLoading(false);
+      }
+    } else {
+      if (orgLoading) {
+        setWalletLoading(true);
+      } else {
+        setWalletLoading(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrg]);
+  }, [selectedOrg, orgLoading]);
 
   const rechargeArGo = async () => {
     if (!wallet) {

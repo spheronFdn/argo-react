@@ -144,7 +144,7 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
 export const getAllOwnerRepos = (installationId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/installations/${installationId}`, {
+      fetch(`${config.urls.API_URL}/project/installations/${installationId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
@@ -195,22 +195,22 @@ export const createConfiguration = (configuration: any): Observable<any> => {
   });
 };
 
-export const getAllProjects = (orgId: string): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/organization/${orgId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-      }).then((res) => res.json()),
-    );
-  });
-};
+// export const getAllProjects = (orgId: string): Observable<any> => {
+//   return defer(() => {
+//     return from<Promise<any>>(
+//       fetch(`${config.urls.API_URL}/organization/${orgId}`, {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+//         },
+//       }).then((res) => res.json()),
+//     );
+//   });
+// };
 
 export const getProject = (projectId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/${projectId}`, {
+      fetch(`${config.urls.API_URL}/project/${projectId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
@@ -234,43 +234,13 @@ export const getDeployment = (deploymentId: string): Observable<any> => {
 export const updateProject = (id: string, project: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/${id}`, {
+      fetch(`${config.urls.API_URL}/project/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "PUT",
         body: JSON.stringify(project),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const rechargeWallet = (recharge: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/profile/wallet/balance`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(recharge),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const updateWalletAddress = (address: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/profile/wallet/address`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(address),
       }).then((res) => res.json()),
     );
   });
@@ -339,7 +309,7 @@ export const getGithubRepoBranches = (branchUrl: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
       fetch(
-        `${config.urls.API_URL}/repository/installations/repo/branch?branches=${branchUrl}`,
+        `${config.urls.API_URL}/project/installations/repo/branch?branches=${branchUrl}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
