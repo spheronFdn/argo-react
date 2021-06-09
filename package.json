@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@argoapp/payment-js": "github:argoapp-live/argo-payments-js#dev",
+    "@argoapp/payment-js": "github:argoapp-live/argo-payments-js#biconomy",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
