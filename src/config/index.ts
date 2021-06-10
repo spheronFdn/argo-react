@@ -26,6 +26,7 @@ export interface IConfig {
       dappId: string;
       networkId: number;
     };
+    biconomyKey: string;
   };
 }
 
@@ -56,6 +57,7 @@ const development: IConfig = {
       dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       networkId: 80001,
     },
+    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
   },
 };
 
@@ -82,8 +84,9 @@ const production: IConfig = {
     },
     onboard: {
       dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      networkId: 1,
+      networkId: 137,
     },
+    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
   },
 };
 
@@ -112,6 +115,7 @@ const test: IConfig = {
       dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       networkId: 1,
     },
+    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
   },
 };
 
