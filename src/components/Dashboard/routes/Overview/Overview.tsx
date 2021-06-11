@@ -2,14 +2,16 @@ import React, { useContext } from "react";
 import { ActionContext, StateContext } from "../../../../hooks";
 import { ProjectItem } from "./components";
 import Skeleton from "react-loading-skeleton";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { IActionModel, IProject, IStateModel } from "../../../../model/hooks.model";
 import TimeAgo from "javascript-time-ago";
 import "./Overview.scss";
+import { LazyLoadedImage } from "../../../_SharedComponents";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-import { LazyLoadedImage } from "../../../_SharedComponents";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -24,6 +26,17 @@ const Overview = () => {
 
   return (
     <div className="Overview">
+      {!selectedOrg?.wallet && !orgLoading ? (
+        <div className="overview-alert">
+          <span className="exclamation-icon">
+            <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+          </span>
+          <span>
+            You have to enable your organization wallet before you can deploy your
+            project. <Link to="/dashboard/wallet">Enable now</Link>
+          </span>
+        </div>
+      ) : null}
       <div className="overview-container">
         <div className="overview-team-avatar-container">
           {!orgLoading ? (
@@ -88,6 +101,7 @@ const Overview = () => {
           <button
             type="button"
             className="secondary-button"
+            disabled={orgLoading}
             onClick={(e) => history.push("/dashboard/members/new")}
           >
             Invite Members
@@ -95,6 +109,7 @@ const Overview = () => {
           <button
             type="button"
             className="primary-button"
+            disabled={orgLoading}
             onClick={(e) => {
               setRepoForTriggerDeployment(null);
               history.push("/deploy/new");
