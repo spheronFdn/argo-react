@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ApiService } from "../../services";
 import { BroadcastChannel } from "broadcast-channel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import {
   faCheck,
   faChevronDown,
   faChevronUp,
+  faExclamationCircle,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
@@ -29,7 +30,7 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment } =
+  const { user, selectedOrg, selectedRepoForTriggerDeployment, orgLoading } =
     useContext<IStateModel>(StateContext);
   const { setLatestDeploymentConfig, setSelectedOrganization } =
     useContext<IActionModel>(ActionContext);
@@ -77,11 +78,20 @@ function DeploySiteConfig() {
       framework !== "static" &&
       packageManager &&
       buildCommand &&
-      publishDirectory
+      publishDirectory &&
+      selectedOrg?.wallet &&
+      !orgLoading
     ) {
       setDeployDisabled(false);
     } else {
-      if (selectedRepo && owner && branch && framework === "static") {
+      if (
+        selectedRepo &&
+        owner &&
+        branch &&
+        framework === "static" &&
+        selectedOrg?.wallet &&
+        !orgLoading
+      ) {
         setDeployDisabled(false);
       } else {
         setDeployDisabled(true);
@@ -96,6 +106,8 @@ function DeploySiteConfig() {
     buildCommand,
     publishDirectory,
     user,
+    selectedOrg,
+    orgLoading,
   ]);
 
   useEffect(() => {
@@ -252,7 +264,7 @@ function DeploySiteConfig() {
       workspace,
       packageManager,
       buildCommand,
-      publishDirectory,
+      publishDir: publishDirectory,
       branch,
       protocol,
     };
@@ -809,6 +821,22 @@ function DeploySiteConfig() {
                           </>
                         )}
                       </div>
+                      {!selectedOrg?.wallet && !orgLoading ? (
+                        <div className="wallet-details-container">
+                          <div className="wallet-details-items">
+                            <span className="exclamation-icon">
+                              <FontAwesomeIcon
+                                icon={faExclamationCircle}
+                              ></FontAwesomeIcon>
+                            </span>
+                            <span>
+                              You have to enable your organization wallet before you
+                              can deploy your project.
+                              <Link to="/dashboard/wallet">Enable now</Link>
+                            </span>
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                     <div className="button-container">
                       <button
