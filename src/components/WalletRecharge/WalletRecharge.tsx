@@ -44,33 +44,50 @@ function WalletRecharge() {
   }, [selectedOrg, orgLoading]);
 
   const rechargeArGo = async () => {
-    if (!wallet) {
-      setWalletLoader(true);
-      const wallet = await Web3Service.getAccount();
-      setWallet(wallet);
-      const walletBal = await Web3Service.getArgoBalance(wallet);
-      const walletApproval = await Web3Service.getArgoAllowances(wallet);
-      setWalletBal(walletBal);
-      setWalletApproval(walletApproval);
+    try {
+      if (!wallet) {
+        setWalletLoader(true);
+        const wallet = await Web3Service.getAccount();
+        setWallet(wallet);
+        if (wallet) {
+          const walletBal = await Web3Service.getArgoBalance(wallet);
+          const walletApproval = await Web3Service.getArgoAllowances(wallet);
+          setWalletBal(walletBal);
+          setWalletApproval(walletApproval);
+        }
+        setWalletLoader(false);
+      } else {
+        setRechargeLoader(true);
+        await Web3Service.giveAllowance(rechargeAmount);
+        setRechargeLoader(false);
+        fetchUser();
+        history.goBack();
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
       setWalletLoader(false);
-    } else {
-      setRechargeLoader(true);
-      await Web3Service.giveAllowance(rechargeAmount);
       setRechargeLoader(false);
-      fetchUser();
-      history.goBack();
+      window.location.reload();
     }
   };
 
   const refreshWallet = async () => {
-    setWalletLoader(true);
-    const wallet = await Web3Service.getCurrentAccount();
-    const walletBal = await Web3Service.getArgoBalance(wallet);
-    const walletApproval = await Web3Service.getArgoAllowances(wallet);
-    setWallet(wallet);
-    setWalletBal(walletBal);
-    setWalletApproval(walletApproval);
-    setWalletLoader(false);
+    try {
+      setWalletLoader(true);
+      const wallet = await Web3Service.getCurrentAccount();
+      const walletBal = await Web3Service.getArgoBalance(wallet);
+      const walletApproval = await Web3Service.getArgoAllowances(wallet);
+      setWallet(wallet);
+      setWalletBal(walletBal);
+      setWalletApproval(walletApproval);
+      setWalletLoader(false);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setWalletLoader(false);
+      window.location.reload();
+    }
   };
 
   useEffect(() => {

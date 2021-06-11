@@ -16,21 +16,27 @@ const onboard = Onboard({
   dappId: config.web3.onboard.dappId, // [String] The API key created by step one above
   networkId: config.web3.onboard.networkId, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
-    wallet: (wallet) => {
+    wallet: async (wallet) => {
       if (wallet.provider) {
-        provider = new ethers.providers.Web3Provider(wallet.provider);
-        const vendor: paymentLib.Vendor = new paymentLib.Vendor(
-          provider,
-          provider.getSigner(),
-        );
-        payment = new paymentLib.Payment(
-          vendor,
-          "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
-        );
-        payment.at(
-          config.web3.paymentContract.address,
-          config.web3.argoERC20.address,
-        );
+        try {
+          provider = new ethers.providers.Web3Provider(wallet.provider);
+          const vendor: paymentLib.Vendor = new paymentLib.Vendor(
+            provider,
+            provider.getSigner(),
+            config.web3.biconomyKey,
+          );
+          payment = new paymentLib.Payment(
+            vendor,
+            "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+          );
+          await payment.at(
+            config.web3.paymentContract.address,
+            config.web3.argoERC20.address,
+          );
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
       } else {
         provider = null;
         payment = null;
@@ -89,7 +95,7 @@ export const signRemoveWallet = async () => {
 
 export const giveAllowance = async (amount: string) => {
   if (payment) {
-    const tx: any = await payment.setNewApprovals(amount);
+    const tx = await payment.gasslessApproval(amount, config.web3.onboard.networkId);
     notify.hash(tx.hash);
     await tx.wait();
     return tx;
