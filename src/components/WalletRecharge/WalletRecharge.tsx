@@ -111,11 +111,24 @@ function WalletRecharge() {
               <div className="wallet-recharge-form">
                 <label className="wallet-recharge-form-title">Your wallet</label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please approve $ARGO tokens to our Payment smart contract.
+                  Please approve more than minimum $ARGO tokens to our Payment Smart
+                  Contract. Approval transaction is <b>Gassless</b>, no need to hold
+                  $MATIC tokens for approval.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To start deploying your application, minimum allowance required is
-                  50 $ARGO.
+                  20 $ARGO and minimum balance required is 20 $ARGO tokens.
+                </label>
+                <label className="wallet-recharge-form-subtitle">
+                  To get <b>Matic Testnet $ARGO Tokens</b>, please visit{" "}
+                  <a
+                    href="https://faucet.argoapp.live"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://faucet.argoapp.live
+                  </a>
+                  .
                 </label>
                 <div className="current-wallet-details">
                   <div className="current-wallet-details-title">Owner Address:</div>
