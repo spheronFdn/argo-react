@@ -79,6 +79,7 @@ function DeploySiteConfig() {
       packageManager &&
       buildCommand &&
       publishDirectory &&
+      protocol &&
       selectedOrg?.wallet &&
       !orgLoading
     ) {
@@ -89,6 +90,7 @@ function DeploySiteConfig() {
         owner &&
         branch &&
         framework === "static" &&
+        protocol &&
         selectedOrg?.wallet &&
         !orgLoading
       ) {
@@ -108,6 +110,7 @@ function DeploySiteConfig() {
     user,
     selectedOrg,
     orgLoading,
+    protocol,
   ]);
 
   useEffect(() => {
