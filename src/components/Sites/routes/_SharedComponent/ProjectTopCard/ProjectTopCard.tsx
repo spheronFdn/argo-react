@@ -30,7 +30,46 @@ const ProjectTopCard = () => {
     latestDeployment = sortedDeployments[0];
   }
 
-  const isArweave = latestDeployment?.protocol === "arweave" ? true : false;
+  // console.log("LATEST DEPLOYMENT -" + latestDeployment?.configuration.protocol);
+
+  const showProtocolImage = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return (
+          <img
+            src={require("../../../../../assets/png/ar_light.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "skynet":
+        return (
+          <img
+            src={require("../../../../../assets/png/skynet.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+
+      default:
+        return (
+          <img
+            src={require("../../../../../assets/png/question_mark.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+    }
+  };
 
   const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -183,24 +222,8 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            {isArweave ? (
-              <img
-                src={require("../../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="project-top-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
-            ) : (
-              <img
-                src={require("../../../../../assets/png/skynet.png")}
-                alt="github"
-                className="project-top-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
+            {showProtocolImage(
+              selectedProject?.latestDeployment?.configuration.protocol!,
             )}
 
             {latestDeployment?.sitePreview ? (

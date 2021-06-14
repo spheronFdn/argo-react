@@ -71,7 +71,7 @@ export interface IProject {
   latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
-  protocol: string;
+  // protocol: string;
   domains: IDomain[];
   subdomains: ISubdomain[];
   updatedAt: Date;
@@ -108,7 +108,7 @@ export interface IDeployment {
   status: string;
   paymentId: string;
   buildTime: string;
-  protocol: string;
+  // protocol: string;
   configuration: IConfiguration;
   project: IProject;
   createdAt: any;

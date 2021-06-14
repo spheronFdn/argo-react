@@ -124,6 +124,16 @@ const Wallet = () => {
       setRemovalLoader(false);
     }
   };
+  const showProtocolPrice = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return "AR";
+      case "skynet":
+        return "SIA";
+
+      default:
+    }
+  };
 
   return (
     <div className="Wallet">
@@ -312,7 +322,8 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.providerFee} AR
+                              {payment?.providerFee}{" "}
+                              {showProtocolPrice(payment?.protocol)}
                             </div>
                           </div>
                         </div>

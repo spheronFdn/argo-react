@@ -163,7 +163,8 @@ function DeploySiteConfig() {
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
       setPublishDirectory(selectedRepoForTriggerDeployment.publish_dir);
-      setCreateDeployProgress(2);
+      setProtocol(selectedRepoForTriggerDeployment.protocol);
+      setCreateDeployProgress(3);
 
       const branchUrl = `https://api.github.com/repos/${ownerName}/${repoName}/branches`;
       ApiService.getGithubRepoBranches(branchUrl).subscribe((res) => {
@@ -321,17 +322,10 @@ function DeploySiteConfig() {
     buildCommandPrefix = "yarn";
   }
 
-  function clickArweave() {
-    setProtocol("arweave");
+  const selectProtocol = (selectedProtocol: string) => {
+    setProtocol(selectedProtocol);
     setCreateDeployProgress(3);
-  }
-  function clickSkynet() {
-    setProtocol("skynet");
-    setCreateDeployProgress(3);
-  }
-
-  // console.log(createDeployProgress);
-  // console.log(protocol);
+  };
 
   return (
     <div className="DeploySiteConfig">
@@ -610,7 +604,7 @@ function DeploySiteConfig() {
                         <ul className="deploy-protocol-list">
                           <div
                             className="deploy-protocol-image"
-                            onClick={(e) => clickArweave()}
+                            onClick={(e) => selectProtocol("arweave")}
                           >
                             <LazyLoadedImage height={50} once>
                               <img
@@ -625,7 +619,7 @@ function DeploySiteConfig() {
                           </div>
                           <div
                             className="deploy-protocol-image"
-                            onClick={(e) => clickSkynet()}
+                            onClick={(e) => selectProtocol("skynet")}
                           >
                             <LazyLoadedImage height={50} once>
                               <img
