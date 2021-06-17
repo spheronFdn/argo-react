@@ -25,6 +25,16 @@
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom: 1px solid var(--themeColorDark);
+
+        .beta-badge {
+          padding: 2px 8px;
+          background-color: var(--themeColorDark);
+          color: var(--white);
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          margin-left: 0.5rem;
+        }
       }
 
       .domain-general-project-body {
@@ -38,6 +48,8 @@
           .domain-general-project-item-title {
             font-size: 18px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
           }
 
           .domain-general-project-item-subtitle {

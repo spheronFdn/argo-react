@@ -9,12 +9,7 @@ import {
   faGlobe,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  IActionModel,
-  IDomain,
-  IStateModel,
-  ISubdomain,
-} from "../../../../model/hooks.model";
+import { IActionModel, IDomain, IStateModel } from "../../../../model/hooks.model";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
@@ -305,7 +300,7 @@ const Deployment = () => {
                       )}
                     </>
                   ))}
-                  {subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                  {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                     <>
                       <a
                         href={`https://${s.name}`}

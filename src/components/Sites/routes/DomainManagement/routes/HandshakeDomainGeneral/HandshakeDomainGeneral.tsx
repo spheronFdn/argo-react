@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import "./HandshakeGeneral.scss";
+import "./HandshakeDomainGeneral.scss";
 // import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DomainItem } from "../../components";
@@ -11,12 +11,12 @@ import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
-const HandshakeGeneral = () => {
-  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+const HandshakeDomainGeneral = () => {
+  const { projectLoading, selectedProject, selectedOrg } =
+    useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
-  const [isLatest, setIsLatest] = useState<boolean>(false);
   const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
@@ -27,27 +27,20 @@ const HandshakeGeneral = () => {
   const addDomainDetails = () => {
     setDomainLoading(true);
     const domain = {
-      repositoryId: selectedProject?._id,
-      domain: domainName,
-      transactionId: isLatest
-        ? sortedDeployments?.length
-          ? sortedDeployments[0].sitePreview.split("/")[
-              sortedDeployments[0].sitePreview.split("/").length - 1
-            ]
-          : ""
-        : deployedSite.split("/")[deployedSite.split("/").length - 1],
-      isLatest,
+      orgId: selectedOrg?._id,
+      projectId: selectedProject?._id,
+      name: domainName,
+      link: deployedSite,
+      type: "handshake-domain",
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
         setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
       }
       setDomainLoading(false);
     });
@@ -55,28 +48,26 @@ const HandshakeGeneral = () => {
 
   const setTransaction = (tx: string) => {
     setDeployedSite(tx);
-
-    if (tx === "latest") {
-      setIsLatest(true);
-    } else {
-      setIsLatest(false);
-    }
   };
 
   return (
     <div className="DomainGeneral">
       <div className="domain-general-right-container">
         <div className="domain-general-project-details">
-          <div className="domain-general-project-header">Handshake Domains</div>
+          <div className="domain-general-project-header">
+            Handshake Domains
+            <span className="beta-badge">Beta</span>
+          </div>
           <div className="domain-general-project-body">
             <div className="domain-general-project-item">
               <label className="domain-general-project-item-title">
-                Handshake Domains
+                Configure your Handshake Domains
               </label>
               <label className="domain-general-project-item-subtitle">
                 By default, your site is always accessible via arweave gateway based
-                on transaction id. Handshake domains allow you to access your site in
-                decentralized web and censorship resistant.
+                on transaction hash. Handshake is decentralized naming and
+                certificate authority that allow you to access your site in a
+                decentralized peer-to-peer root naming system.
               </label>
               {/* <a href="https://github.com/">
                 Learn more about custom domains in our docs
@@ -88,7 +79,7 @@ const HandshakeGeneral = () => {
                 <input
                   type="text"
                   className="add-domain-input"
-                  placeholder="mywebsite.com"
+                  placeholder="mywebsite.hns"
                   value={domainName}
                   onChange={(e) => setDomainName(e.target.value)}
                 />
@@ -125,19 +116,20 @@ const HandshakeGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.domains.length ? (
-                    selectedProject?.domains.map((domain, index) => (
+                  selectedProject?.handshakeDomains.length ? (
+                    selectedProject?.handshakeDomains.map((domain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}
                           type="filled"
                           domainId={`${domain._id}`}
                           domain={`${domain.name}`}
-                          transactionId={`${domain.transactionId}`}
+                          link={`${domain.link}`}
                           isSubdomain={false}
-                          autoDns={domain.isLatestDomain}
-                          uuid={`${domain.argoDomainKey}`}
-                          ownerVerified={domain.ownerVerified}
+                          isHandshake={domain.type.indexOf("handshake") !== -1}
+                          autoDns={domain.isLatest}
+                          uuid={`${domain.argoKey}`}
+                          ownerVerified={domain.verified}
                         />
                       </div>
                     ))
@@ -149,9 +141,10 @@ const HandshakeGeneral = () => {
                       type="skeleton"
                       domainId=""
                       domain=""
-                      transactionId=""
+                      link=""
                       uuid=""
                       isSubdomain={false}
+                      isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
                     />
@@ -166,4 +159,4 @@ const HandshakeGeneral = () => {
   );
 };
 
-export default HandshakeGeneral;
+export default HandshakeDomainGeneral;

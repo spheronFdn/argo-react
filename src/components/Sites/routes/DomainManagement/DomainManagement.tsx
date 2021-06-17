@@ -2,7 +2,12 @@ import React from "react";
 import "./DomainManagement.scss";
 import { ProjectTopCard } from "../_SharedComponent";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
-import { DomainGeneral, HandshakeGeneral, SubdomainGeneral } from "./routes";
+import {
+  DomainGeneral,
+  HandshakeDomainGeneral,
+  HandshakeSubdomainGeneral,
+  SubdomainGeneral,
+} from "./routes";
 
 const DomainManagement = () => {
   const location = useLocation();
@@ -43,15 +48,29 @@ const DomainManagement = () => {
           </div>
           <div
             className={`domain-management-bar-item ${
-              lastPath === "handshake" ? "selected" : ""
+              lastPath === "handshake-domain" ? "selected" : ""
             }`}
             onClick={(e) =>
               history.push(
-                `/org/${params.orgid}/sites/${params.siteid}/domain/handshake`,
+                `/org/${params.orgid}/sites/${params.siteid}/domain/handshake-domain`,
               )
             }
           >
-            Handshake
+            HNS Domain
+            <span className="item-badge">Beta</span>
+          </div>
+          <div
+            className={`domain-management-bar-item ${
+              lastPath === "handshake-subdomain" ? "selected" : ""
+            }`}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/domain/handshake-subdomain`,
+              )
+            }
+          >
+            HNS Subdomain
+            <span className="item-badge">Beta</span>
           </div>
         </div>
         <Route
@@ -65,9 +84,14 @@ const DomainManagement = () => {
           render={() => <SubdomainGeneral />}
         />
         <Route
-          path="/org/:orgid/sites/:siteid/domain/handshake"
+          path="/org/:orgid/sites/:siteid/domain/handshake-domain"
           exact
-          render={() => <HandshakeGeneral />}
+          render={() => <HandshakeDomainGeneral />}
+        />
+        <Route
+          path="/org/:orgid/sites/:siteid/domain/handshake-subdomain"
+          exact
+          render={() => <HandshakeSubdomainGeneral />}
         />
       </div>
     </div>

@@ -136,7 +136,8 @@ const SubdomainGeneral = () => {
                           domainId={`${subdomain._id}`}
                           domain={`${subdomain.name}`}
                           link={`${subdomain.link}`}
-                          isSubdomain={subdomain.type === "subdomain"}
+                          isSubdomain={true}
+                          isHandshake={subdomain.type.indexOf("handshake") !== -1}
                           autoDns={!!subdomain.isLatest}
                           uuid={`${subdomain.argoKey}`}
                           ownerVerified={subdomain.verified}
@@ -154,6 +155,7 @@ const SubdomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={true}
+                      isHandshake={false}
                       autoDns={false}
                       ownerVerified={true}
                     />

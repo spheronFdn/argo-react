@@ -7,7 +7,6 @@ import { ActionContext, StateContext } from "../../../../../hooks";
 import {
   IActionModel,
   IStateModel,
-  ISubdomain,
   IDomain,
 } from "../../../../../model/hooks.model";
 import moment from "moment";
@@ -121,7 +120,7 @@ const ProjectTopCard = () => {
                       )}
                     </>
                   ))}
-                  {subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                  {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                     <>
                       <a
                         href={`https://${s.name}`}

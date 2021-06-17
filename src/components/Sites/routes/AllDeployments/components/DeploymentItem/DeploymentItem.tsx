@@ -14,7 +14,6 @@ import {
   IActionModel,
   IDomain,
   IStateModel,
-  ISubdomain,
 } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
@@ -87,23 +86,21 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                           )}
                         </>
                       ))}
-                      {subdomains.map(
-                        (s: ISubdomain, i: number, a: ISubdomain[]) => (
-                          <>
-                            <a
-                              href={`https://${s.name}`}
-                              className="commit-link"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {s.name}
-                            </a>
-                            {i !== a.length - 1 && (
-                              <span className="comma-sep">", "</span>
-                            )}
-                          </>
-                        ),
-                      )}
+                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${s.name}`}
+                            className="commit-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {i !== a.length - 1 && (
+                            <span className="comma-sep">", "</span>
+                          )}
+                        </>
+                      ))}
                     </>
                   }
                 </div>

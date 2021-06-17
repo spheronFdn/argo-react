@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import "./DomainGeneral.scss";
+import "./HandshakeSubdomainGeneral.scss";
 // import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DomainItem } from "../../components";
@@ -11,13 +11,12 @@ import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
-const DomainGeneral = () => {
+const HandshakeSubdomainGeneral = () => {
   const { projectLoading, selectedProject, selectedOrg } =
     useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
-  const [isLatest, setIsLatest] = useState<boolean>(false);
   const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
@@ -31,24 +30,17 @@ const DomainGeneral = () => {
       orgId: selectedOrg?._id,
       projectId: selectedProject?._id,
       name: domainName,
-      link: isLatest
-        ? sortedDeployments?.length
-          ? sortedDeployments[0].sitePreview
-          : ""
-        : deployedSite,
-      isLatest,
-      type: "domain",
+      link: deployedSite,
+      type: "handshake-subdomain",
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
         setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
       }
       setDomainLoading(false);
     });
@@ -56,28 +48,26 @@ const DomainGeneral = () => {
 
   const setTransaction = (tx: string) => {
     setDeployedSite(tx);
-
-    if (tx === "latest") {
-      setIsLatest(true);
-    } else {
-      setIsLatest(false);
-    }
   };
 
   return (
     <div className="DomainGeneral">
       <div className="domain-general-right-container">
         <div className="domain-general-project-details">
-          <div className="domain-general-project-header">Domains</div>
+          <div className="domain-general-project-header">
+            Handshake Subdomains
+            <span className="beta-badge">Beta</span>
+          </div>
           <div className="domain-general-project-body">
             <div className="domain-general-project-item">
               <label className="domain-general-project-item-title">
-                Custom Domains
+                Configure your Handshake Subdomains
               </label>
               <label className="domain-general-project-item-subtitle">
                 By default, your site is always accessible via arweave gateway based
-                on transaction hash. Custom domains allow you to access your site via
-                one or more non-ArGo domain names.
+                on transaction hash. Handshake is decentralized naming and
+                certificate authority that allow you to access your site in a
+                decentralized peer-to-peer root naming system.
               </label>
               {/* <a href="https://github.com/">
                 Learn more about custom domains in our docs
@@ -89,7 +79,7 @@ const DomainGeneral = () => {
                 <input
                   type="text"
                   className="add-domain-input"
-                  placeholder="mywebsite.com"
+                  placeholder="mywebsite.hns"
                   value={domainName}
                   onChange={(e) => setDomainName(e.target.value)}
                 />
@@ -100,7 +90,6 @@ const DomainGeneral = () => {
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    <option value="latest">Latest Deployed</option>
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -127,8 +116,8 @@ const DomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.domains.length ? (
-                    selectedProject?.domains.map((domain, index) => (
+                  selectedProject?.handshakeSubdomains.length ? (
+                    selectedProject?.handshakeSubdomains.map((domain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}
@@ -136,7 +125,7 @@ const DomainGeneral = () => {
                           domainId={`${domain._id}`}
                           domain={`${domain.name}`}
                           link={`${domain.link}`}
-                          isSubdomain={false}
+                          isSubdomain={true}
                           isHandshake={domain.type.indexOf("handshake") !== -1}
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
@@ -154,8 +143,8 @@ const DomainGeneral = () => {
                       domain=""
                       link=""
                       uuid=""
-                      isSubdomain={false}
-                      isHandshake={false}
+                      isSubdomain={true}
+                      isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
                     />
@@ -170,4 +159,4 @@ const DomainGeneral = () => {
   );
 };
 
-export default DomainGeneral;
+export default HandshakeSubdomainGeneral;
