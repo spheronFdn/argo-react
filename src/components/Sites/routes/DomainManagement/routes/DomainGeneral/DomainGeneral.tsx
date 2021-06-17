@@ -12,7 +12,8 @@ import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
 const DomainGeneral = () => {
-  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { projectLoading, selectedProject, selectedOrg } =
+    useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
   const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
@@ -27,16 +28,16 @@ const DomainGeneral = () => {
   const addDomainDetails = () => {
     setDomainLoading(true);
     const domain = {
-      repositoryId: selectedProject?._id,
-      domain: domainName,
-      transactionId: isLatest
+      orgId: selectedOrg?._id,
+      projectId: selectedProject?._id,
+      name: domainName,
+      link: isLatest
         ? sortedDeployments?.length
-          ? sortedDeployments[0].sitePreview.split("/")[
-              sortedDeployments[0].sitePreview.split("/").length - 1
-            ]
+          ? sortedDeployments[0].sitePreview
           : ""
-        : deployedSite.split("/")[deployedSite.split("/").length - 1],
+        : deployedSite,
       isLatest,
+      type: "domain",
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
@@ -134,11 +135,11 @@ const DomainGeneral = () => {
                           type="filled"
                           domainId={`${domain._id}`}
                           domain={`${domain.name}`}
-                          transactionId={`${domain.transactionId}`}
-                          isSubdomain={false}
-                          autoDns={domain.isLatestDomain}
-                          uuid={`${domain.argoDomainKey}`}
-                          ownerVerified={domain.ownerVerified}
+                          link={`${domain.link}`}
+                          isSubdomain={domain.type === "subdomain"}
+                          autoDns={domain.isLatest}
+                          uuid={`${domain.argoKey}`}
+                          ownerVerified={domain.verified}
                         />
                       </div>
                     ))
@@ -150,7 +151,7 @@ const DomainGeneral = () => {
                       type="skeleton"
                       domainId=""
                       domain=""
-                      transactionId=""
+                      link=""
                       uuid=""
                       isSubdomain={false}
                       autoDns={false}

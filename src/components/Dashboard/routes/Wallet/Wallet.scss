@@ -111,11 +111,25 @@
             color: var(--red);
           }
 
-          .recharge-button {
-            background: var(--fuelYellow) !important;
+          .button-container {
+            display: flex;
+            align-items: center;
 
-            &:hover {
-              background: var(--fuelYellowDark) !important;
+            .recharge-button {
+              background: var(--fuelYellow) !important;
+
+              &:hover {
+                background: var(--fuelYellowDark) !important;
+              }
+            }
+
+            .remove-button {
+              background: var(--red) !important;
+              margin-right: 1rem;
+
+              &:hover {
+                background: var(--redDark) !important;
+              }
             }
           }
         }
@@ -235,7 +249,6 @@
               padding: 0.5rem 1rem;
               text-align: center;
               display: flex;
-              width: 100%;
               align-items: center;
               justify-content: center;
               color: var(--grey4Color);

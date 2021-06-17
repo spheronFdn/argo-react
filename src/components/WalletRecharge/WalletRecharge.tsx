@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
-import { ApiService, Web3Service } from "../../services";
+import { Web3Service } from "../../services";
 import "./WalletRecharge.scss";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
@@ -14,7 +14,7 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function WalletRecharge() {
   const history = useHistory();
   const { fetchUser } = useContext<IActionModel>(ActionContext);
-  const { selectedOrg } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
 
   const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
@@ -27,52 +27,67 @@ function WalletRecharge() {
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    if (selectedOrg) {
+    if (selectedOrg && !orgLoading) {
       setWalletLoading(true);
-      const subscription = ApiService.getOrganization(
-        `${selectedOrg?._id}`,
-      ).subscribe(async (data) => {
-        if (componentIsMounted.current) {
-          setOrgWallet(data.wallet.address);
-          setWalletLoading(false);
-        }
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
+      if (componentIsMounted.current) {
+        setOrgWallet(selectedOrg.wallet.address);
+        setWalletLoading(false);
+      }
+    } else {
+      if (orgLoading) {
+        setWalletLoading(true);
+      } else {
+        setWalletLoading(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrg]);
+  }, [selectedOrg, orgLoading]);
 
   const rechargeArGo = async () => {
-    if (!wallet) {
-      setWalletLoader(true);
-      const wallet = await Web3Service.getAccount();
-      setWallet(wallet);
-      const walletBal = await Web3Service.getArgoBalance(wallet);
-      const walletApproval = await Web3Service.getArgoAllowances(wallet);
-      setWalletBal(walletBal);
-      setWalletApproval(walletApproval);
+    try {
+      if (!wallet) {
+        setWalletLoader(true);
+        const wallet = await Web3Service.getAccount();
+        setWallet(wallet);
+        if (wallet) {
+          const walletBal = await Web3Service.getArgoBalance(wallet);
+          const walletApproval = await Web3Service.getArgoAllowances(wallet);
+          setWalletBal(walletBal);
+          setWalletApproval(walletApproval);
+        }
+        setWalletLoader(false);
+      } else {
+        setRechargeLoader(true);
+        await Web3Service.giveAllowance(rechargeAmount);
+        setRechargeLoader(false);
+        fetchUser();
+        history.goBack();
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
       setWalletLoader(false);
-    } else {
-      setRechargeLoader(true);
-      await Web3Service.giveAllowance(rechargeAmount);
       setRechargeLoader(false);
-      fetchUser();
-      history.goBack();
+      window.location.reload();
     }
   };
 
   const refreshWallet = async () => {
-    setWalletLoader(true);
-    const wallet = await Web3Service.getCurrentAccount();
-    const walletBal = await Web3Service.getArgoBalance(wallet);
-    const walletApproval = await Web3Service.getArgoAllowances(wallet);
-    setWallet(wallet);
-    setWalletBal(walletBal);
-    setWalletApproval(walletApproval);
-    setWalletLoader(false);
+    try {
+      setWalletLoader(true);
+      const wallet = await Web3Service.getCurrentAccount();
+      const walletBal = await Web3Service.getArgoBalance(wallet);
+      const walletApproval = await Web3Service.getArgoAllowances(wallet);
+      setWallet(wallet);
+      setWalletBal(walletBal);
+      setWalletApproval(walletApproval);
+      setWalletLoader(false);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setWalletLoader(false);
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -96,11 +111,24 @@ function WalletRecharge() {
               <div className="wallet-recharge-form">
                 <label className="wallet-recharge-form-title">Your wallet</label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please approve $ARGO tokens to our Payment smart contract.
+                  Please approve more than minimum $ARGO tokens to our Payment Smart
+                  Contract. Approval transaction is <b>Gassless</b>, no need to hold
+                  $MATIC tokens for approval.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To start deploying your application, minimum allowance required is
-                  50 $ARGO.
+                  20 $ARGO and minimum balance required is 20 $ARGO tokens.
+                </label>
+                <label className="wallet-recharge-form-subtitle">
+                  To get <b>Matic Testnet $ARGO Tokens</b>, please visit{" "}
+                  <a
+                    href="https://faucet.argoapp.live"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://faucet.argoapp.live
+                  </a>
+                  .
                 </label>
                 <div className="current-wallet-details">
                   <div className="current-wallet-details-title">Owner Address:</div>

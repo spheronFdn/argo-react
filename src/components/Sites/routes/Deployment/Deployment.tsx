@@ -78,8 +78,8 @@ const Deployment = () => {
       (result) => {
         if (componentIsMounted.current) {
           const deployment = {
-            github_url: result.deployment.github_url,
-            branch: result.deployment.branch,
+            githubUrl: result.deployment.project.githubUrl,
+            branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
           };
           setLatestDeploymentConfig(deployment);
@@ -96,7 +96,7 @@ const Deployment = () => {
             setLatestDeploymentLogs(currentSiteDeployLogs);
             scrollToWithContainer(currentSiteDeployLogs.length - 1);
           });
-          if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
+          if (result.deployment.status.toLowerCase() === "pending") {
             socket.on(`deployment.${result.deployment.topic}`, (stream: any) => {
               if (stream.type === 1) {
                 stream.data.split("\n").forEach((line: string) => {
@@ -125,7 +125,7 @@ const Deployment = () => {
             });
           } else {
             setDeployedLink(result.deployment.sitePreview);
-            setDeploymentStatus(result.deployment.deploymentStatus.toLowerCase());
+            setDeploymentStatus(result.deployment.status.toLowerCase());
             const buildMins = Number.parseInt(`${result.deployment.buildTime / 60}`);
             const buildSecs = Number.parseInt(`${result.deployment.buildTime % 60}`);
             setBuildTime({ min: buildMins, sec: buildSecs });
@@ -135,6 +135,9 @@ const Deployment = () => {
               result.deployment.payment.status !== "failed"
             : true;
           if (paymentSocketOpeningCondition) {
+            if (result.deployment.payment) {
+              setPaymentStatus(result.deployment.payment.status);
+            }
             socket.on(`payment.${result.deployment.topic}`, (stream: any) => {
               if (stream.type === 1) {
                 setPaymentStatus("started");
@@ -177,29 +180,25 @@ const Deployment = () => {
   let displayGithubRepo = "";
   let githubBranchLink = "";
   if (currentSiteDeployConfig) {
-    displayGithubRepo = currentSiteDeployConfig.github_url.substring(
+    displayGithubRepo = currentSiteDeployConfig.githubUrl.substring(
       19,
-      currentSiteDeployConfig.github_url.length - 4,
+      currentSiteDeployConfig.githubUrl.length - 4,
     );
 
-    githubBranchLink = `${currentSiteDeployConfig.github_url.substring(
+    githubBranchLink = `${currentSiteDeployConfig.githubUrl.substring(
       0,
-      currentSiteDeployConfig.github_url.length - 4,
+      currentSiteDeployConfig.githubUrl.length - 4,
     )}/tree/${currentSiteDeployConfig.branch}`;
   }
 
   const domains =
     selectedProject && deployedLink
-      ? selectedProject.domains.filter(
-          (d) => deployedLink.indexOf(d.transactionId) !== -1,
-        )
+      ? selectedProject.domains.filter((d) => deployedLink.indexOf(d.link) !== -1)
       : [];
 
   const subdomains =
     selectedProject && deployedLink
-      ? selectedProject.subDomains.filter(
-          (d) => deployedLink.indexOf(d.transactionId) !== -1,
-        )
+      ? selectedProject.subdomains.filter((d) => deployedLink.indexOf(d.link) !== -1)
       : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;

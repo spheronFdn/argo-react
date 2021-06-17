@@ -84,6 +84,19 @@
             .wallet-recharge-form-subtitle {
               font-size: 16px;
               color: var(--grey3Color);
+              margin-top: 0.5rem;
+            }
+
+            a {
+              color: var(--themeColor);
+              margin-left: 4px;
+              text-decoration: none;
+              border-bottom: 1px dotted var(--themeColor);
+
+              &:hover {
+                color: var(--themeColorDark);
+                border-bottom: 1px dotted var(--themeColorDark);
+              }
             }
 
             .wallet-recharge-form-keypoint {
@@ -91,18 +104,6 @@
               color: var(--grey5Color);
               margin-top: 0.5rem;
               font-weight: 500;
-
-              a {
-                color: var(--themeColor);
-                margin-left: 4px;
-                text-decoration: none;
-                border-bottom: 1px dotted var(--themeColor);
-
-                &:hover {
-                  color: var(--themeColorDark);
-                  border-bottom: 1px dotted var(--themeColorDark);
-                }
-              }
             }
 
             .current-wallet-details {

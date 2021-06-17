@@ -40,14 +40,14 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   const domains =
     selectedProject && deployment?.sitePreview
       ? selectedProject.domains.filter(
-          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
 
   const subdomains =
     selectedProject && deployment?.sitePreview
-      ? selectedProject.subDomains.filter(
-          (d) => deployment?.sitePreview.indexOf(d.transactionId) !== -1,
+      ? selectedProject.subdomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
 
@@ -126,7 +126,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               <div className="deployment-commit-details">
                 <span className="bold-text">Production: </span>
                 <span>
-                  {deployment?.branch}
+                  {deployment?.configuration.branch}
                   {/* @
                   <a
                     href="https://github.com/"
@@ -147,10 +147,10 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               </div>
               <div className="deployment-status">
                 <span className="deployment-status-icon">
-                  {deployment?.deploymentStatus.toLowerCase() === "pending" && (
+                  {deployment?.status.toLowerCase() === "pending" && (
                     <Lottie options={defaultOptions} height={42} width={58} />
                   )}
-                  {deployment?.deploymentStatus.toLowerCase() === "deployed" && (
+                  {deployment?.status.toLowerCase() === "deployed" && (
                     <LazyLoadedImage height={16} once>
                       <img
                         src={require("../../../../../../assets/svg/rocket_background.svg")}
@@ -163,7 +163,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                     </LazyLoadedImage>
                   )}
                 </span>
-                {deployment?.deploymentStatus}
+                {deployment?.status}
               </div>
             </div>
           </div>
