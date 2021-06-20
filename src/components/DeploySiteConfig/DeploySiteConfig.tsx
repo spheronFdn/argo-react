@@ -294,7 +294,6 @@ function DeploySiteConfig() {
         });
       }
     });
-    // await ArweaveService.payArgoFee(walletKey);
   };
 
   const openGithubAppAuth = async () => {

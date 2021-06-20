@@ -1,7 +1,52 @@
 {
   "name": "argo-react",
-  "version": "0.1.0",
-  "private": true,
+  "version": "2.0.0",
+  "description": "ArGo Frontend App",
+  "main": "build/index.js",
+  "author": "ArGo",
+  "license": "MIT",
+  "keywords": [
+    "ArGo",
+    "Deployment",
+    "Payment",
+    "React",
+    "Typescript",
+    "Badass"
+  ],
+  "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "fix": "npm run fix:other && npm run fix:code",
+    "fix:code": "npm run test:code -- --fix",
+    "fix:other": "npm run prettier -- --write",
+    "prettier": "prettier \"**/*.{css,scss,json,md,html,yml}\" --ignore-path=.eslintignore",
+    "prettier:write": "prettier --write '**/*.{ts,tsx,json,md}' --ignore-path .gitignore",
+    "prettier:check": "prettier --check '**/*.{ts,tsx,json,md}' --ignore-path .gitignore",
+    "test:code": "eslint --max-warnings=0 --ignore-path .gitignore --ext .js,.ts,.tsx ."
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@argoapp/payment-js": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
@@ -40,40 +85,6 @@
     "source-map-explorer": "^2.5.0",
     "typescript": "~3.7.2",
     "web3": "^1.3.6"
-  },
-  "scripts": {
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "fix": "npm run fix:other && npm run fix:code",
-    "fix:code": "npm run test:code -- --fix",
-    "fix:other": "npm run prettier -- --write",
-    "prettier": "prettier \"**/*.{css,scss,json,md,html,yml}\" --ignore-path=.eslintignore",
-    "prettier:write": "prettier --write '**/*.{ts,tsx,json,md}' --ignore-path .gitignore",
-    "prettier:check": "prettier --check '**/*.{ts,tsx,json,md}' --ignore-path .gitignore",
-    "test:code": "eslint --max-warnings=0 --ignore-path .gitignore --ext .js,.ts,.tsx ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/javascript-time-ago": "^2.0.1",
