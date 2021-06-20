@@ -16,17 +16,15 @@ export interface IConfig {
     PROTOCOL: string;
   };
   web3: {
-    argoERC20: {
-      address: string;
-    };
-    paymentContract: {
-      address: string;
-    };
+    PAYMENT_CONTRACT_ADDRESS: string;
+    ERC20_CONTRACT_ADDRESS: string;
     onboard: {
-      dappId: string;
-      networkId: number;
+      DAPP_ID: string;
+      NETWORK_ID: number;
     };
-    biconomyKey: string;
+    BICONOMY_KEY: string;
+    CMC_KEY: string;
+    VERIFYING_MESSAGE: string;
   };
 }
 
@@ -47,17 +45,16 @@ const development: IConfig = {
     PROTOCOL: "https",
   },
   web3: {
-    argoERC20: {
-      address: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
-    },
-    paymentContract: {
-      address: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
-    },
+    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
+    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
     onboard: {
-      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      networkId: 80001,
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 80001,
     },
-    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 
@@ -76,17 +73,16 @@ const production: IConfig = {
     PROTOCOL: "https",
   },
   web3: {
-    argoERC20: {
-      address: "0xbla",
-    },
-    paymentContract: {
-      address: "0xbla",
-    },
+    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
+    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
     onboard: {
-      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      networkId: 137,
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 137,
     },
-    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 
@@ -105,17 +101,16 @@ const test: IConfig = {
     PROTOCOL: "http",
   },
   web3: {
-    argoERC20: {
-      address: "0xbla",
-    },
-    paymentContract: {
-      address: "0xbla",
-    },
+    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
+    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
     onboard: {
-      dappId: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      networkId: 1,
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 1,
     },
-    biconomyKey: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 
