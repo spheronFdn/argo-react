@@ -106,7 +106,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateDomain = () => {
     let records: string = "";
     if (!isSubdomain) {
@@ -119,7 +118,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         },
         { type: "ALIAS", host: "@", value: "sia.namebase.io.", ttl: 3600 },
       ];
-      // console.log(records_json)
 
       records = btoa(JSON.stringify(records_json));
     } else {
@@ -137,8 +135,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
           ttl: 3600,
         },
       ];
-      // eslint-disable-next-line no-console
-      console.log(records_json);
 
       records = btoa(JSON.stringify(records_json));
     }
@@ -153,39 +149,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       encodeURIComponent(redirectUrl.toString()),
     );
 
-    url.searchParams.append("records", btoa(JSON.stringify(records)));
+    url.searchParams.append("records", records);
     url.searchParams.append("redirect", encodedRedirectUrl);
 
-    // eslint-disable-next-line no-console
-    console.log(url.toString());
-
-    // window.location.href = url.toString();
-  };
-
-  const testRecord = () => {
-    const records_json = [
-      {
-        type: "TXT",
-        host: "_contenthash",
-        value: "arweave://hmH7QsHMCP6RwZLefhrNCpBCxGRVspYiupaCAh8WPnk",
-        ttl: 60,
-      },
-      { type: "ALIAS", host: "@", value: "sia.namebase.io.", ttl: 3600 },
-    ];
-    // console.log(records_json)
-    const records = btoa(JSON.stringify(records_json));
-
-    const url = new URL(`https://namebase.io/next/domain-manager/rekpero/records`);
-    const redirectUrl = window.location.href;
-    const encodedRedirectUrl = encodeURIComponent(
-      encodeURIComponent(redirectUrl.toString()),
-    );
-
-    url.searchParams.append("records", btoa(JSON.stringify(records)));
-    url.searchParams.append("redirect", encodedRedirectUrl);
-
-    // eslint-disable-next-line no-console
-    console.log(url.toString());
+    window.location.href = url.toString();
   };
 
   const setTransaction = (tx: string) => {
@@ -336,7 +303,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         {isHandshake ? (
                           <button
                             className="update-domain-button"
-                            onClick={testRecord}
+                            onClick={updateDomain}
                           >
                             Update
                           </button>
