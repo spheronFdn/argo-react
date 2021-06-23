@@ -5,16 +5,16 @@ import config from "../config";
 import * as paymentLib from "@argoapp/payment-js";
 
 var notify = Notify({
-  dappId: config.web3.onboard.dappId, // [String] The API key created by step one above
-  networkId: config.web3.onboard.networkId, // [Integer] The Ethereum network ID your Dapp uses.
+  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
 });
 
 let provider: ethers.providers.Web3Provider | null;
 let payment: paymentLib.Payment | null;
 
 const onboard = Onboard({
-  dappId: config.web3.onboard.dappId, // [String] The API key created by step one above
-  networkId: config.web3.onboard.networkId, // [Integer] The Ethereum network ID your Dapp uses.
+  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
     wallet: async (wallet) => {
       if (wallet.provider) {
@@ -23,15 +23,12 @@ const onboard = Onboard({
           const vendor: paymentLib.Vendor = new paymentLib.Vendor(
             provider,
             provider.getSigner(),
-            config.web3.biconomyKey,
+            config.web3.BICONOMY_KEY,
           );
-          payment = new paymentLib.Payment(
-            vendor,
-            "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
-          );
+          payment = new paymentLib.Payment(vendor, config.web3.CMC_KEY);
           await payment.at(
-            config.web3.paymentContract.address,
-            config.web3.argoERC20.address,
+            config.web3.PAYMENT_CONTRACT_ADDRESS,
+            config.web3.ERC20_CONTRACT_ADDRESS,
           );
         } catch (err) {
           // eslint-disable-next-line no-console
@@ -85,9 +82,7 @@ export const getArgoAllowances = async (address: string) => {
 
 export const signRemoveWallet = async () => {
   if (payment) {
-    const sign = await payment.vendor.signMessage(
-      "I'm the owner of this wallet and want to remove it from the organization.",
-    );
+    const sign = await payment.vendor.signMessage(config.web3.VERIFYING_MESSAGE);
     return sign;
   }
   return "";
@@ -95,7 +90,10 @@ export const signRemoveWallet = async () => {
 
 export const giveAllowance = async (amount: string) => {
   if (payment) {
-    const tx = await payment.gasslessApproval(amount, config.web3.onboard.networkId);
+    const tx = await payment.gasslessApproval(
+      amount,
+      config.web3.onboard.NETWORK_ID,
+    );
     notify.hash(tx.hash);
     await tx.wait();
     return tx;

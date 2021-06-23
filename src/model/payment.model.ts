@@ -4,5 +4,5 @@ export interface IPaymentModel {
   buildTime: string;
   providerFee: number;
   finalArgoFee: number;
-  createDate: string;
+  createdAt: string;
 }

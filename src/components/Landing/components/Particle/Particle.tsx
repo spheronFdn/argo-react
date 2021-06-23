@@ -2,12 +2,10 @@ import React from "react";
 import "./Particle.scss";
 import { IParticleModel } from "./model";
 
-const Particles = React.lazy(() => import("react-particles-js"));
-
 const Particle: React.FC<IParticleModel> = ({ type }) => {
   return (
     <div className="Particle">
-      <Particles
+      {/* <Particles
         params={
           type === "home"
             ? {
@@ -196,7 +194,7 @@ const Particle: React.FC<IParticleModel> = ({ type }) => {
                 },
               }
         }
-      />
+      /> */}
     </div>
   );
 };

@@ -326,7 +326,7 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {moment(payment?.createDate).format(
+                              {moment(payment?.createdAt).format(
                                 "DD-MM-YYYY hh:mm A",
                               )}
                             </div>

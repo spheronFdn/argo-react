@@ -3,7 +3,6 @@ import { faSpaceShuttle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import { Particle } from "..";
-import Typist from "react-typist";
 import "./LandingHome.scss";
 
 const LandingHome = () => {
@@ -16,10 +15,10 @@ const LandingHome = () => {
       <div className="landing-home-body">
         <h1>Permaweb deployment.</h1>
         <h1 className="heading-sec">
-          <Typist cursor={{ show: false }}>
+          {/* <Typist cursor={{ show: false }}>
             <Typist.Delay ms={500} />
             Simplified.
-          </Typist>
+          </Typist> */}
         </h1>
         <button
           type="button"
