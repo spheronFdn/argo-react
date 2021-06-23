@@ -141,6 +141,7 @@ const SubdomainGeneral = () => {
                           autoDns={!!subdomain.isLatest}
                           uuid={`${subdomain.argoKey}`}
                           ownerVerified={subdomain.verified}
+                          domainType={subdomain.type}
                         />
                       </div>
                     ))
@@ -158,6 +159,7 @@ const SubdomainGeneral = () => {
                       isHandshake={false}
                       autoDns={false}
                       ownerVerified={true}
+                      domainType=""
                     />
                   </>
                 )}

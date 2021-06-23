@@ -117,19 +117,20 @@ const HandshakeSubdomainGeneral = () => {
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
                   selectedProject?.handshakeSubdomains.length ? (
-                    selectedProject?.handshakeSubdomains.map((domain, index) => (
+                    selectedProject?.handshakeSubdomains.map((subdomain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}
                           type="filled"
-                          domainId={`${domain._id}`}
-                          domain={`${domain.name}`}
-                          link={`${domain.link}`}
+                          domainId={`${subdomain._id}`}
+                          domain={`${subdomain.name}`}
+                          link={`${subdomain.link}`}
                           isSubdomain={true}
-                          isHandshake={domain.type.indexOf("handshake") !== -1}
-                          autoDns={domain.isLatest}
-                          uuid={`${domain.argoKey}`}
-                          ownerVerified={domain.verified}
+                          isHandshake={subdomain.type.indexOf("handshake") !== -1}
+                          autoDns={subdomain.isLatest}
+                          uuid={`${subdomain.argoKey}`}
+                          ownerVerified={subdomain.verified}
+                          domainType={subdomain.type}
                         />
                       </div>
                     ))
@@ -147,6 +148,7 @@ const HandshakeSubdomainGeneral = () => {
                       isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
+                      domainType=""
                     />
                   </>
                 )}

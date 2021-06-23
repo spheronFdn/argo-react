@@ -25,6 +25,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   uuid,
   ownerVerified,
   isHandshake,
+  domainType,
 }) => {
   const { projectLoading, selectedProject, selectedOrg } =
     useContext<IStateModel>(StateContext);
@@ -58,9 +59,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     const domainBody = {
       orgId: selectedOrg?._id,
       name: editDomainName !== domain ? editDomainName : undefined,
-      link: deployedSite,
+      link: deployedSite !== link ? deployedSite : undefined,
       isLatest,
       projectId: selectedProject?._id,
+      type: domainType,
     };
     ApiService.editDomain(domainId, domainBody).subscribe((result) => {
       if (result.success) {
@@ -119,10 +121,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: "_contenthash",
-          value: "arweave://hmH7QsHMCP6RwZLefhrNCpBCxGRVspYiupaCAh8WPnk",
+          value: `arweave://${link.split("https://arweave.net/")[1]}`,
           ttl: 60,
         },
-        { type: "ALIAS", host: "@", value: "sia.namebase.io.", ttl: 3600 },
+        { type: "ALIAS", host: "@", value: "arweave.namebase.io.", ttl: 3600 },
       ];
 
       records = btoa(JSON.stringify(records_json));
@@ -137,7 +139,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "CNAME",
           host: domain.substring(0, domain.lastIndexOf(".")),
-          value: "sia.namebase.io.",
+          value: "arweave.namebase.io.",
           ttl: 3600,
         },
       ];
@@ -370,7 +372,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    <option value="latest">Latest Deployed</option>
+                    {!isHandshake && <option value="latest">Latest Deployed</option>}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>

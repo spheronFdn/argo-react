@@ -9,4 +9,5 @@ export default interface IDeploymentItemProps {
   uuid: string;
   ownerVerified: boolean;
   isHandshake: boolean;
+  domainType: string;
 }

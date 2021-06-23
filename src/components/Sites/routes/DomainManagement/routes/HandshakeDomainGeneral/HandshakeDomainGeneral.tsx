@@ -130,6 +130,7 @@ const HandshakeDomainGeneral = () => {
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
                           ownerVerified={domain.verified}
+                          domainType={domain.type}
                         />
                       </div>
                     ))
@@ -147,6 +148,7 @@ const HandshakeDomainGeneral = () => {
                       isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
+                      domainType=""
                     />
                   </>
                 )}
