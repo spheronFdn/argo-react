@@ -33,6 +33,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editDomainLoading, setEditDomainLoading] = useState<boolean>(false);
   const [verifyDomainLoading, setVerifyDomainLoading] = useState<boolean>(false);
+  const [updateDomainLoading, setUpdateDomainLoading] = useState<boolean>(false);
+  const [deleteDomainLoading, setDeleteDomainLoading] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
   const [isLatest, setIsLatest] = useState<boolean>(false);
   const [deployedSite, setDeployedSite] = useState<string>("");
@@ -76,6 +78,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   };
 
   const deleteDomain = () => {
+    setDeleteDomainLoading(true);
     ApiService.deleteDomain(domainId).subscribe((result) => {
       if (result.success) {
         setEditDomainName("");
@@ -85,6 +88,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         setEditDomainName("");
         setDeployedSite("");
       }
+      setDeleteDomainLoading(false);
     });
   };
 
@@ -97,16 +101,18 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       if (result.verified) {
         setEditDomainName("");
         setDeployedSite("");
+        setVerifyDomainLoading(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setEditDomainName("");
         setDeployedSite("");
+        setVerifyDomainLoading(false);
       }
-      setVerifyDomainLoading(false);
     });
   };
 
   const updateDomain = () => {
+    setUpdateDomainLoading(true);
     let records: string = "";
     if (!isSubdomain) {
       const records_json = [
@@ -140,7 +146,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     }
     const url = new URL(
       `https://namebase.io/next/domain-manager/${domain.substring(
-        domain.lastIndexOf("."),
+        domain.lastIndexOf(".") + 1,
         domain.length,
       )}/records`,
     );
@@ -151,7 +157,9 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
 
     url.searchParams.append("records", records);
     url.searchParams.append("redirect", encodedRedirectUrl);
+    setUpdateDomainLoading(false);
 
+    // console.log(url)
     window.location.href = url.toString();
   };
 
@@ -195,8 +203,15 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
                     Edit
                   </button>
-                  <button className="remove-button" onClick={deleteDomain}>
-                    Remove
+                  <button
+                    className="remove-button"
+                    disabled={deleteDomainLoading}
+                    onClick={deleteDomain}
+                  >
+                    <span>Remove</span>
+                    {deleteDomainLoading ? (
+                      <BounceLoader size={20} color={"#ee0902"} loading={true} />
+                    ) : null}
                   </button>
                 </div>
               </div>
@@ -303,20 +318,28 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         {isHandshake ? (
                           <button
                             className="update-domain-button"
+                            disabled={updateDomainLoading}
                             onClick={updateDomain}
                           >
                             Update
+                            {updateDomainLoading ? (
+                              <BounceLoader
+                                size={20}
+                                color={"#fff"}
+                                loading={true}
+                              />
+                            ) : null}
                           </button>
                         ) : null}
                         <button
                           className="verify-domain-button"
+                          disabled={verifyDomainLoading}
                           onClick={verifyDomain}
                         >
+                          Verify
                           {verifyDomainLoading ? (
                             <BounceLoader size={20} color={"#fff"} loading={true} />
-                          ) : (
-                            "Verify"
-                          )}
+                          ) : null}
                         </button>
                       </div>
                     </div>

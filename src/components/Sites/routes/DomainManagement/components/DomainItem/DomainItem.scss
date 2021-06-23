@@ -93,6 +93,10 @@
           &:disabled {
             border: 1px solid var(--redDisabled);
           }
+
+          span {
+            margin-right: 4px;
+          }
         }
       }
     }
@@ -208,6 +212,10 @@
               border: 1px solid transparent;
               font-weight: 500;
               width: 63px;
+
+              &:disabled {
+                background-color: #6972a0 !important;
+              }
             }
             .update-domain-button {
               @include primaryButton(
@@ -223,6 +231,10 @@
               font-weight: 500;
               width: 63px;
               margin-right: 1rem;
+
+              &:disabled {
+                background-color: #f1b86d;
+              }
             }
           }
         }
