@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./DeploymentItem.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import IDeploymentItemProps from "./model";
 import Skeleton from "react-loading-skeleton";
 import Lottie from "react-lottie";
@@ -161,6 +161,11 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         loading="lazy"
                       />
                     </LazyLoadedImage>
+                  )}
+                  {deployment?.status.toLowerCase() === "failed" && (
+                    <span className="failed-status-icon">
+                      <FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon>
+                    </span>
                   )}
                 </span>
                 {deployment?.status}
