@@ -26,7 +26,9 @@ const NODE_ENV: string = "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: process.env.API_URL || "http://localhost:8080",
+    API_URL:
+      process.env.API_URL ||
+      "http://hosting-api-dev-alb-1326611401.us-east-1.elb.amazonaws.com:80",
   },
   arweave: {
     RECHARGE_ADDRESS:
