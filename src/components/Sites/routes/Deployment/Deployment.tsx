@@ -127,10 +127,14 @@ const Deployment = () => {
               if (stream.type === 1) {
                 stream.data.split("\n").forEach((line: string) => {
                   if (line.trim()) {
-                    currentSiteDeployLogs.push({
-                      log: line,
-                      time: moment().format("hh:mm:ss A MM-DD-YYYY"),
-                    });
+                    if (
+                      currentSiteDeployLogs.map((l) => l.log).indexOf(line.trim())
+                    ) {
+                      currentSiteDeployLogs.push({
+                        log: line,
+                        time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+                      });
+                    }
                   }
                 });
                 setDeploymentStatus("pending");
