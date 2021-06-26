@@ -173,11 +173,12 @@ const Deployment = () => {
                 setPaymentStatus("started");
               } else if (stream.type === 2) {
                 const paymentDetails = stream.payload;
-                setPaymentDetails(paymentDetails);
-                setPaymentStatus("success");
-              } else if (stream.type === 3) {
-                setPaymentStatus("failed");
-                setPaymentMessage(stream.payload);
+                if (paymentDetails.status === "success") {
+                  setPaymentDetails(paymentDetails);
+                } else {
+                  setPaymentMessage(paymentDetails.failedMessage);
+                }
+                setPaymentStatus(paymentDetails.status);
               }
             });
           } else {
@@ -274,6 +275,17 @@ const Deployment = () => {
                   <LazyLoadedImage height={24} once>
                     <img
                       src={require("../../../../assets/svg/rocket_background.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={24}
+                      width={24}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
+                ) : deploymentStatus === "failed" ? (
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/error.svg")}
                       alt="rocket"
                       className="rocket-icon"
                       height={24}
