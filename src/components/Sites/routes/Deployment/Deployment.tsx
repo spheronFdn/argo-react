@@ -484,15 +484,15 @@ const Deployment = () => {
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Total Fee:</label>
-                  <span>{paymentDetails?.argoFee || 0} $ARGO</span>
+                  <span>{paymentDetails?.argoFee || 0} $DAI</span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Discount:</label>
-                  <span>{paymentDetails?.discount || 0} $ARGO</span>
+                  <span>{paymentDetails?.discount || 0} $DAI</span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Final Payment:</label>
-                  <span>{paymentDetails?.finalArgoFee || 0} $ARGO</span>
+                  <span>{paymentDetails?.finalArgoFee || 0} $DAI</span>
                 </div>
               </>
             )}

@@ -2,13 +2,6 @@ export interface IConfig {
   urls: {
     API_URL: string;
   };
-  arweave: {
-    RECHARGE_ADDRESS: string;
-    APP_NAME: string;
-    HOST: string;
-    PORT: number;
-    PROTOCOL: string;
-  };
   web3: {
     PAYMENT_CONTRACT_ADDRESS: string;
     ERC20_CONTRACT_ADDRESS: string;
@@ -30,17 +23,9 @@ const development: IConfig = {
       process.env.API_URL ||
       "http://hosting-api-dev-alb-1326611401.us-east-1.elb.amazonaws.com:80",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.net",
-    PORT: 443,
-    PROTOCOL: "https",
-  },
   web3: {
-    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
-    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
@@ -56,17 +41,9 @@ const production: IConfig = {
   urls: {
     API_URL: process.env.API_URL || "https://api.argoapp.live",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.net",
-    PORT: 443,
-    PROTOCOL: "https",
-  },
   web3: {
-    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
-    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 137,
@@ -82,17 +59,9 @@ const test: IConfig = {
   urls: {
     API_URL: process.env.API_URL || "http://localhost:8080",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.dev",
-    PORT: 80,
-    PROTOCOL: "http",
-  },
   web3: {
-    PAYMENT_CONTRACT_ADDRESS: "0x0B59779C5320B384c9D72457fcd92ABA299ef360",
-    ERC20_CONTRACT_ADDRESS: "0x135d0CabDF539dc82121a48b5936ee3E3F785558",
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 1,
