@@ -19,9 +19,7 @@ const NODE_ENV: string = "development";
 
 const development: IConfig = {
   urls: {
-    API_URL:
-      process.env.API_URL ||
-      "http://hosting-api-dev-alb-1326611401.us-east-1.elb.amazonaws.com:80",
+    API_URL: process.env.API_URL || "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
