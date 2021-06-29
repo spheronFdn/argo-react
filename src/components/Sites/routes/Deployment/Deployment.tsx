@@ -113,10 +113,14 @@ const Deployment = () => {
           result.deployment.logs.forEach((logItem: any) => {
             logItem.log.split("\n").forEach((line: string) => {
               if (line.trim()) {
-                currentSiteDeployLogs.push({
-                  log: line,
-                  time: moment(logItem.time).format("hh:mm:ss A MM-DD-YYYY"),
-                });
+                if (
+                  currentSiteDeployLogs.map((l) => l.log).indexOf(line.trim()) === -1
+                ) {
+                  currentSiteDeployLogs.push({
+                    log: line,
+                    time: moment(logItem.time).format("hh:mm:ss A MM-DD-YYYY"),
+                  });
+                }
               }
             });
             setLatestDeploymentLogs(currentSiteDeployLogs);
@@ -128,7 +132,9 @@ const Deployment = () => {
                 stream.data.split("\n").forEach((line: string) => {
                   if (line.trim()) {
                     if (
-                      currentSiteDeployLogs.map((l) => l.log).indexOf(line.trim())
+                      currentSiteDeployLogs
+                        .map((l) => l.log)
+                        .indexOf(line.trim()) === -1
                     ) {
                       currentSiteDeployLogs.push({
                         log: line,
