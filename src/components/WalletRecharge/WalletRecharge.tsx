@@ -117,7 +117,7 @@ function WalletRecharge() {
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To start deploying your application, minimum allowance required is
-                  2 $DAI and minimum balance required is 2 $DAI tokens.
+                  20 $DAI and minimum balance required is 20 $DAI tokens.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To get <b>Matic Testnet $DAI Tokens</b>, please visit{" "}
