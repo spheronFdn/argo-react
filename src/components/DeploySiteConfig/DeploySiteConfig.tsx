@@ -297,7 +297,7 @@ function DeploySiteConfig() {
   };
 
   const openGithubAppAuth = async () => {
-    const githubSignInUrl = `${window.location.origin}/github/app/${user?._id}`;
+    const githubSignInUrl = `${window.location.origin}/#/github/app/${user?._id}`;
     window.open(githubSignInUrl, "_blank");
   };
 
