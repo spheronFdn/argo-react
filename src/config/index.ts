@@ -15,11 +15,11 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = "development";
+const NODE_ENV: string = "production";
 
 const development: IConfig = {
   urls: {
-    API_URL: process.env.API_URL || "https://api.argoapp.live",
+    API_URL: "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -37,14 +37,14 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: process.env.API_URL || "https://api.argoapp.live",
+    API_URL: "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
-    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
+    ERC20_CONTRACT_ADDRESS: "0x02546A1848EA5282dC4a01529623c10C748f1E9f",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      NETWORK_ID: 137,
+      NETWORK_ID: 80001,
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -55,7 +55,7 @@ const production: IConfig = {
 
 const test: IConfig = {
   urls: {
-    API_URL: process.env.API_URL || "http://localhost:8080",
+    API_URL: "http://localhost:8080",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
