@@ -6,7 +6,7 @@ const GithubIcon = React.lazy(() => import("./components/SVGIcons/GithubIcon"));
 
 function Login() {
   const signInWithGithub = async () => {
-    const githubSignInUrl = `${window.location.origin}/signup/github`;
+    const githubSignInUrl = `${window.location.origin}/#/signup/github`;
     window.open(githubSignInUrl, "_blank");
   };
   // const signInWithGitlab = async () => {

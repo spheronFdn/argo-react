@@ -8,6 +8,7 @@ import {
   faChevronLeft,
   faGlobe,
   faInfoCircle,
+  faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { IActionModel, IDomain, IStateModel } from "../../../../model/hooks.model";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
@@ -65,11 +66,36 @@ const Deployment = () => {
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const componentIsMounted = useRef(true);
 
+  let socket: any = null;
+  let deploymentSvc: any = null;
+
   useEffect(() => {
-    setLatestDeploymentLogs([]);
     fetchProject(params.siteid);
-    const socket = socketIOClient(config.urls.API_URL);
-    const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
+    deploymentStartup();
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+      if (deploymentSvc) {
+        deploymentSvc.unsubscribe();
+      }
+      componentIsMounted.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const deploymentStartup = async () => {
+    setDeploymentLoading(true);
+    setLatestDeploymentLogs([]);
+    setDeploymentStatus("pending");
+    setPaymentStatus("waiting");
+    setPaymentDetails({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
+    setBuildTime({
+      min: 0,
+      sec: 0,
+    });
+    socket = socketIOClient(config.urls.API_URL);
+    deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
       (result) => {
         if (componentIsMounted.current) {
           const deployment = {
@@ -96,10 +122,16 @@ const Deployment = () => {
               if (stream.type === 1) {
                 stream.data.split("\n").forEach((line: string) => {
                   if (line.trim()) {
-                    currentSiteDeployLogs.push({
-                      log: line,
-                      time: moment().format("hh:mm:ss A MM-DD-YYYY"),
-                    });
+                    if (
+                      currentSiteDeployLogs
+                        .map((l) => l.log)
+                        .indexOf(line.trim()) === -1
+                    ) {
+                      currentSiteDeployLogs.push({
+                        log: line,
+                        time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+                      });
+                    }
                   }
                 });
                 setDeploymentStatus("pending");
@@ -138,11 +170,12 @@ const Deployment = () => {
                 setPaymentStatus("started");
               } else if (stream.type === 2) {
                 const paymentDetails = stream.payload;
-                setPaymentDetails(paymentDetails);
-                setPaymentStatus("success");
-              } else if (stream.type === 3) {
-                setPaymentStatus("failed");
-                setPaymentMessage(stream.payload);
+                if (paymentDetails.status === "success") {
+                  setPaymentDetails(paymentDetails);
+                } else {
+                  setPaymentMessage(paymentDetails.failedMessage);
+                }
+                setPaymentStatus(paymentDetails.status);
               }
             });
           } else {
@@ -164,13 +197,7 @@ const Deployment = () => {
         }
       },
     );
-    return () => {
-      socket.disconnect();
-      deploymentSvc.unsubscribe();
-      componentIsMounted.current = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
@@ -245,6 +272,17 @@ const Deployment = () => {
                   <LazyLoadedImage height={24} once>
                     <img
                       src={require("../../../../assets/svg/rocket_background.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={24}
+                      width={24}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
+                ) : deploymentStatus === "failed" ? (
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/error.svg")}
                       alt="rocket"
                       className="rocket-icon"
                       height={24}
@@ -443,15 +481,15 @@ const Deployment = () => {
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Total Fee:</label>
-                  <span>{paymentDetails?.argoFee || 0} $ARGO</span>
+                  <span>{paymentDetails?.argoFee || 0} $DAI</span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Discount:</label>
-                  <span>{paymentDetails?.discount || 0} $ARGO</span>
+                  <span>{paymentDetails?.discount || 0} $DAI</span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Final Payment:</label>
-                  <span>{paymentDetails?.finalArgoFee || 0} $ARGO</span>
+                  <span>{paymentDetails?.finalArgoFee || 0} $DAI</span>
                 </div>
               </>
             )}
@@ -464,8 +502,18 @@ const Deployment = () => {
         id="deploy-logs-container"
       >
         <div className="card-header-title deploy-logs-card-title">
-          <span className="card-header-deploy-title">Deploy Logs</span>
+          <div className="card-header-deploy-title-container">
+            <div className="card-header-deploy-title">Deploy Logs</div>
+            <div className="card-header-deploy-subtitle">
+              Please note that the realtime log streaming may not show all the logs
+              based on your connection bandwidth. Please refresh if you don't see
+              some logs
+            </div>
+          </div>
           {/* <button className="copy-to-clipboard-button">Copy to clipboard</button> */}
+          <div className="refresh-control" onClick={deploymentStartup}>
+            <FontAwesomeIcon icon={faSyncAlt}></FontAwesomeIcon>
+          </div>
         </div>
         <div className="deploy-logs-container" id="deploy-logs-list">
           {
