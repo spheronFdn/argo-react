@@ -79,16 +79,16 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
                   Overview
                 </Link>
               </li>
-              {/* <li className="nav-item">
-              <Link
-                className={`${
-                  location.pathname.indexOf("domains") !== -1 ? "selected" : ""
-                }`}
-                to="/dashboard/domains"
-              >
-                Domains
-              </Link>
-            </li> */}
+              <li className="nav-item">
+                <Link
+                  className={`${
+                    location.pathname.indexOf("wallet") !== -1 ? "selected" : ""
+                  }`}
+                  to="/dashboard/wallet"
+                >
+                  Wallet
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link
                   className={`${

@@ -8,6 +8,7 @@ import {
   faChevronLeft,
   faGlobe,
   faInfoCircle,
+  faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   IActionModel,
@@ -23,6 +24,7 @@ import { ApiService } from "../../../../services";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "javascript-time-ago";
 import Lottie from "react-lottie";
+import PulseLoader from "react-spinners/PulseLoader";
 
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
@@ -47,33 +49,63 @@ const Deployment = () => {
     },
   };
 
-  const {
-    currentSiteDeployConfig,
-    currentSiteDeployLogs,
-    selectedProject,
-  } = useContext<IStateModel>(StateContext);
-  const {
-    setLatestDeploymentLogs,
-    setLatestDeploymentConfig,
-    fetchProject,
-  } = useContext<IActionModel>(ActionContext);
+  const { currentSiteDeployConfig, currentSiteDeployLogs, selectedProject } =
+    useContext<IStateModel>(StateContext);
+  const { setLatestDeploymentLogs, setLatestDeploymentConfig, fetchProject } =
+    useContext<IActionModel>(ActionContext);
 
-  const [isDeployed, setIsDeployed] = useState<boolean>(false);
-  const [buildTime, setBuildTime] = useState<any>({ min: 0, sec: 0 });
+  const [deploymentStatus, setDeploymentStatus] = useState<string>("pending");
+  const [buildTime, setBuildTime] = useState<{ min: number; sec: number }>({
+    min: 0,
+    sec: 0,
+  });
+  const [paymentStatus, setPaymentStatus] = useState<string>("waiting");
+  const [paymentMessage, setPaymentMessage] = useState<string>("");
+  const [paymentDetails, setPaymentDetails] = useState<{
+    providerFee: number;
+    argoFee: number;
+    discount: number;
+    finalArgoFee: number;
+  }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const componentIsMounted = useRef(true);
 
+  let socket: any = null;
+  let deploymentSvc: any = null;
+
   useEffect(() => {
-    setLatestDeploymentLogs([]);
     fetchProject(params.siteid);
-    const socket = socketIOClient(config.urls.BACKEND_URL);
-    const deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
+    deploymentStartup();
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+      if (deploymentSvc) {
+        deploymentSvc.unsubscribe();
+      }
+      componentIsMounted.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const deploymentStartup = async () => {
+    setDeploymentLoading(true);
+    setLatestDeploymentLogs([]);
+    setDeploymentStatus("pending");
+    setPaymentStatus("waiting");
+    setPaymentDetails({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
+    setBuildTime({
+      min: 0,
+      sec: 0,
+    });
+    socket = socketIOClient(config.urls.API_URL);
+    deploymentSvc = ApiService.getDeployment(params.deploymentid).subscribe(
       (result) => {
         if (componentIsMounted.current) {
           const deployment = {
-            github_url: result.deployment.github_url,
-            branch: result.deployment.branch,
+            githubUrl: result.deployment.project.githubUrl,
+            branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
           };
           setLatestDeploymentConfig(deployment);
@@ -90,113 +122,111 @@ const Deployment = () => {
             setLatestDeploymentLogs(currentSiteDeployLogs);
             scrollToWithContainer(currentSiteDeployLogs.length - 1);
           });
-          if (result.deployment.deploymentStatus.toLowerCase() === "pending") {
-            socket.on(result.deployment.topic, (data: any) => {
-              data.split("\n").forEach((line: string) => {
-                if (line.trim()) {
-                  currentSiteDeployLogs.push({
-                    log: line,
-                    time: moment().format("hh:mm:ss A MM-DD-YYYY"),
-                  });
-                }
-              });
-              setLatestDeploymentLogs(currentSiteDeployLogs);
-              scrollToWithContainer(currentSiteDeployLogs.length - 1);
-              if (
-                currentSiteDeployLogs.length &&
-                currentSiteDeployLogs[currentSiteDeployLogs.length - 1].log.indexOf(
-                  "https://arweave.net/",
-                ) !== -1
-              ) {
-                setIsDeployed(true);
-                const arweaveLink = currentSiteDeployLogs[
-                  currentSiteDeployLogs.length - 1
-                ].log.trim();
+          if (result.deployment.status.toLowerCase() === "pending") {
+            socket.on(`deployment.${result.deployment.topic}`, (stream: any) => {
+              if (stream.type === 1) {
+                stream.data.split("\n").forEach((line: string) => {
+                  if (line.trim()) {
+                    if (
+                      currentSiteDeployLogs
+                        .map((l) => l.log)
+                        .indexOf(line.trim()) === -1
+                    ) {
+                      currentSiteDeployLogs.push({
+                        log: line,
+                        time: moment().format("hh:mm:ss A MM-DD-YYYY"),
+                      });
+                    }
+                  }
+                });
+                setDeploymentStatus("pending");
+                setLatestDeploymentLogs(currentSiteDeployLogs);
+                scrollToWithContainer(currentSiteDeployLogs.length - 1);
+              } else if (stream.type === 2) {
+                const arweaveLink = stream.data.logsToCapture.sitePreview;
                 setDeployedLink(arweaveLink);
-                const buildMins = Number.parseInt(
-                  `${
-                    moment
-                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
-                      .asSeconds() / 60
-                  }`,
-                );
-                const buildSecs = Number.parseInt(
-                  `${
-                    moment
-                      .duration(moment().diff(moment(currentSiteDeployLogs[0].time)))
-                      .asSeconds() % 60
-                  }`,
-                );
+                setDeploymentStatus(arweaveLink ? "deployed" : "failed");
+                const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
+                const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
                 setBuildTime({ min: buildMins, sec: buildSecs });
+              } else if (stream.type === 3) {
+                setDeployedLink("");
+                setDeploymentStatus("failed");
+                setBuildTime({ min: 0, sec: 0 });
               }
             });
-            // CLEAN UP THE EFFECT
-          } else if (
-            result.deployment.deploymentStatus.toLowerCase() === "deployed"
-          ) {
+          } else {
             setDeployedLink(result.deployment.sitePreview);
-            setIsDeployed(true);
-            const buildMins = Number.parseInt(
-              `${
-                moment
-                  .duration(
-                    moment(
-                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                    ).diff(moment(currentSiteDeployLogs[0].time)),
-                  )
-                  .asSeconds() / 60
-              }`,
-            );
-            const buildSecs = Number.parseInt(
-              `${
-                moment
-                  .duration(
-                    moment(
-                      currentSiteDeployLogs[currentSiteDeployLogs.length - 1].time,
-                    ).diff(moment(currentSiteDeployLogs[0].time)),
-                  )
-                  .asSeconds() % 60
-              }`,
-            );
+            setDeploymentStatus(result.deployment.status.toLowerCase());
+            const buildMins = Number.parseInt(`${result.deployment.buildTime / 60}`);
+            const buildSecs = Number.parseInt(`${result.deployment.buildTime % 60}`);
             setBuildTime({ min: buildMins, sec: buildSecs });
+          }
+          const paymentSocketOpeningCondition = result.deployment.payment
+            ? result.deployment.payment.status !== "success" &&
+              result.deployment.payment.status !== "failed"
+            : true;
+          if (paymentSocketOpeningCondition) {
+            if (result.deployment.payment) {
+              setPaymentStatus(result.deployment.payment.status);
+            }
+            socket.on(`payment.${result.deployment.topic}`, (stream: any) => {
+              if (stream.type === 1) {
+                setPaymentStatus("started");
+              } else if (stream.type === 2) {
+                const paymentDetails = stream.payload;
+                if (paymentDetails.status === "success") {
+                  setPaymentDetails(paymentDetails);
+                } else {
+                  setPaymentMessage(paymentDetails.failedMessage);
+                }
+                setPaymentStatus(paymentDetails.status);
+              }
+            });
+          } else {
+            if (result.deployment.payment.status === "success") {
+              const paymentDetails = {
+                providerFee: result.deployment.payment.providerFee,
+                argoFee: result.deployment.payment.argoFee,
+                discount: result.deployment.payment.discount,
+                finalArgoFee: result.deployment.payment.finalArgoFee,
+              };
+              setPaymentDetails(paymentDetails);
+              setPaymentStatus("success");
+            } else {
+              setPaymentStatus("failed");
+              setPaymentMessage(result.deployment.payment.failedMessage);
+            }
           }
           setDeploymentLoading(false);
         }
       },
     );
-    return () => {
-      socket.disconnect();
-      deploymentSvc.unsubscribe();
-      componentIsMounted.current = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
   if (currentSiteDeployConfig) {
-    displayGithubRepo = currentSiteDeployConfig.github_url.substring(
+    displayGithubRepo = currentSiteDeployConfig.githubUrl.substring(
       19,
-      currentSiteDeployConfig.github_url.length - 4,
+      currentSiteDeployConfig.githubUrl.length - 4,
     );
 
-    githubBranchLink = `${currentSiteDeployConfig.github_url.substring(
+    githubBranchLink = `${currentSiteDeployConfig.githubUrl.substring(
       0,
-      currentSiteDeployConfig.github_url.length - 4,
+      currentSiteDeployConfig.githubUrl.length - 4,
     )}/tree/${currentSiteDeployConfig.branch}`;
   }
 
-  const domains = selectedProject
-    ? selectedProject.domains.filter(
-        (d) => deployedLink.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const domains =
+    selectedProject && deployedLink
+      ? selectedProject.domains.filter((d) => deployedLink.indexOf(d.link) !== -1)
+      : [];
 
-  const subdomains = selectedProject
-    ? selectedProject.subDomains.filter(
-        (d) => deployedLink.indexOf(d.transactionId) !== -1,
-      )
-    : [];
+  const subdomains =
+    selectedProject && deployedLink
+      ? selectedProject.subdomains.filter((d) => deployedLink.indexOf(d.link) !== -1)
+      : [];
 
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
@@ -234,10 +264,16 @@ const Deployment = () => {
           <h2 className="site-deployment-card-header-title">
             {!deploymentLoading ? (
               <>
-                <span>{isDeployed ? "Published deploy" : "Deploy in Progress"}</span>
-                {!isDeployed ? (
+                <span>
+                  {deploymentStatus === "pending"
+                    ? "Deploy in Progress"
+                    : deploymentStatus === "deployed"
+                    ? "Deployment successful"
+                    : "Deployment failed"}
+                </span>
+                {deploymentStatus === "pending" ? (
                   <Lottie options={defaultOptions} height={54} width={76} />
-                ) : (
+                ) : deploymentStatus === "deployed" ? (
                   <LazyLoadedImage height={24} once>
                     <img
                       src={require("../../../../assets/svg/rocket_background.svg")}
@@ -248,7 +284,18 @@ const Deployment = () => {
                       loading="lazy"
                     />
                   </LazyLoadedImage>
-                )}
+                ) : deploymentStatus === "failed" ? (
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/error.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={24}
+                      width={24}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
+                ) : null}
               </>
             ) : (
               <Skeleton width={200} duration={2} />
@@ -258,13 +305,13 @@ const Deployment = () => {
             {!deploymentLoading ? (
               <>
                 <u>Production</u>: {currentSiteDeployConfig?.branch}
-                {!isDeployed
+                {deploymentStatus === "pending"
                   ? currentSiteDeployLogs[0]?.time
                     ? ` - Deployment started ${timeAgo.format(
                         moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
                       )}`
                     : null
-                  : ` - Deployed at ${moment(
+                  : ` - Deployment done at ${moment(
                       currentSiteDeployConfig.createdAt,
                     ).format("MMM DD, YYYY hh:mm a")}`}
               </>
@@ -345,7 +392,7 @@ const Deployment = () => {
             </LazyLoadedImage>
 
             {!deploymentLoading ? (
-              isDeployed ? (
+              deploymentStatus === "deployed" ? (
                 <a
                   href={deployedLink}
                   className="site-deployment-link"
@@ -354,9 +401,13 @@ const Deployment = () => {
                 >
                   Preview deploy on Arweave
                 </a>
-              ) : (
+              ) : deploymentStatus === "pending" ? (
                 <span className="site-deployment-link">
                   Deploying on Arweave, Preview in a minute
+                </span>
+              ) : (
+                <span className="site-deployment-link">
+                  Deploying failed, no link available
                 </span>
               )
             ) : (
@@ -365,7 +416,7 @@ const Deployment = () => {
           </div>
         </div>
       </div>
-      {isDeployed && (
+      {deploymentStatus !== "pending" && (
         <div className="site-deployment-card-container deploy-container">
           <div className="site-deployment-header-title">Deploy Summary</div>
           <div className="deploy-summary-item">
@@ -384,14 +435,90 @@ const Deployment = () => {
           </div>
         </div>
       )}
+      {deploymentStatus !== "pending" && (
+        <div className="site-deployment-card-container deploy-container">
+          <div className="site-deployment-header-title">Payment Summary</div>
+          <div className="site-deployment-body">
+            {paymentStatus === "waiting" && (
+              <div className="payment-loading">
+                <span>
+                  <PulseLoader size={20} color={"#3664ae"} />
+                </span>
+                <span>Waiting for the payment to be processed...</span>
+              </div>
+            )}
+            {paymentStatus === "started" && (
+              <div className="payment-loading">
+                <span>
+                  <PulseLoader size={20} color={"#3664ae"} />
+                </span>
+                <span>Processing Payment...</span>
+              </div>
+            )}
+            {paymentStatus === "failed" && (
+              <div className="payment-failed">
+                <span>
+                  <LazyLoadedImage height={24} once>
+                    <img
+                      src={require("../../../../assets/svg/error.svg")}
+                      alt="rocket"
+                      className="rocket-icon"
+                      height={36}
+                      width={36}
+                      loading="lazy"
+                    />
+                  </LazyLoadedImage>
+                </span>
+                <span>{paymentMessage}</span>
+              </div>
+            )}
+            {paymentStatus === "success" && (
+              <>
+                <div className="site-deployment-body-item">
+                  <label>Build Time:</label>
+                  <span>
+                    {buildTime?.min}m {buildTime?.sec}s
+                  </span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Provider Fee:</label>
+                  <span>{paymentDetails?.providerFee || 0} AR</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Total Fee:</label>
+                  <span>{paymentDetails?.argoFee || 0} $DAI</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Discount:</label>
+                  <span>{paymentDetails?.discount || 0} $DAI</span>
+                </div>
+                <div className="site-deployment-body-item">
+                  <label>Final Payment:</label>
+                  <span>{paymentDetails?.finalArgoFee || 0} $DAI</span>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <div
         className="site-deployment-card-container deploy-container"
         id="deploy-logs-container"
       >
         <div className="card-header-title deploy-logs-card-title">
-          <span className="card-header-deploy-title">Deploy Logs</span>
+          <div className="card-header-deploy-title-container">
+            <div className="card-header-deploy-title">Deploy Logs</div>
+            <div className="card-header-deploy-subtitle">
+              Please note that the realtime log streaming may not show all the logs
+              based on your connection bandwidth. Please refresh if you don't see
+              some logs
+            </div>
+          </div>
           {/* <button className="copy-to-clipboard-button">Copy to clipboard</button> */}
+          <div className="refresh-control" onClick={deploymentStartup}>
+            <FontAwesomeIcon icon={faSyncAlt}></FontAwesomeIcon>
+          </div>
         </div>
         <div className="deploy-logs-container" id="deploy-logs-list">
           {

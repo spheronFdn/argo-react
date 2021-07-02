@@ -57,11 +57,6 @@ export const AppProvider = (props: any) => {
           ...prevState,
           selectedProject: action.selectedProject,
         };
-      case Actions.SET_LATEST_DEPLOY_SOCKET_TOPIC:
-        return {
-          ...prevState,
-          currentSiteDeploySocketTopic: action.currentSiteDeploySocketTopic,
-        };
       case Actions.SET_PROJECT_LOADING:
         return {
           ...prevState,

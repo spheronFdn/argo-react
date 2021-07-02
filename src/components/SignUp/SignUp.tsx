@@ -10,10 +10,8 @@ const MemoSignUpListItem = React.memo(SignUpListItem);
 
 function SignUp() {
   const signInWithGithub = async () => {
-    import("../../config").then((config: any) => {
-      const githubSignInUrl = `${config.default.urls.BASE_URL}/signup/github`;
-      window.open(githubSignInUrl, "_blank");
-    });
+    const githubSignInUrl = `${window.location.origin}/#/signup/github`;
+    window.open(githubSignInUrl, "_blank");
   };
   // const signInWithGitlab = async () => {
   //   const gitlabSignInUrl = `${config.urls.BASE_URL}/signup/gitlab`;
