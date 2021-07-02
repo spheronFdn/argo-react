@@ -1,3 +1,3 @@
 import * as ApiService from "./ApiService";
-import * as ArweaveService from "./ArweaveService";
-export { ApiService, ArweaveService };
+import * as Web3Service from "./Web3Service";
+export { ApiService, Web3Service };

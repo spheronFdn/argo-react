@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
-import { ApiService, ArweaveService } from "../../services";
+import { Web3Service } from "../../services";
 import "./WalletRecharge.scss";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
@@ -14,65 +14,91 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function WalletRecharge() {
   const history = useHistory();
   const { fetchUser } = useContext<IActionModel>(ActionContext);
-  const { user } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
 
-  const [walletFileName, setWalletFileName] = useState<string>("");
-  const [walletKey, setWalletKey] = useState<any>();
-  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [wallet, setWallet] = useState<string>("");
   const [walletBal, setWalletBal] = useState<number>(0);
-  const [rechargeAmount, setRechargeAmount] = useState<string>("0.2");
+  const [walletApproval, setWalletApproval] = useState<number>(0);
+  const [rechargeAmount, setRechargeAmount] = useState<string>("");
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [rechargeLoader, setRechargeLoader] = useState<boolean>(false);
-  const [rechargeDisabled, setRechargeDisabled] = useState<boolean>(true);
+  const [walletLoading, setWalletLoading] = useState<boolean>(false);
+  const [orgWallet, setOrgWallet] = useState<string>("");
+  const componentIsMounted = useRef(true);
 
   useEffect(() => {
-    if (
-      Number.parseFloat(rechargeAmount) >= 0.2 &&
-      walletBal > Number.parseFloat(rechargeAmount)
-    ) {
-      setRechargeDisabled(false);
+    if (selectedOrg && !orgLoading) {
+      setWalletLoading(true);
+      if (componentIsMounted.current) {
+        setOrgWallet(selectedOrg.wallet.address);
+        setWalletLoading(false);
+      }
     } else {
-      setRechargeDisabled(true);
+      if (orgLoading) {
+        setWalletLoading(true);
+      } else {
+        setWalletLoading(false);
+      }
     }
-  }, [rechargeAmount, walletBal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOrg, orgLoading]);
 
-  //load file to json
-  const walletLogin = (file: any) => {
-    setWalletLoader(true);
-    setWalletFileName(file.name);
-    const fileReader = new FileReader();
-    fileReader.onloadend = handleFileRead;
-    fileReader.readAsText(file);
-  };
-
-  //set pk json to state
-  const handleFileRead = async (evt: any) => {
-    const jwk = JSON.parse(evt.target.result);
-    setWalletKey(jwk);
-    const address = await ArweaveService.getWalletAddress(jwk);
-    setWalletAddress(address);
-    const winstonBal = await ArweaveService.getWalletAmount(address);
-    const arBal = ArweaveService.convertToAr(winstonBal);
-    setWalletBal(+arBal);
-    setWalletLoader(false);
-  };
-
-  const rechargeArGo = () => {
-    setRechargeLoader(true);
-    ArweaveService.rechargeArgo(rechargeAmount, walletKey).then((transaction_id) => {
-      // eslint-disable-next-line no-console
-      const recharge = {
-        wallet_address: walletAddress,
-        wallet_balance: Number.parseFloat(rechargeAmount),
-        transaction_id,
-      };
-      ApiService.rechargeWallet(recharge).subscribe((res) => {
-        fetchUser();
+  const rechargeArGo = async () => {
+    try {
+      if (!wallet) {
+        setWalletLoader(true);
+        const wallet = await Web3Service.getAccount();
+        setWallet(wallet);
+        if (wallet) {
+          const walletBal = await Web3Service.getArgoBalance(wallet);
+          const walletApproval = await Web3Service.getArgoAllowances(wallet);
+          setWalletBal(walletBal);
+          setWalletApproval(walletApproval);
+        }
+        setWalletLoader(false);
+      } else {
+        setRechargeLoader(true);
+        await Web3Service.giveAllowance(rechargeAmount);
         setRechargeLoader(false);
-        history.push("/user/settings/wallet");
-      });
-    });
+        fetchUser();
+        history.goBack();
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setWalletLoader(false);
+      setRechargeLoader(false);
+      window.location.reload();
+    }
   };
+
+  const refreshWallet = async () => {
+    try {
+      setWalletLoader(true);
+      const wallet = await Web3Service.getCurrentAccount();
+      const walletBal = await Web3Service.getArgoBalance(wallet);
+      const walletApproval = await Web3Service.getArgoAllowances(wallet);
+      setWallet(wallet);
+      setWalletBal(walletBal);
+      setWalletApproval(walletApproval);
+      setWalletLoader(false);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setWalletLoader(false);
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+      Web3Service.disconnect();
+    };
+  }, []);
+
+  const rechargeDisable =
+    rechargeLoader || wallet ? !rechargeAmount || wallet !== orgWallet : false;
 
   return (
     <div className="WalletRecharge">
@@ -81,61 +107,51 @@ function WalletRecharge() {
         <div className="wallet-recharge-container">
           <div className="wallet-recharge-card">
             <div className="wallet-recharge-card-inner">
-              <h1 className="wallet-recharge-title">Wallet recharge</h1>
+              <h1 className="wallet-recharge-title">Increase Allowance</h1>
               <div className="wallet-recharge-form">
-                <label className="wallet-recharge-form-title">
-                  Your Arweave wallet
+                <label className="wallet-recharge-form-title">Your wallet</label>
+                <label className="wallet-recharge-form-subtitle">
+                  Please approve more than minimum $DAI tokens to our Payment Smart
+                  Contract. Approval transaction is <b>Gassless</b>, no need to hold
+                  $MATIC tokens for approval.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please recharge your ArGo wallet using your Arweave wallet.
+                  To start deploying your application, minimum allowance required is
+                  20 $DAI and minimum balance required is 20 $DAI tokens.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  To start deploying your application, minimum balance required is
-                  0.2 AR.
-                </label>
-                <label className="wallet-recharge-form-keypoint">
-                  If you don’t yet have a keyfile, you can get one by creating an
+                  To get <b>Matic Testnet $DAI Tokens</b>, please visit{" "}
                   <a
-                    href="https://www.arweave.org/wallet"
+                    href="https://faucet.argoapp.live"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Arweave Wallet
+                    https://faucet.argoapp.live
                   </a>
                   .
                 </label>
                 <div className="current-wallet-details">
-                  <div className="current-wallet-details-title">
-                    Current Balance:
-                  </div>
+                  <div className="current-wallet-details-title">Owner Address:</div>
                   <div className="current-wallet-details-desc">
-                    {user?.argo_wallet?.wallet_balance
-                      ? user?.argo_wallet?.wallet_balance
-                      : 0}{" "}
-                    AR
+                    {!walletLoading ? (
+                      `${orgWallet}`
+                    ) : (
+                      <Skeleton width={150} duration={2} />
+                    )}
                   </div>
-                </div>
-                <div className="wallet-choose-container">
-                  <button type="button" className="file-upload-button">
-                    Choose
-                  </button>
-                  <input
-                    type="file"
-                    className="file-upload"
-                    accept="application/JSON"
-                    onChange={(e: any) => walletLogin(e.target.files[0])}
-                  />
-                  {walletFileName && (
-                    <span className="file-upload-name">{walletFileName}</span>
-                  )}
                 </div>
               </div>
-              {walletFileName && (
+              {wallet && (
                 <>
                   <div className="wallet-recharge-form">
-                    <label className="wallet-recharge-form-title">
-                      Wallet Details
-                    </label>
+                    <div className="wallet-recharge-form-title-container">
+                      <label className="wallet-recharge-form-title">
+                        Wallet Details
+                      </label>
+                      <div className="refresh-control" onClick={refreshWallet}>
+                        <FontAwesomeIcon icon={faSyncAlt}></FontAwesomeIcon>
+                      </div>
+                    </div>
                     <div className="wallet-details-container">
                       <div className="wallet-details-items">
                         <div className="wallet-details-item-title">
@@ -143,47 +159,45 @@ function WalletRecharge() {
                         </div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            walletAddress
+                            wallet
                           ) : (
                             <Skeleton width={300} duration={2} />
                           )}
                         </div>
                       </div>
                       <div className="wallet-details-items">
-                        <div className="wallet-details-item-title">Ar Balance</div>
+                        <div className="wallet-details-item-title">DAI Balance</div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletBal} AR`
+                            `${walletBal} $DAI`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
                         </div>
                       </div>
-                      {walletBal === 0 && !walletLoader && (
-                        <div className="wallet-details-items">
-                          <span className="exclamation-icon">
-                            <FontAwesomeIcon
-                              icon={faExclamationCircle}
-                            ></FontAwesomeIcon>
-                          </span>
-                          <span>
-                            You do not have enough balance to recharge your ArGo
-                            wallet.
-                          </span>
+                      <div className="wallet-details-items">
+                        <div className="wallet-details-item-title">
+                          DAI Allowance
                         </div>
-                      )}
+                        <div className="wallet-details-item-desc">
+                          {!walletLoader ? (
+                            `${walletApproval} $DAI`
+                          ) : (
+                            <Skeleton width={150} duration={2} />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="wallet-recharge-form">
                     <label className="wallet-recharge-form-title">
-                      Wallet Recharge
+                      Approval Amount
                     </label>
                     <label className="wallet-recharge-form-subtitle">
-                      Please provide the recharge amount.
+                      Please provide the approval amount.
                     </label>
                     <input
                       type="number"
-                      min={0.2}
                       className="wallet-recharge-form-input"
                       value={rechargeAmount}
                       onChange={(e) => setRechargeAmount(e.target.value)}
@@ -191,17 +205,22 @@ function WalletRecharge() {
                   </div>
                 </>
               )}
+              {wallet && wallet !== orgWallet ? (
+                <div className="note-container">
+                  Note: only owner can increase the allowance amount
+                </div>
+              ) : null}
               <div className="button-container">
                 <button
                   type="button"
                   className="primary-button"
-                  disabled={rechargeDisabled || rechargeLoader}
+                  disabled={rechargeDisable}
                   onClick={rechargeArGo}
                 >
                   {rechargeLoader && (
                     <BounceLoader size={20} color={"#fff"} loading={true} />
                   )}
-                  Recharge
+                  {!wallet ? "Connect" : "Approve"}
                 </button>
                 <button
                   type="button"

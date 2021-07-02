@@ -1,6 +1,6 @@
 import React from "react";
 import "./UserSettings.scss";
-import { SettingsGeneral, SettingsWallet } from "./routes";
+import { SettingsGeneral } from "./routes";
 import { Route, useHistory, useLocation } from "react-router-dom";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
@@ -29,24 +29,11 @@ function UserSettings() {
               >
                 General
               </div>
-              <div
-                className={`settings-bar-item ${
-                  lastPath === "wallet" ? "selected" : ""
-                }`}
-                onClick={(e) => history.push("/user/settings/wallet")}
-              >
-                Wallet
-              </div>
             </div>
             <Route
               path="/user/settings/general"
               exact
               render={() => <SettingsGeneral />}
-            />
-            <Route
-              path="/user/settings/wallet"
-              exact
-              render={() => <SettingsWallet />}
             />
           </div>
         </div>

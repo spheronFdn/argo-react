@@ -1,19 +1,17 @@
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
 export interface IConfig {
   urls: {
-    BASE_URL: string;
     API_URL: string;
-    BACKEND_URL: string;
   };
-  arweave: {
-    RECHARGE_ADDRESS: string;
-    APP_NAME: string;
-    HOST: string;
-    PORT: number;
-    PROTOCOL: string;
+  web3: {
+    PAYMENT_CONTRACT_ADDRESS: string;
+    ERC20_CONTRACT_ADDRESS: string;
+    onboard: {
+      DAPP_ID: string;
+      NETWORK_ID: number;
+    };
+    BICONOMY_KEY: string;
+    CMC_KEY: string;
+    VERIFYING_MESSAGE: string;
   };
 }
 
@@ -21,49 +19,55 @@ const NODE_ENV: string = "production";
 
 const development: IConfig = {
   urls: {
-    BASE_URL: process.env.BASE_URL || "http://localhost:3000",
-    API_URL: process.env.API_URL || "http://localhost:8080",
-    BACKEND_URL: process.env.BACKEND_URL || "http://localhost:5000",
+    API_URL: "https://api.argoapp.live",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "NO6e9qZuAiXWhjJvGl7DYEMt90MMl1kdLwhhocQRAuY",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.net",
-    PORT: 443,
-    PROTOCOL: "https",
+  web3: {
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0x02546A1848EA5282dC4a01529623c10C748f1E9f",
+    onboard: {
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 80001,
+    },
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 
 const production: IConfig = {
   urls: {
-    BASE_URL: process.env.BASE_URL || "https://app.argoapp.live",
-    API_URL: process.env.API_URL || "https://api.argoapp.live",
-    BACKEND_URL: process.env.BACKEND_URL || "https://internal.argoapp.live",
+    API_URL: "https://api.argoapp.live",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "WCx054sIZjvbkZpCdaRYVLD5Z2fXmg7fH_C-8bRztKA",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.net",
-    PORT: 443,
-    PROTOCOL: "https",
+  web3: {
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0x02546A1848EA5282dC4a01529623c10C748f1E9f",
+    onboard: {
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 80001,
+    },
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 
 const test: IConfig = {
   urls: {
-    BASE_URL: process.env.BASE_URL || "http://localhost:3000",
-    API_URL: process.env.API_URL || "http://localhost:8080",
-    BACKEND_URL: process.env.BACKEND_URL || "http://localhost:5000",
+    API_URL: "http://localhost:8080",
   },
-  arweave: {
-    RECHARGE_ADDRESS:
-      process.env.RECHARGE_ADDRESS || "OlZkWxCBTaz3ebHTyYDPuDuBeWOXbezxy6UIQxjg_1g",
-    APP_NAME: process.env.APP_NAME || "ARGO_APP_LIVE",
-    HOST: "arweave.dev",
-    PORT: 80,
-    PROTOCOL: "http",
+  web3: {
+    PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
+    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
+    onboard: {
+      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
+      NETWORK_ID: 1,
+    },
+    BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
+    CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
+    VERIFYING_MESSAGE:
+      "I'm the owner of this wallet and want to remove it from the organization.",
   },
 };
 

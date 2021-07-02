@@ -144,7 +144,7 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
 export const getAllOwnerRepos = (installationId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/installations/${installationId}`, {
+      fetch(`${config.urls.API_URL}/project/installations/${installationId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
@@ -180,22 +180,37 @@ export const startDeployment = (deployment: any): Observable<any> => {
   });
 };
 
-export const getAllProjects = (orgId: string): Observable<any> => {
+export const createConfiguration = (configuration: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/organization/${orgId}`, {
+      fetch(`${config.urls.API_URL}/configuration/`, {
         headers: {
+          "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
+        method: "POST",
+        body: JSON.stringify(configuration),
       }).then((res) => res.json()),
     );
   });
 };
 
+// export const getAllProjects = (orgId: string): Observable<any> => {
+//   return defer(() => {
+//     return from<Promise<any>>(
+//       fetch(`${config.urls.API_URL}/organization/${orgId}`, {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+//         },
+//       }).then((res) => res.json()),
+//     );
+//   });
+// };
+
 export const getProject = (projectId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/${projectId}`, {
+      fetch(`${config.urls.API_URL}/project/${projectId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
@@ -219,43 +234,13 @@ export const getDeployment = (deploymentId: string): Observable<any> => {
 export const updateProject = (id: string, project: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/repository/${id}`, {
+      fetch(`${config.urls.API_URL}/project/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "PUT",
         body: JSON.stringify(project),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const rechargeWallet = (recharge: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/profile/wallet/balance`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(recharge),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const updateWalletAddress = (address: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/profile/wallet/address`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(address),
       }).then((res) => res.json()),
     );
   });
@@ -291,40 +276,10 @@ export const verifyDomain = (domainDetails: any): Observable<any> => {
   });
 };
 
-export const addSubdomain = (subdomainDetails: any): Observable<any> => {
+export const editDomain = (id: string, domainDetails: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const verifySubdomain = (subdomainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/verify`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "POST",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const editDomain = (domainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/`, {
+      fetch(`${config.urls.API_URL}/domain/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -336,46 +291,15 @@ export const editDomain = (domainDetails: any): Observable<any> => {
   });
 };
 
-export const editSubdomain = (subdomainDetails: any): Observable<any> => {
+export const deleteDomain = (id: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "PUT",
-        body: JSON.stringify(subdomainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const deleteDomain = (domainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/`, {
+      fetch(`${config.urls.API_URL}/domain/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },
         method: "DELETE",
-        body: JSON.stringify(domainDetails),
-      }).then((res) => res.json()),
-    );
-  });
-};
-
-export const deleteSubdomain = (subdomainDetails: any): Observable<any> => {
-  return defer(() => {
-    return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/domain/subdomain/`, {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-        },
-        method: "DELETE",
-        body: JSON.stringify(subdomainDetails),
       }).then((res) => res.json()),
     );
   });
@@ -385,13 +309,43 @@ export const getGithubRepoBranches = (branchUrl: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
       fetch(
-        `${config.urls.API_URL}/repository/installations/repo/branch?branches=${branchUrl}`,
+        `${config.urls.API_URL}/project/installations/repo/branch?branches=${branchUrl}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
           },
         },
       ).then((res) => res.json()),
+    );
+  });
+};
+
+export const enableWallet = (wallet: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/wallet`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(wallet),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const removeWallet = (wallet: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/wallet`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "DELETE",
+        body: JSON.stringify(wallet),
+      }).then((res) => res.json()),
     );
   });
 };

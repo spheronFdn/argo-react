@@ -20,6 +20,7 @@ import config from "../../config";
 import Skeleton from "react-loading-skeleton";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import { LazyLoadedImage } from "../_SharedComponents";
+import { v4 as uuidv4 } from "uuid";
 
 const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
 const MemoRepoItem = React.memo(RepoItem);
@@ -29,16 +30,10 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const {
-    user,
-    selectedOrg,
-    selectedRepoForTriggerDeployment,
-  } = useContext<IStateModel>(StateContext);
-  const {
-    setLatestDeploymentSocketTopic,
-    setLatestDeploymentConfig,
-    setSelectedOrganization,
-  } = useContext<IActionModel>(ActionContext);
+  const { user, selectedOrg, selectedRepoForTriggerDeployment, orgLoading } =
+    useContext<IStateModel>(StateContext);
+  const { setLatestDeploymentConfig, setSelectedOrganization } =
+    useContext<IActionModel>(ActionContext);
 
   const [createDeployProgress, setCreateDeployProgress] = useState(1);
   const [showRepoOrgDropdown, setShowRepoOrgDropdown] = useState<boolean>(false);
@@ -61,9 +56,8 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
-  const [startDeploymentLoading, setStartDeploymentLoading] = useState<boolean>(
-    false,
-  );
+  const [startDeploymentLoading, setStartDeploymentLoading] =
+    useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
   const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
 
@@ -84,8 +78,8 @@ function DeploySiteConfig() {
       packageManager &&
       buildCommand &&
       publishDirectory &&
-      user?.argo_wallet?.wallet_balance &&
-      user?.argo_wallet?.wallet_balance >= 0.2
+      selectedOrg?.wallet &&
+      !orgLoading
     ) {
       setDeployDisabled(false);
     } else {
@@ -94,8 +88,8 @@ function DeploySiteConfig() {
         owner &&
         branch &&
         framework === "static" &&
-        user?.argo_wallet?.wallet_balance &&
-        user?.argo_wallet?.wallet_balance >= 0.2
+        selectedOrg?.wallet &&
+        !orgLoading
       ) {
         setDeployDisabled(false);
       } else {
@@ -111,6 +105,8 @@ function DeploySiteConfig() {
     buildCommand,
     publishDirectory,
     user,
+    selectedOrg,
+    orgLoading,
   ]);
 
   useEffect(() => {
@@ -262,38 +258,46 @@ function DeploySiteConfig() {
 
   const startDeployment = async () => {
     setStartDeploymentLoading(true);
-    // await ArweaveService.payArgoFee(walletKey);
-    const deployment = {
-      github_url: selectedRepo.clone_url,
-      folder_name: selectedRepo.name,
-      owner: selectedRepoOwner.name,
-      installationId: selectedRepoOwner.installationId,
-      isPrivate: selectedRepo.private,
-      repositoryId: selectedRepo.repositoryId,
-      orgId: owner._id,
-      // project_name: projectName,
-      branch,
+    const configuration = {
       framework,
       workspace,
-      package_manager: packageManager,
-      build_command: buildCommand,
-      publish_dir: publishDirectory,
-      auto_publish: false,
+      packageManager,
+      buildCommand,
+      publishDir: publishDirectory,
+      branch,
     };
-    ApiService.startDeployment(deployment).subscribe((result) => {
+    ApiService.createConfiguration(configuration).subscribe((result) => {
       if (componentIsMounted.current) {
-        setLatestDeploymentSocketTopic(result.topic);
-        setLatestDeploymentConfig(deployment);
-        setStartDeploymentLoading(false);
-        history.push(
-          `/org/${selectedOrg?._id}/sites/${result.repositoryId}/deployments/${result.deploymentId}`,
-        );
+        const uniqueTopicId = uuidv4();
+
+        const deployment = {
+          githubUrl: selectedRepo.clone_url,
+          folderName: selectedRepo.name,
+          owner: selectedRepoOwner.name,
+          installationId: selectedRepoOwner.installationId,
+          isPrivate: selectedRepo.private,
+          repositoryId: selectedRepo.repositoryId,
+          organizationId: owner._id,
+          uniqueTopicId,
+          auto_publish: false,
+          configurationId: result._id,
+        };
+
+        ApiService.startDeployment(deployment).subscribe((result) => {
+          if (componentIsMounted.current) {
+            setLatestDeploymentConfig(deployment);
+            setStartDeploymentLoading(false);
+            history.push(
+              `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
+            );
+          }
+        });
       }
     });
   };
 
   const openGithubAppAuth = async () => {
-    const githubSignInUrl = `${config.urls.BASE_URL}/github/app/${user?._id}`;
+    const githubSignInUrl = `${window.location.origin}/#/github/app/${user?._id}`;
     window.open(githubSignInUrl, "_blank");
   };
 
@@ -662,26 +666,22 @@ function DeploySiteConfig() {
                         </div>
                         {framework !== "static" && (
                           <>
-                            {framework !== "next" ? (
-                              <div className="deploy-site-item-form-item">
-                                <label>Package Manager</label>
-                                <div className="deploy-site-item-select-container">
-                                  <select
-                                    className="deploy-site-item-select"
-                                    value={packageManager}
-                                    onChange={(e) =>
-                                      setPackageManager(e.target.value)
-                                    }
-                                  >
-                                    <option value="npm">NPM</option>
-                                    <option value="yarn">YARN</option>
-                                  </select>
-                                  <span className="select-down-icon">
-                                    <FontAwesomeIcon icon={faChevronDown} />
-                                  </span>
-                                </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Package Manager</label>
+                              <div className="deploy-site-item-select-container">
+                                <select
+                                  className="deploy-site-item-select"
+                                  value={packageManager}
+                                  onChange={(e) => setPackageManager(e.target.value)}
+                                >
+                                  <option value="npm">NPM</option>
+                                  <option value="yarn">YARN</option>
+                                </select>
+                                <span className="select-down-icon">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </span>
                               </div>
-                            ) : null}
+                            </div>
                             <div className="deploy-site-item-form-item">
                               <label>Build command</label>
                               {framework !== "next" ? (
@@ -720,8 +720,7 @@ function DeploySiteConfig() {
                           </>
                         )}
                       </div>
-                      {user?.argo_wallet?.wallet_balance &&
-                      user?.argo_wallet?.wallet_balance < 0.2 ? (
+                      {!selectedOrg?.wallet && !orgLoading ? (
                         <div className="wallet-details-container">
                           <div className="wallet-details-items">
                             <span className="exclamation-icon">
@@ -730,10 +729,9 @@ function DeploySiteConfig() {
                               ></FontAwesomeIcon>
                             </span>
                             <span>
-                              You do not have enough balance to deploy your site. To
-                              deploy a site you have to have minimum 0.2 AR in your
-                              wallet.
-                              <Link to="/wallet/recharge">Recharge here</Link>
+                              You have to enable your organization wallet before you
+                              can deploy your project.
+                              <Link to="/dashboard/wallet">Enable now</Link>
                             </span>
                           </div>
                         </div>
