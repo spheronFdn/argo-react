@@ -427,10 +427,12 @@ const Deployment = () => {
               <div className="deploy-summary-item-info-title">
                 Total time to Build & Deploy: {buildTime?.min}m {buildTime?.sec}s
               </div>
-              <div className="deploy-summary-item-info-description">
-                Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}
-                {currentSiteDeployLogs[currentSiteDeployLogs.length - 1]?.time}.
-              </div>
+              {buildTime?.min !== 0 && buildTime?.sec !== 0 && (
+                <div className="deploy-summary-item-info-description">
+                  Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}
+                  {currentSiteDeployLogs[currentSiteDeployLogs.length - 1]?.time}.
+                </div>
+              )}
             </div>
           </div>
         </div>
