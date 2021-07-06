@@ -102,6 +102,7 @@ const Deployment = () => {
             githubUrl: result.deployment.project.githubUrl,
             branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
+            protocol: result.deployment.configuration.protocol,
           };
           setLatestDeploymentConfig(deployment);
           currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
@@ -138,9 +139,9 @@ const Deployment = () => {
                 setLatestDeploymentLogs(currentSiteDeployLogs);
                 scrollToWithContainer(currentSiteDeployLogs.length - 1);
               } else if (stream.type === 2) {
-                const arweaveLink = stream.data.logsToCapture.sitePreview;
-                setDeployedLink(arweaveLink);
-                setDeploymentStatus(arweaveLink ? "deployed" : "failed");
+                const protocolLink = stream.data.logsToCapture.sitePreview;
+                setDeployedLink(protocolLink);
+                setDeploymentStatus(protocolLink ? "deployed" : "failed");
                 const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
                 const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
                 setBuildTime({ min: buildMins, sec: buildSecs });
@@ -237,6 +238,81 @@ const Deployment = () => {
       (document as any).getElementById("deploy-logs-list").scrollTop = topPos
         ? topPos
         : 0;
+    }
+  };
+
+  const showProtocolImage = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return (
+          <img
+            src={require("../../../../assets/png/ar_light.png")}
+            alt="arweave"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "skynet":
+        return (
+          <img
+            src={require("../../../../assets/png/skynet.png")}
+            alt="skynet"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+
+      default:
+        return (
+          <img
+            src={require("../../../../assets/png/question_mark.png")}
+            alt="?"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+    }
+  };
+
+  const showProtocolText = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return (
+          <span className="site-deployment-link">
+            Deploying on Arweave, Preview in a minute
+          </span>
+        );
+      case "skynet":
+        return (
+          <span className="site-deployment-link">
+            Deploying on Skynet, Preview in a minute
+          </span>
+        );
+
+      default:
+        return (
+          <span className="site-deployment-link">
+            Cannot find Protocol to Deploy
+          </span>
+        );
+    }
+  };
+
+  const showProtocolPrice = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return <span>{paymentDetails?.providerFee || 0} AR</span>;
+      case "skynet":
+        return <span>{paymentDetails?.providerFee || 0} SIA</span>;
+
+      default:
+        return <span>{paymentDetails?.providerFee || 0} ?</span>;
     }
   };
 
@@ -376,16 +452,8 @@ const Deployment = () => {
           </div>
           <div className="site-deployment-card-fields">
             <LazyLoadedImage height={24} once>
-              <img
-                src={require("../../../../assets/png/ar_light.png")}
-                alt="github"
-                className="site-deployment-logo"
-                height={24}
-                width={24}
-                loading="lazy"
-              />
+              {showProtocolImage(currentSiteDeployConfig?.protocol)}
             </LazyLoadedImage>
-
             {!deploymentLoading ? (
               deploymentStatus === "deployed" ? (
                 <a
@@ -394,12 +462,10 @@ const Deployment = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Preview deploy on Arweave
+                  Preview deploy
                 </a>
               ) : deploymentStatus === "pending" ? (
-                <span className="site-deployment-link">
-                  Deploying on Arweave, Preview in a minute
-                </span>
+                showProtocolText(currentSiteDeployConfig?.protocol)
               ) : (
                 <span className="site-deployment-link">
                   Deploying failed, no link available
@@ -422,10 +488,12 @@ const Deployment = () => {
               <div className="deploy-summary-item-info-title">
                 Total time to Build & Deploy: {buildTime?.min}m {buildTime?.sec}s
               </div>
-              <div className="deploy-summary-item-info-description">
-                Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}
-                {currentSiteDeployLogs[currentSiteDeployLogs.length - 1]?.time}.
-              </div>
+              {buildTime?.min !== 0 && buildTime?.sec !== 0 && (
+                <div className="deploy-summary-item-info-description">
+                  Build started at {currentSiteDeployLogs[0]?.time} and ended at{" "}
+                  {currentSiteDeployLogs[currentSiteDeployLogs.length - 1]?.time}.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -477,7 +545,7 @@ const Deployment = () => {
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Provider Fee:</label>
-                  <span>{paymentDetails?.providerFee || 0} AR</span>
+                  {showProtocolPrice(currentSiteDeployConfig?.protocol)}
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Total Fee:</label>
@@ -525,7 +593,8 @@ const Deployment = () => {
                   key={i}
                 >
                   {currLog.time}:{" "}
-                  {currLog.log.indexOf("https://arweave.net/") !== -1 ? (
+                  {currLog.log.indexOf("https://arweave.net/") !== -1 ||
+                  currLog.log.indexOf("https://siasky.net/") !== -1 ? (
                     <a
                       href={currLog.log.trim()}
                       className="log-site-link"

@@ -61,6 +61,7 @@ export interface IConfiguration {
   publishDir: string;
   packageManager: string;
   framework: string;
+  protocol: string;
 }
 
 export interface IProject {
@@ -70,6 +71,7 @@ export interface IProject {
   latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
+  // protocol: string;
   domains: IDomain[];
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
@@ -98,6 +100,7 @@ export interface IDeployment {
   status: string;
   paymentId: string;
   buildTime: string;
+  // protocol: string;
   configuration: IConfiguration;
   project: IProject;
   createdAt: any;
