@@ -50,8 +50,18 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
           (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
-
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
+  const showProtocolTag = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return <span className="protocol-tag-arweave">Arweave</span>;
+      case "skynet":
+        return <span className="protocol-tag-skynet">Skynet</span>;
+
+      default:
+    }
+  };
 
   const openDeployment = () => {
     ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
@@ -61,6 +71,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       );
     });
   };
+
   return (
     <div className="deployment-item" key={index} onClick={openDeployment}>
       {type === "filled" && (
@@ -109,7 +120,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 </div>
               )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Arweave Link: </span>
+                <span className="bold-text">Preview: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}
@@ -138,6 +149,9 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   </a>{" "}
                   - Updated feature */}
                 </span>
+              </div>
+              <div className="protocol-tag-container">
+                {showProtocolTag(deployment?.configuration.protocol!)}
               </div>
             </div>
             <div className="deployment-time-details">

@@ -111,7 +111,7 @@ const Overview = () => {
             </a>
           </div>
           <div className="deploy-summary-body-item">
-            <label>Latest deploy site on Arweave:</label>
+            <label>Latest deploy site:</label>
             {!projectLoading ? (
               latestDeployment?.sitePreview ? (
                 <a
