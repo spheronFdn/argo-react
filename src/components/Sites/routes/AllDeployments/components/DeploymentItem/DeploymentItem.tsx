@@ -176,6 +176,18 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                       />
                     </LazyLoadedImage>
                   )}
+                  {deployment?.status.toLowerCase() === "failed" && (
+                    <LazyLoadedImage height={16} once>
+                      <img
+                        src={require("../../../../../../assets/svg/error.svg")}
+                        alt="rocket"
+                        className="rocket-icon"
+                        height={16}
+                        width={16}
+                        loading="lazy"
+                      />
+                    </LazyLoadedImage>
+                  )}
                 </span>
                 {deployment?.status}
               </div>

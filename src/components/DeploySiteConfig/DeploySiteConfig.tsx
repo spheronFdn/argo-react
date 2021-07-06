@@ -300,11 +300,10 @@ function DeploySiteConfig() {
         });
       }
     });
-    // await ArweaveService.payArgoFee(walletKey);
   };
 
   const openGithubAppAuth = async () => {
-    const githubSignInUrl = `${config.urls.BASE_URL}/github/app/${user?._id}`;
+    const githubSignInUrl = `${window.location.origin}/#/github/app/${user?._id}`;
     window.open(githubSignInUrl, "_blank");
   };
 
@@ -760,26 +759,22 @@ function DeploySiteConfig() {
                         </div>
                         {framework !== "static" && (
                           <>
-                            {framework !== "next" ? (
-                              <div className="deploy-site-item-form-item">
-                                <label>Package Manager</label>
-                                <div className="deploy-site-item-select-container">
-                                  <select
-                                    className="deploy-site-item-select"
-                                    value={packageManager}
-                                    onChange={(e) =>
-                                      setPackageManager(e.target.value)
-                                    }
-                                  >
-                                    <option value="npm">NPM</option>
-                                    <option value="yarn">YARN</option>
-                                  </select>
-                                  <span className="select-down-icon">
-                                    <FontAwesomeIcon icon={faChevronDown} />
-                                  </span>
-                                </div>
+                            <div className="deploy-site-item-form-item">
+                              <label>Package Manager</label>
+                              <div className="deploy-site-item-select-container">
+                                <select
+                                  className="deploy-site-item-select"
+                                  value={packageManager}
+                                  onChange={(e) => setPackageManager(e.target.value)}
+                                >
+                                  <option value="npm">NPM</option>
+                                  <option value="yarn">YARN</option>
+                                </select>
+                                <span className="select-down-icon">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </span>
                               </div>
-                            ) : null}
+                            </div>
                             <div className="deploy-site-item-form-item">
                               <label>Build command</label>
                               {framework !== "next" ? (

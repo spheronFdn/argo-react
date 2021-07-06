@@ -176,10 +176,10 @@ const Wallet = () => {
                         </div>
                       </div>
                       <div className="wallet-details-items">
-                        <div className="wallet-details-item-title">ARGO Balance</div>
+                        <div className="wallet-details-item-title">DAI Balance</div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletBal} $ARGO`
+                            `${walletBal} $DAI`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
@@ -270,7 +270,7 @@ const Wallet = () => {
                               Check Allowance
                             </button>
                           ) : (
-                            `${argoAllowance} $ARGO`
+                            `${argoAllowance} $DAI`
                           )}
                         </div>
                       ) : (
@@ -330,14 +330,14 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.finalArgoFee.toFixed(3)} $ARGO
+                              {payment?.finalArgoFee.toFixed(3)} $DAI
                             </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {moment(payment?.createDate).format(
+                              {moment(payment?.createdAt).format(
                                 "DD-MM-YYYY hh:mm A",
                               )}
                             </div>

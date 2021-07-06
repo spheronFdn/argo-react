@@ -5,5 +5,5 @@ export interface IPaymentModel {
   protocol: string;
   providerFee: number;
   finalArgoFee: number;
-  createDate: string;
+  createdAt: string;
 }

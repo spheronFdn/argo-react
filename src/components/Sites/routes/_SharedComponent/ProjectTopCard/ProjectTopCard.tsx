@@ -95,19 +95,11 @@ const ProjectTopCard = () => {
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
 
   const triggerDeployment = () => {
-    let latest = null;
-    const sortedDeployments = projectLoading
-      ? []
-      : selectedProject?.deployments.sort((a, b) =>
-          moment(b.createdAt).diff(moment(a.createdAt)),
-        );
-    if (sortedDeployments) {
-      latest = sortedDeployments[0];
-    }
+    const latest = selectedProject?.latestDeployment;
     setRepoForTriggerDeployment({
       github_url: selectedProject?.githubUrl,
       branch: latest?.configuration.branch,
-      framework: selectedProject?.latestDeployment?.configuration.framework,
+      framework: latest?.configuration.framework,
       publish_dir: latest?.configuration.publishDir,
       package_manager: latest?.configuration.packageManager,
       build_command: latest?.configuration.buildCommand,

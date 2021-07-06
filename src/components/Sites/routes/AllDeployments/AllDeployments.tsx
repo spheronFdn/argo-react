@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import "./AllDeployments.scss";
 import Skeleton from "react-loading-skeleton";
 import { ProjectTopCard } from "../_SharedComponent";
-// import Switch from "react-switch";
 import { StateContext } from "../../../../hooks";
 import { IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
