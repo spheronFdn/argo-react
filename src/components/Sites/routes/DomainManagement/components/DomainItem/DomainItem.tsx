@@ -278,7 +278,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="tr">
                           <div className="td">A</div>
                           <div className="td">@</div>
-                          <div className="td">sia.namebase.io.</div>
+                          <div className="td">arweave.namebase.io.</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
