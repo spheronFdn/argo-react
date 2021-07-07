@@ -293,7 +293,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="tr">
                           <div className="td">CNAME</div>
                           <div className="td">{domain}</div>
-                          <div className="td">sia.namebase.io.</div>
+                          <div className="td">arweave.namebase.io.</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
