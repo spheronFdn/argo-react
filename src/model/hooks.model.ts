@@ -61,6 +61,7 @@ export interface IConfiguration {
   publishDir: string;
   packageManager: string;
   framework: string;
+  protocol: string;
 }
 
 export interface IProject {
@@ -70,8 +71,11 @@ export interface IProject {
   latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
+  // protocol: string;
   domains: IDomain[];
-  subdomains: ISubdomain[];
+  subdomains: IDomain[];
+  handshakeDomains: IDomain[];
+  handshakeSubdomains: IDomain[];
   updatedAt: Date;
   createdAt: Date;
 }
@@ -87,16 +91,6 @@ export interface IDomain {
   type: string;
 }
 
-export interface ISubdomain {
-  _id?: string;
-  name: string;
-  link: string;
-  isLatest: boolean;
-  argoKey: string;
-  verified: boolean;
-  projectId: string;
-  type: string;
-}
 export interface IDeployment {
   _id?: string;
   sitePreview: string;
@@ -106,6 +100,7 @@ export interface IDeployment {
   status: string;
   paymentId: string;
   buildTime: string;
+  // protocol: string;
   configuration: IConfiguration;
   project: IProject;
   createdAt: any;

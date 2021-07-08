@@ -10,7 +10,6 @@ import {
   IActionModel,
   IDomain,
   IStateModel,
-  ISubdomain,
 } from "../../../../../../model/hooks.model";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 
@@ -94,7 +93,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                   </>
                 ))}
               {subdomains &&
-                subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                   <>
                     <a
                       href={`https://${s.name}`}

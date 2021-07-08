@@ -76,7 +76,7 @@ const DomainGeneral = () => {
               </label>
               <label className="domain-general-project-item-subtitle">
                 By default, your site is always accessible via arweave gateway based
-                on transaction id. Custom domains allow you to access your site via
+                on transaction hash. Custom domains allow you to access your site via
                 one or more non-ArGo domain names.
               </label>
               {/* <a href="https://github.com/">
@@ -136,10 +136,12 @@ const DomainGeneral = () => {
                           domainId={`${domain._id}`}
                           domain={`${domain.name}`}
                           link={`${domain.link}`}
-                          isSubdomain={domain.type === "subdomain"}
+                          isSubdomain={false}
+                          isHandshake={domain.type.indexOf("handshake") !== -1}
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
                           ownerVerified={domain.verified}
+                          domainType={domain.type}
                         />
                       </div>
                     ))
@@ -154,8 +156,10 @@ const DomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={false}
+                      isHandshake={false}
                       autoDns={false}
                       ownerVerified={true}
+                      domainType=""
                     />
                   </>
                 )}

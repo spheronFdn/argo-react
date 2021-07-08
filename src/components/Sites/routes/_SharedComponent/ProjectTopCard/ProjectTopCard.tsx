@@ -7,7 +7,6 @@ import { ActionContext, StateContext } from "../../../../../hooks";
 import {
   IActionModel,
   IStateModel,
-  ISubdomain,
   IDomain,
 } from "../../../../../model/hooks.model";
 import moment from "moment";
@@ -29,6 +28,47 @@ const ProjectTopCard = () => {
   if (sortedDeployments) {
     latestDeployment = sortedDeployments[0];
   }
+
+  // console.log("LATEST DEPLOYMENT -" + latestDeployment?.configuration.protocol);
+
+  const showProtocolImage = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return (
+          <img
+            src={require("../../../../../assets/png/ar_light.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "skynet":
+        return (
+          <img
+            src={require("../../../../../assets/png/skynet.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+
+      default:
+        return (
+          <img
+            src={require("../../../../../assets/png/question_mark.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+    }
+  };
 
   const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -63,6 +103,7 @@ const ProjectTopCard = () => {
       package_manager: latest?.configuration.packageManager,
       build_command: latest?.configuration.buildCommand,
       workspace: latest?.configuration.workspace,
+      protocol: latest?.configuration.protocol,
     });
     history.push("/deploy/new");
   };
@@ -113,7 +154,7 @@ const ProjectTopCard = () => {
                       )}
                     </>
                   ))}
-                  {subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                  {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                     <>
                       <a
                         href={`https://${s.name}`}
@@ -172,14 +213,9 @@ const ProjectTopCard = () => {
             </a>
           </div>
           <div className="project-top-card-fields">
-            <img
-              src={require("../../../../../assets/png/ar_light.png")}
-              alt="github"
-              className="project-top-logo"
-              height={24}
-              width={24}
-              loading="lazy"
-            />
+            {showProtocolImage(
+              selectedProject?.latestDeployment?.configuration.protocol!,
+            )}
 
             {latestDeployment?.sitePreview ? (
               <a
@@ -189,7 +225,7 @@ const ProjectTopCard = () => {
                 rel="noopener noreferrer"
               >
                 {!projectLoading ? (
-                  "Latest Successful Site Preview on Arweave"
+                  "Latest Successful Site Preview"
                 ) : (
                   <Skeleton width={300} duration={2} />
                 )}

@@ -15,6 +15,8 @@
         font-weight: bold;
         color: var(--grey3Color);
         border-left: 3px solid transparent;
+        display: flex;
+        align-items: center;
 
         &:nth-last-child(1) {
           border-bottom: 0px;
@@ -29,6 +31,16 @@
 
         &:hover {
           background-color: var(--grey1Color);
+        }
+
+        .item-badge {
+          padding: 2px 8px;
+          background-color: var(--themeColorDark);
+          color: var(--white);
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 500;
+          margin-left: 0.5rem;
         }
       }
 

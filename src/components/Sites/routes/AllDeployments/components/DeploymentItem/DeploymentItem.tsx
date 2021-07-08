@@ -14,7 +14,6 @@ import {
   IActionModel,
   IDomain,
   IStateModel,
-  ISubdomain,
 } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
@@ -50,8 +49,18 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
           (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
-
   const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
+  const showProtocolTag = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return <span className="protocol-tag-arweave">Arweave</span>;
+      case "skynet":
+        return <span className="protocol-tag-skynet">Skynet</span>;
+
+      default:
+    }
+  };
 
   const openDeployment = () => {
     ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
@@ -61,6 +70,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       );
     });
   };
+
   return (
     <div className="deployment-item" key={index} onClick={openDeployment}>
       {type === "filled" && (
@@ -87,29 +97,27 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                           )}
                         </>
                       ))}
-                      {subdomains.map(
-                        (s: ISubdomain, i: number, a: ISubdomain[]) => (
-                          <>
-                            <a
-                              href={`https://${s.name}`}
-                              className="commit-link"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {s.name}
-                            </a>
-                            {i !== a.length - 1 && (
-                              <span className="comma-sep">", "</span>
-                            )}
-                          </>
-                        ),
-                      )}
+                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${s.name}`}
+                            className="commit-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {i !== a.length - 1 && (
+                            <span className="comma-sep">", "</span>
+                          )}
+                        </>
+                      ))}
                     </>
                   }
                 </div>
               )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Arweave Link: </span>
+                <span className="bold-text">Preview: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}
@@ -138,6 +146,9 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   </a>{" "}
                   - Updated feature */}
                 </span>
+              </div>
+              <div className="protocol-tag-container">
+                {showProtocolTag(deployment?.configuration.protocol!)}
               </div>
             </div>
             <div className="deployment-time-details">
