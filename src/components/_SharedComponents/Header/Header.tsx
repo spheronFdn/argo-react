@@ -112,6 +112,14 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
             {/* <div className="menu-container">
               <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
             </div> */}
+            <a
+              href="https://docs.argoapp.live"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-container"
+            >
+              Docs
+            </a>
             <div
               className="profile-container"
               onClick={(e) => (!userLoading ? setShowProfileDropdown(true) : null)}

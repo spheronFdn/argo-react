@@ -154,6 +154,25 @@
             border-radius: 6px;
           }
         }
+
+        .link-container {
+          background: 0 0;
+          border-radius: 6px;
+          color: rgba(255, 255, 255, 0.6);
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 24px;
+          padding: 8px;
+          text-decoration: none;
+          -webkit-transition: color, color 0.3s ease;
+          transition: color, color 0.3s ease;
+          cursor: pointer;
+          margin-right: 1rem;
+
+          &:hover {
+            color: var(--white);
+          }
+        }
         .profile-container {
           display: flex;
           .user-profile-blockie-icon {
