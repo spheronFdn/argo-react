@@ -130,6 +130,14 @@ const Overview = () => {
                     projectName={repo?.name}
                     domains={repo.domains?.length ? repo.domains : []}
                     subdomains={repo.subdomains?.length ? repo.subdomains : []}
+                    hnsDomains={
+                      repo.handshakeDomains?.length ? repo.handshakeDomains : []
+                    }
+                    hnsSubdomains={
+                      repo.handshakeSubdomains?.length
+                        ? repo.handshakeSubdomains
+                        : []
+                    }
                     latestDeployment={
                       repo?.latestDeployment?.sitePreview
                         ? repo?.latestDeployment?.sitePreview
@@ -148,6 +156,8 @@ const Overview = () => {
                 projectName={null}
                 domains={null}
                 subdomains={null}
+                hnsDomains={null}
+                hnsSubdomains={null}
                 latestDeployment={null}
                 githubUrl={null}
                 updateTime={null}
@@ -161,6 +171,8 @@ const Overview = () => {
               projectName={null}
               domains={null}
               subdomains={null}
+              hnsDomains={null}
+              hnsSubdomains={null}
               latestDeployment={null}
               githubUrl={null}
               updateTime={null}

@@ -224,7 +224,22 @@ const Deployment = () => {
       ? selectedProject.subdomains.filter((d) => deployedLink.indexOf(d.link) !== -1)
       : [];
 
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+  const hnsDomains =
+    selectedProject && deployedLink
+      ? selectedProject.handshakeDomains.filter(
+          (d) => deployedLink.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const hnsSubdomains =
+    selectedProject && deployedLink
+      ? selectedProject.handshakeSubdomains.filter(
+          (d) => deployedLink.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
 
   const scrollToWithContainer = (index: number) => {
     window.scrollTo({
@@ -409,7 +424,10 @@ const Deployment = () => {
                       >
                         {d.name}
                       </a>
-                      {(i !== a.length - 1 || subdomains.length > 0) && (
+                      {(i !== a.length - 1 ||
+                        subdomains.length > 0 ||
+                        hnsDomains.length > 0 ||
+                        hnsSubdomains.length > 0) && (
                         <span className="comma-sep">,</span>
                       )}
                     </>
@@ -424,7 +442,39 @@ const Deployment = () => {
                       >
                         {s.name}
                       </a>
-                      {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                      {(i !== a.length - 1 ||
+                        hnsDomains.length > 0 ||
+                        hnsSubdomains.length > 0) && (
+                        <span className="comma-sep">,</span>
+                      )}
+                    </>
+                  ))}
+                  {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`http://${s.name}`}
+                        className="site-deployment-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                        <span className="comma-sep">,</span>
+                      )}
+                    </>
+                  ))}
+                  {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`http://${s.name}`}
+                        className="site-deployment-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {i !== a.length - 1 && <span className="comma-sep">,</span>}
                     </>
                   ))}
                 </>
