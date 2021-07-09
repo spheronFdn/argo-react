@@ -130,6 +130,8 @@ const Wallet = () => {
         return "AR";
       case "skynet":
         return "SIA";
+        case "neofs":
+        return "NEO";
 
       default:
     }

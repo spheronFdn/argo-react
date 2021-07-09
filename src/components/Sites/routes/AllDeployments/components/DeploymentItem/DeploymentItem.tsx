@@ -58,6 +58,8 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         return <span className="protocol-tag-arweave">Arweave</span>;
       case "skynet":
         return <span className="protocol-tag-skynet">Skynet</span>;
+        case "neofs":
+          return <span className="protocol-tag-neofs">NeoFS</span>;
 
       default:
     }
