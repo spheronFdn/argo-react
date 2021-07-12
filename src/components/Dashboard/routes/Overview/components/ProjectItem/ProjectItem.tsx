@@ -140,7 +140,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                 hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                   <>
                     <a
-                      href={`https://${s.name}`}
+                      href={`http://${s.name}`}
                       className="project-item-live-value"
                       target="_blank"
                       rel="noopener noreferrer"

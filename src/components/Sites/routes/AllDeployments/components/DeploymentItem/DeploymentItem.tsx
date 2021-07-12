@@ -136,7 +136,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                       {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
                         <>
                           <a
-                            href={`https://${s.name}`}
+                            href={`http://${s.name}`}
                             className="commit-link"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -151,7 +151,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                       {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                         <>
                           <a
-                            href={`https://${s.name}`}
+                            href={`http://${s.name}`}
                             className="commit-link"
                             target="_blank"
                             rel="noopener noreferrer"
