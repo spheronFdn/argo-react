@@ -13,6 +13,8 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import config from "../../../../../config";
+import IMetadata from "./models";
+import { ApiService } from "../../../../../services";
 
 const ProjectTopCard = () => {
   const history = useHistory();
@@ -79,6 +81,26 @@ const ProjectTopCard = () => {
       return imageUrl;
     }
     return config.urls.IMAGE_NOT_FOUND;
+  };
+  const mintNft = async (uri: string) => {
+    // eslint-disable-next-line no-console
+    console.log(uri);
+  };
+  const getNftUri = (url: string, name: string, description: string) => {
+    const metadata: IMetadata = {
+      name: name,
+      url: url,
+      description: description,
+    };
+    try {
+      ApiService.getUri(metadata).subscribe(async (res) => {
+        const uri = res.tx.url;
+        await mintNft(uri);
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
   };
 
   let displayGithubRepo = "";
@@ -265,6 +287,18 @@ const ProjectTopCard = () => {
                         onClick={triggerDeployment}
                       >
                         Redeploy Latest
+                      </button>
+                    </div>
+                  )}
+                  {!projectLoading && (
+                    <div className="project-top-card-fields">
+                      <button
+                        className="trigger-deploy-button"
+                        onClick={() => {
+                          getNftUri("abx", "adv", "abc");
+                        }}
+                      >
+                        Mint as NFT
                       </button>
                     </div>
                   )}

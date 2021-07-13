@@ -349,3 +349,17 @@ export const removeWallet = (wallet: any): Observable<any> => {
     );
   });
 };
+export const getUri = (metadata: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/nft/metadata`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(metadata),
+      }).then((res) => res.json()),
+    );
+  });
+};
