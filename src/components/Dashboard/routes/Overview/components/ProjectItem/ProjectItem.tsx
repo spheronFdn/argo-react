@@ -19,6 +19,8 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   latestDeployment,
   domains,
   subdomains,
+  hnsDomains,
+  hnsSubdomains,
   githubUrl,
   updateTime,
   repo,
@@ -35,7 +37,10 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   }
 
   const isDomainOrSubPresent =
-    (domains && domains.length > 0) || (subdomains && subdomains.length > 0);
+    (domains && domains.length > 0) ||
+    (subdomains && subdomains.length > 0) ||
+    (hnsDomains && hnsDomains.length > 0) ||
+    (hnsSubdomains && hnsSubdomains.length > 0);
 
   return (
     <div className="project-item" key={index}>
@@ -87,7 +92,9 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                       {d.name}
                     </a>
                     {(i !== a.length - 1 ||
-                      (subdomains && subdomains.length > 0)) && (
+                      (subdomains && subdomains.length > 0) ||
+                      (hnsDomains && hnsDomains.length > 0) ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
                       <span className="comma-sep">,</span>
                     )}
                   </>
@@ -104,7 +111,44 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                     >
                       {s.name}
                     </a>
-                    {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                    {(i !== a.length - 1 ||
+                      (hnsDomains && hnsDomains.length > 0) ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {hnsDomains &&
+                hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`http://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={i}
+                    >
+                      {s.name}
+                    </a>
+                    {(i !== a.length - 1 ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {hnsSubdomains &&
+                hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`http://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={i}
+                    >
+                      {s.name}
+                    </a>
+                    {i !== a.length - 1 && <span className="comma-sep">,</span>}
                   </>
                 ))}
             </div>

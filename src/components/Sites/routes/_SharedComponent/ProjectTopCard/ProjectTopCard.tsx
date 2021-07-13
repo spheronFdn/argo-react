@@ -90,8 +90,11 @@ const ProjectTopCard = () => {
 
   const domains = selectedProject ? selectedProject.domains : [];
   const subdomains = selectedProject ? selectedProject.subdomains : [];
+  const hnsDomains = selectedProject ? selectedProject.handshakeDomains : [];
+  const hnsSubdomains = selectedProject ? selectedProject.handshakeSubdomains : [];
 
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
 
   const triggerDeployment = () => {
     const latest = selectedProject?.latestDeployment;
@@ -149,8 +152,11 @@ const ProjectTopCard = () => {
                       >
                         {d.name}
                       </a>
-                      {(i !== a.length - 1 || subdomains.length > 0) && (
-                        <span className="comma-sep">,</span>
+                      {(i !== a.length - 1 ||
+                        subdomains.length > 0 ||
+                        hnsDomains.length > 0 ||
+                        hnsSubdomains.length > 0) && (
+                        <span className="comma-sep">, </span>
                       )}
                     </>
                   ))}
@@ -164,7 +170,39 @@ const ProjectTopCard = () => {
                       >
                         {s.name}
                       </a>
-                      {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                      {(i !== a.length - 1 ||
+                        hnsDomains.length > 0 ||
+                        hnsSubdomains.length > 0) && (
+                        <span className="comma-sep">, </span>
+                      )}
+                    </>
+                  ))}
+                  {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`http://${s.name}`}
+                        className="project-top-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                        <span className="comma-sep">, </span>
+                      )}
+                    </>
+                  ))}
+                  {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`http://${s.name}`}
+                        className="project-top-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {i !== a.length - 1 && <span className="comma-sep">, </span>}
                     </>
                   ))}
                 </>

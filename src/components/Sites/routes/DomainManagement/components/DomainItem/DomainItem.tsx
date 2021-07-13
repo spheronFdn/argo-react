@@ -185,7 +185,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                 <div className="domain-general-domain-item-header-left">
                   <div>
                     <a
-                      href={`https://${domain}`}
+                      href={`${isHandshake ? "http" : "https"}://${domain}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

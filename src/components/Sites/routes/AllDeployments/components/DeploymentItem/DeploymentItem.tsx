@@ -49,7 +49,23 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
           (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
+  const hnsDomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeDomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const hnsSubdomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeSubdomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
 
   const showProtocolTag = (protocol: string) => {
     switch (protocol) {
@@ -92,7 +108,10 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                           >
                             {d.name}
                           </a>
-                          {(i !== a.length - 1 || subdomains.length > 0) && (
+                          {(i !== a.length - 1 ||
+                            subdomains.length > 0 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
                             <span className="comma-sep">,</span>
                           )}
                         </>
@@ -107,8 +126,40 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                           >
                             {s.name}
                           </a>
+                          {(i !== a.length - 1 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="commit-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="commit-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
                           {i !== a.length - 1 && (
-                            <span className="comma-sep">", "</span>
+                            <span className="comma-sep">,</span>
                           )}
                         </>
                       ))}
