@@ -1,8 +1,7 @@
 @import "../../../../../styles/mixin";
-
 .ProjectTopCard {
   .max-width-set {
-    max-width: 50%;
+    max-width: 100%;
   }
   .project-top-card-container {
     background-color: #fff;
@@ -18,7 +17,6 @@
     min-width: 264px;
     padding: 24px;
     min-height: 152px;
-
     .project-top-card-header {
       .project-top-card-header-title {
         font-family: var(--headerFont) !important;
@@ -26,42 +24,35 @@
         color: var(--themeColorDark);
         display: flex;
         align-items: center;
-
         div {
           display: flex;
           margin: -10px -10px !important;
         }
       }
-
       .project-top-card-header-description {
         margin: 0px;
         margin-top: 12px;
       }
     }
-
     .project-top-header-title {
       padding: 0.6rem 24px;
       font-size: 18px;
       font-weight: 500;
       border-bottom: 1px solid var(--grey2Color);
     }
-
     .project-top-card-header-domain {
       text-decoration: none;
       color: var(--logoColor);
-
       ul {
         padding: 0 1rem;
         margin: 0;
         margin-top: 6px;
         font-size: 18px;
       }
-
       &:hover {
         text-decoration: underline;
       }
     }
-
     .project-top-card-content {
       margin-top: 6px;
       .project-top-card-fields {
@@ -79,7 +70,6 @@
           width: 24px;
           margin-right: 1rem;
         }
-
         .project-top-link {
           text-decoration: none;
           color: var(--logoColor);
@@ -87,7 +77,6 @@
             text-decoration: underline;
           }
         }
-
         .comma-sep {
           margin-right: 4px;
         }
