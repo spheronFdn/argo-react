@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import "./HandshakeDomainGeneral.scss";
-// import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DomainItem } from "../../components";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
@@ -68,6 +66,13 @@ const HandshakeDomainGeneral = () => {
                 on transaction hash. Handshake is decentralized naming and
                 certificate authority that allow you to access your site in a
                 decentralized peer-to-peer root naming system.
+              </label>
+              <label className="domain-general-project-item-subtitle label-note">
+                To resolve your Handshake Domains, connect to{" "}
+                <a href="https://hdns.io" rel="noopener noreferrer" target="_blank">
+                  HDNS.io
+                </a>{" "}
+                or use a gateway like hns.io
               </label>
               {/* <a href="https://github.com/">
                 Learn more about custom domains in our docs

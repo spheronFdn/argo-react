@@ -45,6 +45,23 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
+  let separator = {
+    base: "",
+    sep: "",
+  };
+
+  if (link.indexOf("arweave.net") !== -1) {
+    separator = {
+      base: "arweave",
+      sep: "https://arweave.net/",
+    };
+  } else if (link.indexOf("siasky.net") !== -1) {
+    separator = {
+      base: "sia",
+      sep: "https://siasky.net/",
+    };
+  }
+
   useEffect(() => {
     if (domain) {
       setEditDomainName(domain);
@@ -121,10 +138,15 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: "_contenthash",
-          value: `arweave://${link.split("https://arweave.net/")[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1]}`,
           ttl: 60,
         },
-        { type: "ALIAS", host: "@", value: "arweave.namebase.io.", ttl: 3600 },
+        {
+          type: "ALIAS",
+          host: "@",
+          value: `${separator.base}.namebase.io.`,
+          ttl: 3600,
+        },
       ];
 
       records = btoa(JSON.stringify(records_json));
@@ -133,13 +155,13 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: `_contenthash.${domain.substring(0, domain.lastIndexOf("."))}`,
-          value: `arweave://${link.split("https://arweave.net/")[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1]}`,
           ttl: 60,
         },
         {
           type: "CNAME",
           host: domain.substring(0, domain.lastIndexOf(".")),
-          value: "arweave.namebase.io.",
+          value: `${separator.base}.namebase.io.`,
           ttl: 3600,
         },
       ];
@@ -278,13 +300,13 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="tr">
                           <div className="td">A</div>
                           <div className="td">@</div>
-                          <div className="td">arweave.namebase.io.</div>
+                          <div className="td">{separator.base}.namebase.io.</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
                           <div className="td">_contenthash</div>
                           <div className="td">
-                            arweave://{link.split("https://arweave.net/")[1]}
+                            {separator.base}://{link.split(separator.sep)[1]}
                           </div>
                         </div>
                       </div>
@@ -293,7 +315,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="tr">
                           <div className="td">CNAME</div>
                           <div className="td">{domain}</div>
-                          <div className="td">arweave.namebase.io.</div>
+                          <div className="td">{separator.base}.namebase.io.</div>
                         </div>
                         <div className="tr">
                           <div className="td">TXT</div>
@@ -302,7 +324,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                             {domain.substring(0, domain.lastIndexOf("."))}
                           </div>
                           <div className="td">
-                            arweave://{link.split("https://arweave.net/")[1]}
+                            {separator.base}://{link.split(separator.sep)[1]}
                           </div>
                         </div>
                       </div>
