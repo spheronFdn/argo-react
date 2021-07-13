@@ -16,6 +16,7 @@ import {
   IStateModel,
 } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
+import config from "../../../../../../config";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   index,
@@ -61,6 +62,12 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       default:
     }
   };
+  const imageUrl = (imageUrl: string | undefined) => {
+    if (imageUrl) {
+      return imageUrl;
+    }
+    return config.urls.IMAGE_NOT_FOUND;
+  };
 
   const openDeployment = () => {
     ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
@@ -76,66 +83,73 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       {type === "filled" && (
         <>
           <div className="deployment-left">
-            <div className="deployment-left-detail">
-              {isDomainOrSubPresent && (
-                <div className="deployment-domains-detail">
-                  <span className="bold-text">Published at: </span>
-                  {
-                    <>
-                      {domains.map((d: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${d.name}`}
-                            className="commit-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {d.name}
-                          </a>
-                          {(i !== a.length - 1 || subdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${s.name}`}
-                            className="commit-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {i !== a.length - 1 && (
-                            <span className="comma-sep">", "</span>
-                          )}
-                        </>
-                      ))}
-                    </>
-                  }
-                </div>
-              )}
-              <div className="deployment-publish-detail">
-                <span className="bold-text">Preview: </span>
-                {deployment?.sitePreview ? (
-                  <a
-                    href={deployment?.sitePreview}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="commit-link"
-                  >
-                    {deployment?.sitePreview}
-                  </a>
-                ) : (
-                  <span>Site preview not available</span>
+            <img
+              src={imageUrl(deployment?.screenshotData?.url)}
+              alt={"Preview not Available"}
+              height="135"
+              width="240"
+            />
+            <div className="deployment-left">
+              <div className="deployment-left-detail">
+                {isDomainOrSubPresent && (
+                  <div className="deployment-domains-detail">
+                    <span className="bold-text">Published at: </span>
+                    {
+                      <>
+                        {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${d.name}`}
+                              className="commit-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {d.name}
+                            </a>
+                            {(i !== a.length - 1 || subdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${s.name}`}
+                              className="commit-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {i !== a.length - 1 && (
+                              <span className="comma-sep">", "</span>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    }
+                  </div>
                 )}
-              </div>
-              <div className="deployment-commit-details">
-                <span className="bold-text">Production: </span>
-                <span>
-                  {deployment?.configuration.branch}
-                  {/* @
+                <div className="deployment-publish-detail">
+                  <span className="bold-text">Preview: </span>
+                  {deployment?.sitePreview ? (
+                    <a
+                      href={deployment?.sitePreview}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="commit-link"
+                    >
+                      {deployment?.sitePreview}
+                    </a>
+                  ) : (
+                    <span>Site preview not available</span>
+                  )}
+                </div>
+                <div className="deployment-commit-details">
+                  <span className="bold-text">Production: </span>
+                  <span>
+                    {deployment?.configuration.branch}
+                    {/* @
                   <a
                     href="https://github.com/"
                     target="_blank"
@@ -145,10 +159,11 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                     8234jf3
                   </a>{" "}
                   - Updated feature */}
-                </span>
-              </div>
-              <div className="protocol-tag-container">
-                {showProtocolTag(deployment?.configuration.protocol!)}
+                  </span>
+                </div>
+                <div className="protocol-tag-container">
+                  {showProtocolTag(deployment?.configuration.protocol!)}
+                </div>
               </div>
             </div>
             <div className="deployment-time-details">

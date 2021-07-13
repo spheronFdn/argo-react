@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@argoapp/payment-js@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@argoapp/payment-js/-/payment-js-1.0.1.tgz#a1f29569cf0953e0a075c957ab1278eb40950382"
-  integrity sha512-x+FWGXU1zIaqCq1JSgC71ZAPoyWuIg0niXDKTV/YxFscJvPYHQtBs+XICTt+dbNtRF1hfRajRhRI0Ew1hqsM+w==
+"@argoapp/payment-js@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@argoapp/payment-js/-/payment-js-1.0.2.tgz#57856f73fea690dae884de5af1da8972ccb5cbd4"
+  integrity sha512-Dspc9StzY2LAPJeJjaXi6izCYmnCIQndqB4sj9p6c6TedflauOdGpyoxHIu27uwKeYbWVA0a3Oh9fT0adxYQTg==
   dependencies:
     "@biconomy/mexa" "^2.0.9"
     "@ethersproject/abstract-signer" "^5.0.12"

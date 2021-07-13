@@ -1,6 +1,7 @@
 export interface IConfig {
   urls: {
     API_URL: string;
+    IMAGE_NOT_FOUND: string;
   };
   web3: {
     PAYMENT_CONTRACT_ADDRESS: string;
@@ -20,6 +21,8 @@ const NODE_ENV: string = "production";
 const development: IConfig = {
   urls: {
     API_URL: "https://api.argoapp.live",
+    IMAGE_NOT_FOUND:
+      "https://image.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -37,7 +40,9 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "http://localhost:8080",
+    IMAGE_NOT_FOUND:
+      "https://image.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -56,6 +61,8 @@ const production: IConfig = {
 const test: IConfig = {
   urls: {
     API_URL: "http://localhost:8080",
+    IMAGE_NOT_FOUND:
+      "https://image.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
