@@ -14,7 +14,7 @@ import { useHistory } from "react-router-dom";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import config from "../../../../../config";
 import IMetadata from "./models";
-import { ApiService } from "../../../../../services";
+import { ApiService, Web3Service } from "../../../../../services";
 
 const ProjectTopCard = () => {
   const history = useHistory();
@@ -82,11 +82,11 @@ const ProjectTopCard = () => {
     }
     return config.urls.IMAGE_NOT_FOUND;
   };
-  const mintNft = async (uri: string) => {
-    // eslint-disable-next-line no-console
-    console.log(uri);
+  const _sendMintTransaction = async (uri: string) => {
+    await Web3Service.getAccount();
+    return await Web3Service.mintNft(uri);
   };
-  const getNftUri = (url: string, name: string, description: string) => {
+  const mintNft = (url: string, name: string, description: string) => {
     const metadata: IMetadata = {
       name: name,
       url: url,
@@ -95,7 +95,7 @@ const ProjectTopCard = () => {
     try {
       ApiService.getUri(metadata).subscribe(async (res) => {
         const uri = res.tx.url;
-        await mintNft(uri);
+        await _sendMintTransaction(uri);
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -295,7 +295,7 @@ const ProjectTopCard = () => {
                       <button
                         className="trigger-deploy-button"
                         onClick={() => {
-                          getNftUri("abx", "adv", "abc");
+                          mintNft("abx", "adv", "abc");
                         }}
                       >
                         Mint as NFT

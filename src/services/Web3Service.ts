@@ -3,6 +3,7 @@ import Onboard from "bnc-onboard";
 import Notify from "bnc-notify";
 import config from "../config";
 import * as paymentLib from "@argoapp/payment-js";
+import * as nftLib from "@argoapp/nft-js";
 
 var notify = Notify({
   dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
@@ -11,6 +12,7 @@ var notify = Notify({
 
 let provider: ethers.providers.Web3Provider | null;
 let payment: paymentLib.Payment | null;
+let nft: nftLib.Nft | null;
 
 const onboard = Onboard({
   dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
@@ -30,6 +32,14 @@ const onboard = Onboard({
             config.web3.PAYMENT_CONTRACT_ADDRESS,
             config.web3.ERC20_CONTRACT_ADDRESS,
           );
+          const nftVendor = new nftLib.Vendor(
+            provider,
+            provider.getSigner(),
+            config.nft.BICONOMY_KEY,
+            config.nft.DOMAIN_SEPERATOR,
+            config.nft.SUBGRAPH,
+          );
+          nft = new nftLib.Nft(nftVendor);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err);
@@ -94,6 +104,16 @@ export const giveAllowance = async (amount: string) => {
       amount,
       config.web3.onboard.NETWORK_ID,
     );
+    notify.hash(tx.hash);
+    await tx.wait();
+    return tx;
+  }
+  return null;
+};
+
+export const mintNft = async (uri: string) => {
+  if (nft) {
+    const tx = await nft.gasslessBurn(uri, config.web3.onboard.NETWORK_ID);
     notify.hash(tx.hash);
     await tx.wait();
     return tx;

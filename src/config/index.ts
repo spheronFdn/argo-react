@@ -14,6 +14,12 @@ export interface IConfig {
     CMC_KEY: string;
     VERIFYING_MESSAGE: string;
   };
+  nft: {
+    NFT_CONTRACT_ADDRESS: string;
+    BICONOMY_KEY: string;
+    DOMAIN_SEPERATOR: string;
+    SUBGRAPH: string;
+  };
 }
 
 const NODE_ENV: string = "production";
@@ -36,6 +42,12 @@ const development: IConfig = {
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
   },
+  nft: {
+    NFT_CONTRACT_ADDRESS: "0x919C4acaC356f830Ef13fDEAFb46157ff322CD9C",
+    BICONOMY_KEY: "yMQiMZwyl.7e832681-c312-475d-a290-5ab28b3db930",
+    DOMAIN_SEPERATOR: "ArGo Interactive NFT",
+    SUBGRAPH: "https://api.thegraph.com/subgraphs/name/abhimanyu121/interactivenft",
+  },
 };
 
 const production: IConfig = {
@@ -56,6 +68,12 @@ const production: IConfig = {
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
   },
+  nft: {
+    NFT_CONTRACT_ADDRESS: "0x919C4acaC356f830Ef13fDEAFb46157ff322CD9C",
+    BICONOMY_KEY: "yMQiMZwyl.7e832681-c312-475d-a290-5ab28b3db930",
+    DOMAIN_SEPERATOR: "ArGo Interactive NFT",
+    SUBGRAPH: "https://api.thegraph.com/subgraphs/name/abhimanyu121/interactivenft",
+  },
 };
 
 const test: IConfig = {
@@ -75,6 +93,12 @@ const test: IConfig = {
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
+  },
+  nft: {
+    NFT_CONTRACT_ADDRESS: "0x919C4acaC356f830Ef13fDEAFb46157ff322CD9C",
+    BICONOMY_KEY: "yMQiMZwyl.7e832681-c312-475d-a290-5ab28b3db930",
+    DOMAIN_SEPERATOR: "ArGo Interactive NFT",
+    SUBGRAPH: "https://api.thegraph.com/subgraphs/name/abhimanyu121/interactivenft",
   },
 };
 
