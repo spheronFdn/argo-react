@@ -50,7 +50,23 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
           (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
         )
       : [];
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+
+  const hnsDomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeDomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const hnsSubdomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeSubdomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
 
   const showProtocolTag = (protocol: string) => {
     switch (protocol) {
@@ -106,7 +122,10 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                             >
                               {d.name}
                             </a>
-                            {(i !== a.length - 1 || subdomains.length > 0) && (
+                            {(i !== a.length - 1 ||
+                              subdomains.length > 0 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
                               <span className="comma-sep">,</span>
                             )}
                           </>
@@ -121,8 +140,40 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                             >
                               {s.name}
                             </a>
+                            {(i !== a.length - 1 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="commit-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="commit-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
                             {i !== a.length - 1 && (
-                              <span className="comma-sep">", "</span>
+                              <span className="comma-sep">,</span>
                             )}
                           </>
                         ))}
@@ -144,12 +195,26 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   ) : (
                     <span>Site preview not available</span>
                   )}
-                </div>
-                <div className="deployment-commit-details">
-                  <span className="bold-text">Production: </span>
-                  <span>
-                    {deployment?.configuration.branch}
-                    {/* @
+                  <div className="deployment-publish-detail">
+                    <span className="bold-text">Preview: </span>
+                    {deployment?.sitePreview ? (
+                      <a
+                        href={deployment?.sitePreview}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="commit-link"
+                      >
+                        {deployment?.sitePreview}
+                      </a>
+                    ) : (
+                      <span>Site preview not available</span>
+                    )}
+                  </div>
+                  <div className="deployment-commit-details">
+                    <span className="bold-text">Production: </span>
+                    <span>
+                      {deployment?.configuration.branch}
+                      {/* @
                   <a
                     href="https://github.com/"
                     target="_blank"
@@ -159,49 +224,50 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                     8234jf3
                   </a>{" "}
                   - Updated feature */}
+                    </span>
+                  </div>
+                  <div className="protocol-tag-container">
+                    {showProtocolTag(deployment?.configuration.protocol!)}
+                  </div>
+                </div>
+              </div>
+              <div className="deployment-time-details">
+                <div className="bold-text">
+                  {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
+                  {moment(`${deployment?.createdAt}`).format("hh:mm A")}
+                </div>
+                <div className="deployment-status">
+                  <span className="deployment-status-icon">
+                    {deployment?.status.toLowerCase() === "pending" && (
+                      <Lottie options={defaultOptions} height={42} width={58} />
+                    )}
+                    {deployment?.status.toLowerCase() === "deployed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/rocket_background.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
+                    {deployment?.status.toLowerCase() === "failed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/error.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
                   </span>
+                  {deployment?.status}
                 </div>
-                <div className="protocol-tag-container">
-                  {showProtocolTag(deployment?.configuration.protocol!)}
-                </div>
-              </div>
-            </div>
-            <div className="deployment-time-details">
-              <div className="bold-text">
-                {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
-                {moment(`${deployment?.createdAt}`).format("hh:mm A")}
-              </div>
-              <div className="deployment-status">
-                <span className="deployment-status-icon">
-                  {deployment?.status.toLowerCase() === "pending" && (
-                    <Lottie options={defaultOptions} height={42} width={58} />
-                  )}
-                  {deployment?.status.toLowerCase() === "deployed" && (
-                    <LazyLoadedImage height={16} once>
-                      <img
-                        src={require("../../../../../../assets/svg/rocket_background.svg")}
-                        alt="rocket"
-                        className="rocket-icon"
-                        height={16}
-                        width={16}
-                        loading="lazy"
-                      />
-                    </LazyLoadedImage>
-                  )}
-                  {deployment?.status.toLowerCase() === "failed" && (
-                    <LazyLoadedImage height={16} once>
-                      <img
-                        src={require("../../../../../../assets/svg/error.svg")}
-                        alt="rocket"
-                        className="rocket-icon"
-                        height={16}
-                        width={16}
-                        loading="lazy"
-                      />
-                    </LazyLoadedImage>
-                  )}
-                </span>
-                {deployment?.status}
               </div>
             </div>
           </div>

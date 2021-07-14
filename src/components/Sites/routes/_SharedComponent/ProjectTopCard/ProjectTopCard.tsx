@@ -97,8 +97,11 @@ const ProjectTopCard = () => {
 
   const domains = selectedProject ? selectedProject.domains : [];
   const subdomains = selectedProject ? selectedProject.subdomains : [];
+  const hnsDomains = selectedProject ? selectedProject.handshakeDomains : [];
+  const hnsSubdomains = selectedProject ? selectedProject.handshakeSubdomains : [];
 
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
 
   const triggerDeployment = () => {
     const latest = selectedProject?.latestDeployment;
