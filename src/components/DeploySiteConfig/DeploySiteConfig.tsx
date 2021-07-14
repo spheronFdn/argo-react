@@ -189,14 +189,9 @@ function DeploySiteConfig() {
             installationId: installation.id,
           }));
           if (repoOwners.length) {
-            let newRepoOwner = null;
-            if (currentRepoOwner) {
-              newRepoOwner = repoOwners.filter(
-                (repoOwner) => repoOwner.name === currentRepoOwner,
-              )[0];
-            } else {
-              newRepoOwner = repoOwners[0];
-            }
+            const newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === currentRepoOwner,
+            )[0];
             setSelectedRepoOwner(newRepoOwner);
           }
         }
@@ -773,7 +768,9 @@ function DeploySiteConfig() {
                               <option value="react">Create React App</option>
                               <option value="vue">Vue App</option>
                               <option value="angular">Angular App</option>
-                              <option value="next">Next.js App</option>
+                              {protocol !== "skynet" && (
+                                <option value="next">Next.js App</option>
+                              )}
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
