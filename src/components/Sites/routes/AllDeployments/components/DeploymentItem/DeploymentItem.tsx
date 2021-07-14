@@ -185,17 +185,15 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               <div className="deployment-commit-details">
                 <span className="bold-text">Production: </span>
                 <span>
-                  {deployment?.configuration.branch}
-                  {/* @
+                  {deployment?.configuration.branch}@
                   <a
                     href="https://github.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="commit-link"
                   >
-                    8234jf3
-                  </a>{" "}
-                  - Updated feature */}
+                    8234jf3 - Updated feature
+                  </a>
                 </span>
               </div>
               <div className="protocol-tag-container">

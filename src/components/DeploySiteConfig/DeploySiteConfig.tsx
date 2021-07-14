@@ -10,6 +10,7 @@ import {
   faChevronUp,
   faExclamationCircle,
   faSyncAlt,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
 import { ActionContext, StateContext } from "../../hooks";
@@ -30,8 +31,13 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment, orgLoading } =
-    useContext<IStateModel>(StateContext);
+  const {
+    user,
+    selectedOrg,
+    selectedRepoForTriggerDeployment,
+    orgLoading,
+    userLoading,
+  } = useContext<IStateModel>(StateContext);
   const { setLatestDeploymentConfig, setSelectedOrganization } =
     useContext<IActionModel>(ActionContext);
 
@@ -46,6 +52,7 @@ function DeploySiteConfig() {
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [repoBranches, setRepoBranches] = useState<any[]>([]);
+  const [buildEnv, setBuildEnv] = useState<any[]>([]);
   const [repoBranchesLoading, setRepoBranchesLoading] = useState<boolean>(true);
 
   // const [autoPublish, setAutoPublish] = useState<boolean>(true);
@@ -305,6 +312,7 @@ function DeploySiteConfig() {
           uniqueTopicId,
           auto_publish: false,
           configurationId: result._id,
+          env: buildEnv,
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
@@ -345,6 +353,28 @@ function DeploySiteConfig() {
   const selectProtocol = (selectedProtocol: string) => {
     setProtocol(selectedProtocol);
     setCreateDeployProgress(3);
+  };
+
+  const addBuildEnv = () => {
+    setBuildEnv([...buildEnv, { key: "", value: "" }]);
+  };
+
+  const removeBuildEnvItem = (id: number) => {
+    setBuildEnv(buildEnv.filter((item, i) => i !== id));
+  };
+
+  const fillEnvKey = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) =>
+        i === id ? { key: value, value: item.value } : item,
+      ),
+    );
+  };
+
+  const fillEnvValue = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) => (i === id ? { key: item.key, value } : item)),
+    );
   };
 
   return (
@@ -469,6 +499,7 @@ function DeploySiteConfig() {
                         <div className="deployment-provider-buttons">
                           <button
                             className="github-button"
+                            disabled={userLoading}
                             onClick={openGithubAppAuth}
                           >
                             <span className="github-icon">
@@ -832,6 +863,78 @@ function DeploySiteConfig() {
                             </div>
                           </>
                         )}
+                      </div>
+                      {!selectedOrg?.wallet && !orgLoading ? (
+                        <div className="wallet-details-container">
+                          <div className="wallet-details-items">
+                            <span className="exclamation-icon">
+                              <FontAwesomeIcon
+                                icon={faExclamationCircle}
+                              ></FontAwesomeIcon>
+                            </span>
+                            <span>
+                              You have to enable your organization wallet before you
+                              can deploy your project.
+                              <Link to="/dashboard/wallet">Enable now</Link>
+                            </span>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Advanced build settings
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Define environment variables for more control and flexibility
+                        over your build.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        {buildEnv.length !== 0 && (
+                          <div className="deploy-site-item-form-item">
+                            <div className="deploy-site-env-title">
+                              <label className="deploy-site-env-title-item">
+                                Key
+                              </label>
+                              <label className="deploy-site-env-title-item">
+                                Value
+                              </label>
+                            </div>
+                            {buildEnv.map((env, i) => (
+                              <div className="deploy-site-item-env-container">
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="VARIABLE_NAME"
+                                  value={env.key}
+                                  onChange={(e) => fillEnvKey(e.target.value, i)}
+                                />
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="somevalue"
+                                  value={env.value}
+                                  onChange={(e) => fillEnvValue(e.target.value, i)}
+                                />
+                                <span
+                                  className="remove-env-item"
+                                  onClick={(e) => removeBuildEnvItem(i)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTimesCircle}
+                                  ></FontAwesomeIcon>
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="add-new-var-button"
+                          onClick={(e) => addBuildEnv()}
+                        >
+                          New Variable
+                        </button>
                       </div>
                       {!selectedOrg?.wallet && !orgLoading ? (
                         <div className="wallet-details-container">

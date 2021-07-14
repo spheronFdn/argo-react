@@ -390,14 +390,30 @@ const Deployment = () => {
           <p className="site-deployment-card-header-description">
             {!deploymentLoading ? (
               <>
-                <u>Production</u>: {currentSiteDeployConfig?.branch}
+                <u>Production</u>: {currentSiteDeployConfig?.branch}@
+                <a
+                  href="https://github.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="commit-link"
+                >
+                  8234jf3 - Updated feature
+                </a>
+              </>
+            ) : (
+              <Skeleton width={400} duration={2} />
+            )}
+          </p>
+          <p className="site-deployment-card-header-description">
+            {!deploymentLoading ? (
+              <>
                 {deploymentStatus === "pending"
                   ? currentSiteDeployLogs[0]?.time
-                    ? ` - Deployment started ${timeAgo.format(
+                    ? `Deployment started ${timeAgo.format(
                         moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
                       )}`
                     : null
-                  : ` - Deployment done at ${moment(
+                  : `Deployment done at ${moment(
                       currentSiteDeployConfig.createdAt,
                     ).format("MMM DD, YYYY hh:mm a")}`}
               </>
