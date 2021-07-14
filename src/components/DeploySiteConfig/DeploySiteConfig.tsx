@@ -42,6 +42,7 @@ function DeploySiteConfig() {
     any[]
   >([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
+  const [currentRepoOwner, setCurrentRepoOwner] = useState<string>("");
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [repoBranches, setRepoBranches] = useState<any[]>([]);
@@ -158,9 +159,7 @@ function DeploySiteConfig() {
         name: repoName,
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
-      setSelectedRepoOwner({
-        name: ownerName,
-      });
+      setCurrentRepoOwner(ownerName);
       setFramework(selectedRepoForTriggerDeployment.framework);
       setWorkspace(selectedRepoForTriggerDeployment.workspace);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
@@ -179,6 +178,31 @@ function DeploySiteConfig() {
       });
     }
   }, [selectedRepoForTriggerDeployment]);
+
+  useEffect(() => {
+    if (currentRepoOwner && selectedRepoForTriggerDeployment) {
+      ApiService.getAllGithubAppInstallation().subscribe((res) => {
+        if (componentIsMounted.current) {
+          const repoOwners: any[] = res.installations.map((installation: any) => ({
+            name: installation.account.login,
+            avatar: installation.account.avatar_url,
+            installationId: installation.id,
+          }));
+          if (repoOwners.length) {
+            let newRepoOwner = null;
+            if (currentRepoOwner) {
+              newRepoOwner = repoOwners.filter(
+                (repoOwner) => repoOwner.name === currentRepoOwner,
+              )[0];
+            } else {
+              newRepoOwner = repoOwners[0];
+            }
+            setSelectedRepoOwner(newRepoOwner);
+          }
+        }
+      });
+    }
+  }, [currentRepoOwner, selectedRepoForTriggerDeployment]);
 
   useEffect(() => {
     const bc = new BroadcastChannel("github_app_auth");
@@ -281,7 +305,6 @@ function DeploySiteConfig() {
           folderName: selectedRepo.name,
           owner: selectedRepoOwner.name,
           installationId: selectedRepoOwner.installationId,
-          isPrivate: selectedRepo.private,
           repositoryId: selectedRepo.repositoryId,
           organizationId: owner._id,
           uniqueTopicId,
