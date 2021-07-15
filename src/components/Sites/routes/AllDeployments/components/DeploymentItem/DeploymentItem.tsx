@@ -185,15 +185,26 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
               <div className="deployment-commit-details">
                 <span className="bold-text">Production: </span>
                 <span>
-                  {deployment?.configuration.branch}@
-                  <a
-                    href="https://github.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="commit-link"
-                  >
-                    8234jf3 - Updated feature
-                  </a>
+                  {deployment?.configuration.branch}
+                  {deployment?.commitId ? (
+                    <>
+                      @
+                      <a
+                        href={`${selectedProject?.githubUrl.substring(
+                          0,
+                          selectedProject?.githubUrl.length - 4,
+                        )}/commit/${deployment?.commitId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="commit-link"
+                      >
+                        {deployment?.commitId.substr(0, 7)}{" "}
+                        {deployment?.commitMessage
+                          ? `- ${deployment?.commitMessage}`
+                          : ""}
+                      </a>
+                    </>
+                  ) : null}
                 </span>
               </div>
               <div className="protocol-tag-container">

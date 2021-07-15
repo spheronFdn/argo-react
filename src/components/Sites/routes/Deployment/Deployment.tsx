@@ -103,6 +103,8 @@ const Deployment = () => {
             branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
             protocol: result.deployment.configuration.protocol,
+            commitHash: result.deployment.commitId,
+            commitMessage: result.deployment.commitMessage,
           };
           setLatestDeploymentConfig(deployment);
           currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
@@ -202,6 +204,7 @@ const Deployment = () => {
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
+  let githubCommitLink = "";
   if (currentSiteDeployConfig) {
     displayGithubRepo = currentSiteDeployConfig.githubUrl.substring(
       19,
@@ -212,6 +215,11 @@ const Deployment = () => {
       0,
       currentSiteDeployConfig.githubUrl.length - 4,
     )}/tree/${currentSiteDeployConfig.branch}`;
+
+    githubCommitLink = `${currentSiteDeployConfig.githubUrl.substring(
+      0,
+      currentSiteDeployConfig.githubUrl.length - 4,
+    )}/commit/${currentSiteDeployConfig.commitHash}`;
   }
 
   const domains =
@@ -390,15 +398,23 @@ const Deployment = () => {
           <p className="site-deployment-card-header-description">
             {!deploymentLoading ? (
               <>
-                <u>Production</u>: {currentSiteDeployConfig?.branch}@
-                <a
-                  href="https://github.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="commit-link"
-                >
-                  8234jf3 - Updated feature
-                </a>
+                <u>Production</u>: {currentSiteDeployConfig?.branch}
+                {currentSiteDeployConfig.commitHash ? (
+                  <>
+                    @
+                    <a
+                      href={githubCommitLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="commit-link"
+                    >
+                      {currentSiteDeployConfig.commitHash.substr(0, 7)}{" "}
+                      {currentSiteDeployConfig.commitMessage
+                        ? `- ${currentSiteDeployConfig.commitMessage}`
+                        : ""}
+                    </a>
+                  </>
+                ) : null}
               </>
             ) : (
               <Skeleton width={400} duration={2} />

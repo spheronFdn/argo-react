@@ -312,7 +312,7 @@ function DeploySiteConfig() {
           uniqueTopicId,
           auto_publish: false,
           configurationId: result._id,
-          env: buildEnv,
+          env: mapBuildEnv(buildEnv),
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
@@ -326,6 +326,14 @@ function DeploySiteConfig() {
         });
       }
     });
+  };
+
+  const mapBuildEnv = (buildEnv: any[]): any => {
+    const buildEnvObj = {};
+    buildEnv.forEach((env) => {
+      Object.assign(buildEnvObj, { [env.key]: env.value });
+    });
+    return buildEnvObj;
   };
 
   const openGithubAppAuth = async () => {
@@ -901,7 +909,10 @@ function DeploySiteConfig() {
                               </label>
                             </div>
                             {buildEnv.map((env, i) => (
-                              <div className="deploy-site-item-env-container">
+                              <div
+                                className="deploy-site-item-env-container"
+                                key={i}
+                              >
                                 <input
                                   type="text"
                                   className="deploy-site-env-input"
