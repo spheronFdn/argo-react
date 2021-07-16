@@ -107,7 +107,7 @@ function WalletRecharge() {
         <div className="wallet-recharge-container">
           <div className="wallet-recharge-card">
             <div className="wallet-recharge-card-inner">
-              <h1 className="wallet-recharge-title">Increase Allowance</h1>
+              <h1 className="wallet-recharge-title">Set Allowance</h1>
               <div className="wallet-recharge-form">
                 <label className="wallet-recharge-form-title">Your wallet</label>
                 <label className="wallet-chain-info">

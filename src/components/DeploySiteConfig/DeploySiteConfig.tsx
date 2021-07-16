@@ -22,6 +22,7 @@ import Skeleton from "react-loading-skeleton";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import { LazyLoadedImage } from "../_SharedComponents";
 import { v4 as uuidv4 } from "uuid";
+import ReactTooltip from "react-tooltip";
 
 const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
 const MemoRepoItem = React.memo(RepoItem);
@@ -651,6 +652,7 @@ function DeploySiteConfig() {
                 )}
                 {createDeployProgress === 3 && (
                   <>
+                    <ReactTooltip />
                     <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">
                         Deploy settings for {selectedRepo.name}
@@ -661,23 +663,7 @@ function DeploySiteConfig() {
                       </label>
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
-                          <label>
-                            Owner
-                            <span
-                              className="tooltip"
-                              data-tip="Name of the Organization"
-                            >
-                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
-                            </span>
-                            {/* <img
-                              src={require("../../assets/svg/info.svg")}
-                              alt="logo"
-                              className="tooltip"
-                              data-tip="Name of the Organization"
-                              height={13}
-                              loading="lazy"
-                            /> */}
-                          </label>
+                          <label>Owner</label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -707,15 +693,7 @@ function DeploySiteConfig() {
                           </div>
                         </div>
                         <div className="deploy-site-item-form-item">
-                          <label>
-                            Branch to deploy
-                            <span
-                              className="tooltip"
-                              data-tip="The branch of the repo to be deployed"
-                            >
-                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
-                            </span>
-                          </label>
+                          <label>Branch to deploy</label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -746,7 +724,7 @@ function DeploySiteConfig() {
                             Workspace to deploy
                             <span
                               className="tooltip"
-                              data-tip="The workspace to be deployed in"
+                              data-tip="If your app is a monorepo, then you can specify your app directory you want to deploy using the workspace."
                             >
                               <FontAwesomeIcon size="sm" icon={faInfoCircle} />
                             </span>
@@ -774,7 +752,7 @@ function DeploySiteConfig() {
                             Framework
                             <span
                               className="tooltip"
-                              data-tip="Framework of the App to be deployed"
+                              data-tip="The framework that your app is built upon."
                             >
                               <FontAwesomeIcon size="sm" icon={faInfoCircle} />
                             </span>
@@ -805,7 +783,7 @@ function DeploySiteConfig() {
                                 Package Manager
                                 <span
                                   className="tooltip"
-                                  data-tip="Framework of the App to be deployed"
+                                  data-tip="The package manager that you want your app to be built with."
                                 >
                                   <FontAwesomeIcon size="sm" icon={faInfoCircle} />
                                 </span>

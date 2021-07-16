@@ -241,7 +241,7 @@ const Wallet = () => {
                           disabled={walletLoading}
                           onClick={() => history.push("/wallet/recharge")}
                         >
-                          Increase Allowance
+                          Set Allowance
                         </button>
                       </>
                     )}
