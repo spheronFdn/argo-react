@@ -83,6 +83,7 @@ const ProjectTopCard = () => {
     return config.urls.IMAGE_NOT_FOUND;
   };
   const _sendMintTransaction = async (uri: string) => {
+    await Web3Service.getAccount();
     return await Web3Service.mintNft(uri);
   };
   const mintNft = (url: string, name: string, description: string) => {

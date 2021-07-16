@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@argoapp/nft-js@https://github.com/argoapp-live/argo-nft-js.git#decoupled":
+"@argoapp/nft-js@https://github.com/argoapp-live/argo-nft-js.git":
   version "1.0.0"
   resolved "https://github.com/argoapp-live/argo-nft-js.git#bad1f727fd2c41cc5231cd2b381183f266696a24"
   dependencies:
