@@ -8,6 +8,8 @@ export interface IConfig {
     onboard: {
       DAPP_ID: string;
       NETWORK_ID: number;
+      NETWORK_NAME: string;
+      RPC_URL: string;
     };
     BICONOMY_KEY: string;
     CMC_KEY: string;
@@ -19,7 +21,7 @@ const NODE_ENV: string = "production";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "http://localhost:8080",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -27,6 +29,8 @@ const development: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
+      NETWORK_NAME: "polygon testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -37,7 +41,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "http://localhost:8080",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -45,6 +49,8 @@ const production: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
+      NETWORK_NAME: "matic testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -63,6 +69,8 @@ const test: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 1,
+      NETWORK_NAME: "matic testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",

@@ -10,6 +10,7 @@ import {
   faChevronUp,
   faExclamationCircle,
   faSyncAlt,
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
 import { ActionContext, StateContext } from "../../hooks";
@@ -660,7 +661,23 @@ function DeploySiteConfig() {
                       </label>
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
-                          <label>Owner</label>
+                          <label>
+                            Owner
+                            <span
+                              className="tooltip"
+                              data-tip="Name of the Organization"
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                            {/* <img
+                              src={require("../../assets/svg/info.svg")}
+                              alt="logo"
+                              className="tooltip"
+                              data-tip="Name of the Organization"
+                              height={13}
+                              loading="lazy"
+                            /> */}
+                          </label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -690,7 +707,15 @@ function DeploySiteConfig() {
                           </div>
                         </div>
                         <div className="deploy-site-item-form-item">
-                          <label>Branch to deploy</label>
+                          <label>
+                            Branch to deploy
+                            <span
+                              className="tooltip"
+                              data-tip="The branch of the repo to be deployed"
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                          </label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -717,7 +742,15 @@ function DeploySiteConfig() {
                           </div>
                         </div>
                         <div className="deploy-site-item-form-item">
-                          <label>Workspace to deploy</label>
+                          <label>
+                            Workspace to deploy
+                            <span
+                              className="tooltip"
+                              data-tip="The workspace to be deployed in"
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                          </label>
                           <input
                             type="text"
                             className="deploy-site-item-input"
@@ -737,7 +770,15 @@ function DeploySiteConfig() {
                       </label>
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
-                          <label>Framework</label>
+                          <label>
+                            Framework
+                            <span
+                              className="tooltip"
+                              data-tip="Framework of the App to be deployed"
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                          </label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -760,7 +801,15 @@ function DeploySiteConfig() {
                         {framework !== "static" && (
                           <>
                             <div className="deploy-site-item-form-item">
-                              <label>Package Manager</label>
+                              <label>
+                                Package Manager
+                                <span
+                                  className="tooltip"
+                                  data-tip="Framework of the App to be deployed"
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               <div className="deploy-site-item-select-container">
                                 <select
                                   className="deploy-site-item-select"
@@ -776,7 +825,15 @@ function DeploySiteConfig() {
                               </div>
                             </div>
                             <div className="deploy-site-item-form-item">
-                              <label>Build command</label>
+                              <label>
+                                Build command
+                                <span
+                                  className="tooltip"
+                                  data-tip="The command your frontend framework provides for compiling your code."
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               {framework !== "next" ? (
                                 <div className="deploy-site-item-input-container">
                                   <input
@@ -802,7 +859,15 @@ function DeploySiteConfig() {
                               )}
                             </div>
                             <div className="deploy-site-item-form-item">
-                              <label>Publish directory</label>
+                              <label>
+                                Publish directory
+                                <span
+                                  className="tooltip"
+                                  data-tip="The directory in which your compiled frontend will be located."
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               <input
                                 type="text"
                                 className="deploy-site-item-input"
