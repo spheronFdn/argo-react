@@ -124,7 +124,7 @@ const ProjectTopCard = () => {
         <div className="deployment-item">
           <div className="deployment-left">
             <img
-              src={imageUrl(selectedProject?.latestDeployment?.screenshotData?.url)}
+              src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
               alt={"Preview not Available"}
               height="180"
               width="320"

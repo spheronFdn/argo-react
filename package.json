@@ -49,6 +49,7 @@
     ]
   },
   "dependencies": {
+    "@argoapp/nft-js": "https://github.com/argoapp-live/argo-nft-js.git#decoupled",
     "@argoapp/payment-js": "^1.0.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
