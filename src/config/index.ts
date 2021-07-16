@@ -21,7 +21,7 @@ const NODE_ENV: string = "production";
 
 const development: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -41,7 +41,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -61,7 +61,7 @@ const production: IConfig = {
 
 const test: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
