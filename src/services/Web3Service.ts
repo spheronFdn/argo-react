@@ -40,6 +40,7 @@ const onboard = Onboard({
             config.nft.SUBGRAPH,
           );
           nft = new nftLib.Nft(nftVendor);
+          await nft.at(config.nft.NFT_CONTRACT_ADDRESS);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err);
@@ -113,7 +114,7 @@ export const giveAllowance = async (amount: string) => {
 
 export const mintNft = async (uri: string) => {
   if (nft) {
-    const tx = await nft.gasslessBurn(uri, config.web3.onboard.NETWORK_ID);
+    const tx = await nft.gaslessMint(uri, config.web3.onboard.NETWORK_ID);
     notify.hash(tx.hash);
     await tx.wait();
     return tx;

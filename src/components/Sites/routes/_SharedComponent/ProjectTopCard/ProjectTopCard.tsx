@@ -83,7 +83,6 @@ const ProjectTopCard = () => {
     return config.urls.IMAGE_NOT_FOUND;
   };
   const _sendMintTransaction = async (uri: string) => {
-    await Web3Service.getAccount();
     return await Web3Service.mintNft(uri);
   };
   const mintNft = (url: string, name: string, description: string) => {
@@ -95,7 +94,10 @@ const ProjectTopCard = () => {
     try {
       ApiService.getUri(metadata).subscribe(async (res) => {
         const uri = res.tx.url;
-        await _sendMintTransaction(uri);
+        const tx = await _sendMintTransaction(uri);
+        //TODO:remove this logging and show loader and tx status
+        // eslint-disable-next-line no-console
+        console.log(tx);
       });
     } catch (err) {
       // eslint-disable-next-line no-console
