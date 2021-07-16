@@ -71,11 +71,11 @@ export interface IProject {
   latestDeployment: IDeployment | null;
   deployments: IDeployment[];
   organizationId: string;
-  // protocol: string;
   domains: IDomain[];
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
+  env: any;
   updatedAt: Date;
   createdAt: Date;
 }
@@ -95,12 +95,12 @@ export interface IDeployment {
   _id?: string;
   sitePreview: string;
   commitId: string;
+  commitMessage: string;
   log: string[];
   topic: string;
   status: string;
   paymentId: string;
   buildTime: string;
-  // protocol: string;
   configuration: IConfiguration;
   project: IProject;
   createdAt: any;

@@ -1,4 +1,5 @@
 import SettingsGeneral from "./SettingsGeneral";
 import SettingsBuildDeploy from "./SettingsBuildDeploy";
+import EnvironmentVariable from "./EnvironmentVariable";
 
-export { SettingsGeneral, SettingsBuildDeploy };
+export { SettingsGeneral, SettingsBuildDeploy, EnvironmentVariable };

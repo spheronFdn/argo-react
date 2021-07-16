@@ -58,10 +58,17 @@
             margin-top: 0.25rem;
           }
 
+          .label-note {
+            font-weight: 500;
+            color: var(--black) !important;
+            font-size: 15px !important;
+            margin-top: 1rem !important;
+          }
+
           a {
             text-decoration: none;
             margin-top: 1rem;
-            color: var(--logoColor);
+            color: var(--logoColor) !important;
             span {
               margin-left: 1rem;
             }

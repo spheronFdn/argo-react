@@ -195,18 +195,6 @@ export const createConfiguration = (configuration: any): Observable<any> => {
   });
 };
 
-// export const getAllProjects = (orgId: string): Observable<any> => {
-//   return defer(() => {
-//     return from<Promise<any>>(
-//       fetch(`${config.urls.API_URL}/organization/${orgId}`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-//         },
-//       }).then((res) => res.json()),
-//     );
-//   });
-// };
-
 export const getProject = (projectId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
@@ -345,6 +333,21 @@ export const removeWallet = (wallet: any): Observable<any> => {
         },
         method: "DELETE",
         body: JSON.stringify(wallet),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const updateProjectEnv = (id: string, envDetails: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/project/env/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(envDetails),
       }).then((res) => res.json()),
     );
   });

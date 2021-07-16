@@ -1,0 +1,160 @@
+@import "../../../../../../../../styles/mixin";
+
+.env-item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid var(--grey1Color);
+  border-radius: 6px;
+  margin: 0.75rem 0px;
+
+  .env-item-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+
+    .env-item-icon {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--grey2Color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0px 1rem;
+    }
+
+    .env-item-key-container {
+      display: flex;
+      flex-direction: column;
+      width: 30%;
+
+      .env-item-key-title {
+        color: var(--grey3Color);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .env-item-value-container {
+        display: flex;
+        align-items: center;
+        .env-item-eye {
+          color: var(--grey4Color);
+          cursor: pointer;
+          margin-right: 0.5rem;
+          font-size: 18px;
+          border-radius: 6px;
+          height: 24px;
+          width: 24px;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background-color: var(--grey1Color);
+          }
+        }
+      }
+
+      .env-form-input {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        border: 1px solid var(--grey2Color);
+        outline: none;
+        flex: 1;
+        width: 75%;
+
+        &:focus {
+          border: 1px solid var(--grey5Color);
+        }
+      }
+    }
+
+    .edit-button {
+      @include secondaryButton(
+        var(--themeColor),
+        transparent,
+        var(--themeColor),
+        0.3rem 1rem,
+        none,
+        4px,
+        var(--themeColorDark),
+        var(--primaryDisabled)
+      );
+      border: 1px solid var(--themeColor);
+      font-weight: 500;
+      margin-left: 1rem;
+      min-width: 86px;
+
+      &:hover {
+        border: 1px solid var(--themeColorDark);
+      }
+
+      &:disabled {
+        border: 1px solid var(--primaryDisabled);
+      }
+    }
+
+    .save-button {
+      @include primaryButton(
+        white,
+        var(--themeColor),
+        0.3rem 1rem,
+        none,
+        8px,
+        var(--themeColorDark),
+        var(--primaryDisabled)
+      );
+      margin-left: 1rem;
+      min-width: 86px;
+    }
+
+    .cancel-button {
+      @include primaryButton(
+        var(--textColor),
+        var(--grey2Color),
+        0.3rem 1rem,
+        none,
+        8px,
+        var(--grey3Color),
+        var(--grey1Color)
+      );
+      min-width: 86px;
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+
+    .remove-button {
+      @include secondaryButton(
+        var(--red),
+        transparent,
+        var(--red),
+        0.3rem 1rem,
+        none,
+        4px,
+        var(--redDark),
+        var(--redDisabled)
+      );
+      border: 1px solid var(--red);
+      font-weight: 500;
+      margin-left: 1rem;
+      min-width: 86px;
+      margin-right: 1rem;
+
+      &:hover {
+        border: 1px solid var(--redDark);
+      }
+
+      &:disabled {
+        border: 1px solid var(--redDisabled);
+      }
+
+      span {
+        margin-right: 4px;
+      }
+    }
+  }
+}

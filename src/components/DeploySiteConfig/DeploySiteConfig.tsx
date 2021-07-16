@@ -11,6 +11,7 @@ import {
   faExclamationCircle,
   faSyncAlt,
   faInfoCircle,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
 import { ActionContext, StateContext } from "../../hooks";
@@ -32,8 +33,13 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment, orgLoading } =
-    useContext<IStateModel>(StateContext);
+  const {
+    user,
+    selectedOrg,
+    selectedRepoForTriggerDeployment,
+    orgLoading,
+    userLoading,
+  } = useContext<IStateModel>(StateContext);
   const { setLatestDeploymentConfig, setSelectedOrganization } =
     useContext<IActionModel>(ActionContext);
 
@@ -44,9 +50,11 @@ function DeploySiteConfig() {
     any[]
   >([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
+  const [currentRepoOwner, setCurrentRepoOwner] = useState<string>("");
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [repoBranches, setRepoBranches] = useState<any[]>([]);
+  const [buildEnv, setBuildEnv] = useState<any[]>([]);
   const [repoBranchesLoading, setRepoBranchesLoading] = useState<boolean>(true);
 
   // const [autoPublish, setAutoPublish] = useState<boolean>(true);
@@ -160,9 +168,7 @@ function DeploySiteConfig() {
         name: repoName,
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
-      setSelectedRepoOwner({
-        name: ownerName,
-      });
+      setCurrentRepoOwner(ownerName);
       setFramework(selectedRepoForTriggerDeployment.framework);
       setWorkspace(selectedRepoForTriggerDeployment.workspace);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
@@ -181,6 +187,26 @@ function DeploySiteConfig() {
       });
     }
   }, [selectedRepoForTriggerDeployment]);
+
+  useEffect(() => {
+    if (currentRepoOwner && selectedRepoForTriggerDeployment) {
+      ApiService.getAllGithubAppInstallation().subscribe((res) => {
+        if (componentIsMounted.current) {
+          const repoOwners: any[] = res.installations.map((installation: any) => ({
+            name: installation.account.login,
+            avatar: installation.account.avatar_url,
+            installationId: installation.id,
+          }));
+          if (repoOwners.length) {
+            const newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === currentRepoOwner,
+            )[0];
+            setSelectedRepoOwner(newRepoOwner);
+          }
+        }
+      });
+    }
+  }, [currentRepoOwner, selectedRepoForTriggerDeployment]);
 
   useEffect(() => {
     const bc = new BroadcastChannel("github_app_auth");
@@ -283,12 +309,12 @@ function DeploySiteConfig() {
           folderName: selectedRepo.name,
           owner: selectedRepoOwner.name,
           installationId: selectedRepoOwner.installationId,
-          isPrivate: selectedRepo.private,
           repositoryId: selectedRepo.repositoryId,
           organizationId: owner._id,
           uniqueTopicId,
           auto_publish: false,
           configurationId: result._id,
+          env: mapBuildEnv(buildEnv),
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
@@ -302,6 +328,14 @@ function DeploySiteConfig() {
         });
       }
     });
+  };
+
+  const mapBuildEnv = (buildEnv: any[]): any => {
+    const buildEnvObj = {};
+    buildEnv.forEach((env) => {
+      Object.assign(buildEnvObj, { [env.key]: env.value });
+    });
+    return buildEnvObj;
   };
 
   const openGithubAppAuth = async () => {
@@ -329,6 +363,28 @@ function DeploySiteConfig() {
   const selectProtocol = (selectedProtocol: string) => {
     setProtocol(selectedProtocol);
     setCreateDeployProgress(3);
+  };
+
+  const addBuildEnv = () => {
+    setBuildEnv([...buildEnv, { key: "", value: "" }]);
+  };
+
+  const removeBuildEnvItem = (id: number) => {
+    setBuildEnv(buildEnv.filter((item, i) => i !== id));
+  };
+
+  const fillEnvKey = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) =>
+        i === id ? { key: value, value: item.value } : item,
+      ),
+    );
+  };
+
+  const fillEnvValue = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) => (i === id ? { key: item.key, value } : item)),
+    );
   };
 
   return (
@@ -453,6 +509,7 @@ function DeploySiteConfig() {
                         <div className="deployment-provider-buttons">
                           <button
                             className="github-button"
+                            disabled={userLoading}
                             onClick={openGithubAppAuth}
                           >
                             <span className="github-icon">
@@ -769,7 +826,9 @@ function DeploySiteConfig() {
                               <option value="react">Create React App</option>
                               <option value="vue">Vue App</option>
                               <option value="angular">Angular App</option>
-                              <option value="next">Next.js App</option>
+                              {protocol !== "skynet" && (
+                                <option value="next">Next.js App</option>
+                              )}
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
@@ -855,6 +914,74 @@ function DeploySiteConfig() {
                             </div>
                           </>
                         )}
+                      </div>
+                    </div>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Advanced build settings
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Define environment variables for more control and flexibility
+                        over your build.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Environment Variables</label>
+                          <label className="deploy-site-item-subtitle">
+                            Note that adding environment variables here won't work if
+                            project already exists, you have to add environment
+                            variables by going to your Project Settings {"->"}{" "}
+                            Environment Variables
+                          </label>
+                        </div>
+                        {buildEnv.length !== 0 && (
+                          <div className="deploy-site-item-form-item">
+                            <div className="deploy-site-env-title">
+                              <label className="deploy-site-env-title-item">
+                                Key
+                              </label>
+                              <label className="deploy-site-env-title-item">
+                                Value
+                              </label>
+                            </div>
+                            {buildEnv.map((env, i) => (
+                              <div
+                                className="deploy-site-item-env-container"
+                                key={i}
+                              >
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="VARIABLE_NAME"
+                                  value={env.key}
+                                  onChange={(e) => fillEnvKey(e.target.value, i)}
+                                />
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="somevalue"
+                                  value={env.value}
+                                  onChange={(e) => fillEnvValue(e.target.value, i)}
+                                />
+                                <span
+                                  className="remove-env-item"
+                                  onClick={(e) => removeBuildEnvItem(i)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTimesCircle}
+                                  ></FontAwesomeIcon>
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="add-new-var-button"
+                          onClick={(e) => addBuildEnv()}
+                        >
+                          New Variable
+                        </button>
                       </div>
                       {!selectedOrg?.wallet && !orgLoading ? (
                         <div className="wallet-details-container">

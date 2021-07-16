@@ -1,0 +1,146 @@
+@import "../../../../../../styles/mixin";
+
+.EnvironmentVariable {
+  flex: 1;
+  .settings-right-container {
+    flex: 1;
+    margin-left: 2rem;
+    .settings-project-details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+      .settings-project-header {
+        font-family: var(--headerFont) !important;
+        display: flex;
+        min-height: 32px;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 22px;
+        font-weight: 500;
+        background-color: #3463ae38;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom: 1px solid var(--themeColorDark);
+      }
+
+      .delete-containers {
+        background-color: #fc2c2c38 !important;
+      }
+
+      .settings-project-body {
+        flex: 1;
+        padding: 1rem 24px;
+        flex-direction: column;
+
+        .settings-project-header-subtitle {
+          font-size: 16px;
+          color: var(--grey3Color);
+          margin-bottom: 0.5rem;
+        }
+
+        .settings-project-add-env-container {
+          display: flex;
+          align-items: center;
+          margin-top: 1rem;
+          .add-env-input {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            border: 1px solid var(--grey2Color);
+            outline: none;
+            flex: 1;
+            margin-right: 1rem;
+
+            &:focus {
+              border: 1px solid var(--grey5Color);
+            }
+          }
+
+          .add-env-button {
+            @include primaryButton(
+              white,
+              #040c34,
+              0.5rem 1rem,
+              none,
+              4px,
+              #735386,
+              var(--grey1Color)
+            );
+            border: 1px solid transparent;
+            font-weight: 500;
+            width: 63px;
+
+            &:disabled {
+              color: var(--grey3Color);
+              border: 1px solid var(--grey2Color);
+            }
+          }
+        }
+      }
+
+      .settings-project-footer {
+        display: flex;
+        justify-content: space-between;
+        min-height: 32px;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #3463ae38;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top: 1px solid var(--themeColorDark);
+        font-size: 14px;
+        color: var(--grey4Color);
+
+        .warning-text-container {
+          display: flex;
+          align-items: center;
+          .exclamation-icon {
+            color: var(--fuelYellow);
+            display: flex;
+            margin-right: 8px;
+          }
+        }
+
+        .primary-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
+          margin-left: 1rem;
+          min-width: 86px;
+
+          div {
+            margin-right: 4px;
+          }
+        }
+
+        .delete-button {
+          @include primaryButton(
+            white,
+            var(--red),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--redDark),
+            var(--redDisabled)
+          );
+          margin-left: 1rem;
+          min-width: 86px;
+
+          div {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+}
