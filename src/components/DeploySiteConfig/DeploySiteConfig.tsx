@@ -872,22 +872,6 @@ function DeploySiteConfig() {
                           </>
                         )}
                       </div>
-                      {!selectedOrg?.wallet && !orgLoading ? (
-                        <div className="wallet-details-container">
-                          <div className="wallet-details-items">
-                            <span className="exclamation-icon">
-                              <FontAwesomeIcon
-                                icon={faExclamationCircle}
-                              ></FontAwesomeIcon>
-                            </span>
-                            <span>
-                              You have to enable your organization wallet before you
-                              can deploy your project.
-                              <Link to="/dashboard/wallet">Enable now</Link>
-                            </span>
-                          </div>
-                        </div>
-                      ) : null}
                     </div>
                     <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">
@@ -897,7 +881,21 @@ function DeploySiteConfig() {
                         Define environment variables for more control and flexibility
                         over your build.
                       </label>
+                      {/* <label className="deploy-site-item-subtitle">
+                        Note that adding environment variables here won't work if
+                        project already exists, you have to add environment variables
+                        by going to project Settings {"->"} Environment Variables
+                      </label> */}
                       <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Environment Variables</label>
+                          <label className="deploy-site-item-subtitle">
+                            Note that adding environment variables here won't work if
+                            project already exists, you have to add environment
+                            variables by going to your Project Settings {"->"}{" "}
+                            Environment Variables
+                          </label>
+                        </div>
                         {buildEnv.length !== 0 && (
                           <div className="deploy-site-item-form-item">
                             <div className="deploy-site-env-title">
