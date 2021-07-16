@@ -100,7 +100,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         <>
           <div className="deployment-left">
             <img
-              src={imageUrl(deployment?.screenshotData?.url)}
+              src={imageUrl(deployment?.screenshot?.url)}
               alt={"Preview not Available"}
               height="135"
               width="240"

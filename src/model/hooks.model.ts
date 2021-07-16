@@ -105,9 +105,9 @@ export interface IDeployment {
   project: IProject;
   createdAt: any;
   updatedAt: any;
-  screenshotData: IScreenshotData | undefined;
+  screenshot: IScreenshot | undefined;
 }
-export interface IScreenshotData {
+export interface IScreenshot {
   id: string;
   fee: string;
   url: string;
