@@ -102,6 +102,7 @@ const Deployment = () => {
             githubUrl: result.deployment.project.githubUrl,
             branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
+            updatedAt: result.deployment.updatedAt,
             protocol: result.deployment.configuration.protocol,
             commitHash: result.deployment.commitId,
             commitMessage: result.deployment.commitMessage,
@@ -410,7 +411,10 @@ const Deployment = () => {
                     >
                       {currentSiteDeployConfig.commitHash.substr(0, 7)}{" "}
                       {currentSiteDeployConfig.commitMessage
-                        ? `- ${currentSiteDeployConfig.commitMessage}`
+                        ? `- ${currentSiteDeployConfig.commitMessage.substr(
+                            0,
+                            84,
+                          )}...`
                         : ""}
                     </a>
                   </>
@@ -426,11 +430,11 @@ const Deployment = () => {
                 {deploymentStatus === "pending"
                   ? currentSiteDeployLogs[0]?.time
                     ? `Deployment started ${timeAgo.format(
-                        moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
+                        moment(`${currentSiteDeployConfig.createdAt}`).toDate(),
                       )}`
                     : null
                   : `Deployment done at ${moment(
-                      currentSiteDeployConfig.createdAt,
+                      currentSiteDeployConfig.updatedAt,
                     ).format("MMM DD, YYYY hh:mm a")}`}
               </>
             ) : (

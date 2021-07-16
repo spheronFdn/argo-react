@@ -7,14 +7,9 @@ import Skeleton from "react-loading-skeleton";
 import Lottie from "react-lottie";
 import animationData from "../../../../../../assets/lotties/rotating-settings.json";
 import moment from "moment";
-import { ApiService } from "../../../../../../services";
 import { useHistory, useParams } from "react-router-dom";
-import { ActionContext, StateContext } from "../../../../../../hooks";
-import {
-  IActionModel,
-  IDomain,
-  IStateModel,
-} from "../../../../../../model/hooks.model";
+import { StateContext } from "../../../../../../hooks";
+import { IDomain, IStateModel } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
@@ -33,7 +28,6 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
 
   const params = useParams<any>();
   const history = useHistory();
-  const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
   const { selectedProject } = useContext<IStateModel>(StateContext);
 
   const domains =
@@ -79,12 +73,9 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   };
 
   const openDeployment = () => {
-    ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
-      setSelectedDeployment(response.deployment);
-      history.push(
-        `/org/${params.orgid}/sites/${params.siteid}/deployments/${deployment?._id}`,
-      );
-    });
+    history.push(
+      `/org/${params.orgid}/sites/${params.siteid}/deployments/${deployment?._id}`,
+    );
   };
 
   return (
@@ -102,7 +93,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         <>
                           <a
                             href={`https://${d.name}`}
-                            className="commit-link"
+                            className="deployment-link"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -120,7 +111,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         <>
                           <a
                             href={`https://${s.name}`}
-                            className="commit-link"
+                            className="deployment-link"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -137,7 +128,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         <>
                           <a
                             href={`http://${s.name}`}
-                            className="commit-link"
+                            className="deployment-link"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -152,7 +143,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         <>
                           <a
                             href={`http://${s.name}`}
-                            className="commit-link"
+                            className="deployment-link"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -174,7 +165,7 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                     href={deployment?.sitePreview}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="commit-link"
+                    className="deployment-link"
                   >
                     {deployment?.sitePreview}
                   </a>
@@ -196,11 +187,11 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         )}/commit/${deployment?.commitId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="commit-link"
+                        className="deployment-link"
                       >
                         {deployment?.commitId.substr(0, 7)}{" "}
                         {deployment?.commitMessage
-                          ? `- ${deployment?.commitMessage}`
+                          ? `- ${deployment?.commitMessage.substr(0, 64)}...`
                           : ""}
                       </a>
                     </>
