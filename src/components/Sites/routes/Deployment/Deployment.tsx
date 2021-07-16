@@ -102,7 +102,10 @@ const Deployment = () => {
             githubUrl: result.deployment.project.githubUrl,
             branch: result.deployment.configuration.branch,
             createdAt: result.deployment.createdAt,
+            updatedAt: result.deployment.updatedAt,
             protocol: result.deployment.configuration.protocol,
+            commitHash: result.deployment.commitId,
+            commitMessage: result.deployment.commitMessage,
           };
           setLatestDeploymentConfig(deployment);
           currentSiteDeployLogs.splice(0, currentSiteDeployLogs.length);
@@ -202,6 +205,7 @@ const Deployment = () => {
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
+  let githubCommitLink = "";
   if (currentSiteDeployConfig) {
     displayGithubRepo = currentSiteDeployConfig.githubUrl.substring(
       19,
@@ -212,6 +216,11 @@ const Deployment = () => {
       0,
       currentSiteDeployConfig.githubUrl.length - 4,
     )}/tree/${currentSiteDeployConfig.branch}`;
+
+    githubCommitLink = `${currentSiteDeployConfig.githubUrl.substring(
+      0,
+      currentSiteDeployConfig.githubUrl.length - 4,
+    )}/commit/${currentSiteDeployConfig.commitHash}`;
   }
 
   const domains =
@@ -391,14 +400,41 @@ const Deployment = () => {
             {!deploymentLoading ? (
               <>
                 <u>Production</u>: {currentSiteDeployConfig?.branch}
+                {currentSiteDeployConfig.commitHash ? (
+                  <>
+                    @
+                    <a
+                      href={githubCommitLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="commit-link"
+                    >
+                      {currentSiteDeployConfig.commitHash.substr(0, 7)}{" "}
+                      {currentSiteDeployConfig.commitMessage
+                        ? `- ${currentSiteDeployConfig.commitMessage.substr(
+                            0,
+                            84,
+                          )}...`
+                        : ""}
+                    </a>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <Skeleton width={400} duration={2} />
+            )}
+          </p>
+          <p className="site-deployment-card-header-description">
+            {!deploymentLoading ? (
+              <>
                 {deploymentStatus === "pending"
                   ? currentSiteDeployLogs[0]?.time
-                    ? ` - Deployment started ${timeAgo.format(
-                        moment(`${currentSiteDeployLogs[0]?.time}`).toDate(),
+                    ? `Deployment started ${timeAgo.format(
+                        moment(`${currentSiteDeployConfig.createdAt}`).toDate(),
                       )}`
                     : null
-                  : ` - Deployment done at ${moment(
-                      currentSiteDeployConfig.createdAt,
+                  : `Deployment done at ${moment(
+                      currentSiteDeployConfig.updatedAt,
                     ).format("MMM DD, YYYY hh:mm a")}`}
               </>
             ) : (

@@ -1,4 +1,5 @@
 .deployment-item {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 1rem;
@@ -19,7 +20,7 @@
       font-weight: 500;
     }
 
-    .commit-link {
+    .deployment-link {
       text-decoration: none;
       color: var(--logoColor);
       &:hover {
