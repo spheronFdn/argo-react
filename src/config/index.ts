@@ -9,6 +9,8 @@ export interface IConfig {
     onboard: {
       DAPP_ID: string;
       NETWORK_ID: number;
+      NETWORK_NAME: string;
+      RPC_URL: string;
     };
     BICONOMY_KEY: string;
     CMC_KEY: string;
@@ -30,6 +32,8 @@ const development: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
+      NETWORK_NAME: "polygon testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -50,6 +54,8 @@ const production: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
+      NETWORK_NAME: "matic testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -70,6 +76,8 @@ const test: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 1,
+      NETWORK_NAME: "matic testnet",
+      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",

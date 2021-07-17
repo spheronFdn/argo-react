@@ -36,8 +36,14 @@
         .wallet-subtitle {
           font-size: 1.2rem;
           font-weight: 400;
-          margin-bottom: 1rem;
+          margin-bottom: 0.2rem;
           color: var(--grey4Color);
+        }
+
+        .wallet-info {
+          font-size: 0.9rem;
+          margin-bottom: 1.2rem;
+          color: #da621e;
         }
 
         .primary-button {

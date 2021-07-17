@@ -42,6 +42,13 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
     (hnsDomains && hnsDomains.length > 0) ||
     (hnsSubdomains && hnsSubdomains.length > 0);
 
+  const domainsAttached = [
+    ...(domains || []),
+    ...(subdomains || []),
+    ...(hnsDomains || []),
+    ...(hnsSubdomains || []),
+  ];
+
   return (
     <div className="project-item" key={index}>
       {type === "filled" && (
@@ -56,15 +63,19 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
             >
               {projectName}
             </h3>
-            {latestDeployment && (
+            {(latestDeployment || isDomainOrSubPresent) && (
               <button
                 type="button"
                 className="project-item-visit-button"
                 onClick={(e) =>
                   window.open(
                     `${
-                      domains && domains.length > 0
-                        ? `https://${domains[0].name}`
+                      domainsAttached.length > 0
+                        ? `${
+                            domainsAttached[0].type.indexOf("handshake") !== -1
+                              ? "http"
+                              : "https"
+                          }://${domainsAttached[0].name}`
                         : latestDeployment
                     }`,
                     "_blank",
