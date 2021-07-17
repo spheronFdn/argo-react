@@ -692,6 +692,7 @@ function DeploySiteConfig() {
                                 loading="lazy"
                               />
                             </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
                           </div>
                         </ul>
                       </div>
