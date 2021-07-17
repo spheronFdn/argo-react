@@ -4,6 +4,12 @@ import Notify from "bnc-notify";
 import config from "../config";
 import * as paymentLib from "@argoapp/payment-js";
 
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
+
 var notify = Notify({
   dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
   networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
@@ -12,9 +18,35 @@ var notify = Notify({
 let provider: ethers.providers.Web3Provider | null;
 let payment: paymentLib.Payment | null;
 
+const wallets = [
+  { walletName: "metamask", preferred: true },
+  { walletName: "authereum", preferred: true },
+  { walletName: "trust", preferred: true, rpcUrl: config.web3.onboard.RPC_URL },
+  { walletName: "gnosis", preferred: true },
+  {
+    walletName: "ledger",
+    rpcUrl: config.web3.onboard.RPC_URL,
+    preferred: true,
+  },
+  {
+    walletName: "torus",
+    rpcUrl: config.web3.onboard.RPC_URL,
+    preferred: true,
+  },
+  {
+    walletName: "walletConnect",
+    rpc: {
+      "80001":
+        "https://polygon-mumbai.infura.io/v3/53e706eaa088405491d1e311f6a6938b",
+    },
+    preferred: true,
+  },
+];
+
 const onboard = Onboard({
   dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
   networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+  networkName: config.web3.onboard.NETWORK_NAME,
   subscriptions: {
     wallet: async (wallet) => {
       if (wallet.provider) {
@@ -40,10 +72,40 @@ const onboard = Onboard({
       }
     },
   },
+  walletSelect: {
+    wallets: wallets,
+  },
 });
+
+export const autoChangeNetwork = async () => {
+  try {
+    if (window.ethereum.chainId !== "0x13881") {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: "0x13881",
+            chainName: "Polygon Testnet",
+            nativeCurrency: {
+              name: "MATIC",
+              symbol: "MATIC",
+              decimals: 18,
+            },
+            rpcUrls: ["https://matic-testnet-archive-rpc.bwarelabs.com"],
+            blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+          },
+        ],
+      });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+};
 
 export const getAccount = async () => {
   try {
+    await autoChangeNetwork();
     await onboard.walletSelect();
     await onboard.walletCheck();
     const currentState = onboard.getState();

@@ -188,6 +188,10 @@
                   label {
                     font-size: 16px;
                     font-weight: bold;
+                    .tooltip {
+                      color: rgb(66, 65, 65);
+                      margin-left: 10px;
+                    }
                   }
                   .deploy-site-item-input-container {
                     display: flex;
