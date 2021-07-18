@@ -305,6 +305,7 @@ function DeploySiteConfig() {
         const uniqueTopicId = uuidv4();
 
         const deployment = {
+          orgId: selectedOrg?._id,
           githubUrl: selectedRepo.clone_url,
           folderName: selectedRepo.name,
           owner: selectedRepoOwner.name,
