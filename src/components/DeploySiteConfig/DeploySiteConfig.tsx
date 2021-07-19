@@ -10,6 +10,8 @@ import {
   faChevronUp,
   faExclamationCircle,
   faSyncAlt,
+  faInfoCircle,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import "./DeploySiteConfig.scss";
 import { ActionContext, StateContext } from "../../hooks";
@@ -21,6 +23,7 @@ import Skeleton from "react-loading-skeleton";
 import { RepoOrgDropdown, RepoItem } from "./components";
 import { LazyLoadedImage } from "../_SharedComponents";
 import { v4 as uuidv4 } from "uuid";
+import ReactTooltip from "react-tooltip";
 
 const MemoRepoOrgDropdown = React.memo(RepoOrgDropdown);
 const MemoRepoItem = React.memo(RepoItem);
@@ -30,8 +33,13 @@ const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
 function DeploySiteConfig() {
   const history = useHistory();
 
-  const { user, selectedOrg, selectedRepoForTriggerDeployment, orgLoading } =
-    useContext<IStateModel>(StateContext);
+  const {
+    user,
+    selectedOrg,
+    selectedRepoForTriggerDeployment,
+    orgLoading,
+    userLoading,
+  } = useContext<IStateModel>(StateContext);
   const { setLatestDeploymentConfig, setSelectedOrganization } =
     useContext<IActionModel>(ActionContext);
 
@@ -42,9 +50,11 @@ function DeploySiteConfig() {
     any[]
   >([]);
   const [selectedRepoOwner, setSelectedRepoOwner] = useState<any>();
+  const [currentRepoOwner, setCurrentRepoOwner] = useState<string>("");
   const [ownerLoading, setOwnerLoading] = useState<boolean>(true);
   const [repoLoading, setRepoLoading] = useState<boolean>(true);
   const [repoBranches, setRepoBranches] = useState<any[]>([]);
+  const [buildEnv, setBuildEnv] = useState<any[]>([]);
   const [repoBranchesLoading, setRepoBranchesLoading] = useState<boolean>(true);
 
   // const [autoPublish, setAutoPublish] = useState<boolean>(true);
@@ -56,6 +66,7 @@ function DeploySiteConfig() {
   const [packageManager, setPackageManager] = useState<string>("npm");
   const [buildCommand, setBuildCommand] = useState<string>("");
   const [publishDirectory, setPublishDirectory] = useState<string>("");
+  const [protocol, setProtocol] = useState<string>("");
   const [startDeploymentLoading, setStartDeploymentLoading] =
     useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
@@ -78,6 +89,7 @@ function DeploySiteConfig() {
       packageManager &&
       buildCommand &&
       publishDirectory &&
+      protocol &&
       selectedOrg?.wallet &&
       !orgLoading
     ) {
@@ -88,6 +100,7 @@ function DeploySiteConfig() {
         owner &&
         branch &&
         framework === "static" &&
+        protocol &&
         selectedOrg?.wallet &&
         !orgLoading
       ) {
@@ -107,6 +120,7 @@ function DeploySiteConfig() {
     user,
     selectedOrg,
     orgLoading,
+    protocol,
   ]);
 
   useEffect(() => {
@@ -154,15 +168,14 @@ function DeploySiteConfig() {
         name: repoName,
         clone_url: selectedRepoForTriggerDeployment.github_url,
       });
-      setSelectedRepoOwner({
-        name: ownerName,
-      });
+      setCurrentRepoOwner(ownerName);
       setFramework(selectedRepoForTriggerDeployment.framework);
       setWorkspace(selectedRepoForTriggerDeployment.workspace);
       setPackageManager(selectedRepoForTriggerDeployment.package_manager);
       setBuildCommand(selectedRepoForTriggerDeployment.build_command);
       setPublishDirectory(selectedRepoForTriggerDeployment.publish_dir);
-      setCreateDeployProgress(2);
+      setProtocol(selectedRepoForTriggerDeployment.protocol);
+      setCreateDeployProgress(3);
 
       const branchUrl = `https://api.github.com/repos/${ownerName}/${repoName}/branches`;
       ApiService.getGithubRepoBranches(branchUrl).subscribe((res) => {
@@ -174,6 +187,26 @@ function DeploySiteConfig() {
       });
     }
   }, [selectedRepoForTriggerDeployment]);
+
+  useEffect(() => {
+    if (currentRepoOwner && selectedRepoForTriggerDeployment) {
+      ApiService.getAllGithubAppInstallation().subscribe((res) => {
+        if (componentIsMounted.current) {
+          const repoOwners: any[] = res.installations.map((installation: any) => ({
+            name: installation.account.login,
+            avatar: installation.account.avatar_url,
+            installationId: installation.id,
+          }));
+          if (repoOwners.length) {
+            const newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === currentRepoOwner,
+            )[0];
+            setSelectedRepoOwner(newRepoOwner);
+          }
+        }
+      });
+    }
+  }, [currentRepoOwner, selectedRepoForTriggerDeployment]);
 
   useEffect(() => {
     const bc = new BroadcastChannel("github_app_auth");
@@ -265,22 +298,24 @@ function DeploySiteConfig() {
       buildCommand,
       publishDir: publishDirectory,
       branch,
+      protocol,
     };
     ApiService.createConfiguration(configuration).subscribe((result) => {
       if (componentIsMounted.current) {
         const uniqueTopicId = uuidv4();
 
         const deployment = {
+          orgId: selectedOrg?._id,
           githubUrl: selectedRepo.clone_url,
           folderName: selectedRepo.name,
           owner: selectedRepoOwner.name,
           installationId: selectedRepoOwner.installationId,
-          isPrivate: selectedRepo.private,
           repositoryId: selectedRepo.repositoryId,
           organizationId: owner._id,
           uniqueTopicId,
           auto_publish: false,
           configurationId: result._id,
+          env: mapBuildEnv(buildEnv),
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
@@ -296,6 +331,14 @@ function DeploySiteConfig() {
     });
   };
 
+  const mapBuildEnv = (buildEnv: any[]): any => {
+    const buildEnvObj = {};
+    buildEnv.forEach((env) => {
+      Object.assign(buildEnvObj, { [env.key]: env.value });
+    });
+    return buildEnvObj;
+  };
+
   const openGithubAppAuth = async () => {
     const githubSignInUrl = `${window.location.origin}/#/github/app/${user?._id}`;
     window.open(githubSignInUrl, "_blank");
@@ -304,8 +347,10 @@ function DeploySiteConfig() {
   const goBackAction = () => {
     if (createDeployProgress === 1) {
       history.goBack();
-    } else {
+    } else if (createDeployProgress === 2) {
       setCreateDeployProgress(1);
+    } else {
+      setCreateDeployProgress(2);
     }
   };
 
@@ -315,6 +360,33 @@ function DeploySiteConfig() {
   } else {
     buildCommandPrefix = "yarn";
   }
+
+  const selectProtocol = (selectedProtocol: string) => {
+    setProtocol(selectedProtocol);
+    setCreateDeployProgress(3);
+  };
+
+  const addBuildEnv = () => {
+    setBuildEnv([...buildEnv, { key: "", value: "" }]);
+  };
+
+  const removeBuildEnvItem = (id: number) => {
+    setBuildEnv(buildEnv.filter((item, i) => i !== id));
+  };
+
+  const fillEnvKey = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) =>
+        i === id ? { key: value, value: item.value } : item,
+      ),
+    );
+  };
+
+  const fillEnvValue = (value: string, id: number) => {
+    setBuildEnv(
+      buildEnv.map((item, i) => (i === id ? { key: item.key, value } : item)),
+    );
+  };
 
   return (
     <div className="DeploySiteConfig">
@@ -379,6 +451,30 @@ function DeploySiteConfig() {
                         : ""
                     }`}
                   >
+                    Pick a Protocol
+                  </div>
+                </div>
+                <div className="deploy-site-progress-number-container">
+                  {createDeployProgress <= 3 ? (
+                    <div
+                      className={`deploy-site-progress-number ${
+                        createDeployProgress === 3 ? "active" : ""
+                      }`}
+                    >
+                      3
+                    </div>
+                  ) : (
+                    <div className="deploy-site-progress-done">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  )}
+                  <div
+                    className={`deploy-site-progress-text ${
+                      createDeployProgress === 3
+                        ? "deploy-site-progress-text-active"
+                        : ""
+                    }`}
+                  >
                     Build options, and deploy!
                   </div>
                 </div>
@@ -414,6 +510,7 @@ function DeploySiteConfig() {
                         <div className="deployment-provider-buttons">
                           <button
                             className="github-button"
+                            disabled={userLoading}
                             onClick={openGithubAppAuth}
                           >
                             <span className="github-icon">
@@ -559,6 +656,64 @@ function DeploySiteConfig() {
                   <>
                     <div className="deploy-site-form-item">
                       <label className="deploy-site-item-title">
+                        Select the protocol to deploy {selectedRepo.name}
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Click on the protocol in which you want ArGo to deploy your
+                        site.
+                      </label>
+                      <div className="deploy-protocol-list-container">
+                        <ul className="deploy-protocol-list">
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("arweave")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/arweave_logo.png")}
+                                alt="Arweave"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </div>
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("skynet")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/skynet_logo.png")}
+                                alt="Skynet"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="button-container">
+                      <button
+                        type="button"
+                        className="cancel-button"
+                        onClick={(e) => setCreateDeployProgress(1)}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </>
+                )}
+                {createDeployProgress === 3 && (
+                  <>
+                    <ReactTooltip />
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
                         Deploy settings for {selectedRepo.name}
                       </label>
                       <label className="deploy-site-item-subtitle">
@@ -624,7 +779,15 @@ function DeploySiteConfig() {
                           </div>
                         </div>
                         <div className="deploy-site-item-form-item">
-                          <label>Workspace to deploy</label>
+                          <label>
+                            Workspace to deploy
+                            <span
+                              className="tooltip"
+                              data-tip="If your app is a monorepo, then you can specify your app directory you want to deploy using the workspace."
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                          </label>
                           <input
                             type="text"
                             className="deploy-site-item-input"
@@ -644,7 +807,15 @@ function DeploySiteConfig() {
                       </label>
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
-                          <label>Framework</label>
+                          <label>
+                            Framework
+                            <span
+                              className="tooltip"
+                              data-tip="The framework that your app is built upon."
+                            >
+                              <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                            </span>
+                          </label>
                           <div className="deploy-site-item-select-container">
                             <select
                               className="deploy-site-item-select"
@@ -657,7 +828,9 @@ function DeploySiteConfig() {
                               <option value="react">Create React App</option>
                               <option value="vue">Vue App</option>
                               <option value="angular">Angular App</option>
-                              <option value="next">Next.js App</option>
+                              {protocol !== "skynet" && (
+                                <option value="next">Next.js App</option>
+                              )}
                             </select>
                             <span className="select-down-icon">
                               <FontAwesomeIcon icon={faChevronDown} />
@@ -667,7 +840,15 @@ function DeploySiteConfig() {
                         {framework !== "static" && (
                           <>
                             <div className="deploy-site-item-form-item">
-                              <label>Package Manager</label>
+                              <label>
+                                Package Manager
+                                <span
+                                  className="tooltip"
+                                  data-tip="The package manager that you want your app to be built with."
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               <div className="deploy-site-item-select-container">
                                 <select
                                   className="deploy-site-item-select"
@@ -683,7 +864,15 @@ function DeploySiteConfig() {
                               </div>
                             </div>
                             <div className="deploy-site-item-form-item">
-                              <label>Build command</label>
+                              <label>
+                                Build command
+                                <span
+                                  className="tooltip"
+                                  data-tip="The command your frontend framework provides for compiling your code."
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               {framework !== "next" ? (
                                 <div className="deploy-site-item-input-container">
                                   <input
@@ -709,7 +898,15 @@ function DeploySiteConfig() {
                               )}
                             </div>
                             <div className="deploy-site-item-form-item">
-                              <label>Publish directory</label>
+                              <label>
+                                Publish directory
+                                <span
+                                  className="tooltip"
+                                  data-tip="The directory in which your compiled frontend will be located."
+                                >
+                                  <FontAwesomeIcon size="sm" icon={faInfoCircle} />
+                                </span>
+                              </label>
                               <input
                                 type="text"
                                 className="deploy-site-item-input"
@@ -719,6 +916,74 @@ function DeploySiteConfig() {
                             </div>
                           </>
                         )}
+                      </div>
+                    </div>
+                    <div className="deploy-site-form-item">
+                      <label className="deploy-site-item-title">
+                        Advanced build settings
+                      </label>
+                      <label className="deploy-site-item-subtitle">
+                        Define environment variables for more control and flexibility
+                        over your build.
+                      </label>
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>Environment Variables</label>
+                          <label className="deploy-site-item-subtitle">
+                            Note that adding environment variables here won't work if
+                            project already exists, you have to add environment
+                            variables by going to your Project Settings {"->"}{" "}
+                            Environment Variables
+                          </label>
+                        </div>
+                        {buildEnv.length !== 0 && (
+                          <div className="deploy-site-item-form-item">
+                            <div className="deploy-site-env-title">
+                              <label className="deploy-site-env-title-item">
+                                Key
+                              </label>
+                              <label className="deploy-site-env-title-item">
+                                Value
+                              </label>
+                            </div>
+                            {buildEnv.map((env, i) => (
+                              <div
+                                className="deploy-site-item-env-container"
+                                key={i}
+                              >
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="VARIABLE_NAME"
+                                  value={env.key}
+                                  onChange={(e) => fillEnvKey(e.target.value, i)}
+                                />
+                                <input
+                                  type="text"
+                                  className="deploy-site-env-input"
+                                  placeholder="somevalue"
+                                  value={env.value}
+                                  onChange={(e) => fillEnvValue(e.target.value, i)}
+                                />
+                                <span
+                                  className="remove-env-item"
+                                  onClick={(e) => removeBuildEnvItem(i)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTimesCircle}
+                                  ></FontAwesomeIcon>
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="add-new-var-button"
+                          onClick={(e) => addBuildEnv()}
+                        >
+                          New Variable
+                        </button>
                       </div>
                       {!selectedOrg?.wallet && !orgLoading ? (
                         <div className="wallet-details-container">
@@ -752,7 +1017,7 @@ function DeploySiteConfig() {
                       <button
                         type="button"
                         className="cancel-button"
-                        onClick={(e) => setCreateDeployProgress(1)}
+                        onClick={(e) => setCreateDeployProgress(2)}
                       >
                         Back
                       </button>

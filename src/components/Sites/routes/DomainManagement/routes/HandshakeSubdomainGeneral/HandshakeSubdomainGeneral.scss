@@ -1,0 +1,159 @@
+@import "../../../../../../styles/mixin";
+
+.DomainGeneral {
+  flex: 1;
+  .domain-general-right-container {
+    flex: 1;
+    margin-left: 2rem;
+    .domain-general-project-details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+      .domain-general-project-header {
+        font-family: var(--headerFont) !important;
+        display: flex;
+        min-height: 32px;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 22px;
+        font-weight: 500;
+        background-color: #3463ae38;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom: 1px solid var(--themeColorDark);
+
+        .beta-badge {
+          padding: 2px 8px;
+          background-color: var(--themeColorDark);
+          color: var(--white);
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          margin-left: 0.5rem;
+        }
+      }
+
+      .domain-general-project-body {
+        flex: 1;
+        padding: 1rem 0px;
+        .domain-general-project-item {
+          display: flex;
+          flex-direction: column;
+          padding: 1rem 24px;
+
+          .domain-general-project-item-title {
+            font-size: 18px;
+            font-weight: bold;
+          }
+
+          .domain-general-project-item-subtitle {
+            font-size: 14px;
+            color: var(--grey3Color);
+            margin-top: 0.25rem;
+          }
+
+          .label-note {
+            font-weight: 500;
+            color: var(--black) !important;
+            font-size: 15px !important;
+            margin-top: 1rem !important;
+          }
+
+          a {
+            text-decoration: none;
+            margin-top: 1rem;
+            color: var(--logoColor);
+            span {
+              margin-left: 1rem;
+            }
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          .domain-general-add-domain-container {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            .add-domain-input {
+              padding: 8px 12px;
+              border-radius: 4px;
+              font-size: 16px;
+              border: 1px solid var(--grey2Color);
+              outline: none;
+              flex: 1;
+              margin-right: 1rem;
+
+              &:focus {
+                border: 1px solid var(--grey5Color);
+              }
+            }
+
+            .add-domain-select-container {
+              position: relative;
+
+              .add-domain-select {
+                width: 200px;
+                padding: 9px 12px;
+                border-radius: 4px;
+                font-size: 16px;
+                border: 1px solid var(--grey2Color);
+                outline: none;
+                appearance: none;
+                cursor: pointer;
+                z-index: 100;
+
+                &:focus {
+                  border: 1px solid var(--grey5Color);
+                }
+
+                &::-ms-expand {
+                  display: none;
+                }
+              }
+
+              .select-down-icon {
+                position: absolute;
+                right: 12px;
+                top: 12px;
+                cursor: pointer;
+                height: fit-content;
+                display: flex;
+              }
+            }
+
+            .add-domain-button {
+              @include primaryButton(
+                white,
+                #040c34,
+                0.5rem 1rem,
+                none,
+                4px,
+                #735386,
+                var(--grey1Color)
+              );
+              border: 1px solid transparent;
+              margin-left: 1rem;
+              font-weight: 500;
+              width: 63px;
+
+              &:disabled {
+                color: var(--grey3Color);
+                border: 1px solid var(--grey2Color);
+              }
+            }
+          }
+
+          .domain-general-domain-list {
+            margin-top: 1rem;
+          }
+        }
+      }
+    }
+  }
+}

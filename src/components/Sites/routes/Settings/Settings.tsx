@@ -2,7 +2,7 @@ import React from "react";
 import "./Settings.scss";
 import { ProjectTopCard } from "../_SharedComponent";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
-import { SettingsGeneral, SettingsBuildDeploy } from "./routes";
+import { SettingsGeneral, SettingsBuildDeploy, EnvironmentVariable } from "./routes";
 
 const Settings = () => {
   const location = useLocation();
@@ -41,6 +41,18 @@ const Settings = () => {
           >
             Build & Deploy
           </div>
+          <div
+            className={`settings-bar-item ${
+              lastPath === "environment" ? "selected" : ""
+            }`}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/settings/environment`,
+              )
+            }
+          >
+            Environment Variables
+          </div>
         </div>
         <Route
           path="/org/:orgid/sites/:siteid/settings/general"
@@ -51,6 +63,11 @@ const Settings = () => {
           path="/org/:orgid/sites/:siteid/settings/deploys"
           exact
           render={() => <SettingsBuildDeploy />}
+        />
+        <Route
+          path="/org/:orgid/sites/:siteid/settings/environment"
+          exact
+          render={() => <EnvironmentVariable />}
         />
       </div>
     </div>

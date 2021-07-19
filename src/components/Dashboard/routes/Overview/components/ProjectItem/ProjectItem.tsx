@@ -10,7 +10,6 @@ import {
   IActionModel,
   IDomain,
   IStateModel,
-  ISubdomain,
 } from "../../../../../../model/hooks.model";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 
@@ -20,6 +19,8 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   latestDeployment,
   domains,
   subdomains,
+  hnsDomains,
+  hnsSubdomains,
   githubUrl,
   updateTime,
   repo,
@@ -36,7 +37,17 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   }
 
   const isDomainOrSubPresent =
-    (domains && domains.length > 0) || (subdomains && subdomains.length > 0);
+    (domains && domains.length > 0) ||
+    (subdomains && subdomains.length > 0) ||
+    (hnsDomains && hnsDomains.length > 0) ||
+    (hnsSubdomains && hnsSubdomains.length > 0);
+
+  const domainsAttached = [
+    ...(domains || []),
+    ...(subdomains || []),
+    ...(hnsDomains || []),
+    ...(hnsSubdomains || []),
+  ];
 
   return (
     <div className="project-item" key={index}>
@@ -52,15 +63,19 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
             >
               {projectName}
             </h3>
-            {latestDeployment && (
+            {(latestDeployment || isDomainOrSubPresent) && (
               <button
                 type="button"
                 className="project-item-visit-button"
                 onClick={(e) =>
                   window.open(
                     `${
-                      domains && domains.length > 0
-                        ? `https://${domains[0].name}`
+                      domainsAttached.length > 0
+                        ? `${
+                            domainsAttached[0].type.indexOf("handshake") !== -1
+                              ? "http"
+                              : "https"
+                          }://${domainsAttached[0].name}`
                         : latestDeployment
                     }`,
                     "_blank",
@@ -88,13 +103,15 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                       {d.name}
                     </a>
                     {(i !== a.length - 1 ||
-                      (subdomains && subdomains.length > 0)) && (
+                      (subdomains && subdomains.length > 0) ||
+                      (hnsDomains && hnsDomains.length > 0) ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
                       <span className="comma-sep">,</span>
                     )}
                   </>
                 ))}
               {subdomains &&
-                subdomains.map((s: ISubdomain, i: number, a: ISubdomain[]) => (
+                subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
                   <>
                     <a
                       href={`https://${s.name}`}
@@ -105,7 +122,44 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                     >
                       {s.name}
                     </a>
-                    {i !== a.length - 1 && <span className="comma-sep">", "</span>}
+                    {(i !== a.length - 1 ||
+                      (hnsDomains && hnsDomains.length > 0) ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {hnsDomains &&
+                hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`http://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={i}
+                    >
+                      {s.name}
+                    </a>
+                    {(i !== a.length - 1 ||
+                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {hnsSubdomains &&
+                hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`http://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={i}
+                    >
+                      {s.name}
+                    </a>
+                    {i !== a.length - 1 && <span className="comma-sep">,</span>}
                   </>
                 ))}
             </div>

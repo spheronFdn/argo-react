@@ -2,15 +2,18 @@ import React, { useContext } from "react";
 import "./AllDeployments.scss";
 import Skeleton from "react-loading-skeleton";
 import { ProjectTopCard } from "../_SharedComponent";
-import { StateContext } from "../../../../hooks";
-import { IStateModel } from "../../../../model/hooks.model";
+import { ActionContext, StateContext } from "../../../../hooks";
+import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import { DeploymentItem } from "./components";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const AllDeployments = () => {
   // const history = useHistory();
   // const [autoDeployment, setAutoDeployment] = useState<boolean>(true);
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
   // const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
 
   const sortedDeployments = projectLoading
@@ -108,6 +111,12 @@ const AllDeployments = () => {
       <div className="site-deployment-card-container deploy-container">
         <div className="site-deployment-header-title">
           <span>Deployments</span>
+          <div
+            className="refresh-control"
+            onClick={() => fetchProject(`${selectedProject?._id}`)}
+          >
+            <FontAwesomeIcon icon={faSyncAlt}></FontAwesomeIcon>
+          </div>
           {/* <button className="trigger-deploy-button" onClick={triggerDeployment}>
             Trigger deploy
           </button> */}

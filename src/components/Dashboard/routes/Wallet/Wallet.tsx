@@ -8,6 +8,8 @@ import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
 import { IPaymentModel } from "../../../../model/payment.model";
 import moment from "moment";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wallet = () => {
   const history = useHistory();
@@ -124,6 +126,16 @@ const Wallet = () => {
       setRemovalLoader(false);
     }
   };
+  const showProtocolPrice = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return "AR";
+      case "skynet":
+        return "SIA";
+
+      default:
+    }
+  };
 
   return (
     <div className="Wallet">
@@ -137,6 +149,14 @@ const Wallet = () => {
               <>
                 <div className="wallet-subtitle">
                   Enable your wallet for <b>{selectedOrg?.profile.name}</b>
+                </div>
+                <div className="wallet-info">
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    style={{ marginRight: 7 }}
+                  ></FontAwesomeIcon>
+                  We currently support Matic Mumbai Testnet. Please add Matic Mumbai
+                  chain in your metamask.
                 </div>
                 {!wallet ? (
                   <button
@@ -198,7 +218,7 @@ const Wallet = () => {
                   <div>
                     <div className="wallet-body-title">Wallet Details</div>
                     <div className="wallet-note">
-                      Note: Only onwer of this wallet can increase allowance
+                      Note: Only owner of this wallet can increase allowance
                     </div>
                   </div>
                   <div className="button-container">
@@ -221,7 +241,7 @@ const Wallet = () => {
                           disabled={walletLoading}
                           onClick={() => history.push("/wallet/recharge")}
                         >
-                          Increase Allowance
+                          Set Allowance
                         </button>
                       </>
                     )}
@@ -312,7 +332,8 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.providerFee} AR
+                              {payment?.providerFee}{" "}
+                              {showProtocolPrice(payment?.protocol)}
                             </div>
                           </div>
                         </div>

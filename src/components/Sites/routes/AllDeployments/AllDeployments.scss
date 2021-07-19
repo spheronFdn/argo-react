@@ -24,6 +24,23 @@
       align-items: center;
       justify-content: space-between;
 
+      .refresh-control {
+        color: var(--grey4Color);
+        cursor: pointer;
+        margin-right: 0.5rem;
+        font-size: 18px;
+        border-radius: 6px;
+        height: 32px;
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background-color: var(--grey1Color);
+        }
+      }
+
       .trigger-deploy-button {
         padding: 8px 20px;
         font-size: 0.95rem;

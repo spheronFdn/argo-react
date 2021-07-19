@@ -1,4 +1,5 @@
 .deployment-item {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 1rem;
@@ -19,7 +20,7 @@
       font-weight: 500;
     }
 
-    .commit-link {
+    .deployment-link {
       text-decoration: none;
       color: var(--logoColor);
       &:hover {
@@ -32,6 +33,23 @@
     .deployment-left-detail {
       flex: 1;
       overflow: hidden;
+    }
+    .protocol-tag-container {
+      margin-top: 0.2rem;
+      .protocol-tag-arweave {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #303030;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-skynet {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #00c66f;
+        color: var(--white);
+        border-radius: 12px;
+      }
     }
   }
 

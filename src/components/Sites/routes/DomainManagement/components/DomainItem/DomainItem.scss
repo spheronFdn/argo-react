@@ -93,6 +93,10 @@
           &:disabled {
             border: 1px solid var(--redDisabled);
           }
+
+          span {
+            margin-right: 4px;
+          }
         }
       }
     }
@@ -177,13 +181,13 @@
 
         .verify-domain-container {
           display: flex;
-          justify-content: space-between;
           align-items: center;
           margin-top: 1rem;
 
           .verify-domain-text {
             display: flex;
             align-items: center;
+            flex: 1;
             color: var(--red);
 
             span:nth-child(1) {
@@ -192,19 +196,46 @@
             }
           }
 
-          .verify-domain-button {
-            @include primaryButton(
-              white,
-              #040c34,
-              0.5rem 3rem,
-              none,
-              4px,
-              #735386,
-              var(--grey1Color)
-            );
-            border: 1px solid transparent;
-            font-weight: 500;
-            width: 63px;
+          .verify-domain-button-container {
+            display: flex;
+            align-items: center;
+            .verify-domain-button {
+              @include primaryButton(
+                white,
+                #040c34,
+                0.5rem 3rem,
+                none,
+                4px,
+                #735386,
+                var(--grey1Color)
+              );
+              border: 1px solid transparent;
+              font-weight: 500;
+              width: 63px;
+
+              &:disabled {
+                background-color: #6972a0 !important;
+              }
+            }
+            .update-domain-button {
+              @include primaryButton(
+                white,
+                #f0a035,
+                0.5rem 3rem,
+                none,
+                4px,
+                #eb8a0b,
+                var(--grey1Color)
+              );
+              border: 1px solid transparent;
+              font-weight: 500;
+              width: 63px;
+              margin-right: 1rem;
+
+              &:disabled {
+                background-color: #f1b86d;
+              }
+            }
           }
         }
       }

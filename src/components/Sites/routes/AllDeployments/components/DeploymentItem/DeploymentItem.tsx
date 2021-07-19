@@ -7,15 +7,9 @@ import Skeleton from "react-loading-skeleton";
 import Lottie from "react-lottie";
 import animationData from "../../../../../../assets/lotties/rotating-settings.json";
 import moment from "moment";
-import { ApiService } from "../../../../../../services";
 import { useHistory, useParams } from "react-router-dom";
-import { ActionContext, StateContext } from "../../../../../../hooks";
-import {
-  IActionModel,
-  IDomain,
-  IStateModel,
-  ISubdomain,
-} from "../../../../../../model/hooks.model";
+import { StateContext } from "../../../../../../hooks";
+import { IDomain, IStateModel } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
@@ -34,7 +28,6 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
 
   const params = useParams<any>();
   const history = useHistory();
-  const { setSelectedDeployment } = useContext<IActionModel>(ActionContext);
   const { selectedProject } = useContext<IStateModel>(StateContext);
 
   const domains =
@@ -51,16 +44,40 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         )
       : [];
 
-  const isDomainOrSubPresent = [...domains, ...subdomains].length > 0;
+  const hnsDomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeDomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const hnsSubdomains =
+    selectedProject && deployment?.sitePreview
+      ? selectedProject.handshakeSubdomains.filter(
+          (d) => deployment?.sitePreview.indexOf(d.link) !== -1,
+        )
+      : [];
+
+  const isDomainOrSubPresent =
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
+
+  const showProtocolTag = (protocol: string) => {
+    switch (protocol) {
+      case "arweave":
+        return <span className="protocol-tag-arweave">Arweave</span>;
+      case "skynet":
+        return <span className="protocol-tag-skynet">Skynet</span>;
+
+      default:
+    }
+  };
 
   const openDeployment = () => {
-    ApiService.getDeployment(`${deployment?._id}`).subscribe((response) => {
-      setSelectedDeployment(response.deployment);
-      history.push(
-        `/org/${params.orgid}/sites/${params.siteid}/deployments/${deployment?._id}`,
-      );
-    });
+    history.push(
+      `/org/${params.orgid}/sites/${params.siteid}/deployments/${deployment?._id}`,
+    );
   };
+
   return (
     <div className="deployment-item" key={index} onClick={openDeployment}>
       {type === "filled" && (
@@ -76,46 +93,79 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                         <>
                           <a
                             href={`https://${d.name}`}
-                            className="commit-link"
+                            className="deployment-link"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
                             {d.name}
                           </a>
-                          {(i !== a.length - 1 || subdomains.length > 0) && (
+                          {(i !== a.length - 1 ||
+                            subdomains.length > 0 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
                             <span className="comma-sep">,</span>
                           )}
                         </>
                       ))}
-                      {subdomains.map(
-                        (s: ISubdomain, i: number, a: ISubdomain[]) => (
-                          <>
-                            <a
-                              href={`https://${s.name}`}
-                              className="commit-link"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {s.name}
-                            </a>
-                            {i !== a.length - 1 && (
-                              <span className="comma-sep">", "</span>
-                            )}
-                          </>
-                        ),
-                      )}
+                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${s.name}`}
+                            className="deployment-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {(i !== a.length - 1 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="deployment-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="deployment-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {i !== a.length - 1 && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
                     </>
                   }
                 </div>
               )}
               <div className="deployment-publish-detail">
-                <span className="bold-text">Arweave Link: </span>
+                <span className="bold-text">Preview: </span>
                 {deployment?.sitePreview ? (
                   <a
                     href={deployment?.sitePreview}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="commit-link"
+                    className="deployment-link"
                   >
                     {deployment?.sitePreview}
                   </a>
@@ -127,17 +177,29 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                 <span className="bold-text">Production: </span>
                 <span>
                   {deployment?.configuration.branch}
-                  {/* @
-                  <a
-                    href="https://github.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="commit-link"
-                  >
-                    8234jf3
-                  </a>{" "}
-                  - Updated feature */}
+                  {deployment?.commitId ? (
+                    <>
+                      @
+                      <a
+                        href={`${selectedProject?.githubUrl.substring(
+                          0,
+                          selectedProject?.githubUrl.length - 4,
+                        )}/commit/${deployment?.commitId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="deployment-link"
+                      >
+                        {deployment?.commitId.substr(0, 7)}{" "}
+                        {deployment?.commitMessage
+                          ? `- ${deployment?.commitMessage.substr(0, 64)}...`
+                          : ""}
+                      </a>
+                    </>
+                  ) : null}
                 </span>
+              </div>
+              <div className="protocol-tag-container">
+                {showProtocolTag(deployment?.configuration.protocol!)}
               </div>
             </div>
             <div className="deployment-time-details">

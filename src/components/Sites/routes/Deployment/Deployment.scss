@@ -61,6 +61,14 @@
         margin: 0px;
         margin-top: 12px;
       }
+
+      .commit-link {
+        text-decoration: none;
+        color: var(--logoColor);
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     .site-deployment-header-title {

@@ -1,4 +1,4 @@
-import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -107,9 +107,17 @@ function WalletRecharge() {
         <div className="wallet-recharge-container">
           <div className="wallet-recharge-card">
             <div className="wallet-recharge-card-inner">
-              <h1 className="wallet-recharge-title">Increase Allowance</h1>
+              <h1 className="wallet-recharge-title">Set Allowance</h1>
               <div className="wallet-recharge-form">
                 <label className="wallet-recharge-form-title">Your wallet</label>
+                <label className="wallet-chain-info">
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    style={{ marginRight: 7 }}
+                  ></FontAwesomeIcon>
+                  We currently support Matic Mumbai Testnet. Please add Matic Mumbai
+                  chain in your metamask.
+                </label>
                 <label className="wallet-recharge-form-subtitle">
                   Please approve more than minimum $DAI tokens to our Payment Smart
                   Contract. Approval transaction is <b>Gassless</b>, no need to hold
@@ -207,7 +215,8 @@ function WalletRecharge() {
               )}
               {wallet && wallet !== orgWallet ? (
                 <div className="note-container">
-                  Note: only owner can increase the allowance amount
+                  Note: We currently support Matic Mumbai Testnet. Only owner of this
+                  wallet can increase allowance
                 </div>
               ) : null}
               <div className="button-container">

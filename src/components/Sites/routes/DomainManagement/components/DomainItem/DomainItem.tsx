@@ -24,6 +24,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   autoDns,
   uuid,
   ownerVerified,
+  isHandshake,
+  domainType,
 }) => {
   const { projectLoading, selectedProject, selectedOrg } =
     useContext<IStateModel>(StateContext);
@@ -32,6 +34,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editDomainLoading, setEditDomainLoading] = useState<boolean>(false);
   const [verifyDomainLoading, setVerifyDomainLoading] = useState<boolean>(false);
+  const [updateDomainLoading, setUpdateDomainLoading] = useState<boolean>(false);
+  const [deleteDomainLoading, setDeleteDomainLoading] = useState<boolean>(false);
   const [editDomainName, setEditDomainName] = useState<string>(domain);
   const [isLatest, setIsLatest] = useState<boolean>(false);
   const [deployedSite, setDeployedSite] = useState<string>("");
@@ -40,6 +44,23 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     : selectedProject?.deployments
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+
+  let separator = {
+    base: "",
+    sep: "",
+  };
+
+  if (link.indexOf("arweave.net") !== -1) {
+    separator = {
+      base: "arweave",
+      sep: "https://arweave.net/",
+    };
+  } else if (link.indexOf("siasky.net") !== -1) {
+    separator = {
+      base: "sia",
+      sep: "https://siasky.net/",
+    };
+  }
 
   useEffect(() => {
     if (domain) {
@@ -55,9 +76,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     const domainBody = {
       orgId: selectedOrg?._id,
       name: editDomainName !== domain ? editDomainName : undefined,
-      link: deployedSite,
+      link: deployedSite !== link ? deployedSite : undefined,
       isLatest,
       projectId: selectedProject?._id,
+      type: domainType,
     };
     ApiService.editDomain(domainId, domainBody).subscribe((result) => {
       if (result.success) {
@@ -75,6 +97,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   };
 
   const deleteDomain = () => {
+    setDeleteDomainLoading(true);
     ApiService.deleteDomain(domainId).subscribe((result) => {
       if (result.success) {
         setEditDomainName("");
@@ -84,6 +107,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         setEditDomainName("");
         setDeployedSite("");
       }
+      setDeleteDomainLoading(false);
     });
   };
 
@@ -96,13 +120,71 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       if (result.verified) {
         setEditDomainName("");
         setDeployedSite("");
+        setVerifyDomainLoading(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
         setEditDomainName("");
         setDeployedSite("");
+        setVerifyDomainLoading(false);
       }
-      setVerifyDomainLoading(false);
     });
+  };
+
+  const updateDomain = () => {
+    setUpdateDomainLoading(true);
+    let records: string = "";
+    if (!isSubdomain) {
+      const records_json = [
+        {
+          type: "TXT",
+          host: "_contenthash",
+          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          ttl: 60,
+        },
+        {
+          type: "ALIAS",
+          host: "@",
+          value: `${separator.base}.namebase.io.`,
+          ttl: 3600,
+        },
+      ];
+
+      records = btoa(JSON.stringify(records_json));
+    } else {
+      const records_json = [
+        {
+          type: "TXT",
+          host: `_contenthash.${domain.substring(0, domain.lastIndexOf("."))}`,
+          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          ttl: 60,
+        },
+        {
+          type: "CNAME",
+          host: domain.substring(0, domain.lastIndexOf(".")),
+          value: `${separator.base}.namebase.io.`,
+          ttl: 3600,
+        },
+      ];
+
+      records = btoa(JSON.stringify(records_json));
+    }
+    const url = new URL(
+      `https://namebase.io/next/domain-manager/${domain.substring(
+        domain.lastIndexOf(".") + 1,
+        domain.length,
+      )}/records`,
+    );
+    const redirectUrl = window.location.href;
+    const encodedRedirectUrl = encodeURIComponent(
+      encodeURIComponent(redirectUrl.toString()),
+    );
+
+    url.searchParams.append("records", records);
+    url.searchParams.append("redirect", encodedRedirectUrl);
+    setUpdateDomainLoading(false);
+
+    // console.log(url)
+    window.location.href = url.toString();
   };
 
   const setTransaction = (tx: string) => {
@@ -125,7 +207,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                 <div className="domain-general-domain-item-header-left">
                   <div>
                     <a
-                      href={`https://${domain}`}
+                      href={`${isHandshake ? "http" : "https"}://${domain}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -145,8 +227,15 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   <button className="edit-button" onClick={(e) => setEditMode(true)}>
                     Edit
                   </button>
-                  <button className="remove-button" onClick={deleteDomain}>
-                    Remove
+                  <button
+                    className="remove-button"
+                    disabled={deleteDomainLoading}
+                    onClick={deleteDomain}
+                  >
+                    <span>Remove</span>
+                    {deleteDomainLoading ? (
+                      <BounceLoader size={20} color={"#ee0902"} loading={true} />
+                    ) : null}
                   </button>
                 </div>
               </div>
@@ -157,18 +246,32 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   {!isSubdomain ? (
                     <>
                       <h3>Domain Configuration</h3>
-                      <p>
-                        Set the following record on your DNS provider to configure
-                        your domain and verify your ownership:
-                      </p>
+                      {!isHandshake ? (
+                        <p>
+                          Set the following record on your DNS provider to configure
+                          your domain and verify your ownership:
+                        </p>
+                      ) : (
+                        <p>
+                          Update the following record on Namebase to configure your
+                          HNS domain and verify domain records:
+                        </p>
+                      )}
                     </>
                   ) : (
                     <>
                       <h3>Subdomain Configuration</h3>
-                      <p>
-                        Set the following record on your DNS provider to configure
-                        your subdomain and verify your ownership:
-                      </p>
+                      {!isHandshake ? (
+                        <p>
+                          Set the following record on your DNS provider to configure
+                          your subdomain and verify your ownership:
+                        </p>
+                      ) : (
+                        <p>
+                          Update the following record on Namebase to configure your
+                          HNS subdomain and verify subdomain records:
+                        </p>
+                      )}
                     </>
                   )}
                   <div className="configure-domain-records-table">
@@ -179,18 +282,53 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <div className="th">Value</div>
                       </div>
                     </div>
-                    <div className="tbody">
-                      <div className="tr">
-                        <div className="td">A</div>
-                        <div className="td">{domain}</div>
-                        <div className="td">35.202.158.174</div>
+                    {!isHandshake ? (
+                      <div className="tbody">
+                        <div className="tr">
+                          <div className="td">A</div>
+                          <div className="td">{domain}</div>
+                          <div className="td">35.202.158.174</div>
+                        </div>
+                        <div className="tr">
+                          <div className="td">TXT</div>
+                          <div className="td">{domain}</div>
+                          <div className="td">argo={uuid}</div>
+                        </div>
                       </div>
-                      <div className="tr">
-                        <div className="td">TXT</div>
-                        <div className="td">{domain}</div>
-                        <div className="td">argo={uuid}</div>
+                    ) : !isSubdomain ? (
+                      <div className="tbody">
+                        <div className="tr">
+                          <div className="td">A</div>
+                          <div className="td">@</div>
+                          <div className="td">{separator.base}.namebase.io.</div>
+                        </div>
+                        <div className="tr">
+                          <div className="td">TXT</div>
+                          <div className="td">_contenthash</div>
+                          <div className="td">
+                            {separator.base}://{link.split(separator.sep)[1]}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="tbody">
+                        <div className="tr">
+                          <div className="td">CNAME</div>
+                          <div className="td">{domain}</div>
+                          <div className="td">{separator.base}.namebase.io.</div>
+                        </div>
+                        <div className="tr">
+                          <div className="td">TXT</div>
+                          <div className="td">
+                            _contenthash.
+                            {domain.substring(0, domain.lastIndexOf("."))}
+                          </div>
+                          <div className="td">
+                            {separator.base}://{link.split(separator.sep)[1]}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   {!ownerVerified ? (
                     <div className="verify-domain-container">
@@ -198,18 +336,34 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <span>
                           <FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon>
                         </span>
-                        <span>Owner Not Verified</span>
+                        <span>Update Records and Verify</span>
                       </div>
-                      <div>
+                      <div className="verify-domain-button-container">
+                        {isHandshake ? (
+                          <button
+                            className="update-domain-button"
+                            disabled={updateDomainLoading}
+                            onClick={updateDomain}
+                          >
+                            Update
+                            {updateDomainLoading ? (
+                              <BounceLoader
+                                size={20}
+                                color={"#fff"}
+                                loading={true}
+                              />
+                            ) : null}
+                          </button>
+                        ) : null}
                         <button
                           className="verify-domain-button"
+                          disabled={verifyDomainLoading}
                           onClick={verifyDomain}
                         >
+                          Verify
                           {verifyDomainLoading ? (
                             <BounceLoader size={20} color={"#fff"} loading={true} />
-                          ) : (
-                            "Verify"
-                          )}
+                          ) : null}
                         </button>
                       </div>
                     </div>
@@ -240,7 +394,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    <option value="latest">Latest Deployed</option>
+                    {!isHandshake && <option value="latest">Latest Deployed</option>}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>

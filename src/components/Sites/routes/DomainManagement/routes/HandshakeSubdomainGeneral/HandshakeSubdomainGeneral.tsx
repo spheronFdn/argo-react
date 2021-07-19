@@ -1,23 +1,20 @@
 import React, { useContext, useState } from "react";
-import "./SubdomainGeneral.scss";
-// import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./HandshakeSubdomainGeneral.scss";
+import { DomainItem } from "../../components";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { DomainItem } from "../../components";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
-const SubdomainGeneral = () => {
+const HandshakeSubdomainGeneral = () => {
   const { projectLoading, selectedProject, selectedOrg } =
     useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
-  const [subdomainName, setSubdomainName] = useState<string>("");
+  const [domainName, setDomainName] = useState<string>("");
   const [deployedSite, setDeployedSite] = useState<string>("");
-  const [isLatest, setIsLatest] = useState<boolean>(false);
   const [domainLoading, setDomainLoading] = useState<boolean>(false);
   const sortedDeployments = projectLoading
     ? []
@@ -25,30 +22,23 @@ const SubdomainGeneral = () => {
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
-  const addSubdomainDetails = () => {
+  const addDomainDetails = () => {
     setDomainLoading(true);
     const domain = {
       orgId: selectedOrg?._id,
       projectId: selectedProject?._id,
-      name: subdomainName,
-      link: isLatest
-        ? sortedDeployments?.length
-          ? sortedDeployments[0].sitePreview
-          : ""
-        : deployedSite,
-      isLatest,
-      type: "subdomain",
+      name: domainName,
+      link: deployedSite,
+      type: "handshake-subdomain",
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
-        setSubdomainName("");
+        setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
         fetchProject(`${selectedProject?._id}`);
       } else {
-        setSubdomainName("");
+        setDomainName("");
         setDeployedSite("");
-        setIsLatest(false);
       }
       setDomainLoading(false);
     });
@@ -56,30 +46,35 @@ const SubdomainGeneral = () => {
 
   const setTransaction = (tx: string) => {
     setDeployedSite(tx);
-
-    if (tx === "latest") {
-      setIsLatest(true);
-    } else {
-      setIsLatest(false);
-    }
   };
 
   return (
-    <div className="SubdomainGeneral">
+    <div className="DomainGeneral">
       <div className="domain-general-right-container">
         <div className="domain-general-project-details">
-          <div className="domain-general-project-header">Subdomains</div>
+          <div className="domain-general-project-header">
+            Handshake Subdomains
+            <span className="beta-badge">Beta</span>
+          </div>
           <div className="domain-general-project-body">
             <div className="domain-general-project-item">
               <label className="domain-general-project-item-title">
-                Custom Subdomains
+                Configure your Handshake Subdomains
               </label>
               <label className="domain-general-project-item-subtitle">
-                By default, your site is always accessible via a arweave gateway
-                based on transaction id. Custom subdomains allow you to access your
-                site via one or more non-ArGo domain names.
+                By default, your site is always accessible via arweave gateway based
+                on transaction hash. Handshake is decentralized naming and
+                certificate authority that allow you to access your site in a
+                decentralized peer-to-peer root naming system.
               </label>
-              {/* <a href="https://github.com/">
+              <label className="domain-general-project-item-subtitle label-note">
+                To resolve your Handshake Domains, connect to{" "}
+                <a href="https://hdns.io" rel="noopener noreferrer" target="_blank">
+                  HDNS.io
+                </a>{" "}
+                or use a gateway like hns.io
+              </label>
+              {/* <a href="https://docs.argoapp.live/">
                 Learn more about custom domains in our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
@@ -89,9 +84,9 @@ const SubdomainGeneral = () => {
                 <input
                   type="text"
                   className="add-domain-input"
-                  placeholder="subdomain.mywebsite.com"
-                  value={subdomainName}
-                  onChange={(e) => setSubdomainName(e.target.value)}
+                  placeholder="mywebsite.hns"
+                  value={domainName}
+                  onChange={(e) => setDomainName(e.target.value)}
                 />
                 <div className="add-domain-select-container">
                   <select
@@ -99,8 +94,7 @@ const SubdomainGeneral = () => {
                     value={deployedSite}
                     onChange={(e) => setTransaction(e.target.value)}
                   >
-                    <option value="">Select deployment</option>
-                    <option value="latest">Latest Deployed</option>
+                    <option value="">Select Site</option>
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -115,8 +109,8 @@ const SubdomainGeneral = () => {
                 </div>
                 <button
                   className="add-domain-button"
-                  disabled={!subdomainName || !deployedSite}
-                  onClick={addSubdomainDetails}
+                  disabled={!domainName || !deployedSite}
+                  onClick={addDomainDetails}
                 >
                   {domainLoading ? (
                     <BounceLoader size={20} color={"#fff"} loading={true} />
@@ -127,18 +121,18 @@ const SubdomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.subdomains.length ? (
-                    selectedProject?.subdomains.map((subdomain, index) => (
+                  selectedProject?.handshakeSubdomains.length ? (
+                    selectedProject?.handshakeSubdomains.map((subdomain, index) => (
                       <div key={index}>
                         <DomainItem
-                          index={1}
+                          index={index}
                           type="filled"
                           domainId={`${subdomain._id}`}
                           domain={`${subdomain.name}`}
                           link={`${subdomain.link}`}
                           isSubdomain={true}
                           isHandshake={subdomain.type.indexOf("handshake") !== -1}
-                          autoDns={!!subdomain.isLatest}
+                          autoDns={subdomain.isLatest}
                           uuid={`${subdomain.argoKey}`}
                           ownerVerified={subdomain.verified}
                           domainType={subdomain.type}
@@ -156,7 +150,7 @@ const SubdomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={true}
-                      isHandshake={false}
+                      isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
                       domainType=""
@@ -172,4 +166,4 @@ const SubdomainGeneral = () => {
   );
 };
 
-export default SubdomainGeneral;
+export default HandshakeSubdomainGeneral;
