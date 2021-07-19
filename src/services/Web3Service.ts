@@ -36,8 +36,7 @@ const wallets = [
   {
     walletName: "walletConnect",
     rpc: {
-      "80001":
-        "https://polygon-mumbai.infura.io/v3/53e706eaa088405491d1e311f6a6938b",
+      "80001": config.web3.onboard.RPC_URL,
     },
     preferred: true,
   },
