@@ -316,6 +316,7 @@ function DeploySiteConfig() {
           auto_publish: false,
           configurationId: result._id,
           env: mapBuildEnv(buildEnv),
+          createDefaultWebhook: true,
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
