@@ -305,6 +305,7 @@ function DeploySiteConfig() {
         const uniqueTopicId = uuidv4();
 
         const deployment = {
+          orgId: selectedOrg?._id,
           githubUrl: selectedRepo.clone_url,
           folderName: selectedRepo.name,
           owner: selectedRepoOwner.name,
@@ -692,6 +693,7 @@ function DeploySiteConfig() {
                                 loading="lazy"
                               />
                             </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
                           </div>
                         </ul>
                       </div>

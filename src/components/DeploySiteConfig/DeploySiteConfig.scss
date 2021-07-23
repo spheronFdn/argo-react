@@ -153,12 +153,13 @@
                   gap: 30px;
 
                   .deploy-protocol-image {
+                    position: relative;
                     display: flex;
                     align-items: center;
                     flex-direction: column;
                     overflow: hidden;
                     padding: 30px;
-                    min-height: 50px;
+                    min-height: 72px;
                     min-width: 200px;
                     justify-content: space-around;
                     border-radius: 8px;
@@ -175,6 +176,17 @@
                       &:before {
                         background: #f0f0f0;
                       }
+                    }
+
+                    .new-protocol-tag {
+                      position: absolute;
+                      top: 12px;
+                      right: 12px;
+                      font-size: 14px;
+                      padding: 1px 10px;
+                      background-color: var(--fuelYellow);
+                      color: var(--white);
+                      border-radius: 12px;
                     }
                   }
                 }
