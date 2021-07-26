@@ -667,7 +667,7 @@ function DeploySiteConfig() {
                           <div
                             className="deploy-protocol-image"
                             onClick={(e) => selectProtocol("arweave")}
-                          >
+                          > 
                             <LazyLoadedImage height={50} once>
                               <img
                                 src={require("../../assets/png/arweave_logo.png")}
@@ -694,6 +694,21 @@ function DeploySiteConfig() {
                               />
                             </LazyLoadedImage>
                             <div className="new-protocol-tag">New</div>
+                          </div>
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("neofs")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/svg/neofs_logo.svg")}
+                                alt="neoFS"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
                           </div>
                         </ul>
                       </div>
