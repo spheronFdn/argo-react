@@ -121,14 +121,24 @@ const ProjectTopCard = () => {
   return (
     <div className="ProjectTopCard">
       <div className="project-top-card-container max-width-set">
-        <div className="deployment-item">
+        <div className="deployment-top-card">
           <div className="deployment-left">
-            <img
-              src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
-              alt={"Preview not Available"}
-              height="180"
-              width="320"
-            />
+            {!projectLoading ? (
+              <a
+                href={latestDeployment?.sitePreview}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="deployment-screenshot"
+                  src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
+                  // onClick={latestDeployment?.sitePreview}
+                  alt={"Preview not Available"}
+                />
+              </a>
+            ) : (
+              <Skeleton height={180} width={320} duration={2} />
+            )}
             <div className="deployment-left">
               <div>
                 <div className="project-top-card-header">

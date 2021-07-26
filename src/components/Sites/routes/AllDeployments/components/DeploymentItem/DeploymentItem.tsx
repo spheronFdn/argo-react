@@ -91,10 +91,9 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         <>
           <div className="deployment-left">
             <img
+              className="deployment-screenshot"
               src={imageUrl(deployment?.screenshot?.url)}
               alt={"Preview not Available"}
-              height="135"
-              width="240"
             />
             <div className="deployment-left">
               <div className="deployment-left-detail">
@@ -221,43 +220,37 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
                   {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
                   {moment(`${deployment?.createdAt}`).format("hh:mm A")}
                 </div>
-                <div className="deployment-time-details">
-                  <div className="bold-text">
-                    {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
-                    {moment(`${deployment?.createdAt}`).format("hh:mm A")}
-                  </div>
-                  <div className="deployment-status">
-                    <span className="deployment-status-icon">
-                      {deployment?.status.toLowerCase() === "pending" && (
-                        <Lottie options={defaultOptions} height={42} width={58} />
-                      )}
-                      {deployment?.status.toLowerCase() === "deployed" && (
-                        <LazyLoadedImage height={16} once>
-                          <img
-                            src={require("../../../../../../assets/svg/rocket_background.svg")}
-                            alt="rocket"
-                            className="rocket-icon"
-                            height={16}
-                            width={16}
-                            loading="lazy"
-                          />
-                        </LazyLoadedImage>
-                      )}
-                      {deployment?.status.toLowerCase() === "failed" && (
-                        <LazyLoadedImage height={16} once>
-                          <img
-                            src={require("../../../../../../assets/svg/error.svg")}
-                            alt="rocket"
-                            className="rocket-icon"
-                            height={16}
-                            width={16}
-                            loading="lazy"
-                          />
-                        </LazyLoadedImage>
-                      )}
-                    </span>
-                    {deployment?.status}
-                  </div>
+                <div className="deployment-status">
+                  <span className="deployment-status-icon">
+                    {deployment?.status.toLowerCase() === "pending" && (
+                      <Lottie options={defaultOptions} height={42} width={58} />
+                    )}
+                    {deployment?.status.toLowerCase() === "deployed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/rocket_background.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
+                    {deployment?.status.toLowerCase() === "failed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/error.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
+                  </span>
+                  {deployment?.status}
                 </div>
               </div>
             </div>
