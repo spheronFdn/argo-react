@@ -46,6 +46,16 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
               <li className="nav-item">
                 <Link
                   className={`${
+                    location.pathname.indexOf("nft") !== -1 ? "selected" : ""
+                  }`}
+                  to={`/org/${params.orgid}/sites/${params.slug1}/nft`}
+                >
+                  NFT
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className={`${
                     location.pathname.indexOf("settings") !== -1 ? "selected" : ""
                   }`}
                   to={`/org/${params.orgid}/sites/${params.slug1}/settings`}
