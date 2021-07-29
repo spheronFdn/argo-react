@@ -112,9 +112,9 @@ export const giveAllowance = async (amount: string) => {
   return null;
 };
 
-export const mintNft = async (uri: string) => {
+export const mintNft = async (uri: string, tag: string) => {
   if (nft) {
-    const tx = await nft.gaslessMint(uri, config.web3.onboard.NETWORK_ID);
+    const tx = await nft.gaslessMint(uri, tag, config.web3.onboard.NETWORK_ID);
     notify.hash(tx.hash);
     await tx.wait();
     return tx;

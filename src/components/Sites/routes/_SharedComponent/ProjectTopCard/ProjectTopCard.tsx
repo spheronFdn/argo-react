@@ -95,7 +95,10 @@ const ProjectTopCard = () => {
     try {
       ApiService.getUri(metadata).subscribe(async (res) => {
         const uri = res.tx.url;
-        const tx = await _sendMintTransaction(uri, "test-tag");
+        const tx = await _sendMintTransaction(
+          uri,
+          "test-tag-would-be-organization-name",
+        );
         //TODO:remove this logging and show loader and tx status
         // eslint-disable-next-line no-console
         console.log(tx);
