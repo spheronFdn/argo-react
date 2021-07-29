@@ -525,6 +525,9 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
+          <div className="site-deployment-card-fields">
+            <button className="interactive-nft-button">Interactive NFT</button>
+          </div>
         </div>
       </div>
       {deploymentStatus !== "pending" && (
