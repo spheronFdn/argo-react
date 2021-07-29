@@ -4,7 +4,7 @@
 
 "@argoapp/nft-js@https://github.com/argoapp-live/argo-nft-js.git":
   version "1.0.0"
-  resolved "https://github.com/argoapp-live/argo-nft-js.git#bad1f727fd2c41cc5231cd2b381183f266696a24"
+  resolved "https://github.com/argoapp-live/argo-nft-js.git#1fca6c7450c411db104e4f65d16b756c06318b6d"
   dependencies:
     "@biconomy/mexa" "^2.0.9"
     "@ethersproject/abstract-signer" "^5.0.12"
@@ -7888,9 +7888,9 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
 
 graphql-request@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-3.4.0.tgz#3a400cd5511eb3c064b1873afb059196bbea9c2b"
-  integrity sha512-acrTzidSlwAj8wBNO7Q/UQHS8T+z5qRGquCQRv9J1InwR01BBWV9ObnoE+JS5nCCEj8wSGS0yrDXVDoRiKZuOg==
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-3.5.0.tgz#7e69574e15875fb3f660a4b4be3996ecd0bbc8b7"
+  integrity sha512-Io89QpfU4rqiMbqM/KwMBzKaDLOppi8FU8sEccCE4JqCgz95W9Q8bvxQ4NfPALLSMvg9nafgg8AkYRmgKSlukA==
   dependencies:
     cross-fetch "^3.0.6"
     extract-files "^9.0.0"

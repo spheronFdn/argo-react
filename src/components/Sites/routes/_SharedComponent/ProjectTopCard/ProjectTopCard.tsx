@@ -82,9 +82,9 @@ const ProjectTopCard = () => {
     }
     return config.urls.IMAGE_NOT_FOUND;
   };
-  const _sendMintTransaction = async (uri: string) => {
+  const _sendMintTransaction = async (uri: string, tag: string) => {
     await Web3Service.getAccount();
-    return await Web3Service.mintNft(uri);
+    return await Web3Service.mintNft(uri, tag);
   };
   const mintNft = (url: string, name: string, description: string) => {
     const metadata: IMetadata = {
@@ -95,7 +95,7 @@ const ProjectTopCard = () => {
     try {
       ApiService.getUri(metadata).subscribe(async (res) => {
         const uri = res.tx.url;
-        const tx = await _sendMintTransaction(uri);
+        const tx = await _sendMintTransaction(uri, "test-tag");
         //TODO:remove this logging and show loader and tx status
         // eslint-disable-next-line no-console
         console.log(tx);
