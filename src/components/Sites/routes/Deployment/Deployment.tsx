@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Deployment.scss";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -525,9 +527,34 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
-          <div className="site-deployment-card-fields">
-            <button className="interactive-nft-button">Interactive NFT</button>
-          </div>
+          <Popup
+            trigger={
+              <div className="site-deployment-card-fields">
+                <button className="interactive-nft-button">Interactive NFT</button>
+              </div>
+            }
+            position="right center"
+            modal
+          >
+            {/* <div className="site-deployment-card-fields">
+              <button className="interactive-nft-button">Interactive NFT</button>
+            </div> */}
+            <div className="modal">
+              <img
+                className="nft-img"
+                src="https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png"
+                alt="NFT Image"
+                width="320"
+                height="320"
+                align-item="center"
+              />
+              <div className="content">
+                <b>Name:</b> Dave Starbelly <br />
+                <b>Description:</b> Friendly OpenSea Creature that enjoys long swims
+                in the ocean. <br />
+              </div>
+            </div>
+          </Popup>
         </div>
       </div>
       {deploymentStatus !== "pending" && (

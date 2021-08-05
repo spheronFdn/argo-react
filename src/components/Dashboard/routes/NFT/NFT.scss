@@ -1,0 +1,109 @@
+.react-horizontal-scrolling-menu--wrapper {
+  position: relative;
+  left: -40px;
+}
+
+.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.react-horizontal-scrolling-menu--wrapper {
+  padding: 0px;
+  margin-left: 0px;
+}
+
+.nft-card {
+  background-color: white;
+  border: 1px solid #e4e4e5;
+  box-sizing: border-box;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+  width: 250px;
+  height: 320px;
+  user-select: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  .card {
+    // display: flex;
+    // align-content: center;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    .nft-img {
+      display: flex;
+      margin-top: 10px;
+      margin-left: 25%;
+      width: 150px;
+      height: 150px;
+      user-select: none;
+    }
+    .nft-name {
+      color: black;
+      font-weight: 500;
+      margin-top: 20px;
+      margin-left: 10px;
+    }
+    .nft-desc {
+      color: grey;
+      font-size: 15px;
+      font-weight: 400;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
+}
+.arrow-left {
+  display: grid;
+  position: relative;
+  left: 35px;
+  align-content: center;
+  justify-content: center;
+  z-index: 1;
+  .arrow-btn {
+    right: 1%;
+    cursor: pointer;
+    border: 1px solid #e4e4e5;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: whitesmoke;
+    border-radius: 50px;
+    transition: all 0.12s ease-in-out 0s;
+
+    &:hover {
+      border-color: #a9a9a9;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+.arrow-right {
+  display: grid;
+  position: relative;
+  right: 25px;
+  align-content: center;
+  justify-content: center;
+  .arrow-btn {
+    right: 1%;
+    cursor: pointer;
+    border: 1px solid #e4e4e5;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: whitesmoke;
+    border-radius: 50px;
+    transition: all 0.12s ease-in-out 0s;
+
+    &:hover {
+      border-color: #a9a9a9;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

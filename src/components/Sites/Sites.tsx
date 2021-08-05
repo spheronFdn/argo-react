@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import "./Sites.scss";
 import { Header } from "../_SharedComponents";
 import { Redirect, Route, useHistory, useParams } from "react-router-dom";
-import { AllDeployments, Deployment, Overview, Settings } from "./routes";
+import { AllDeployments, Deployment, NFT, Overview, Settings } from "./routes";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import DomainManagement from "./routes/DomainManagement";
@@ -61,6 +61,11 @@ function Sites() {
                 to={`/org/${params.orgid}/sites/${params.slug1}/domain/domains`}
               />
             )}
+          />
+          <Route
+            path="/org/:orgid/sites/:siteid/nft/"
+            exact
+            render={() => <NFT />}
           />
           <Route
             path="/org/:orgid/sites/:siteid/settings/:slug"

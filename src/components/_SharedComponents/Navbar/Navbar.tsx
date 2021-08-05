@@ -46,9 +46,9 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
               <li className="nav-item">
                 <Link
                   className={`${
-                    location.pathname.indexOf("nft") !== -1 ? "selected" : ""
+                    location.pathname.indexOf("NFT") !== -1 ? "selected" : ""
                   }`}
-                  to={`/org/${params.orgid}/sites/${params.slug1}/nft`}
+                  to={`/org/${params.orgid}/sites/${params.slug1}/NFT`}
                 >
                   NFT
                 </Link>
@@ -107,6 +107,16 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
                   to="/dashboard/members"
                 >
                   Members
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className={`${
+                    location.pathname.indexOf("nft") !== -1 ? "selected" : ""
+                  }`}
+                  to="/dashboard/nft"
+                >
+                  NFT
                 </Link>
               </li>
               <li className="nav-item">

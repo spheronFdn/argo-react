@@ -1,7 +1,7 @@
 import React from "react";
 import "./Dashboard.scss";
 import { Redirect, Route } from "react-router-dom";
-import { InviteMembers, Members, Overview, Settings, Wallet } from "./routes";
+import { InviteMembers, Members, Overview, Settings, Wallet, NFT } from "./routes";
 
 const Header = React.lazy(() => import("../_SharedComponents/Header"));
 const MemoedHeader = React.memo(Header);
@@ -15,6 +15,7 @@ function Dashboard() {
           <Route path="/dashboard/overview" exact render={() => <Overview />} />
           <Route path="/dashboard/settings" exact render={() => <Settings />} />
           <Route path="/dashboard/wallet" exact render={() => <Wallet />} />
+          <Route path="/dashboard/NFT" exact render={() => <NFT />} />
           <Route path="/dashboard/members" exact render={() => <Members />} />
           <Route
             path="/dashboard/members/new"
