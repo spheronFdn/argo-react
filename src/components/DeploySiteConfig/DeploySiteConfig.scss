@@ -348,7 +348,28 @@
                   margin-top: 3px;
                   input {
                     cursor: pointer;
+                    height: 18px;
+                    width: 18px;
                   }
+                }
+
+                .webhook-title {
+                  font-size: 1rem;
+                  font-weight: 500;
+                  color: var(--black);
+                }
+
+                .webhook-subtitle {
+                  font-size: 1rem;
+                  font-weight: 400;
+                  margin-top: 0.5rem;
+                  color: var(--grey4Color);
+                }
+
+                .webhook-note {
+                  font-size: 0.9rem;
+                  margin-top: 0.5rem;
+                  color: #da621e;
                 }
               }
 
