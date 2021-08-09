@@ -84,8 +84,8 @@ workflows:
       - build-deploy:
           requires:
             - formatting # Only run deploy job once the build job has completed
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
-          #       - dev
+          filters:
+            branches:
+              only:
+                - master
+                - dev
