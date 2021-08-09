@@ -56,7 +56,7 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
-        case "neofs":
+      case "neofs":
         return (
           <img
             src={require("../../../../../assets/png/neo-light.png")}
@@ -128,28 +128,32 @@ const ProjectTopCard = () => {
     });
     history.push("/deploy/new");
   };
-  
+
   return (
     <div className="ProjectTopCard">
       <div className="project-top-card-container max-width-set">
         <div className="deployment-top-card">
           <div className="deployment-left">
-            {!projectLoading ? (
-              <a
-                href={latestDeployment?.sitePreview}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="deployment-screenshot"
-                  src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
-                  // onClick={latestDeployment?.sitePreview}
-                  alt={"Preview not Available"}
-                />
-              </a>
-            ) : (
-              <Skeleton height={180} width={320} duration={2} />
-            )}
+            <div className="deployment-screenshot-container">
+              {!projectLoading ? (
+                <a
+                  href={latestDeployment?.sitePreview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="deployment-screenshot"
+                    src={imageUrl(
+                      selectedProject?.latestDeployment?.screenshot?.url,
+                    )}
+                    // onClick={latestDeployment?.sitePreview}
+                    alt={"Preview not Available"}
+                  />
+                </a>
+              ) : (
+                <Skeleton height={180} width={320} duration={2} />
+              )}
+            </div>
             <div className="deployment-left">
               <div>
                 <div className="project-top-card-header">
