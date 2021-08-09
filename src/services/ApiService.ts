@@ -352,3 +352,63 @@ export const updateProjectEnv = (id: string, envDetails: any): Observable<any> =
     );
   });
 };
+
+export const connectWebhook = (webhook: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/webhook/connect`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(webhook),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const createWebhook = (webhook: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/webhook/create`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(webhook),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const editWebhook = (id: string, webhookDetails: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/webhook/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(webhookDetails),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const removeWebhook = (id: any, body: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/webhook/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "DELETE",
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    );
+  });
+};

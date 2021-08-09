@@ -42,7 +42,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "http://localhost:8080",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
