@@ -35,7 +35,7 @@ jobs:
           name: Check Formatting & Codecov
           command: npm run prettier:write && npm run prettier:check && codecov
 
-  build:
+  build-deploy:
     resource_class: large
     working_directory: ~/argo-react
     docker:
@@ -67,36 +67,25 @@ jobs:
           name: Run Build
           command: CI=false npm run build
 
-  deploy:
-    working_directory: ~/argo-react
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-
       - aws-s3/sync:
-          aws-region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: build
-          to: "s3://dev.argoapp.live"
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400"
+        aws-region: AWS_REGION
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+        from: build
+        to: "s3://dev.argoapp.live"
+        arguments: |
+          --acl public-read \
+          --cache-control "max-age=86400"
 
 workflows:
-  build-deploy:
+  react-deploy:
     jobs:
       - formatting
-      - build:
+      - build-deploy:
           requires:
             - formatting # Only run deploy job once the build job has completed
-          # filters:
-          #   branches:
-          #     only: dev
-      - deploy:
-          requires:
-            - build # Only run deploy job once the build job has completed
-          # filters:
-          #   branches:
-          #     only: dev
+          filters:
+            branches:
+              only:
+                - master
+                - dev
