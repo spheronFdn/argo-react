@@ -11,6 +11,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { StateContext } from "../../../../../../hooks";
 import { IDomain, IStateModel } from "../../../../../../model/hooks.model";
 import { LazyLoadedImage } from "../../../../../_SharedComponents";
+import config from "../../../../../../config";
 
 const DeploymentItem: React.FC<IDeploymentItemProps> = ({
   index,
@@ -67,9 +68,17 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
         return <span className="protocol-tag-arweave">Arweave</span>;
       case "skynet":
         return <span className="protocol-tag-skynet">Skynet</span>;
+        case "neofs":
+          return <span className="protocol-tag-neofs">NeoFS</span>;
 
       default:
     }
+  };
+  const imageUrl = (imageUrl: string | undefined) => {
+    if (imageUrl) {
+      return imageUrl;
+    }
+    return config.urls.IMAGE_NOT_FOUND;
   };
 
   const openDeployment = () => {
@@ -83,166 +92,173 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       {type === "filled" && (
         <>
           <div className="deployment-left">
-            <div className="deployment-left-detail">
-              {isDomainOrSubPresent && (
-                <div className="deployment-domains-detail">
-                  <span className="bold-text">Published at: </span>
-                  {
-                    <>
-                      {domains.map((d: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${d.name}`}
-                            className="deployment-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {d.name}
-                          </a>
-                          {(i !== a.length - 1 ||
-                            subdomains.length > 0 ||
-                            hnsDomains.length > 0 ||
-                            hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${s.name}`}
-                            className="deployment-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {(i !== a.length - 1 ||
-                            hnsDomains.length > 0 ||
-                            hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`http://${s.name}`}
-                            className="deployment-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`http://${s.name}`}
-                            className="deployment-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {i !== a.length - 1 && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                    </>
-                  }
-                </div>
-              )}
-              <div className="deployment-publish-detail">
-                <span className="bold-text">Preview: </span>
-                {deployment?.sitePreview ? (
-                  <a
-                    href={deployment?.sitePreview}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="deployment-link"
-                  >
-                    {deployment?.sitePreview}
-                  </a>
-                ) : (
-                  <span>Site preview not available</span>
+            <img
+              className="deployment-screenshot"
+              src={imageUrl(deployment?.screenshot?.url)}
+              alt={"Preview not Available"}
+            />
+            <div className="deployment-left">
+              <div className="deployment-left-detail">
+                {isDomainOrSubPresent && (
+                  <div className="deployment-domains-detail">
+                    <span className="bold-text">Published at: </span>
+                    {
+                      <>
+                        {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${d.name}`}
+                              className="deployment-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {d.name}
+                            </a>
+                            {(i !== a.length - 1 ||
+                              subdomains.length > 0 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${s.name}`}
+                              className="deployment-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="deployment-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="deployment-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {i !== a.length - 1 && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    }
+                  </div>
                 )}
+                <div className="deployment-publish-detail">
+                  <span className="bold-text">Preview: </span>
+                  {deployment?.sitePreview ? (
+                    <a
+                      href={deployment?.sitePreview}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="deployment-link"
+                    >
+                      {deployment?.sitePreview}
+                    </a>
+                  ) : (
+                    <span>Site preview not available</span>
+                  )}
+                </div>
+                <div className="deployment-commit-details">
+                  <span className="bold-text">Production: </span>
+                  <span>
+                    {deployment?.configuration.branch}
+                    {deployment?.commitId ? (
+                      <>
+                        @
+                        <a
+                          href={`${selectedProject?.githubUrl.substring(
+                            0,
+                            selectedProject?.githubUrl.length - 4,
+                          )}/commit/${deployment?.commitId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="deployment-link"
+                        >
+                          {deployment?.commitId.substr(0, 7)}{" "}
+                          {deployment?.commitMessage
+                            ? `- ${deployment?.commitMessage.substr(0, 64)}...`
+                            : ""}
+                        </a>
+                      </>
+                    ) : null}
+                  </span>
+                </div>
+                <div className="protocol-tag-container">
+                  {showProtocolTag(deployment?.configuration.protocol!)}
+                </div>
               </div>
-              <div className="deployment-commit-details">
-                <span className="bold-text">Production: </span>
-                <span>
-                  {deployment?.configuration.branch}
-                  {deployment?.commitId ? (
-                    <>
-                      @
-                      <a
-                        href={`${selectedProject?.githubUrl.substring(
-                          0,
-                          selectedProject?.githubUrl.length - 4,
-                        )}/commit/${deployment?.commitId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="deployment-link"
-                      >
-                        {deployment?.commitId.substr(0, 7)}{" "}
-                        {deployment?.commitMessage
-                          ? `- ${deployment?.commitMessage.substr(0, 64)}...`
-                          : ""}
-                      </a>
-                    </>
-                  ) : null}
-                </span>
-              </div>
-              <div className="protocol-tag-container">
-                {showProtocolTag(deployment?.configuration.protocol!)}
+              <div className="deployment-time-details">
+                <div className="bold-text">
+                  {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
+                  {moment(`${deployment?.createdAt}`).format("hh:mm A")}
+                </div>
+                <div className="deployment-status">
+                  <span className="deployment-status-icon">
+                    {deployment?.status.toLowerCase() === "pending" && (
+                      <Lottie options={defaultOptions} height={42} width={58} />
+                    )}
+                    {deployment?.status.toLowerCase() === "deployed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/rocket_background.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
+                    {deployment?.status.toLowerCase() === "failed" && (
+                      <LazyLoadedImage height={16} once>
+                        <img
+                          src={require("../../../../../../assets/svg/error.svg")}
+                          alt="rocket"
+                          className="rocket-icon"
+                          height={16}
+                          width={16}
+                          loading="lazy"
+                        />
+                      </LazyLoadedImage>
+                    )}
+                  </span>
+                  {deployment?.status}
+                </div>
               </div>
             </div>
-            <div className="deployment-time-details">
-              <div className="bold-text">
-                {moment(`${deployment?.createdAt}`).format("MMM DD")} at{" "}
-                {moment(`${deployment?.createdAt}`).format("hh:mm A")}
-              </div>
-              <div className="deployment-status">
-                <span className="deployment-status-icon">
-                  {deployment?.status.toLowerCase() === "pending" && (
-                    <Lottie options={defaultOptions} height={42} width={58} />
-                  )}
-                  {deployment?.status.toLowerCase() === "deployed" && (
-                    <LazyLoadedImage height={16} once>
-                      <img
-                        src={require("../../../../../../assets/svg/rocket_background.svg")}
-                        alt="rocket"
-                        className="rocket-icon"
-                        height={16}
-                        width={16}
-                        loading="lazy"
-                      />
-                    </LazyLoadedImage>
-                  )}
-                  {deployment?.status.toLowerCase() === "failed" && (
-                    <LazyLoadedImage height={16} once>
-                      <img
-                        src={require("../../../../../../assets/svg/error.svg")}
-                        alt="rocket"
-                        className="rocket-icon"
-                        height={16}
-                        width={16}
-                        loading="lazy"
-                      />
-                    </LazyLoadedImage>
-                  )}
-                </span>
-                {deployment?.status}
-              </div>
+            <div className="deployment-right">
+              <FontAwesomeIcon icon={faChevronRight} />
             </div>
-          </div>
-          <div className="deployment-right">
-            <FontAwesomeIcon icon={faChevronRight} />
           </div>
         </>
       )}

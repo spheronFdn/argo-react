@@ -1,0 +1,243 @@
+@import "../../../../../../styles/mixin";
+
+.ContinuousDeployment {
+  flex: 1;
+  .settings-right-container {
+    flex: 1;
+    margin-left: 2rem;
+    .settings-project-details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+      .settings-project-header {
+        font-family: var(--headerFont) !important;
+        display: flex;
+        min-height: 32px;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 22px;
+        font-weight: 500;
+        background-color: #3463ae38;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom: 1px solid var(--themeColorDark);
+      }
+
+      .delete-containers {
+        background-color: #fc2c2c38 !important;
+      }
+
+      .settings-project-body {
+        flex: 1;
+        padding: 1rem 24px;
+        flex-direction: column;
+
+        .settings-project-header-subtitle {
+          font-size: 16px;
+          color: var(--grey3Color);
+          margin-bottom: 0.5rem;
+        }
+
+        .settings-project-add-webhook-conf {
+          padding: 1rem;
+          border: 1px solid #eaeaea;
+          background-color: #fafafa;
+          border-radius: 6px;
+          .webhook-header {
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eaeaea;
+            margin-bottom: 1rem;
+          }
+          .deploy-site-item-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+            .deploy-site-item-form-item {
+              display: flex;
+              flex-direction: column;
+              label {
+                font-size: 14px;
+                text-transform: uppercase;
+                font-weight: 500;
+                .tooltip {
+                  color: rgb(66, 65, 65);
+                  margin-left: 10px;
+                }
+              }
+              .deploy-site-item-input-container {
+                display: flex;
+                align-items: center;
+                margin-top: 0.5rem;
+                .deploy-site-item-input-disabled {
+                  width: 77px;
+                  padding: 8px 12px;
+                  border-radius: 4px;
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                  font-size: 16px;
+                  border: 1px solid var(--grey2Color);
+                  border-right: 0;
+                  &:disabled {
+                    cursor: not-allowed;
+                    background-color: var(--grey1Color);
+                  }
+                }
+
+                .deploy-site-item-input-build {
+                  width: 200px;
+                  padding: 8px 12px;
+                  border-radius: 4px;
+                  border-top-left-radius: 0;
+                  border-bottom-left-radius: 0;
+                  font-size: 16px;
+                  border: 1px solid var(--grey2Color);
+                  outline: none;
+
+                  &:focus {
+                    border: 1px solid var(--grey5Color);
+                  }
+                }
+              }
+              .deploy-site-item-input {
+                margin-top: 0.5rem;
+                width: 92%;
+                padding: 8px 12px;
+                border-radius: 4px;
+                font-size: 16px;
+                border: 1px solid var(--grey2Color);
+                outline: none;
+
+                &:focus {
+                  border: 1px solid var(--grey5Color);
+                }
+              }
+
+              .deploy-site-item-select-container {
+                position: relative;
+
+                .deploy-site-item-select {
+                  margin-top: 0.5rem;
+                  width: 100%;
+                  padding: 9px 12px;
+                  border-radius: 4px;
+                  font-size: 16px;
+                  border: 1px solid var(--grey2Color);
+                  outline: none;
+                  appearance: none;
+
+                  &:focus {
+                    border: 1px solid var(--grey5Color);
+                  }
+
+                  &::-ms-expand {
+                    display: none;
+                  }
+                }
+
+                .select-down-icon {
+                  position: absolute;
+                  left: 92%;
+                  top: 16px;
+                }
+              }
+            }
+          }
+
+          .button-container {
+            display: flex;
+            padding-top: 1rem;
+            .primary-button {
+              @include primaryButton(
+                white,
+                var(--themeColor),
+                0.5rem 1rem,
+                none,
+                8px,
+                var(--themeColorDark),
+                var(--primaryDisabled)
+              );
+
+              width: 120px;
+
+              div {
+                margin-right: 8px;
+              }
+            }
+          }
+        }
+      }
+
+      .settings-project-footer {
+        display: flex;
+        justify-content: space-between;
+        min-height: 32px;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #3463ae38;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top: 1px solid var(--themeColorDark);
+        font-size: 14px;
+        color: var(--grey4Color);
+
+        .warning-text-container {
+          display: flex;
+          align-items: center;
+          .exclamation-icon {
+            color: var(--fuelYellow);
+            display: flex;
+            margin-right: 8px;
+          }
+        }
+
+        .primary-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
+          margin-left: 1rem;
+          min-width: 86px;
+
+          div {
+            margin-right: 4px;
+          }
+        }
+
+        .delete-button {
+          @include primaryButton(
+            white,
+            var(--red),
+            0.3rem 1rem,
+            none,
+            8px,
+            var(--redDark),
+            var(--redDisabled)
+          );
+          margin-left: 1rem;
+          min-width: 86px;
+
+          div {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+
+    .continuous-deployment-list-heading {
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 1rem 0;
+      padding-top: 1rem;
+    }
+  }
+}

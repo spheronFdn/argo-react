@@ -57,7 +57,7 @@ function DeploySiteConfig() {
   const [buildEnv, setBuildEnv] = useState<any[]>([]);
   const [repoBranchesLoading, setRepoBranchesLoading] = useState<boolean>(true);
 
-  // const [autoPublish, setAutoPublish] = useState<boolean>(true);
+  const [autoPublish, setAutoPublish] = useState<boolean>(true);
   const [selectedRepo, setSelectedRepo] = useState<any>();
   const [owner, setOwner] = useState<any>();
   const [branch, setBranch] = useState<string>("master");
@@ -316,6 +316,7 @@ function DeploySiteConfig() {
           auto_publish: false,
           configurationId: result._id,
           env: mapBuildEnv(buildEnv),
+          createDefaultWebhook: autoPublish,
         };
 
         ApiService.startDeployment(deployment).subscribe((result) => {
@@ -489,7 +490,7 @@ function DeploySiteConfig() {
                     <label className="deploy-site-item-subtitle">
                       Choose the repository you want to link to your site on ArGo.
                     </label>
-                    {/* <div className="webhook-confirm-container">
+                    <div className="webhook-confirm-container">
                       <span className="confirm-checkbox">
                         <input
                           type="checkbox"
@@ -498,10 +499,22 @@ function DeploySiteConfig() {
                         />
                       </span>
                       <span>
-                        Do you want to setup github webhook? When you push to Git we
-                        run your build tool on our services and deploy the result.
+                        <div className="webhook-title">
+                          Do you want to enable CI/CD?
+                        </div>
+                        <div className="webhook-subtitle">
+                          Enabling this will automatically create a production CI
+                          pipeline for your selected branch. When you push any new
+                          code to GitHub, we will run our build tool and deploy the
+                          result.
+                        </div>
+                        <div className="webhook-note">
+                          Note: If the project already has CI/CD enabled, this won't
+                          overwrite the existing configuration. To change this, you
+                          have to go to Project Settings.
+                        </div>
                       </span>
-                    </div> */}
+                    </div>
                     {!showGithubRepos ? (
                       <div className="deployment-provider-container">
                         <div className="deployment-provider-title">
@@ -626,6 +639,7 @@ function DeploySiteConfig() {
                             href={`${config.urls.API_URL}/auth/github/app/new`}
                             // eslint-disable-next-line react/jsx-no-target-blank
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             Configure the ArGo app on GitHub.
                           </a>
@@ -695,6 +709,22 @@ function DeploySiteConfig() {
                             </LazyLoadedImage>
                             <div className="new-protocol-tag">New</div>
                           </div>
+                          {/* <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("neofs")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/svg/neofs_logo.svg")}
+                                alt="neoFS"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
+                          </div> */}
                         </ul>
                       </div>
                     </div>

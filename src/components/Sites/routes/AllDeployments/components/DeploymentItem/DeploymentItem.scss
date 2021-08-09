@@ -27,12 +27,37 @@
         text-decoration: underline;
       }
     }
+    .deployment-screenshot {
+      height: 100px;
+      width: 190px;
+      border: 1.5px solid var(--grey1Color);
+      margin-right: 1.5rem;
+    }
     .comma-sep {
       margin-right: 4px;
     }
     .deployment-left-detail {
       flex: 1;
       overflow: hidden;
+
+      .deployment-domains-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-publish-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-commit-details {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
     }
     .protocol-tag-container {
       margin-top: 0.2rem;
@@ -47,6 +72,112 @@
         font-size: 15px;
         padding: 1px 10px;
         background-color: #00c66f;
+        color: var(--white);
+        border-radius: 12px;
+      }
+    }
+  }
+
+  .deployment-status {
+    color: var(--grey3Color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .deployment-status-icon {
+      display: flex;
+      div {
+        display: flex;
+        margin: -10px -10px !important;
+      }
+
+      .lazyload-wrapper {
+        margin: auto !important;
+        .rocket-icon {
+          height: 16px;
+          width: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+.deployment-top-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  .deployment-left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1rem;
+
+    .bold-text {
+      font-weight: 500;
+    }
+
+    .deployment-link {
+      text-decoration: none;
+      color: var(--logoColor);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .deployment-screenshot {
+      // border: 1.5px solid var(--grey1Color);
+      box-shadow: 0 0 6px #d3d3d3;
+      margin-right: 2rem;
+      margin-top: 0.8rem;
+      height: 200px;
+      width: 320px;
+    }
+    .comma-sep {
+      margin-right: 4px;
+    }
+    .deployment-left-detail {
+      flex: 1;
+      overflow: hidden;
+
+      .deployment-domains-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-publish-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-commit-details {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+    }
+    .protocol-tag-container {
+      margin-top: 0.2rem;
+      .protocol-tag-arweave {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #303030;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-skynet {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #00c66f;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-neofs {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: rgb(26,123,97);
         color: var(--white);
         border-radius: 12px;
       }
