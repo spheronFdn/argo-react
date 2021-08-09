@@ -2,7 +2,12 @@ import React from "react";
 import "./Settings.scss";
 import { ProjectTopCard } from "../_SharedComponent";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
-import { SettingsGeneral, SettingsBuildDeploy, EnvironmentVariable } from "./routes";
+import {
+  SettingsGeneral,
+  SettingsBuildDeploy,
+  EnvironmentVariable,
+  ContinuousDeployment,
+} from "./routes";
 
 const Settings = () => {
   const location = useLocation();
@@ -53,6 +58,18 @@ const Settings = () => {
           >
             Environment Variables
           </div>
+          <div
+            className={`settings-bar-item ${
+              lastPath === "continuous-deployment" ? "selected" : ""
+            }`}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/settings/continuous-deployment`,
+              )
+            }
+          >
+            Continuous Deployment
+          </div>
         </div>
         <Route
           path="/org/:orgid/sites/:siteid/settings/general"
@@ -68,6 +85,11 @@ const Settings = () => {
           path="/org/:orgid/sites/:siteid/settings/environment"
           exact
           render={() => <EnvironmentVariable />}
+        />
+        <Route
+          path="/org/:orgid/sites/:siteid/settings/continuous-deployment"
+          exact
+          render={() => <ContinuousDeployment />}
         />
       </div>
     </div>

@@ -21,7 +21,6 @@ const AllDeployments = () => {
     : selectedProject?.deployments.sort((a, b) =>
         moment(b.createdAt).diff(moment(a.createdAt)),
       );
-
   // const triggerDeployment = () => {
   //   setRepoForTriggerDeployment({
   //     github_url: selectedProject?.url,

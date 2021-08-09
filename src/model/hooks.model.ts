@@ -64,6 +64,16 @@ export interface IConfiguration {
   protocol: string;
 }
 
+export interface IWebHooks {
+  _id: string;
+  name: string;
+  branch: string;
+  installationId: number;
+  organizationId: string;
+  projectId: string;
+  configurationId: IConfiguration;
+}
+
 export interface IProject {
   _id?: string;
   name: string;
@@ -76,6 +86,7 @@ export interface IProject {
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
   env: any;
+  webHooks: IWebHooks[];
   updatedAt: Date;
   createdAt: Date;
 }
@@ -105,6 +116,12 @@ export interface IDeployment {
   project: IProject;
   createdAt: any;
   updatedAt: any;
+  screenshot: IScreenshot | undefined;
+}
+export interface IScreenshot {
+  id: string;
+  fee: string;
+  url: string;
 }
 
 export interface IWallet {
