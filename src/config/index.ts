@@ -33,7 +33,8 @@ const development: IConfig = {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
       NETWORK_NAME: "polygon testnet",
-      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
+      RPC_URL:
+        "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -55,7 +56,8 @@ const production: IConfig = {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
       NETWORK_NAME: "matic testnet",
-      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
+      RPC_URL:
+        "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -77,7 +79,8 @@ const test: IConfig = {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 1,
       NETWORK_NAME: "matic testnet",
-      RPC_URL: "https://matic-mumbai.chainstacklabs.com/",
+      RPC_URL:
+        "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
