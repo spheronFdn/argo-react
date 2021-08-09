@@ -125,10 +125,7 @@
       }
     }
     .deployment-screenshot {
-      // border: 1.5px solid var(--grey1Color);
       box-shadow: 0 0 6px #d3d3d3;
-      margin-right: 2rem;
-      margin-top: 0.8rem;
       height: 200px;
       width: 320px;
     }
@@ -177,7 +174,7 @@
       .protocol-tag-neofs {
         font-size: 15px;
         padding: 1px 10px;
-        background-color: rgb(26,123,97);
+        background-color: rgb(26, 123, 97);
         color: var(--white);
         border-radius: 12px;
       }
