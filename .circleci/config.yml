@@ -7,7 +7,7 @@ jobs:
   build:
     working_directory: ~/argo-react
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:12
     steps:
       - checkout
 
