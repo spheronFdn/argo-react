@@ -116,6 +116,12 @@ export interface IDeployment {
   project: IProject;
   createdAt: any;
   updatedAt: any;
+  screenshot: IScreenshot | undefined;
+}
+export interface IScreenshot {
+  id: string;
+  fee: string;
+  url: string;
 }
 
 export interface IWallet {
