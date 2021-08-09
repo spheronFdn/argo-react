@@ -147,7 +147,7 @@ const Deployment = () => {
                 setDeploymentStatus(protocolLink ? "deployed" : "failed");
                 const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
                 const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
-                setBuildTime({ min: buildMins, sec: buildSecs });
+                setBuildTime({ min: buildMins, sec: buildSecs });                
               } else if (stream.type === 3) {
                 setDeployedLink("");
                 setDeploymentStatus("failed");
@@ -289,6 +289,17 @@ const Deployment = () => {
             loading="lazy"
           />
         );
+        case "neofs":
+        return (
+          <img
+            src={require("../../../../assets/png/neo-light.png")}
+            alt="neofs"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
 
       default:
         return (
@@ -318,6 +329,12 @@ const Deployment = () => {
             Deploying on Skynet, Preview in a minute
           </span>
         );
+        case "neofs":
+        return (
+          <span className="site-deployment-link">
+            Deploying on NeoFS, Preview in a minute
+          </span>
+        );
 
       default:
         return (
@@ -334,7 +351,8 @@ const Deployment = () => {
         return <span>{paymentDetails?.providerFee || 0} AR</span>;
       case "skynet":
         return <span>{paymentDetails?.providerFee || 0} SIA</span>;
-
+        case "neofs":
+          return <span>{paymentDetails?.providerFee || 0} NEO</span>;
       default:
         return <span>{paymentDetails?.providerFee || 0} ?</span>;
     }
@@ -680,7 +698,8 @@ const Deployment = () => {
                 >
                   {currLog.time}:{" "}
                   {currLog.log.indexOf("https://arweave.net/") !== -1 ||
-                  currLog.log.indexOf("https://siasky.net/") !== -1 ? (
+                  currLog.log.indexOf("https://siasky.net/") !== -1 ||
+                  currLog.log.indexOf("https://http.fs.neo.org/") !== -1 ? (
                     <a
                       href={currLog.log.trim()}
                       className="log-site-link"

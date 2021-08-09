@@ -639,6 +639,7 @@ function DeploySiteConfig() {
                             href={`${config.urls.API_URL}/auth/github/app/new`}
                             // eslint-disable-next-line react/jsx-no-target-blank
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             Configure the ArGo app on GitHub.
                           </a>
@@ -708,6 +709,22 @@ function DeploySiteConfig() {
                             </LazyLoadedImage>
                             <div className="new-protocol-tag">New</div>
                           </div>
+                          {/* <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("neofs")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/svg/neofs_logo.svg")}
+                                alt="neoFS"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
+                          </div> */}
                         </ul>
                       </div>
                     </div>

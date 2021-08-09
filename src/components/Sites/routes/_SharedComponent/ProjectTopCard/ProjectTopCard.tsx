@@ -56,6 +56,17 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
+        case "neofs":
+        return (
+          <img
+            src={require("../../../../../assets/png/neo-light.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
 
       default:
         return (
@@ -117,7 +128,7 @@ const ProjectTopCard = () => {
     });
     history.push("/deploy/new");
   };
-
+  
   return (
     <div className="ProjectTopCard">
       <div className="project-top-card-container max-width-set">
