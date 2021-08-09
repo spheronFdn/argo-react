@@ -17,7 +17,8 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = process.env.NODE_ENV;
+const NODE_ENV: string =
+  process.env.CIRCLE_BRANCH === "master" ? "production" : "development";
 
 const development: IConfig = {
   urls: {
