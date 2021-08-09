@@ -626,6 +626,7 @@ function DeploySiteConfig() {
                             href={`${config.urls.API_URL}/auth/github/app/new`}
                             // eslint-disable-next-line react/jsx-no-target-blank
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             Configure the ArGo app on GitHub.
                           </a>
