@@ -38,7 +38,7 @@ jobs:
 
       - run:
           name: run build
-          command: npm run build
+          command: CI=false npm run build
 
       - aws-s3/sync:
           aws-region: AWS_REGION
