@@ -4,6 +4,37 @@ orbs:
   aws-s3: circleci/aws-s3@3.0
 
 jobs:
+  formatting:
+    working_directory: ~/argo-react
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - dependencies-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo npm i -g codecov node-gyp
+            npm i
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+            - ~/.npm
+            - ~/.cache
+
+      - run:
+          name: Check Formatting & Codecov
+          command: npm run prettier:write && npm run prettier:check && codecov
+
   build:
     resource_class: large
     working_directory: ~/argo-react
@@ -20,7 +51,7 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Install Dependencies
           command: |
             sudo npm i -g codecov node-gyp
             npm i
@@ -33,12 +64,15 @@ jobs:
             - ~/.cache
 
       - run:
-          name: check formatting
-          command: npm run prettier:check
-
-      - run:
-          name: run build
+          name: Run Build
           command: CI=false npm run build
+
+  deploy:
+    working_directory: ~/argo-react
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
 
       - aws-s3/sync:
           aws-region: AWS_REGION
@@ -53,4 +87,16 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      - build
+      - formatting
+      - build:
+          requires:
+            - formatting # Only run deploy job once the build job has completed
+          filters:
+            branches:
+              only: dev
+      - deploy:
+          requires:
+            - build # Only run deploy job once the build job has completed
+          filters:
+            branches:
+              only: dev
