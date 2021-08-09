@@ -17,11 +17,12 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = "production";
+const NODE_ENV: string =
+  process.env.CIRCLE_BRANCH === "master" ? "production" : "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "https://dev-api.argoapp.live",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -29,7 +30,7 @@ const development: IConfig = {
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 80001,
-      NETWORK_NAME: "polygon testnet",
+      NETWORK_NAME: "matic testnet",
       RPC_URL:
         "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
@@ -67,7 +68,7 @@ const test: IConfig = {
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
-    ERC20_CONTRACT_ADDRESS: "0xE044842Ce0A54dF5Dc11dbB962B462B28331728e",
+    ERC20_CONTRACT_ADDRESS: "0x02546A1848EA5282dC4a01529623c10C748f1E9f",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
       NETWORK_ID: 1,
