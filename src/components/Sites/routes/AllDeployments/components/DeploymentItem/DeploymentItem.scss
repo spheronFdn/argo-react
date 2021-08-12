@@ -30,8 +30,9 @@
     .deployment-screenshot {
       height: 100px;
       width: 190px;
-      border: 1.5px solid var(--grey1Color);
+      border: 1px solid var(--grey1Color);
       margin-right: 1.5rem;
+      border-radius: 6px;
     }
     .comma-sep {
       margin-right: 4px;
@@ -123,11 +124,6 @@
       &:hover {
         text-decoration: underline;
       }
-    }
-    .deployment-screenshot {
-      box-shadow: 0 0 6px #d3d3d3;
-      height: 200px;
-      width: 320px;
     }
     .comma-sep {
       margin-right: 4px;
