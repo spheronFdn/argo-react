@@ -147,7 +147,7 @@ const Deployment = () => {
                 setDeploymentStatus(protocolLink ? "deployed" : "failed");
                 const buildMins = Number.parseInt(`${stream.data.buildTime / 60}`);
                 const buildSecs = Number.parseInt(`${stream.data.buildTime % 60}`);
-                setBuildTime({ min: buildMins, sec: buildSecs });                
+                setBuildTime({ min: buildMins, sec: buildSecs });
               } else if (stream.type === 3) {
                 setDeployedLink("");
                 setDeploymentStatus("failed");
@@ -289,7 +289,7 @@ const Deployment = () => {
             loading="lazy"
           />
         );
-        case "neofs":
+      case "neofs":
         return (
           <img
             src={require("../../../../assets/png/neo-light.png")}
@@ -329,7 +329,7 @@ const Deployment = () => {
             Deploying on Skynet, Preview in a minute
           </span>
         );
-        case "neofs":
+      case "neofs":
         return (
           <span className="site-deployment-link">
             Deploying on NeoFS, Preview in a minute
@@ -351,8 +351,8 @@ const Deployment = () => {
         return <span>{paymentDetails?.providerFee || 0} AR</span>;
       case "skynet":
         return <span>{paymentDetails?.providerFee || 0} SIA</span>;
-        case "neofs":
-          return <span>{paymentDetails?.providerFee || 0} NEO</span>;
+      case "neofs":
+        return <span>{paymentDetails?.providerFee || 0} NEO</span>;
       default:
         return <span>{paymentDetails?.providerFee || 0} ?</span>;
     }
