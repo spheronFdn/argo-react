@@ -65,7 +65,7 @@ jobs:
 
       - run:
           name: Run Build
-          command: CI=false npm run build
+          command: CI=false npm run build:dev
 
       - aws-s3/sync:
           aws-region: AWS_REGION
@@ -107,7 +107,7 @@ jobs:
 
       - run:
           name: Run Build
-          command: CI=false npm run build
+          command: CI=false npm run build:prod
 
       - aws-s3/sync:
           aws-region: AWS_REGION
