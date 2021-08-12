@@ -76,7 +76,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     const domainBody = {
       orgId: selectedOrg?._id,
       name: editDomainName !== domain ? editDomainName : undefined,
-      link: deployedSite !== link ? deployedSite : undefined,
+      link:
+        deployedSite !== link && deployedSite !== "latest"
+          ? deployedSite
+          : undefined,
       isLatest,
       projectId: selectedProject?._id,
       type: domainType,
