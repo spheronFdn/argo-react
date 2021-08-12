@@ -151,7 +151,7 @@ const ProjectTopCard = () => {
                   />
                 </a>
               ) : (
-                <Skeleton height={180} width={320} duration={2} />
+                <Skeleton height={200} width={320} duration={2} />
               )}
             </div>
             <div className="deployment-left">

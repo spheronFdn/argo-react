@@ -31,7 +31,6 @@
       height: 100px;
       width: 190px;
       border: 1px solid var(--grey1Color);
-      margin-right: 1.5rem;
       border-radius: 6px;
     }
     .comma-sep {
@@ -40,6 +39,7 @@
     .deployment-left-detail {
       flex: 1;
       overflow: hidden;
+      margin-left: 1.5rem;
 
       .deployment-domains-detail {
         word-break: break-all;
@@ -77,6 +77,11 @@
         border-radius: 12px;
       }
     }
+  }
+
+  .deployment-right {
+    display: flex;
+    align-items: center;
   }
 
   .deployment-status {
