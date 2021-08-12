@@ -23,7 +23,7 @@ const NODE_ENV: string =
 
 const development: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://dev-api.argoapp.live",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -45,7 +45,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://api.argoapp.live",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
