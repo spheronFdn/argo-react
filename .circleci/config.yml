@@ -33,7 +33,7 @@ jobs:
 
       - run:
           name: Check Formatting & Codecov
-          command: npm run prettier:write && npm run prettier:check && codecov
+          command: npm run prettier:check && codecov
 
   build-deploy-dev:
     resource_class: large
