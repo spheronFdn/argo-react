@@ -313,7 +313,6 @@ function DeploySiteConfig() {
           repositoryId: selectedRepo.repositoryId,
           organizationId: owner._id,
           uniqueTopicId,
-          auto_publish: false,
           configurationId: result._id,
           env: mapBuildEnv(buildEnv),
           createDefaultWebhook: autoPublish,
@@ -490,31 +489,6 @@ function DeploySiteConfig() {
                     <label className="deploy-site-item-subtitle">
                       Choose the repository you want to link to your site on ArGo.
                     </label>
-                    <div className="webhook-confirm-container">
-                      <span className="confirm-checkbox">
-                        <input
-                          type="checkbox"
-                          checked={autoPublish}
-                          onChange={(e) => setAutoPublish(e.target.checked)}
-                        />
-                      </span>
-                      <span>
-                        <div className="webhook-title">
-                          Do you want to enable CI/CD?
-                        </div>
-                        <div className="webhook-subtitle">
-                          Enabling this will automatically create a production CI
-                          pipeline for your selected branch. When you push any new
-                          code to GitHub, we will run our build tool and deploy the
-                          result.
-                        </div>
-                        <div className="webhook-note">
-                          Note: If the project already has CI/CD enabled, this won't
-                          overwrite the existing configuration. To change this, you
-                          have to go to Project Settings.
-                        </div>
-                      </span>
-                    </div>
                     {!showGithubRepos ? (
                       <div className="deployment-provider-container">
                         <div className="deployment-provider-title">
@@ -956,6 +930,40 @@ function DeploySiteConfig() {
                         Define environment variables for more control and flexibility
                         over your build.
                       </label>
+
+                      <div className="deploy-site-item-form">
+                        <div className="deploy-site-item-form-item">
+                          <label>
+                            Continuous Deployment{" "}
+                            <span className="new-item-tag">NEW</span>
+                          </label>
+                          <label className="deploy-site-item-subtitle">
+                            Enabling this will automatically create a production CD
+                            pipeline for your selected branch. When you push any new
+                            code to GitHub, we will run our build tool and deploy the
+                            result.
+                          </label>
+                        </div>
+                        <div className="webhook-confirm-container">
+                          <span className="confirm-checkbox">
+                            <input
+                              type="checkbox"
+                              checked={autoPublish}
+                              onChange={(e) => setAutoPublish(e.target.checked)}
+                            />
+                          </span>
+                          <span>
+                            <div className="webhook-title">
+                              Do you want to enable Continuous Deployment?
+                            </div>
+                            <div className="webhook-note">
+                              Note: If the project already has CD enabled, this won't
+                              overwrite the existing configuration. To change this,
+                              you have to go to Project Settings.
+                            </div>
+                          </span>
+                        </div>
+                      </div>
                       <div className="deploy-site-item-form">
                         <div className="deploy-site-item-form-item">
                           <label>Environment Variables</label>
