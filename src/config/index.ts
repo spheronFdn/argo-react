@@ -18,8 +18,7 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string =
-  process.env.CIRCLE_BRANCH === "master" ? "production" : "development";
+const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
