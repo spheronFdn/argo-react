@@ -30,8 +30,8 @@
     .deployment-screenshot {
       height: 100px;
       width: 190px;
-      border: 1.5px solid var(--grey1Color);
-      margin-right: 1.5rem;
+      border: 1px solid var(--grey1Color);
+      border-radius: 6px;
     }
     .comma-sep {
       margin-right: 4px;
@@ -39,6 +39,7 @@
     .deployment-left-detail {
       flex: 1;
       overflow: hidden;
+      margin-left: 1.5rem;
 
       .deployment-domains-detail {
         word-break: break-all;
@@ -76,6 +77,11 @@
         border-radius: 12px;
       }
     }
+  }
+
+  .deployment-right {
+    display: flex;
+    align-items: center;
   }
 
   .deployment-status {
@@ -124,14 +130,6 @@
         text-decoration: underline;
       }
     }
-    .deployment-screenshot {
-      // border: 1.5px solid var(--grey1Color);
-      box-shadow: 0 0 6px #d3d3d3;
-      margin-right: 2rem;
-      margin-top: 0.8rem;
-      height: 200px;
-      width: 320px;
-    }
     .comma-sep {
       margin-right: 4px;
     }
@@ -177,7 +175,7 @@
       .protocol-tag-neofs {
         font-size: 15px;
         padding: 1px 10px;
-        background-color: rgb(26,123,97);
+        background-color: rgb(26, 123, 97);
         color: var(--white);
         border-radius: 12px;
       }

@@ -200,10 +200,21 @@
                   label {
                     font-size: 16px;
                     font-weight: bold;
+                    display: flex;
+                    align-items: center;
                     .tooltip {
                       color: rgb(66, 65, 65);
                       margin-left: 10px;
                     }
+                  }
+
+                  .new-item-tag {
+                    font-size: 14px;
+                    padding: 1px 10px;
+                    background-color: var(--themeColor);
+                    color: var(--white);
+                    border-radius: 12px;
+                    margin-left: 0.5rem;
                   }
                   .deploy-site-item-input-container {
                     display: flex;

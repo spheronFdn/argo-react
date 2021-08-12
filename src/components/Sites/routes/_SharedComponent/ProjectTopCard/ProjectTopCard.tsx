@@ -56,7 +56,7 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
-        case "neofs":
+      case "neofs":
         return (
           <img
             src={require("../../../../../assets/png/neo-light.png")}
@@ -128,28 +128,32 @@ const ProjectTopCard = () => {
     });
     history.push("/deploy/new");
   };
-  
+
   return (
     <div className="ProjectTopCard">
       <div className="project-top-card-container max-width-set">
         <div className="deployment-top-card">
           <div className="deployment-left">
-            {!projectLoading ? (
-              <a
-                href={latestDeployment?.sitePreview}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="deployment-screenshot"
-                  src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
-                  // onClick={latestDeployment?.sitePreview}
-                  alt={"Preview not Available"}
-                />
-              </a>
-            ) : (
-              <Skeleton height={180} width={320} duration={2} />
-            )}
+            <div className="deployment-screenshot-container">
+              {!projectLoading ? (
+                <a
+                  href={latestDeployment?.sitePreview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="deployment-screenshot"
+                    src={imageUrl(
+                      selectedProject?.latestDeployment?.screenshot?.url,
+                    )}
+                    // onClick={latestDeployment?.sitePreview}
+                    alt={"Preview not Available"}
+                  />
+                </a>
+              ) : (
+                <Skeleton height={200} width={320} duration={2} />
+              )}
+            </div>
             <div className="deployment-left">
               <div>
                 <div className="project-top-card-header">
@@ -190,7 +194,10 @@ const ProjectTopCard = () => {
                               >
                                 {d.name}
                               </a>
-                              {(i !== a.length - 1 || subdomains.length > 0) && (
+                              {(i !== a.length - 1 ||
+                                subdomains.length > 0 ||
+                                hnsDomains.length > 0 ||
+                                hnsSubdomains.length > 0) && (
                                 <span className="comma-sep">,</span>
                               )}
                             </>
@@ -205,36 +212,51 @@ const ProjectTopCard = () => {
                               >
                                 {s.name}
                               </a>
-                              {i !== a.length - 1 && (
-                                <span className="comma-sep">", "</span>
+                              {(i !== a.length - 1 ||
+                                hnsDomains.length > 0 ||
+                                hnsSubdomains.length > 0) && (
+                                <span className="comma-sep">,</span>
                               )}
                             </>
                           ))}
+                          {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                            <>
+                              <a
+                                href={`http://${s.name}`}
+                                className="project-top-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {s.name}
+                              </a>
+                              {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                                <span className="comma-sep">,</span>
+                              )}
+                            </>
+                          ))}
+                          {hnsSubdomains.map(
+                            (s: IDomain, i: number, a: IDomain[]) => (
+                              <>
+                                <a
+                                  href={`http://${s.name}`}
+                                  className="project-top-link"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {s.name}
+                                </a>
+                                {i !== a.length - 1 && (
+                                  <span className="comma-sep">,</span>
+                                )}
+                              </>
+                            ),
+                          )}
                         </>
                       ) : (
                         <Skeleton width={300} duration={2} />
                       )}
                     </div>
                   )}
-                  {/* <div className="project-top-card-fields">
-            <span className="project-top-github-icon">
-              <FontAwesomeIcon icon={faGlobe} />
-            </span>
-            <a
-              href={githubBranchLink}
-              className="project-top-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {!projectLoading ? (
-                <>
-                  {displayGithubRepo} (branch: {selectedProject?.branch})
-                </>
-              ) : (
-                <Skeleton width={300} duration={2} />
-              )}
-            </a>
-          </div> */}
                   <div className="project-top-card-fields">
                     <span className="project-top-github-icon">
                       <FontAwesomeIcon icon={faGithub} />

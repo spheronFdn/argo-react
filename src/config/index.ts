@@ -24,8 +24,7 @@ const NODE_ENV: string =
 const development: IConfig = {
   urls: {
     API_URL: "https://dev-api.argoapp.live",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -46,9 +45,8 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    API_URL: "https://api.argoapp.live",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -70,8 +68,7 @@ const production: IConfig = {
 const test: IConfig = {
   urls: {
     API_URL: "http://localhost:8080",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
