@@ -5,7 +5,7 @@ import { IUserResponse } from "../model/service.model";
 export const logout = (): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/auth/logout`, {
+      fetch(`${config.urls.AUTH_URL}/auth/logout`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -156,7 +156,7 @@ export const getAllOwnerRepos = (installationId: string): Observable<any> => {
 export const getAllGithubAppInstallation = (): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
-      fetch(`${config.urls.API_URL}/auth/github/app`, {
+      fetch(`${config.urls.API_URL}/github/app`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
         },

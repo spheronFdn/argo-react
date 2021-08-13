@@ -12,7 +12,7 @@ const GithubSignup = () => {
 
   const signInWithGithub = async () => {
     import("../../../../../../config").then((config: any) => {
-      const githubAppInUrl = `${config.default.urls.API_URL}/auth/github/app/auth/${params.id}`;
+      const githubAppInUrl = `${config.default.urls.API_URL}/github/app/auth/${params.id}`;
       window.open(githubAppInUrl, "_self");
     });
   };

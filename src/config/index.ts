@@ -1,6 +1,7 @@
 export interface IConfig {
   urls: {
     API_URL: string;
+    AUTH_URL: string;
     IMAGE_NOT_FOUND: string;
   };
   web3: {
@@ -23,9 +24,9 @@ const NODE_ENV: string =
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://dev-api.argoapp.live",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    API_URL: "http://localhost:8080",
+    AUTH_URL: "http://localhost:4000",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -47,8 +48,8 @@ const development: IConfig = {
 const production: IConfig = {
   urls: {
     API_URL: "http://localhost:8080",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    AUTH_URL: "http://localhost:4000",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",
@@ -70,8 +71,8 @@ const production: IConfig = {
 const test: IConfig = {
   urls: {
     API_URL: "http://localhost:8080",
-    IMAGE_NOT_FOUND:
-      "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
+    AUTH_URL: "http://localhost:4000",
+    IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
     PAYMENT_CONTRACT_ADDRESS: "0x113bcF2d1DeB08D295291dA8Bce33ACAD9c9A726",

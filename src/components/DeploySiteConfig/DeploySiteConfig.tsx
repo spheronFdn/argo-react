@@ -636,7 +636,7 @@ function DeploySiteConfig() {
                         <div className="deploy-site-item-repo-body">
                           Can’t see your repo here?
                           <a
-                            href={`${config.urls.API_URL}/auth/github/app/new`}
+                            href={`${config.urls.API_URL}/github/app/new`}
                             // eslint-disable-next-line react/jsx-no-target-blank
                             target="_blank"
                             rel="noopener noreferrer"

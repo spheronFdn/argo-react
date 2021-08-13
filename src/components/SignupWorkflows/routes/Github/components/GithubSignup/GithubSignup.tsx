@@ -8,7 +8,7 @@ const GithubSignup = () => {
 
   const signInWithGithub = async () => {
     import("../../../../../../config").then((config: any) => {
-      const githubSignInUrl = `${config.default.urls.API_URL}/auth/github`;
+      const githubSignInUrl = `${config.default.urls.AUTH_URL}/auth/github`;
       window.open(githubSignInUrl, "_self");
     });
   };

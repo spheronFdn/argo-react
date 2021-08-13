@@ -47,7 +47,7 @@ const RepoOrgDropdown: React.FC<IRepoOrgDropdownProps> = ({
           className="dropdown-item top-border"
           key={repoOwner.length}
           onClick={(e) =>
-            window.open(`${config.urls.API_URL}/auth/github/app/new`, "_blank")
+            window.open(`${config.urls.API_URL}/github/app/new`, "_blank")
           }
         >
           <span className="dropdown-item-org-name">Add another Org</span>
