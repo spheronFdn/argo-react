@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/argoapp-live/argo-react/tree/master.svg?style=shield)](https://circleci.com/gh/argoapp-live/argo-react/tree/master)
+
 <p align="center">
   <a href="https://argoapp.live/">
     <img src="../static/logo_light.png" alt="ArGo logo (light version)" width="210">
