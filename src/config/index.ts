@@ -18,7 +18,7 @@ export interface IConfig {
   };
 }
 
-const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
+const NODE_ENV: string = "test";
 
 const development: IConfig = {
   urls: {

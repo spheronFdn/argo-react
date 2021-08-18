@@ -412,3 +412,16 @@ export const removeWebhook = (id: any, body: any): Observable<any> => {
     );
   });
 };
+
+// export const fetchArchive = (userId: string): Observable<IUserResponse> => {
+//   return defer(() => {
+//     return from<Promise<IUserResponse>>(
+//       fetch(`${config.urls.API_URL}/profile/${userId}`, {
+//         headers: {
+//           "Content-Type": "application/json; charset=utf-8",
+//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+//         },
+//       }).then((res) => res.json()),
+//     );
+//   });
+// };

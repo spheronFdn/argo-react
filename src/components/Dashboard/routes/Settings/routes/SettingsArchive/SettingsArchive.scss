@@ -1,11 +1,11 @@
 @import "../../../../../../styles/mixin";
 
-.SettingsGeneral {
+.OrgSettingsGeneral {
   flex: 1;
   .settings-right-container {
     flex: 1;
     margin-left: 2rem;
-    .settings-project-details {
+    .settings-profile-details {
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -13,8 +13,7 @@
       border-radius: 8px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
-      .settings-project-header {
-        font-family: var(--headerFont) !important;
+      .settings-profile-header {
         display: flex;
         min-height: 32px;
         align-items: center;
@@ -25,116 +24,16 @@
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom: 1px solid var(--themeColorDark);
+        font-family: var(--headerFont) !important;
       }
 
       .delete-containers {
         background-color: #fc2c2c38 !important;
       }
 
-      .settings-project-body {
+      .settings-profile-body {
         flex: 1;
-        .archive-button-container {
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-end;
-          .archive-button {
-            @include primaryButton(
-              white,
-              var(--themeColor),
-              0.3rem 1rem,
-              none,
-              8px,
-              var(--themeColorDark),
-              var(--themeColor)
-            );
-            margin-right: 1rem;
-            min-width: 86px;
-          }
-        }
-
-        .delete-org-container {
-          padding: 1rem 24px;
-          color: var(--grey3Color);
-        }
-        .delete-org-confirm-container {
-          padding: 1rem 24px;
-          padding-top: 0px;
-          color: var(--grey3Color);
-          display: flex;
-          align-items: center;
-
-          .confirm-checkbox {
-            display: flex;
-            height: 20px !important;
-            margin-right: 8px;
-            input {
-              cursor: pointer;
-            }
-          }
-        }
-        .settings-project-item {
-          display: flex;
-          flex-direction: column;
-          padding: 1rem 24px;
-
-          .settings-project-item-title {
-            font-size: 18px;
-            font-weight: bold;
-          }
-
-          .settings-project-item-subtitle {
-            font-size: 14px;
-            color: var(--grey3Color);
-          }
-
-          .settings-project-item-input {
-            margin-top: 0.5rem;
-            width: 300px;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 16px;
-            border: 1px solid var(--grey2Color);
-            outline: none;
-
-            &:focus {
-              border: 1px solid var(--grey5Color);
-            }
-          }
-
-          .settings-project-value {
-            font-size: 18px;
-            margin-top: 0.5rem;
-          }
-
-          .settings-project-item-avatar-container {
-            display: flex;
-            flex-direction: column;
-          }
-
-          .settings-project-avatar-image-container {
-            display: flex;
-            .file-upload {
-              position: absolute;
-              width: 64px;
-              height: 64px;
-              z-index: 100;
-              cursor: pointer;
-              opacity: 0;
-            }
-            .settings-avatar {
-              height: 64px;
-              width: 64px;
-              border-radius: 50%;
-              border: 2px solid var(--themeColor);
-            }
-          }
-        }
-
-        .avatar-container {
-          flex-direction: row !important;
-          align-items: center;
-          justify-content: space-between;
-        }
+        padding: 1rem 0px;
         .settings-deployment-item {
           position: relative;
           display: flex;
@@ -142,11 +41,12 @@
           justify-content: center;
           padding: 1rem;
           border-radius: 6px;
-          // margin: 0.5rem 10px;
+          border: 1px solid var(--grey1Color);
+          margin: 0.5rem 10px;
           .settings-deployment-left {
             flex: 1;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             margin-right: 1rem;
 
             .bold-text {
@@ -172,13 +72,13 @@
             .deployment-left-detail {
               display: flex;
               flex-direction: column;
-              align-items: center;
+              align-items: flex-start;
               flex: 1;
               overflow: hidden;
               margin-left: 1.5rem;
 
               .deployment-header-description {
-                margin-top: 1rem;
+                margin-top: 0.5rem;
                 font-size: 200;
               }
 
@@ -201,12 +101,16 @@
                   font-size: larger;
                   color: varcolor(--themeColor);
                 }
-              }
-              .deployment-commit-details {
-                word-break: break-all;
-                height: 24px;
-                overflow: hidden;
-                margin-right: 1rem;
+
+                .archive-tag {
+                  font-size: 15px;
+                  padding: 1px 10px;
+                  width: fit-content;
+                  background-color: #303030;
+                  color: var(--white);
+                  border-radius: 12px;
+                  margin-top: 0.5rem;
+                }
               }
             }
             // .protocol-tag-container {
@@ -230,7 +134,7 @@
         }
       }
 
-      .settings-project-footer {
+      .settings-profile-footer {
         display: flex;
         justify-content: space-between;
         min-height: 32px;
@@ -263,6 +167,7 @@
             var(--themeColorDark),
             var(--primaryDisabled)
           );
+
           margin-left: 1rem;
           min-width: 86px;
         }
@@ -282,5 +187,30 @@
         }
       }
     }
+  }
+}
+
+.unarchive-button {
+  @include secondaryButton(
+    var(--red),
+    transparent,
+    var(--red),
+    0.3rem 1rem,
+    none,
+    4px,
+    var(--red),
+    var(--primaryDisabled)
+  );
+  border: 1px solid var(--red);
+  font-weight: 500;
+  margin-left: 1rem;
+  min-width: 86px;
+
+  &:hover {
+    border: 1px solid var(--redDark);
+  }
+
+  &:disabled {
+    border: 1px solid var(--redDark);
   }
 }

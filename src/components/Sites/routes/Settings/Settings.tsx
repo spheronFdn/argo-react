@@ -74,7 +74,9 @@ const Settings = () => {
         <Route
           path="/org/:orgid/sites/:siteid/settings/general"
           exact
-          render={() => <SettingsGeneral />}
+          render={() => (
+            <SettingsGeneral index={1} type="skeleton" deployment={null} />
+          )}
         />
         <Route
           path="/org/:orgid/sites/:siteid/settings/deploys"
