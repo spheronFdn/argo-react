@@ -23,20 +23,39 @@
       align-items: center;
       border-radius: 6px;
       .project-top-card-header {
-        .project-top-card-header-title {
-          font-family: var(--headerFont) !important;
-          margin: 0px;
-          color: var(--themeColorDark);
-          display: flex;
-          align-items: center;
-          div {
-            display: flex;
-            margin: -10px -10px !important;
-          }
-        }
         .project-top-card-header-description {
           margin: 0px;
           margin-top: 12px;
+        }
+        .project-top-card-header {
+          display: flex;
+          flex-direction: row;
+          .project-top-card-header-title {
+            font-family: var(--headerFont) !important;
+            margin: 0px;
+            color: var(--themeColorDark);
+            display: flex;
+            align-items: center;
+            div {
+              display: flex;
+              margin: -10px -10px !important;
+            }
+          }
+          .archive-tag-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            .archive-tag {
+              font-size: 15px;
+              padding: 1px 10px;
+              width: fit-content;
+              background-color: #303030;
+              color: var(--white);
+              border-radius: 12px;
+              margin-top: 1px;
+            }
+          }
         }
       }
       .project-top-header-title {

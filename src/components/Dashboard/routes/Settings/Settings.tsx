@@ -45,9 +45,7 @@ const Settings = () => {
           <Route
             path="/dashboard/settings/archive"
             exact
-            render={() => (
-              <SettingsArchive index={1} type="skeleton" deployment={null} />
-            )}
+            render={() => <SettingsArchive />}
           />
         </Switch>
       </div>

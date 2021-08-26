@@ -43,6 +43,10 @@
           border-radius: 6px;
           border: 1px solid var(--grey1Color);
           margin: 0.5rem 10px;
+          cursor: pointer;
+          &:hover {
+            box-shadow: 0 0 6px var(--grey1Color);
+          }
           .settings-deployment-left {
             flex: 1;
             display: flex;
@@ -192,25 +196,25 @@
 
 .unarchive-button {
   @include secondaryButton(
-    var(--red),
+    var(--themeColor),
     transparent,
-    var(--red),
+    var(--themeColor),
     0.3rem 1rem,
     none,
     4px,
-    var(--red),
+    var(--themeColor),
     var(--primaryDisabled)
   );
-  border: 1px solid var(--red);
+  border: 1px solid var(--themeColor);
   font-weight: 500;
   margin-left: 1rem;
   min-width: 86px;
 
   &:hover {
-    border: 1px solid var(--redDark);
+    border: 1px solid var(--themeColorDark);
   }
 
   &:disabled {
-    border: 1px solid var(--redDark);
+    border: 1px solid var(--themeColorDark);
   }
 }

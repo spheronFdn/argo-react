@@ -413,15 +413,46 @@ export const removeWebhook = (id: any, body: any): Observable<any> => {
   });
 };
 
-// export const fetchArchive = (userId: string): Observable<IUserResponse> => {
-//   return defer(() => {
-//     return from<Promise<IUserResponse>>(
-//       fetch(`${config.urls.API_URL}/profile/${userId}`, {
-//         headers: {
-//           "Content-Type": "application/json; charset=utf-8",
-//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-//         },
-//       }).then((res) => res.json()),
-//     );
-//   });
-// };
+export const archiveProject = (id: any, body: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/project/changeStateToArchived/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const maintainProject = (id: any, body: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/project/changeStateToMaintained/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(body),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const getArchiveProject = (id: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/project/getArchived/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "GET",
+      }).then((res) => res.json()),
+    );
+  });
+};

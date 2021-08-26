@@ -89,6 +89,7 @@ export interface IProject {
   webHooks: IWebHooks[];
   updatedAt: Date;
   createdAt: Date;
+  state: string;
 }
 
 export interface IDomain {

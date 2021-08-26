@@ -157,13 +157,28 @@ const ProjectTopCard = () => {
             <div className="deployment-left">
               <div>
                 <div className="project-top-card-header">
-                  <h2 className="project-top-card-header-title">
-                    {!projectLoading ? (
-                      selectedProject?.name
-                    ) : (
-                      <Skeleton width={200} duration={2} />
-                    )}
-                  </h2>
+                  <div className="project-top-card-header">
+                    <h2 className="project-top-card-header-title">
+                      {!projectLoading ? (
+                        selectedProject?.name
+                      ) : (
+                        <Skeleton width={200} duration={2} />
+                      )}
+                    </h2>
+                    <div className="archive-tag-container">
+                      {!projectLoading ? (
+                        selectedProject?.state === "ARCHIVED" ? (
+                          <span className="archive-tag">
+                            {selectedProject?.state}
+                          </span>
+                        ) : (
+                          <></>
+                        )
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
                   <p className="project-top-card-header-description">
                     {!projectLoading ? (
                       <>

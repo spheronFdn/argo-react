@@ -1,25 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./SettingsGeneral.scss";
 import Skeleton from "react-loading-skeleton";
-import IDeploymentItemProps from "./model";
-import { IStateModel } from "../../../../../../model/hooks.model";
+import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
 import config from "../../../../../../config";
-import { StateContext } from "../../../../../../hooks";
+import { ActionContext, StateContext } from "../../../../../../hooks";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { ApiService } from "../../../../../../services";
 
-const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
-  index,
-  type,
-  deployment,
-}) => {
+const SettingsGeneral = () => {
   const { selectedProject, projectLoading, selectedOrg } =
     useContext<IStateModel>(StateContext);
 
+  const { fetchProject } = useContext<IActionModel>(ActionContext);
+
   const [workspace, setWorkspace] = useState<string>("");
 
-  // const [deleteConfirmed, setDeleteConfirmed] = useState<boolean>(false);
+  const [archiveConfirmed, setArchiveConfirmed] = useState<boolean>(false);
 
   const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -28,6 +26,15 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
   const lastCreatedDate = moment(selectedProject?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
   );
+
+  const [installationId, setInstallationId] = useState<number>(0);
+  const componentIsMounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    };
+  }, []);
 
   let displayGithubRepo = "";
   if (selectedProject) {
@@ -44,6 +51,24 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
           ? selectedProject?.latestDeployment?.configuration.workspace
           : "",
       );
+      const ownerName = selectedProject?.githubUrl
+        .substring(19, selectedProject?.githubUrl.length - 4)
+        .split("/")[0];
+      ApiService.getAllGithubAppInstallation().subscribe((res) => {
+        if (componentIsMounted.current) {
+          const repoOwners: any[] = res.installations.map((installation: any) => ({
+            name: installation.account.login,
+            avatar: installation.account.avatar_url,
+            installationId: installation.id,
+          }));
+          if (repoOwners.length) {
+            const newRepoOwner = repoOwners.filter(
+              (repoOwner) => repoOwner.name === ownerName,
+            )[0];
+            setInstallationId(newRepoOwner.installationId);
+          }
+        }
+      });
     }
   }, [selectedProject]);
 
@@ -52,6 +77,38 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
       return imageUrl;
     }
     return config.urls.IMAGE_NOT_FOUND;
+  };
+
+  const projectArchive = () => {
+    const body = {
+      installationId,
+    };
+
+    ApiService.archiveProject(selectedProject?._id, body).subscribe(
+      (result) => {
+        fetchProject(`${selectedProject?._id}`);
+      },
+      (error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      },
+    );
+  };
+
+  const projectMaintain = () => {
+    const body = {
+      installationId,
+    };
+
+    ApiService.maintainProject(selectedProject?._id, body).subscribe(
+      (result) => {
+        fetchProject(`${selectedProject?._id}`);
+      },
+      (error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      },
+    );
   };
 
   // useEffect(() => {
@@ -94,6 +151,9 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
   //     });
   //   }
   // };
+
+  const archiveState =
+    selectedProject?.state === "ARCHIVED" ? "unarchive" : "archive";
 
   return (
     <div className="SettingsGeneral">
@@ -208,15 +268,36 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
         </div>
         <div className="settings-project-details">
           <div className="settings-project-header delete-containers">
-            Archive Project
+            {!projectLoading ? (
+              selectedProject?.state === "ARCHIVED" ? (
+                "Unarchive Project"
+              ) : (
+                "Archive Project"
+              )
+            ) : (
+              <></>
+            )}
           </div>
           <div className="settings-project-body">
             <div className="delete-org-container">
-              This project will be archived and will not be shown in your
-              organization main directory.
+              {!projectLoading ? (
+                <>
+                  This project will be {archiveState}d and will not be shown in your
+                  organization main directory.
+                </>
+              ) : (
+                <Skeleton width={500} duration={2} />
+              )}
               <br />
-              <br /> Note - You can unarchive your project by going to organization
-              settings and clicking on unarchive button.
+              <br />
+              {!projectLoading ? (
+                <b>
+                  Note - You can {archiveState} your project by going to organization
+                  settings and clicking on {archiveState} button.
+                </b>
+              ) : (
+                <Skeleton width={500} duration={2} />
+              )}
             </div>
             <div className="settings-deployment-item">
               <>
@@ -340,32 +421,56 @@ const SettingsGeneral: React.FC<IDeploymentItemProps> = ({
                 </>
               )} */}
             </div>
-            <div className="delete-org-confirm-container">
-              <span className="confirm-checkbox">
-                <input
-                  type="checkbox"
-                  // checked={deleteConfirmed}
-                  // onChange={(e) => setDeleteConfirmed(!deleteConfirmed)}
-                />
-              </span>
-              <span>I confirm that I want to archive this project</span>
-            </div>
-            <div className="settings-project-footer delete-containers">
-              <div className="warning-text-container">
-                <span className="exclamation-icon">
-                  <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+            {!projectLoading ? (
+              <div className="delete-org-confirm-container">
+                <span className="confirm-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={archiveConfirmed}
+                    onChange={(e) => setArchiveConfirmed(!archiveConfirmed)}
+                  />
                 </span>
-                <span>Please confirm and click archive to archive your project</span>
+                <span>
+                  <b>I confirm that I want to {archiveState} this project</b>
+                </span>
               </div>
-              <button
-                type="button"
-                className="primary-button delete-button"
-                // disabled={!deleteConfirmed}
-                // onClick={deleteOrg}
-              >
-                Archive
-              </button>
-            </div>
+            ) : (
+              <></>
+            )}
+            {!projectLoading ? (
+              <div className="settings-project-footer delete-containers">
+                <div className="warning-text-container">
+                  <span className="exclamation-icon">
+                    <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+                  </span>
+                  <span>
+                    Please confirm and click {archiveState} to {archiveState} your
+                    project
+                  </span>
+                </div>
+                {selectedProject?.state === "ARCHIVED" ? (
+                  <button
+                    type="button"
+                    className="primary-button delete-button"
+                    disabled={!archiveConfirmed}
+                    onClick={projectMaintain}
+                  >
+                    Unarchive
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="primary-button delete-button"
+                    disabled={!archiveConfirmed}
+                    onClick={projectArchive}
+                  >
+                    Archive
+                  </button>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
             {/* <div className="archive-button-container">
               <button
                 type="button"
