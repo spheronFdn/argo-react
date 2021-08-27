@@ -271,7 +271,7 @@ const SettingsGeneral = () => {
                 <>
                   This project will be {archiveState}d and will{" "}
                   {archiveState === "archive" ? "not" : ""} be shown in your
-                  organization main directory.
+                  organization's main directory.
                 </>
               ) : (
                 <Skeleton width={500} duration={2} />
@@ -280,8 +280,8 @@ const SettingsGeneral = () => {
               <br />
               {!projectLoading ? (
                 <b>
-                  Note - You can {archiveState} your project by going to organization
-                  settings and clicking on {archiveState} button on your project
+                  Note - You can {archiveState} your project by visiting organization
+                  settings and clicking on the {archiveState} button on the project
                   settings page.
                 </b>
               ) : (

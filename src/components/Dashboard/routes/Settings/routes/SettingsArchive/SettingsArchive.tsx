@@ -8,6 +8,8 @@ import config from "../../../../../../config";
 import { ApiService } from "../../../../../../services";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const SettingsArchive = () => {
   const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
@@ -102,7 +104,31 @@ const SettingsArchive = () => {
                   </div>
                 ))
               ) : (
-                <div></div>
+                <div className="settings-archive-empty">
+                  <div className="archive-empty-container">
+                    <span className="archive-text">
+                      {" "}
+                      <b>You currently do not have any archived projects.</b>
+                      <br />
+                      <br />
+                      You can archive any project in your organization you think
+                      <br />
+                      which are not getting used frequently.
+                      <br />
+                      <br />
+                    </span>
+                    <span>
+                      <a
+                        className="archive-link"
+                        href="https://docs.argoapp.live/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Browse Docs <FontAwesomeIcon icon={faArrowRight} />
+                      </a>
+                    </span>
+                  </div>
+                </div>
               )
             ) : (
               <div>

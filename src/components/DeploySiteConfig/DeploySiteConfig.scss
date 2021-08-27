@@ -609,9 +609,12 @@
             margin: 1rem 24px;
             background-color: #fa383e;
             border-radius: 10px;
-            width: max-content;
             .warning-header {
               padding: 16px;
+              text-overflow: ellipsis;
+              word-break: break-word;
+              overflow: hidden;
+              white-space: nowrap;
               color: var(--grey1Color);
             }
           }
