@@ -413,11 +413,6 @@ const Deployment = () => {
             ) : (
               <Skeleton width={200} duration={2} />
             )}
-            {selectedProject?.state === "ARCHIVED" && !deploymentLoading ? (
-              <span className="archive-tag">{selectedProject?.state}</span>
-            ) : (
-              <></>
-            )}
           </h2>
           <p className="site-deployment-card-header-description">
             {!deploymentLoading ? (

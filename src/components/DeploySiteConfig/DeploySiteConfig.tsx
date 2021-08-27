@@ -71,6 +71,7 @@ function DeploySiteConfig() {
     useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
   const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
 
   const componentIsMounted = useRef(true);
 
@@ -301,32 +302,36 @@ function DeploySiteConfig() {
       protocol,
     };
     ApiService.createConfiguration(configuration).subscribe((result) => {
-      if (componentIsMounted.current) {
-        const uniqueTopicId = uuidv4();
+      if (result.success) {
+        if (componentIsMounted.current) {
+          const uniqueTopicId = uuidv4();
 
-        const deployment = {
-          orgId: selectedOrg?._id,
-          githubUrl: selectedRepo.clone_url,
-          folderName: selectedRepo.name,
-          owner: selectedRepoOwner.name,
-          installationId: selectedRepoOwner.installationId,
-          repositoryId: selectedRepo.repositoryId,
-          organizationId: owner._id,
-          uniqueTopicId,
-          configurationId: result._id,
-          env: mapBuildEnv(buildEnv),
-          createDefaultWebhook: autoPublish,
-        };
+          const deployment = {
+            orgId: selectedOrg?._id,
+            githubUrl: selectedRepo.clone_url,
+            folderName: selectedRepo.name,
+            owner: selectedRepoOwner.name,
+            installationId: selectedRepoOwner.installationId,
+            repositoryId: selectedRepo.repositoryId,
+            organizationId: owner._id,
+            uniqueTopicId,
+            configurationId: result._id,
+            env: mapBuildEnv(buildEnv),
+            createDefaultWebhook: autoPublish,
+          };
 
-        ApiService.startDeployment(deployment).subscribe((result) => {
-          if (componentIsMounted.current) {
-            setLatestDeploymentConfig(deployment);
-            setStartDeploymentLoading(false);
-            history.push(
-              `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
-            );
-          }
-        });
+          ApiService.startDeployment(deployment).subscribe((result) => {
+            if (componentIsMounted.current) {
+              setLatestDeploymentConfig(deployment);
+              setStartDeploymentLoading(false);
+              history.push(
+                `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
+              );
+            }
+          });
+        }
+      } else {
+        setErrorWarning(true);
       }
     });
   };
@@ -1060,6 +1065,16 @@ function DeploySiteConfig() {
                         Back
                       </button>
                     </div>
+                    {errorWarning ? (
+                      <div className="warning-container">
+                        <div className="warning-header">
+                          <FontAwesomeIcon icon={faExclamationCircle} /> In the
+                          Warning header
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </>
                 )}
               </div>

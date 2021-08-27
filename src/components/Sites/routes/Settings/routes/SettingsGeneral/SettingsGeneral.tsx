@@ -8,6 +8,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { ApiService } from "../../../../../../services";
+import { BounceLoader } from "react-spinners";
 
 const SettingsGeneral = () => {
   const { selectedProject, projectLoading, selectedOrg } =
@@ -18,6 +19,7 @@ const SettingsGeneral = () => {
   const [workspace, setWorkspace] = useState<string>("");
 
   const [archiveConfirmed, setArchiveConfirmed] = useState<boolean>(false);
+  const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
 
   const lastPublishedDate = moment(selectedProject?.updatedAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -83,9 +85,11 @@ const SettingsGeneral = () => {
     const body = {
       installationId,
     };
-
+    setArchiveLoading(true);
     ApiService.archiveProject(selectedProject?._id, body).subscribe(
       (result) => {
+        setArchiveLoading(false);
+        setArchiveConfirmed(false);
         fetchProject(`${selectedProject?._id}`);
       },
       (error) => {
@@ -99,9 +103,11 @@ const SettingsGeneral = () => {
     const body = {
       installationId,
     };
-
+    setArchiveLoading(true);
     ApiService.maintainProject(selectedProject?._id, body).subscribe(
       (result) => {
+        setArchiveLoading(false);
+        setArchiveConfirmed(false);
         fetchProject(`${selectedProject?._id}`);
       },
       (error) => {
@@ -181,7 +187,7 @@ const SettingsGeneral = () => {
             <div className="settings-project-item">
               <label className="settings-project-item-title">Project Owner</label>
               <label className="settings-project-item-subtitle">
-                This is the organization from which this project is deployed
+                This is the organization from which this project is deployed.
               </label>
               {!projectLoading ? (
                 <div className="settings-project-value">
@@ -196,7 +202,7 @@ const SettingsGeneral = () => {
                 GitHub Repo/Branch
               </label>
               <label className="settings-project-item-subtitle">
-                This is the organization from which this project is deployed
+                This is the organization from which this project is deployed.
               </label>
               {!projectLoading ? (
                 <div className="settings-project-value">
@@ -246,25 +252,6 @@ const SettingsGeneral = () => {
               )}
             </div>
           </div>
-          {/* <div className="settings-project-footer">
-            <div className="warning-text-container">
-              <span className="exclamation-icon">
-                <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
-              </span>
-              <span>Click save to update your organisation</span>
-            </div>
-            <button
-              type="button"
-              className="primary-button"
-              disabled={projectLoading || !isDataChanged}
-              onClick={updateProject}
-            >
-              {updateLoading && (
-                <BounceLoader size={20} color={"#fff"} loading={true} />
-              )}
-              Save
-            </button>
-          </div> */}
         </div>
         <div className="settings-project-details">
           <div className="settings-project-header delete-containers">
@@ -282,7 +269,8 @@ const SettingsGeneral = () => {
             <div className="delete-org-container">
               {!projectLoading ? (
                 <>
-                  This project will be {archiveState}d and will not be shown in your
+                  This project will be {archiveState}d and will{" "}
+                  {archiveState === "archive" ? "not" : ""} be shown in your
                   organization main directory.
                 </>
               ) : (
@@ -293,7 +281,8 @@ const SettingsGeneral = () => {
               {!projectLoading ? (
                 <b>
                   Note - You can {archiveState} your project by going to organization
-                  settings and clicking on {archiveState} button.
+                  settings and clicking on {archiveState} button on your project
+                  settings page.
                 </b>
               ) : (
                 <Skeleton width={500} duration={2} />
@@ -319,7 +308,7 @@ const SettingsGeneral = () => {
                         {!projectLoading ? (
                           selectedProject?.name
                         ) : (
-                          <Skeleton width={400} duration={2} />
+                          <Skeleton width={300} duration={2} />
                         )}
                       </div>
 
@@ -327,7 +316,7 @@ const SettingsGeneral = () => {
                         {!projectLoading ? (
                           <>Last updated at {lastPublishedDate}</>
                         ) : (
-                          <Skeleton width={400} duration={2} />
+                          <Skeleton width={300} duration={2} />
                         )}
                       </div>
                     </div>
@@ -444,26 +433,36 @@ const SettingsGeneral = () => {
                     <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
                   </span>
                   <span>
-                    Please confirm and click {archiveState} to {archiveState} your
+                    Please confirm and click {archiveState} to {archiveState} this
                     project
                   </span>
                 </div>
                 {selectedProject?.state === "ARCHIVED" ? (
                   <button
                     type="button"
-                    className="primary-button delete-button"
+                    className="primary-button archive-button"
                     disabled={!archiveConfirmed}
                     onClick={projectMaintain}
                   >
+                    <div className="bounceLoader">
+                      {archiveLoading && (
+                        <BounceLoader size={20} color={"#fff"} loading={true} />
+                      )}
+                    </div>
                     Unarchive
                   </button>
                 ) : (
                   <button
                     type="button"
-                    className="primary-button delete-button"
+                    className="primary-button archive-button"
                     disabled={!archiveConfirmed}
                     onClick={projectArchive}
                   >
+                    <div className="bounceLoader">
+                      {archiveLoading && (
+                        <BounceLoader size={20} color={"#fff"} loading={true} />
+                      )}
+                    </div>
                     Archive
                   </button>
                 )}

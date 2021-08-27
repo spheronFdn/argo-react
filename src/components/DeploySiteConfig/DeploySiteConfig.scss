@@ -604,6 +604,17 @@
               margin-left: 1rem;
             }
           }
+          .warning-container {
+            display: flex;
+            margin: 1rem 24px;
+            background-color: #fa383e;
+            border-radius: 10px;
+            width: max-content;
+            .warning-header {
+              padding: 16px;
+              color: var(--grey1Color);
+            }
+          }
         }
       }
     }

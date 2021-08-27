@@ -243,6 +243,10 @@
         font-size: 14px;
         color: var(--grey4Color);
 
+        .bounceLoader {
+          margin-right: 5px;
+        }
+
         .warning-text-container {
           display: flex;
           align-items: center;
@@ -267,7 +271,7 @@
           min-width: 86px;
         }
 
-        .delete-button {
+        .archive-button {
           @include primaryButton(
             white,
             var(--red),
@@ -278,7 +282,7 @@
             var(--redDisabled)
           );
           margin-left: 1rem;
-          min-width: 86px;
+          // min-width: 86px;
         }
       }
     }
