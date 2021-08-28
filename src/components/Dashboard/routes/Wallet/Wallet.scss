@@ -264,8 +264,10 @@
               border-bottom: 1px solid var(--themeColor);
               .td {
                 padding: 0.5rem 1rem;
+                overflow: hidden;
 
                 .user-container {
+                  overflow: hidden;
                   .user-text {
                     line-height: 20px;
                     overflow: hidden;
@@ -276,22 +278,22 @@
                 }
 
                 &:nth-child(1) {
-                  width: 23%;
+                  width: 20%;
                 }
                 &:nth-child(2) {
-                  width: 19%;
+                  width: 22%;
                 }
                 &:nth-child(3) {
-                  width: 12%;
+                  width: 10%;
                 }
                 &:nth-child(4) {
-                  width: 14%;
+                  width: 11.5%;
                 }
                 &:nth-child(5) {
                   width: 10%;
                 }
                 &:nth-child(6) {
-                  width: 16%;
+                  width: 19%;
                 }
               }
             }

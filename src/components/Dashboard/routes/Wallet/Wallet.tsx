@@ -334,7 +334,7 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.providerFee}{" "}
+                              {payment?.providerFee.toFixed(4)}{" "}
                               {showProtocolPrice(payment?.protocol)}
                             </div>
                           </div>
