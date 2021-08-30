@@ -9,6 +9,12 @@
   border-radius: 8px;
   background: var(--white);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 5px 6px 6px rgba(0, 0, 0, 0.12);
+  }
 
   .project-item-empty {
     position: relative;
