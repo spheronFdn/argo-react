@@ -25,6 +25,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import en from "javascript-time-ago/locale/en";
 import config from "../../../../config";
 import { LazyLoadedImage } from "../../../_SharedComponents";
+import Popup from "reactjs-popup";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -64,6 +65,8 @@ const Deployment = () => {
   }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
+  const [nftName, setNftName] = useState<string>("");
+  const [nftDesc, setNftDesc] = useState<string>("");
   const componentIsMounted = useRef(true);
 
   let socket: any = null;
@@ -579,6 +582,59 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
+          <Popup
+            trigger={
+              <div className="site-deployment-card-fields">
+                <button
+                  className="interactive-nft-button"
+                  disabled={deploymentLoading}
+                >
+                  Create NFT
+                </button>
+              </div>
+            }
+            position="right center"
+            modal
+          >
+            <div className="modal-container">
+              <img
+                className="nft-img"
+                src="https://img.rarible.com/prod/image/upload/t_big/prod-itemImages/0xc6c11f32d3ccc3beaac68793bc3bfbe82838ca9f:701"
+                alt="NFT"
+                width="640"
+                height="360"
+              />
+              <div className="content">
+                <div className="nft-form">
+                  <label className="nft-form-title">NFT Name</label>
+                  <label className="nft-form-subtitle">
+                    This is your NFT's name.
+                  </label>
+                  <input
+                    type="text"
+                    className="nft-form-input"
+                    value={nftName}
+                    onChange={(e) => setNftName(e.target.value)}
+                  />
+                </div>
+                <div className="nft-form">
+                  <label className="nft-form-title">NFT Description</label>
+                  <label className="nft-form-subtitle">
+                    This is your NFT's description.
+                  </label>
+                  <textarea
+                    placeholder="Remember, be nice!"
+                    className="nft-form-input"
+                    value={nftDesc}
+                    onChange={(e) => setNftDesc(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="mint-button-container">
+                <button className="mint-nft-button">Mint NFT</button>
+              </div>
+            </div>
+          </Popup>
         </div>
       </div>
       {deploymentStatus !== "pending" && (

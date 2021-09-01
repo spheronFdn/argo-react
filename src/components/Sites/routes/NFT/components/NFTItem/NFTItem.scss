@@ -1,0 +1,207 @@
+.deployment-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--grey1Color);
+  border-radius: 6px;
+  margin: 0.75rem 0px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 6px var(--grey1Color);
+  }
+  .deployment-left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1rem;
+
+    .bold-text {
+      font-weight: 500;
+    }
+
+    .deployment-link {
+      text-decoration: none;
+      color: var(--logoColor);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .deployment-screenshot {
+      height: 100px;
+      width: 190px;
+      border: 1px solid var(--grey1Color);
+      border-radius: 6px;
+    }
+    .comma-sep {
+      margin-right: 4px;
+    }
+    .deployment-left-detail {
+      flex: 1;
+      overflow: hidden;
+      margin-left: 1.5rem;
+
+      .deployment-domains-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-publish-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-commit-details {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+    }
+    .protocol-tag-container {
+      margin-top: 0.2rem;
+      .protocol-tag-arweave {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #303030;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-skynet {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #00c66f;
+        color: var(--white);
+        border-radius: 12px;
+      }
+    }
+  }
+
+  .deployment-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .deployment-status {
+    color: var(--grey3Color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .deployment-status-icon {
+      display: flex;
+      div {
+        display: flex;
+        margin: -10px -10px !important;
+      }
+
+      .lazyload-wrapper {
+        margin: auto !important;
+        .rocket-icon {
+          height: 16px;
+          width: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+.deployment-top-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  .deployment-left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1rem;
+
+    .bold-text {
+      font-weight: 500;
+    }
+
+    .deployment-link {
+      text-decoration: none;
+      color: var(--logoColor);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .comma-sep {
+      margin-right: 4px;
+    }
+    .deployment-left-detail {
+      flex: 1;
+      overflow: hidden;
+
+      .deployment-domains-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-publish-detail {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+      .deployment-commit-details {
+        word-break: break-all;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 1rem;
+      }
+    }
+    .protocol-tag-container {
+      margin-top: 0.2rem;
+      .protocol-tag-arweave {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #303030;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-skynet {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #00c66f;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-neofs {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: rgb(26, 123, 97);
+        color: var(--white);
+        border-radius: 12px;
+      }
+    }
+  }
+
+  .deployment-status {
+    color: var(--grey3Color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .deployment-status-icon {
+      display: flex;
+      div {
+        display: flex;
+        margin: -10px -10px !important;
+      }
+
+      .lazyload-wrapper {
+        margin: auto !important;
+        .rocket-icon {
+          height: 16px;
+          width: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,5 @@
+@import "../../../../styles/mixin";
+
 .SiteDeployment {
   .site-deployment-back {
     color: var(--grey2Color);
@@ -104,6 +106,17 @@
 
         .comma-sep {
           margin-right: 4px;
+        }
+        .interactive-nft-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.5rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
         }
       }
     }
@@ -282,3 +295,148 @@
     transition: 0.1s ease-in-out;
   }
 }
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  .nft-img {
+    padding: 20px;
+  }
+  .mint-button-container {
+    margin-bottom: 20px;
+    .mint-nft-button {
+      @include primaryButton(
+        white,
+        var(--themeColor),
+        0.5rem 1rem,
+        none,
+        8px,
+        var(--themeColorDark),
+        var(--primaryDisabled)
+      );
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    .nft-form {
+      display: flex;
+      align-items: flex-start;
+      width: inherit;
+      justify-content: flex-start;
+      flex-direction: column;
+      padding: 1rem 24px;
+
+      .nft-form-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .nft-form-subtitle {
+        font-size: 16px;
+        color: var(--grey3Color);
+      }
+
+      .nft-form-input {
+        margin-top: 0.5rem;
+        width: inherit;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 16px;
+        overflow: auto;
+        border: 1px solid var(--grey2Color);
+        outline: none;
+
+        &:focus {
+          border: 1px solid var(--grey5Color);
+        }
+      }
+
+      .nft-form-avatar-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nft-profile-avatar-image-container {
+        display: flex;
+        .file-upload {
+          position: absolute;
+          height: 82px;
+          width: 82px;
+          z-index: 100;
+          cursor: pointer;
+          opacity: 0;
+        }
+        .nft-avatar {
+          height: 82px;
+          width: 82px;
+          border-radius: 50%;
+          border: 2px solid var(--themeColor);
+        }
+      }
+    }
+  }
+}
+.modal > .header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modal > .actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+// .modal-container {
+//   --tw-backdrop-saturate: saturate(1.5);
+//   --tw-backdrop-blur: blur(12px);
+//   --tw-backdrop-brightness: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-contrast: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-grayscale: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-hue-rotate: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-invert: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-opacity: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-backdrop-sepia: var(--tw-empty, /*!*/ /*!*/);
+//   --tw-bg-opacity: 0.8;
+//   --tw-shadow: rgb(0 0 0/2%) 0px 30px 30px, rgb(0 0 0/3%) 0px 0px 8px,
+//     rgb(0 0 0/5%) 0px 1px 0px;
+//   --tw-ring-offset-shadow: 0 0 transparent;
+//   --tw-ring-shadow: 0 0 transparent;
+
+//   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+//     var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+//     var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+//     var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+//     var(--tw-backdrop-sepia);
+//   box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent),
+//     var(--tw-ring-shadow, 0 0 transparent), var(--tw-shadow);
+//   background-color: var(--bgColorOpaque);
+// }

@@ -59,6 +59,29 @@
   }
 }
 
+.popup-overlay {
+  --tw-backdrop-saturate: saturate(1.5);
+  --tw-backdrop-blur: blur(12px);
+  --tw-backdrop-brightness: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-contrast: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-grayscale: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-hue-rotate: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-invert: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-opacity: var(--tw-empty, /*!*/ /*!*/);
+  --tw-backdrop-sepia: var(--tw-empty, /*!*/ /*!*/);
+  --tw-bg-opacity: 0.8;
+  --tw-shadow: rgb(0 0 0/2%) 0px 30px 30px, rgb(0 0 0/3%) 0px 0px 8px,
+    rgb(0 0 0/5%) 0px 1px 0px;
+  --tw-ring-offset-shadow: 0 0 transparent;
+  --tw-ring-shadow: 0 0 transparent;
+
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  background-color: var(--bgColorOpaque);
+}
+
 // .alert {
 //   position: fixed;
 //   top: 24px;
