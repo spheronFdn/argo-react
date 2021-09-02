@@ -7,12 +7,17 @@ import { ApiService } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
 import BounceLoader from "react-spinners/BounceLoader";
+import Popup from "reactjs-popup";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const InviteMembers = () => {
   const history = useHistory();
-  const { selectedOrg, user } = useContext(StateContext);
+  const { selectedOrg, orgLoading, user } = useContext(StateContext);
   const [inviteMembers, setInviteMembers] = useState<string>("");
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>(false);
+  const [inviteSent, setInviteSent] = useState<boolean>(false);
+
+  setInviteSent(true); //to be removed
 
   const sendInvite = () => {
     setInviteMembersLoading(true);
@@ -27,9 +32,13 @@ const InviteMembers = () => {
       (res) =>
         res.subscribe((data) => {
           setInviteMembersLoading(false);
-          history.push("/dashboard/members");
+          // history.push("/dashboard/members");
         }),
     );
+  };
+
+  const handleClick = () => {
+    history.push("/dashboard/members");
   };
 
   return (
@@ -64,12 +73,72 @@ const InviteMembers = () => {
               </label>
             </div>
             <div className="button-container">
-              <button type="button" className="primary-button" onClick={sendInvite}>
-                {inviteMemberLoading && (
-                  <BounceLoader size={20} color={"#fff"} loading={true} />
-                )}
-                Send
-              </button>
+              <Popup
+                trigger={
+                  <div>
+                    <button
+                      type="button"
+                      className="primary-button"
+                      onClick={sendInvite}
+                      disabled={orgLoading}
+                    >
+                      {inviteMemberLoading && (
+                        <BounceLoader size={20} color={"#fff"} loading={true} />
+                      )}
+                      Send
+                    </button>
+                  </div>
+                }
+                position="center center"
+                modal
+                nested
+              >
+                <div className="modal-container">
+                  <div className="close-btn-container">
+                    <button className="close-modal" onClick={handleClick}>
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className="close-icon"
+                      ></FontAwesomeIcon>
+                    </button>
+                  </div>
+                  {inviteSent ? (
+                    <div className="success-container">
+                      <div className="check-container">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="check-icon"
+                        ></FontAwesomeIcon>
+                      </div>
+                      <div className="header-container">Success!</div>
+                      <div className="text-description">
+                        Invite mail successfully sent to the provided email id.
+                        <br />
+                        <br />
+                        Please check your mail and confirm to add as a member in this
+                        organization.
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="failure-container">
+                      <div className="check-container">
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          className="check-icon"
+                        ></FontAwesomeIcon>
+                      </div>
+                      <div className="header-container">Uh Oh!</div>
+                      <div className="text-description">
+                        Please check the entered email and try again.
+                        <br />
+                        <br /> You can contact ArGo team on discord for help if it
+                        fails again.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Popup>
+
               <button
                 type="button"
                 className="cancel-button"
