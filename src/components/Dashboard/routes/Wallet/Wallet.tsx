@@ -132,7 +132,7 @@ const Wallet = () => {
       case "arweave":
         return "AR";
       case "skynet":
-        return "SIA";
+        return "SC";
       case "neofs":
         return "NEO";
 
@@ -236,11 +236,11 @@ const Wallet = () => {
                           {removalLoader && (
                             <BounceLoader size={20} color={"#fff"} loading={true} />
                           )}
-                          Remove
+                          Remove Wallet
                         </button>
                         <button
                           type="button"
-                          className="primary-button recharge-button"
+                          className="primary-button"
                           disabled={walletLoading}
                           onClick={() => history.push("/wallet/recharge")}
                         >
@@ -352,7 +352,9 @@ const Wallet = () => {
                             <div className="user-text">
                               <span
                                 className="tooltip"
-                                data-tip={payment?.providerFee}
+                                data-tip={`${
+                                  payment?.providerFee
+                                } ${showProtocolPrice(payment?.protocol)}`}
                               >
                                 {payment?.providerFee.toFixed(5)}{" "}
                                 {showProtocolPrice(payment?.protocol)}
@@ -365,7 +367,7 @@ const Wallet = () => {
                             <div className="user-text">
                               <span
                                 className="tooltip"
-                                data-tip={payment?.finalArgoFee}
+                                data-tip={`${payment?.finalArgoFee} $DAI`}
                               >
                                 {payment?.finalArgoFee.toFixed(3)} $DAI
                               </span>
