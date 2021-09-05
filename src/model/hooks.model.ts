@@ -85,6 +85,7 @@ export interface IProject {
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
+  ensDomains: IDomain[];
   env: any;
   webHooks: IWebHooks[];
   updatedAt: Date;
