@@ -8,22 +8,41 @@ import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
 import BounceLoader from "react-spinners/BounceLoader";
 import Popup from "reactjs-popup";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import animationData from "../../../../assets/lotties/58028-tick.json";
+import animationDataX from "../../../../assets/lotties/wrong-sign.json";
+import Lottie from "react-lottie";
 
 const InviteMembers = () => {
   const history = useHistory();
-  const { selectedOrg, orgLoading, user } = useContext(StateContext);
+  const { selectedOrg, user } = useContext(StateContext);
   const [inviteMembers, setInviteMembers] = useState<string>("");
-  const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>(false);
-  const [inviteSent, setInviteSent] = useState<boolean>(false);
+  const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>();
+  const [inviteData, setInviteData] = useState<boolean>();
 
-  setInviteSent(true); //to be removed
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid",
+    },
+  };
+
+  const defaultOptionsX = {
+    loop: true,
+    autoplay: true,
+    animationData: animationDataX,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid",
+    },
+  };
 
   const sendInvite = () => {
     setInviteMembersLoading(true);
     const members = inviteMembers.split(",").map((member) => member.trim());
     const invites = members.map((member) => ({
-      organization: selectedOrg?._id,
+      orgId: selectedOrg?._id,
       orgName: selectedOrg?.profile.name,
       userEmail: member,
       invitingUser: user?.argoProfile.name,
@@ -31,8 +50,8 @@ const InviteMembers = () => {
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(
       (res) =>
         res.subscribe((data) => {
+          setInviteData(data.success);
           setInviteMembersLoading(false);
-          // history.push("/dashboard/members");
         }),
     );
   };
@@ -80,7 +99,7 @@ const InviteMembers = () => {
                       type="button"
                       className="primary-button"
                       onClick={sendInvite}
-                      disabled={orgLoading}
+                      disabled={inviteMembers === ""}
                     >
                       {inviteMemberLoading && (
                         <BounceLoader size={20} color={"#fff"} loading={true} />
@@ -93,50 +112,48 @@ const InviteMembers = () => {
                 modal
                 nested
               >
-                <div className="modal-container">
-                  <div className="close-btn-container">
-                    <button className="close-modal" onClick={handleClick}>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        className="close-icon"
-                      ></FontAwesomeIcon>
-                    </button>
-                  </div>
-                  {inviteSent ? (
-                    <div className="success-container">
-                      <div className="check-container">
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          className="check-icon"
-                        ></FontAwesomeIcon>
-                      </div>
-                      <div className="header-container">Success!</div>
-                      <div className="text-description">
-                        Invite mail successfully sent to the provided email id.
-                        <br />
-                        <br />
-                        Please check your mail and confirm to add as a member in this
-                        organization.
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="failure-container">
-                      <div className="check-container">
+                {!inviteMemberLoading ? (
+                  <div className="modal-container">
+                    <div className="close-btn-container">
+                      <button className="close-modal" onClick={handleClick}>
                         <FontAwesomeIcon
                           icon={faTimes}
-                          className="check-icon"
+                          className="close-icon"
                         ></FontAwesomeIcon>
-                      </div>
-                      <div className="header-container">Uh Oh!</div>
-                      <div className="text-description">
-                        Please check the entered email and try again.
-                        <br />
-                        <br /> You can contact ArGo team on discord for help if it
-                        fails again.
-                      </div>
+                      </button>
                     </div>
-                  )}
-                </div>
+                    {inviteData ? (
+                      <div className="success-container">
+                        <div className="check-container">
+                          <Lottie options={defaultOptions} height={300} />
+                        </div>
+                        <div className="header-container">Success!</div>
+                        <div className="text-description">
+                          Invite mail sent successfully.
+                          <br />
+                          <br />
+                          Please check your mail and confirm, to add as a member of
+                          this organization.
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="failure-container">
+                        <div className="check-container">
+                          <Lottie options={defaultOptionsX} height={380} />
+                        </div>
+                        <div className="header-container">Uh Oh!</div>
+                        <div className="text-description">
+                          Please check the entered email and try again.
+                          <br />
+                          <br />
+                          You can reach out to the ArGo team if the problem persists.
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <></>
+                )}
               </Popup>
 
               <button

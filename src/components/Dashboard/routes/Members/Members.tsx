@@ -1,24 +1,30 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Members.scss";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { IStateModel, IUser } from "../../../../model/hooks.model";
-import { IMemberModel } from "../../../../model/member.model";
+import {
+  IActionModel,
+  IStateModel,
+  IUser,
+  IUserInvite,
+} from "../../../../model/hooks.model";
+import { IInviteMemberModel, IMemberModel } from "../../../../model/member.model";
 import { LazyLoadedImage } from "../../../_SharedComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ApiService } from "../../../../services";
 
 const Members = () => {
   const history = useHistory();
   const { userLoading, selectedOrg, orgLoading } =
     useContext<IStateModel>(StateContext);
+  const { setOrgLoading } = useContext<IActionModel>(ActionContext);
   const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
-  const [invitePending, setInvitePending] = useState<boolean>(false);
-
-  setInvitePending(false); //to be removed
+  const [invitedMembers, setInvitedMembers] = useState<IInviteMemberModel[]>([]);
+  // const [memberDeleted, setMemberDeleted] = useState<boolean>();
 
   const componentIsMounted = useRef(true);
 
@@ -30,7 +36,17 @@ const Members = () => {
           email: user.argoProfile.email,
           avatar: user.argoProfile.avatar,
           username: user.argoProfile.username,
+          id: user._id,
         }));
+        const invitedMembers: IInviteMemberModel[] = selectedOrg.invitedMembers.map(
+          (index: IUserInvite) => ({
+            email: index.userEmail,
+            status: index.status,
+            link: index.link,
+            id: index._id,
+          }),
+        );
+        setInvitedMembers(invitedMembers);
         setMembers(members);
         setMemberLoading(false);
       }
@@ -42,6 +58,33 @@ const Members = () => {
       }
     }
   }, [selectedOrg, orgLoading]);
+
+  const deleteInvitedUser = (userId: string) => {
+    setOrgLoading(true);
+    ApiService.deleteInvite(userId).subscribe((result) => {
+      if (result.success) {
+        // setMemberDeleted(true);
+        setOrgLoading(false);
+      } else {
+        setOrgLoading(false);
+      }
+    });
+  };
+
+  // useEffect(() => {
+  //   if (selectedOrg) {
+  //     ApiService.getInviteList(selectedOrg._id).subscribe((res) => {
+  //       if (componentIsMounted.current) {
+  //         const invitedList: any[] = res.invitedUser.map((user: any) => ({
+  //           invitedEmail: user.userEmail,
+  //           invitedStatus: user.status,
+  //           invitedLink: user.link,
+  //         }));
+  //         setInvitedMember(invitedList);
+  //       }
+  //     });
+  //   }
+  // }, [selectedOrg]);
 
   useEffect(() => {
     return () => {
@@ -71,6 +114,7 @@ const Members = () => {
                   <div className="th"></div>
                   <div className="th">User</div>
                   <div className="th">Email</div>
+                  <div className="th"></div>
                 </div>
               </div>
               {!memberLoading ? (
@@ -101,6 +145,17 @@ const Members = () => {
                         <div className="user-container">
                           <div className="user-username">
                             {member.email || "N.A"}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="td">
+                        <div className="user-container">
+                          <div className="trash-icon-container">
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="trash-icon"
+                              onClick={() => deleteInvitedUser(member.id)}
+                            ></FontAwesomeIcon>
                           </div>
                         </div>
                       </div>
@@ -137,6 +192,13 @@ const Members = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-username">
+                          <Skeleton width={20} duration={2} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="tr">
                     <div className="td">
@@ -166,6 +228,13 @@ const Members = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-username">
+                          <Skeleton width={20} duration={2} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -188,55 +257,47 @@ const Members = () => {
                 </div>
               </div>
               {!memberLoading ? (
-                invitePending ? (
-                  <div className="tbody">
-                    {members.map((member: IMemberModel, index: number) => (
-                      <div className="tr" key={index}>
-                        <div className="td">
-                          <div className="user-container">
-                            <div className="user-email">nitinshr135@gmail.com</div>
-                            {invitePending ? (
-                              <div className="user-username">
-                                Awaiting user's response
-                              </div>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                        </div>
-                        <div className="td">
-                          <div className="invite-user-container">
-                            {invitePending ? (
-                              <div className="invite-user-username">
-                                Pending Invite
-                              </div>
-                            ) : (
-                              <div className="invite-user-username">Completed</div>
-                            )}
-                            <div className="clipboard-icon-container">
-                              <FontAwesomeIcon
-                                icon={faClipboard}
-                                className="clipboard-icon"
-                              ></FontAwesomeIcon>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="td">
-                          <div className="user-container">
-                            <div className="trash-icon-container">
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="trash-icon"
-                              ></FontAwesomeIcon>
-                            </div>
+                <div className="tbody">
+                  {invitedMembers.map((member: IInviteMemberModel, index: any) => (
+                    <div className="tr" key={index}>
+                      <div className="td">
+                        <div className="user-container">
+                          <div className="user-email">{member.email || "N.A"}</div>
+                          <div className="user-username-message">
+                            Awaiting user's response
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <></>
-                )
+                      <div className="td">
+                        <div className="invite-user-container">
+                          <div className="invite-user-username">
+                            {member.status || "N.A"}
+                          </div>
+                          <div className="clipboard-icon-container">
+                            <FontAwesomeIcon
+                              onClick={() => {
+                                navigator.clipboard.writeText(member.link);
+                              }}
+                              icon={faClipboard}
+                              className="clipboard-icon"
+                            ></FontAwesomeIcon>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="td">
+                        <div className="user-container">
+                          <div className="trash-icon-container">
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="trash-icon"
+                              onClick={() => deleteInvitedUser(member.id)}
+                            ></FontAwesomeIcon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <div className="tbody">
                   <div className="tr">
@@ -254,7 +315,36 @@ const Members = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="td"></div>
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-username">
+                          <Skeleton width={20} duration={2} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tr">
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-email">
+                          <Skeleton width={150} duration={2} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-username">
+                          <Skeleton width={100} duration={2} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="td">
+                      <div className="user-container">
+                        <div className="user-username">
+                          <Skeleton width={20} duration={2} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
