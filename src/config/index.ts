@@ -22,7 +22,7 @@ const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://dev-api.argoapp.live",
+    API_URL: "https://dev-api.argoapp.net",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -44,7 +44,7 @@ const development: IConfig = {
 
 const production: IConfig = {
   urls: {
-    API_URL: "https://api.argoapp.live",
+    API_URL: "https://api.argoapp.net",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
