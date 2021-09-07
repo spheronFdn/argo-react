@@ -74,7 +74,7 @@ const HandshakeSubdomainGeneral = () => {
                 </a>{" "}
                 or use a gateway like hns.io
               </label>
-              {/* <a href="https://docs.argoapp.live/">
+              {/* <a href="https://docs.argoapp.net/">
                 Learn more about custom domains in our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
