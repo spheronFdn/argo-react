@@ -12,6 +12,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import animationData from "../../../../assets/lotties/58028-tick.json";
 import animationDataX from "../../../../assets/lotties/wrong-sign.json";
 import Lottie from "react-lottie";
+import { IStateModel } from "../../../../model/hooks.model";
 
 const InviteMembers = () => {
   const history = useHistory();
@@ -19,6 +20,8 @@ const InviteMembers = () => {
   const [inviteMembers, setInviteMembers] = useState<string>("");
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>();
   const [inviteData, setInviteData] = useState<boolean>();
+  const { orgLoading } = useContext<IStateModel>(StateContext);
+  // const [validateEmail, setValidateEmail] = useState<boolean>(true);
 
   const defaultOptions = {
     loop: true,
@@ -56,9 +59,21 @@ const InviteMembers = () => {
     );
   };
 
-  const handleClick = () => {
-    history.push("/dashboard/members");
-  };
+  // const emailChecker = () => {
+  //   const members = inviteMembers.split(",").map((member) => member.trim());
+  //   const invites = members.map((member) => ({
+  //     orgId: selectedOrg?._id,
+  //     orgName: selectedOrg?.profile.name,
+  //     userEmail: member,
+  //     invitingUser: user?.argoProfile.name,
+  //   }));
+  //   var i = 0;
+  //   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //   while (invites.length) {
+  //     if (invites[i].userEmail.match(mailformat)) setValidateEmail(true);
+  //     else setValidateEmail(false);
+  //   }
+  // };
 
   return (
     <div className="InviteMembers">
@@ -99,7 +114,7 @@ const InviteMembers = () => {
                       type="button"
                       className="primary-button"
                       onClick={sendInvite}
-                      disabled={inviteMembers === ""}
+                      disabled={inviteMembers === "" && orgLoading}
                     >
                       {inviteMemberLoading && (
                         <BounceLoader size={20} color={"#fff"} loading={true} />
@@ -115,7 +130,12 @@ const InviteMembers = () => {
                 {!inviteMemberLoading ? (
                   <div className="modal-container">
                     <div className="close-btn-container">
-                      <button className="close-modal" onClick={handleClick}>
+                      <button
+                        className="close-modal"
+                        onClick={() => {
+                          history.push("/dashboard/members");
+                        }}
+                      >
                         <FontAwesomeIcon
                           icon={faTimes}
                           className="close-icon"
@@ -125,7 +145,7 @@ const InviteMembers = () => {
                     {inviteData ? (
                       <div className="success-container">
                         <div className="check-container">
-                          <Lottie options={defaultOptions} height={300} />
+                          <Lottie options={defaultOptions} height={170} />
                         </div>
                         <div className="header-container">Success!</div>
                         <div className="text-description">
@@ -139,7 +159,7 @@ const InviteMembers = () => {
                     ) : (
                       <div className="failure-container">
                         <div className="check-container">
-                          <Lottie options={defaultOptionsX} height={380} />
+                          <Lottie options={defaultOptionsX} height={170} />
                         </div>
                         <div className="header-container">Uh Oh!</div>
                         <div className="text-description">

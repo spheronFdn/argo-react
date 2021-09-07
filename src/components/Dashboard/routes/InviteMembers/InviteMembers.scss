@@ -114,36 +114,26 @@
 }
 
 .modal-container {
-  width: 600px;
+  width: 500px;
   font-size: 20px;
   background-color: #fafafa;
   border-radius: 8px;
-  opacity: 0.9;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   .success-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 00px 50px 50px 50px;
+    padding: 0px 50px 40px 50px;
     backdrop-filter: blur(4px);
     .content {
       display: flex;
       flex-direction: column;
       width: -webkit-fill-available;
     }
-
-    .check-container {
-      .check-icon {
-        height: 100px;
-        width: 100px;
-        color: green;
-        margin-bottom: 20px;
-      }
-    }
     .header-container {
       font-weight: 700;
       font-size: xx-large;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     .text-description {
       text-align: center;
@@ -156,26 +146,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0px 50px 50px 50px;
+    padding: 0px 50px 40px 50px;
     backdrop-filter: blur(4px);
     .content {
       display: flex;
       flex-direction: column;
       width: -webkit-fill-available;
     }
-
-    .check-container {
-      .check-icon {
-        height: 100px;
-        width: 100px;
-        color: red;
-        margin-bottom: 20px;
-      }
-    }
     .header-container {
       font-weight: 700;
       font-size: xx-large;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     .text-description {
       text-align: center;
@@ -186,7 +167,7 @@
   .close-btn-container {
     display: flex;
     justify-content: flex-end;
-    padding: 20px 20px 0px 0px;
+    padding: 10px 10px 0px 0px;
     .close-modal {
       color: var(--grey3Color);
       padding: 0;

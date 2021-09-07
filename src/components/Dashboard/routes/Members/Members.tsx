@@ -18,8 +18,7 @@ import { ApiService } from "../../../../services";
 
 const Members = () => {
   const history = useHistory();
-  const { userLoading, selectedOrg, orgLoading } =
-    useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
   const { setOrgLoading } = useContext<IActionModel>(ActionContext);
   const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
@@ -101,7 +100,7 @@ const Members = () => {
             <button
               type="button"
               className="primary-button"
-              disabled={userLoading && orgLoading}
+              disabled={orgLoading}
               onClick={(e) => history.push("/dashboard/members/new")}
             >
               Add Members
