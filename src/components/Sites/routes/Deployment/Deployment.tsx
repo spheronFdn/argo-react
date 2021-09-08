@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { IActionModel, IDomain, IStateModel } from "../../../../model/hooks.model";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
+import animationDataTrophy from "../../../../assets/lotties/trophy-winner.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
@@ -25,6 +26,9 @@ import PulseLoader from "react-spinners/PulseLoader";
 import en from "javascript-time-ago/locale/en";
 import config from "../../../../config";
 import { LazyLoadedImage } from "../../../_SharedComponents";
+import Confetti from "react-confetti";
+import { useWindowSize } from "@react-hook/window-size";
+import Popup from "reactjs-popup";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -39,6 +43,14 @@ const Deployment = () => {
     loop: true,
     autoplay: true,
     animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid",
+    },
+  };
+  const defaultOptionsTrophy = {
+    loop: true,
+    autoplay: true,
+    animationData: animationDataTrophy,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid",
     },
@@ -64,6 +76,7 @@ const Deployment = () => {
   }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
+  const [confettiStart, setConfettiStart] = useState<boolean>(false);
   const componentIsMounted = useRef(true);
 
   let socket: any = null;
@@ -176,6 +189,10 @@ const Deployment = () => {
                 const paymentDetails = stream.payload;
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
+                  setConfettiStart(true);
+                  setTimeout(() => {
+                    setConfettiStart(false);
+                  }, 5000);
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
@@ -358,8 +375,30 @@ const Deployment = () => {
     }
   };
 
+  const [width, height] = useWindowSize();
+
+  const confettiStyles = {
+    zIndex: 2,
+    position: "fixed" as "fixed",
+    pointerEvents: "none" as "none",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  };
+
   return (
     <div className="SiteDeployment">
+      {confettiStart && (
+        <div className="confetti-container">
+          <Confetti
+            width={width}
+            height={height}
+            style={confettiStyles}
+            recycle={confettiStart}
+          />
+        </div>
+      )}
       <div
         className="site-deployment-back"
         onClick={(e) => {
@@ -378,11 +417,13 @@ const Deployment = () => {
             {!deploymentLoading ? (
               <>
                 <span>
-                  {deploymentStatus === "pending"
-                    ? "Deploy in Progress"
-                    : deploymentStatus === "deployed"
-                    ? "Deployment successful"
-                    : "Deployment failed"}
+                  {deploymentStatus === "pending" ? (
+                    "Deploy in Progress"
+                  ) : deploymentStatus === "deployed" ? (
+                    <div>Deployment successful</div>
+                  ) : (
+                    "Deployment failed"
+                  )}
                 </span>
                 {deploymentStatus === "pending" ? (
                   <Lottie options={defaultOptions} height={54} width={76} />
@@ -579,6 +620,100 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
+          <div className="site-deployment-card-fields">
+            <div className="button-container">
+              <Popup
+                trigger={
+                  <button className="share-button" disabled={deploymentLoading}>
+                    Share
+                  </button>
+                }
+                position="center center"
+                className="popup-container"
+                modal
+              >
+                <div className="modal-container">
+                  <div className="content">
+                    <div className="share-form">
+                      <label className="share-form-title">
+                        <Lottie options={defaultOptionsTrophy} height={150} />
+                      </label>
+                      <label className="share-form-subtitle">
+                        You have successfully deployed your app!
+                        <br /> Let your friends know by sharing this achievement.
+                      </label>
+                    </div>
+                    <div className="share-container">
+                      <a
+                        href={`https://twitter.com/share?url=${deployedLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <button className="share-button">
+                          <LazyLoadedImage>
+                            <img
+                              src={require("../../../../assets/png/twitter.png")}
+                              alt="Twitter"
+                              className="share-button-icon"
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
+                        </button>
+                      </a>
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${deployedLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <button className="share-button">
+                          <LazyLoadedImage>
+                            <img
+                              src={require("../../../../assets/png/facebook.png")}
+                              alt="FB"
+                              className="share-button-icon"
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
+                        </button>
+                      </a>
+                      <a
+                        href={`https://t.me/share/url?url=${deployedLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <button className="share-button">
+                          <LazyLoadedImage>
+                            <img
+                              src={require("../../../../assets/png/telegram.png")}
+                              alt="Telegram"
+                              className="share-button-icon"
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
+                        </button>
+                      </a>
+                      <a
+                        href={`mailto:?subject=Check out my latest App &body=Check out this site ${deployedLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <button className="share-button">
+                          <LazyLoadedImage>
+                            <img
+                              src={require("../../../../assets/png/email.png")}
+                              alt="Email"
+                              className="share-button-icon"
+                              loading="lazy"
+                            />
+                          </LazyLoadedImage>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </Popup>
+            </div>
+          </div>
         </div>
       </div>
       {deploymentStatus !== "pending" && (
@@ -668,7 +803,6 @@ const Deployment = () => {
           </div>
         </div>
       )}
-
       <div
         className="site-deployment-card-container deploy-container"
         id="deploy-logs-container"
