@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./InviteMembers.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
@@ -8,11 +8,10 @@ import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
 import BounceLoader from "react-spinners/BounceLoader";
 import Popup from "reactjs-popup";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
 import animationData from "../../../../assets/lotties/58028-tick.json";
 import animationDataX from "../../../../assets/lotties/wrong-sign.json";
 import Lottie from "react-lottie";
-import { IStateModel } from "../../../../model/hooks.model";
 
 const InviteMembers = () => {
   const history = useHistory();
@@ -20,8 +19,18 @@ const InviteMembers = () => {
   const [inviteMembers, setInviteMembers] = useState<string>("");
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>();
   const [inviteData, setInviteData] = useState<boolean>();
-  const { orgLoading } = useContext<IStateModel>(StateContext);
-  // const [validateEmail, setValidateEmail] = useState<boolean>(true);
+  const [validateEmail, setValidateEmail] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      inviteMembers.match("^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+,?)*$") &&
+      inviteMembers !== ""
+    ) {
+      setValidateEmail(true);
+    } else {
+      setValidateEmail(false);
+    }
+  }, [inviteMembers]);
 
   const defaultOptions = {
     loop: true,
@@ -101,6 +110,14 @@ const InviteMembers = () => {
                   onChange={(e) => setInviteMembers(e.target.value)}
                 />
               </div>
+              {!validateEmail && (
+                <label className="invite-members-form-alert">
+                  <span className="alert-icon-container">
+                    <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+                  </span>
+                  Please enter the email in a valid format.
+                </label>
+              )}
               <label className="invite-members-form-subtitle-bottom">
                 You can enter several email addresses separated by commas <br />
                 (without spaces).
@@ -114,7 +131,7 @@ const InviteMembers = () => {
                       type="button"
                       className="primary-button"
                       onClick={sendInvite}
-                      disabled={inviteMembers === "" && orgLoading}
+                      disabled={!validateEmail}
                     >
                       {inviteMemberLoading && (
                         <BounceLoader size={20} color={"#fff"} loading={true} />

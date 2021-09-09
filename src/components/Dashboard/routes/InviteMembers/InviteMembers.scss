@@ -72,6 +72,16 @@
             color: var(--grey3Color);
             margin-top: 4px;
           }
+          .invite-members-form-alert {
+            font-size: 14px;
+            margin-top: 8px;
+            margin-bottom: 2px;
+            color: var(--grey3Color);
+            .alert-icon-container {
+              color: #ffba00;
+              margin-right: 5px;
+            }
+          }
         }
 
         .button-container {
@@ -183,4 +193,8 @@
       }
     }
   }
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
 }
