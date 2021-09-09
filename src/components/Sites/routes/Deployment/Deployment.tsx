@@ -190,9 +190,6 @@ const Deployment = () => {
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
                   setConfettiStart(true);
-                  setTimeout(() => {
-                    setConfettiStart(false);
-                  }, 5000);
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
@@ -395,7 +392,8 @@ const Deployment = () => {
             width={width}
             height={height}
             style={confettiStyles}
-            recycle={confettiStart}
+            numberOfPieces={700}
+            recycle={false}
           />
         </div>
       )}
@@ -620,100 +618,106 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
-          <div className="site-deployment-card-fields">
-            <div className="button-container">
-              <Popup
-                trigger={
-                  <button className="share-button" disabled={deploymentLoading}>
-                    Share
-                  </button>
-                }
-                position="center center"
-                className="popup-container"
-                modal
-              >
-                <div className="modal-container">
-                  <div className="content">
-                    <div className="share-form">
-                      <label className="share-form-title">
-                        <Lottie options={defaultOptionsTrophy} height={150} />
-                      </label>
-                      <label className="share-form-subtitle">
-                        You have successfully deployed your app!
-                        <br /> Let your friends know by sharing this achievement.
-                      </label>
-                    </div>
-                    <div className="share-container">
-                      <a
-                        href={`https://twitter.com/share?url=${deployedLink}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <button className="share-button">
-                          <LazyLoadedImage>
-                            <img
-                              src={require("../../../../assets/png/twitter.png")}
-                              alt="Twitter"
-                              className="share-button-icon"
-                              loading="lazy"
-                            />
-                          </LazyLoadedImage>
-                        </button>
-                      </a>
-                      <a
-                        href={`https://www.facebook.com/sharer/sharer.php?u=${deployedLink}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <button className="share-button">
-                          <LazyLoadedImage>
-                            <img
-                              src={require("../../../../assets/png/facebook.png")}
-                              alt="FB"
-                              className="share-button-icon"
-                              loading="lazy"
-                            />
-                          </LazyLoadedImage>
-                        </button>
-                      </a>
-                      <a
-                        href={`https://t.me/share/url?url=${deployedLink}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <button className="share-button">
-                          <LazyLoadedImage>
-                            <img
-                              src={require("../../../../assets/png/telegram.png")}
-                              alt="Telegram"
-                              className="share-button-icon"
-                              loading="lazy"
-                            />
-                          </LazyLoadedImage>
-                        </button>
-                      </a>
-                      <a
-                        href={`mailto:?subject=Check out my latest App &body=Check out this site ${deployedLink}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <button className="share-button">
-                          <LazyLoadedImage>
-                            <img
-                              src={require("../../../../assets/png/email.png")}
-                              alt="Email"
-                              className="share-button-icon"
-                              loading="lazy"
-                            />
-                          </LazyLoadedImage>
-                        </button>
-                      </a>
+          {paymentStatus === "success" && (
+            <div className="site-deployment-card-fields">
+              <div className="button-container">
+                <Popup
+                  trigger={
+                    <button
+                      className="share-button"
+                      disabled={paymentStatus !== "success"}
+                    >
+                      Share
+                    </button>
+                  }
+                  position="center center"
+                  open={confettiStart}
+                  className="popup-container"
+                  modal
+                >
+                  <div className="modal-container">
+                    <div className="content">
+                      <div className="share-form">
+                        <label className="share-form-title">
+                          <Lottie options={defaultOptionsTrophy} height={150} />
+                        </label>
+                        <label className="share-form-subtitle">
+                          You have successfully deployed your app!
+                          <br /> Let your friends know by sharing this achievement.
+                        </label>
+                      </div>
+                      <div className="share-container">
+                        <a
+                          href={`https://twitter.com/share?url=${deployedLink}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="share-button">
+                            <LazyLoadedImage>
+                              <img
+                                src={require("../../../../assets/png/twitter.png")}
+                                alt="Twitter"
+                                className="share-button-icon"
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </button>
+                        </a>
+                        <a
+                          href={`https://www.facebook.com/sharer/sharer.php?u=${deployedLink}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="share-button">
+                            <LazyLoadedImage>
+                              <img
+                                src={require("../../../../assets/png/facebook.png")}
+                                alt="FB"
+                                className="share-button-icon"
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </button>
+                        </a>
+                        <a
+                          href={`https://t.me/share/url?url=${deployedLink}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="share-button">
+                            <LazyLoadedImage>
+                              <img
+                                src={require("../../../../assets/png/telegram.png")}
+                                alt="Telegram"
+                                className="share-button-icon"
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </button>
+                        </a>
+                        <a
+                          href={`mailto:?subject=Check out my latest App &body=Check out this site ${deployedLink}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="share-button">
+                            <LazyLoadedImage>
+                              <img
+                                src={require("../../../../assets/png/email.png")}
+                                alt="Email"
+                                className="share-button-icon"
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                          </button>
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Popup>
+                </Popup>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {deploymentStatus !== "pending" && (
