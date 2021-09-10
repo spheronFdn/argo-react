@@ -8,7 +8,10 @@ import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
 import { IPaymentModel } from "../../../../model/payment.model";
 import moment from "moment";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationCircle,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wallet = () => {
@@ -27,6 +30,8 @@ const Wallet = () => {
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [enableLoader, setEnableLoader] = useState<boolean>(false);
   const [removalLoader, setRemovalLoader] = useState<boolean>(false);
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const componentIsMounted = useRef(true);
 
@@ -64,31 +69,46 @@ const Wallet = () => {
 
   const connectWallet = async () => {
     setWalletLoader(true);
-    const wallet = await Web3Service.getAccount();
-    setWallet(wallet);
-    let walletBal = 0;
     try {
+      const wallet = await Web3Service.getAccount();
+      setWallet(wallet);
+      let walletBal = 0;
       walletBal = await Web3Service.getArgoBalance(wallet);
+
+      setWalletBal(walletBal);
+      setWalletLoader(false);
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setWalletLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
     }
-    setWalletBal(walletBal);
-    setWalletLoader(false);
   };
 
   const checkAllowance = async () => {
     setWalletLoader(true);
-    await Web3Service.getAccount();
-    let walletApproval = 0;
     try {
+      await Web3Service.getAccount();
+      let walletApproval = 0;
       walletApproval = await Web3Service.getArgoAllowances(orgWallet);
+      setArgoAllowance(walletApproval);
+      setWalletLoader(false);
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setWalletLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
     }
-    setArgoAllowance(walletApproval);
-    setWalletLoader(false);
   };
 
   const enableWallet = async () => {
@@ -97,33 +117,59 @@ const Wallet = () => {
       address: wallet,
       orgId: selectedOrg?._id,
     };
-    ApiService.enableWallet(walletBody).subscribe((res) => {
-      if (componentIsMounted.current) {
-        setEnableLoader(false);
-        fetchUser();
-      }
-    });
+    ApiService.enableWallet(walletBody).subscribe(
+      (res) => {
+        if (componentIsMounted.current) {
+          setEnableLoader(false);
+          fetchUser();
+        }
+      },
+      (err) => {
+        setErrorMessage((err as any).message);
+        setErrorWarning(true);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
+      },
+    );
   };
 
   const removeWallet = async () => {
     setRemovalLoader(true);
-    await Web3Service.getAccount();
     try {
+      await Web3Service.getAccount();
       const signature = await Web3Service.signRemoveWallet();
       const removeBody = {
         id: selectedOrg?.wallet._id,
         signature,
       };
-      ApiService.removeWallet(removeBody).subscribe((res) => {
-        if (componentIsMounted.current) {
-          setRemovalLoader(false);
-          fetchUser();
-        }
-      });
+      ApiService.removeWallet(removeBody).subscribe(
+        (res) => {
+          if (componentIsMounted.current) {
+            setRemovalLoader(false);
+            fetchUser();
+          }
+        },
+        (err) => {
+          setErrorMessage((err as any).message);
+          setErrorWarning(true);
+          setTimeout(() => {
+            setErrorWarning(false);
+            setErrorMessage("");
+          }, 5000);
+        },
+      );
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setRemovalLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
-      setRemovalLoader(false);
     }
   };
   const showProtocolPrice = (protocol: string) => {
@@ -141,6 +187,13 @@ const Wallet = () => {
 
   return (
     <div className="Wallet">
+      {errorWarning ? (
+        <div className="warning-container">
+          <div className="warning-header">
+            <FontAwesomeIcon icon={faExclamationCircle} /> {errorMessage}
+          </div>
+        </div>
+      ) : null}
       <div className="wallet-container">
         <div className="wallet-details">
           <div className="wallet-header">

@@ -1,6 +1,28 @@
 @import "../../../../styles/mixin";
 
 .Wallet {
+  .warning-container {
+    display: flex;
+    background-color: #fa383e;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    .warning-header {
+      padding: 1rem;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--grey1Color);
+      display: flex;
+      align-items: center;
+      svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
   .wallet-container {
     display: flex;
     flex-direction: column;

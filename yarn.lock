@@ -29,7 +29,7 @@
 
 "@argoapp/payment-js@https://github.com/argoapp-live/argo-payments-js.git#dev":
   version "1.0.2"
-  resolved "https://github.com/argoapp-live/argo-payments-js.git#8c590c10b9d5a08fc57cbfe3341243f172bd6d49"
+  resolved "https://github.com/argoapp-live/argo-payments-js.git#49e4d5ea1d14a816ff8717f4aa29e35c6b2e4afa"
   dependencies:
     "@argoapp/nft-js" "1.1.0"
     "@biconomy/mexa" "^2.0.9"

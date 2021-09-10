@@ -105,14 +105,18 @@ export const autoChangeNetwork = async () => {
 export const getAccount = async () => {
   try {
     await autoChangeNetwork();
-    await onboard.walletSelect();
+    try {
+      await onboard.walletSelect();
+    } catch (err) {
+      throw new Error("Seems like you have not selected a correct wallet.");
+    }
     await onboard.walletCheck();
     const currentState = onboard.getState();
     return currentState.address;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
-    return "";
+    throw new Error((err as any).message);
   }
 };
 
