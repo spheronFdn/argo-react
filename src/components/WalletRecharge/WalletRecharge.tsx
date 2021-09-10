@@ -68,7 +68,7 @@ function WalletRecharge() {
       console.log(err);
       setWalletLoader(false);
       setRechargeLoader(false);
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -86,7 +86,7 @@ function WalletRecharge() {
       // eslint-disable-next-line no-console
       console.log(err);
       setWalletLoader(false);
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -119,16 +119,16 @@ function WalletRecharge() {
                   chain in your metamask.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please approve more than minimum $DAI tokens to our Payment Smart
+                  Please approve more than minimum $ARGO tokens to our Payment Smart
                   Contract. Approval transaction is <b>Gassless</b>, no need to hold
                   $MATIC tokens for approval.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To start deploying your application, minimum allowance required is
-                  20 $DAI and minimum balance required is 20 $DAI tokens.
+                  60 $ARGO and minimum balance required is 60 $ARGO tokens.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  To get <b>Matic Testnet $DAI Tokens</b>, please visit{" "}
+                  To get <b>Matic Testnet $ARGO Tokens</b>, please visit{" "}
                   <a
                     href="https://faucet.argoapp.net"
                     target="_blank"
@@ -174,10 +174,10 @@ function WalletRecharge() {
                         </div>
                       </div>
                       <div className="wallet-details-items">
-                        <div className="wallet-details-item-title">DAI Balance</div>
+                        <div className="wallet-details-item-title">ARGO Balance</div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletBal} $DAI`
+                            `${walletBal} $ARGO`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
@@ -185,11 +185,11 @@ function WalletRecharge() {
                       </div>
                       <div className="wallet-details-items">
                         <div className="wallet-details-item-title">
-                          DAI Allowance
+                          ARGO Allowance
                         </div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletApproval} $DAI`
+                            `${walletApproval} $ARGO`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}

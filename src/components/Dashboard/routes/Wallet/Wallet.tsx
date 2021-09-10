@@ -188,10 +188,10 @@ const Wallet = () => {
                         </div>
                       </div>
                       <div className="wallet-details-items">
-                        <div className="wallet-details-item-title">DAI Balance</div>
+                        <div className="wallet-details-item-title">ARGO Balance</div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletBal} $DAI`
+                            `${walletBal} $ARGO`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
@@ -282,7 +282,7 @@ const Wallet = () => {
                               Check Allowance
                             </button>
                           ) : (
-                            `${argoAllowance} $DAI`
+                            `${argoAllowance} $ARGO`
                           )}
                         </div>
                       ) : (
@@ -342,7 +342,7 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.finalArgoFee.toFixed(3)} $DAI
+                              {payment?.finalArgoFee.toFixed(3)} $ARGO
                             </div>
                           </div>
                         </div>
