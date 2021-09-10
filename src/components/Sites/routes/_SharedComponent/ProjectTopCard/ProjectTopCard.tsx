@@ -309,6 +309,12 @@ const ProjectTopCard = () => {
                       >
                         Redeploy Latest
                       </button>
+                      <button
+                        className="skylink-generate-button"
+                        onClick={triggerDeployment}
+                      >
+                        Generate Resolver Skylink
+                      </button>
                     </div>
                   )}
                 </div>

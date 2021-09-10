@@ -95,6 +95,19 @@
               var(--themeColorDark),
               var(--primaryDisabled)
             );
+            margin-right: 1rem;
+          }
+          .skylink-generate-button {
+            @include primaryButton(
+              white,
+              #363636,
+              0.5rem 1rem,
+              none,
+              8px,
+              #0d0d0d,
+              #272727
+            );
+            margin-right: 1rem;
           }
         }
       }
