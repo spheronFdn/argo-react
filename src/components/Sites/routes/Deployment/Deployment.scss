@@ -338,12 +338,13 @@
         transition: all 0.12s ease-in-out 0s;
         border-radius: 40px;
         background-color: #fafafa;
-        color: rgb(4, 4, 5);
-        border-color: var(--grey1Color);
+        color: var(--grey3Color);
+        border-color: var(--grey3Color);
         transform-origin: center center;
         &:hover {
-          background-color: var(--grey1Color);
-          border-color: var(--grey3Color);
+          // background-color: var(--grey1Color);
+          border-color: var(--black);
+          color: var(--black);
         }
         .share-button-icon {
           height: 20px;

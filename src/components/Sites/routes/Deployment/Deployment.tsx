@@ -3,9 +3,15 @@ import "./Deployment.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebookF,
+  faGithub,
+  faTelegramPlane,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faChevronLeft,
+  faEnvelope,
   faGlobe,
   faInfoCircle,
   faSyncAlt,
@@ -653,14 +659,10 @@ const Deployment = () => {
                           rel="noopener noreferrer"
                         >
                           <button className="share-button">
-                            <LazyLoadedImage>
-                              <img
-                                src={require("../../../../assets/png/twitter.png")}
-                                alt="Twitter"
-                                className="share-button-icon"
-                                loading="lazy"
-                              />
-                            </LazyLoadedImage>
+                            <FontAwesomeIcon
+                              icon={faTwitter}
+                              className="share-button-icon"
+                            />
                           </button>
                         </a>
                         <a
@@ -669,14 +671,10 @@ const Deployment = () => {
                           rel="noopener noreferrer"
                         >
                           <button className="share-button">
-                            <LazyLoadedImage>
-                              <img
-                                src={require("../../../../assets/png/facebook.png")}
-                                alt="FB"
-                                className="share-button-icon"
-                                loading="lazy"
-                              />
-                            </LazyLoadedImage>
+                            <FontAwesomeIcon
+                              icon={faFacebookF}
+                              className="share-button-icon"
+                            />
                           </button>
                         </a>
                         <a
@@ -685,14 +683,10 @@ const Deployment = () => {
                           rel="noopener noreferrer"
                         >
                           <button className="share-button">
-                            <LazyLoadedImage>
-                              <img
-                                src={require("../../../../assets/png/telegram.png")}
-                                alt="Telegram"
-                                className="share-button-icon"
-                                loading="lazy"
-                              />
-                            </LazyLoadedImage>
+                            <FontAwesomeIcon
+                              icon={faTelegramPlane}
+                              className="share-button-icon"
+                            />
                           </button>
                         </a>
                         <a
@@ -701,14 +695,10 @@ const Deployment = () => {
                           rel="noopener noreferrer"
                         >
                           <button className="share-button">
-                            <LazyLoadedImage>
-                              <img
-                                src={require("../../../../assets/png/email.png")}
-                                alt="Email"
-                                className="share-button-icon"
-                                loading="lazy"
-                              />
-                            </LazyLoadedImage>
+                            <FontAwesomeIcon
+                              icon={faEnvelope}
+                              className="share-button-icon"
+                            />
                           </button>
                         </a>
                       </div>
