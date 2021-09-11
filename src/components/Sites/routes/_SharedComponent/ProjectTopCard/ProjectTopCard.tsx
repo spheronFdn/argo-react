@@ -30,8 +30,6 @@ const ProjectTopCard = () => {
     latestDeployment = sortedDeployments[0];
   }
 
-  // console.log("LATEST DEPLOYMENT -" + latestDeployment?.configuration.protocol);
-
   const showProtocolImage = (protocol: string) => {
     switch (protocol) {
       case "arweave":
@@ -165,12 +163,8 @@ const ProjectTopCard = () => {
                   {!projectLoading ? (
                     selectedProject?.state === "ARCHIVED" ? (
                       <span className="archive-tag">{selectedProject?.state}</span>
-                    ) : (
-                      <></>
-                    )
-                  ) : (
-                    <></>
-                  )}
+                    ) : null
+                  ) : null}
                 </div>
               </div>
               <p className="project-top-card-header-description">

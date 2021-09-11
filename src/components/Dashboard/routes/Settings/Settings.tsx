@@ -31,10 +31,6 @@ const Settings = () => {
           >
             Archived Projects
           </div>
-          {/* <div className="settings-bar-item">OAuth</div>
-          <div className="settings-bar-item">Git Integration</div>
-          <div className="settings-bar-item">Billing</div>
-          <div className="settings-bar-item">Tokens</div> */}
         </div>
         <Switch>
           <Route
