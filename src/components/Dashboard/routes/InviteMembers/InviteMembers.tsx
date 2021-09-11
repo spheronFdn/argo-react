@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./InviteMembers.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { StateContext } from "../../../../hooks";
+import { ActionContext, StateContext } from "../../../../hooks";
 import { ApiService } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
@@ -12,6 +12,7 @@ import { faExclamationCircle, faTimes } from "@fortawesome/free-solid-svg-icons"
 import animationData from "../../../../assets/lotties/58028-tick.json";
 import animationDataX from "../../../../assets/lotties/wrong-sign.json";
 import Lottie from "react-lottie";
+import { IActionModel } from "../../../../model/hooks.model";
 
 const InviteMembers = () => {
   const history = useHistory();
@@ -20,6 +21,7 @@ const InviteMembers = () => {
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>();
   const [inviteData, setInviteData] = useState<boolean>();
   const [validateEmail, setValidateEmail] = useState<boolean>(false);
+  const { fetchUser } = useContext<IActionModel>(ActionContext);
 
   useEffect(() => {
     if (
@@ -54,7 +56,7 @@ const InviteMembers = () => {
     setInviteMembersLoading(true);
     const members = inviteMembers.split(",").map((member) => member.trim());
     const invites = members.map((member) => ({
-      orgId: selectedOrg?._id,
+      organization: selectedOrg?._id,
       orgName: selectedOrg?.profile.name,
       userEmail: member,
       invitingUser: user?.argoProfile.name,
@@ -141,6 +143,7 @@ const InviteMembers = () => {
                   </div>
                 }
                 position="center center"
+                className="invite-popup"
                 modal
                 nested
               >
@@ -151,6 +154,7 @@ const InviteMembers = () => {
                         className="close-modal"
                         onClick={() => {
                           history.push("/dashboard/members");
+                          fetchUser();
                         }}
                       >
                         <FontAwesomeIcon

@@ -19,10 +19,10 @@ import { ApiService } from "../../../../services";
 const Members = () => {
   const history = useHistory();
   const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
-  const { setOrgLoading } = useContext<IActionModel>(ActionContext);
   const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
   const [invitedMembers, setInvitedMembers] = useState<IInviteMemberModel[]>([]);
+  const { fetchUser } = useContext<IActionModel>(ActionContext);
   // const [memberDeleted, setMemberDeleted] = useState<boolean>();
 
   const componentIsMounted = useRef(true);
@@ -59,14 +59,8 @@ const Members = () => {
   }, [selectedOrg, orgLoading]);
 
   const deleteInvitedUser = (userId: string) => {
-    setOrgLoading(true);
     ApiService.deleteInvite(userId).subscribe((result) => {
-      if (result.success) {
-        // setMemberDeleted(true);
-        setOrgLoading(false);
-      } else {
-        setOrgLoading(false);
-      }
+      fetchUser();
     });
   };
 
