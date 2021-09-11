@@ -72,7 +72,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: build
-          to: "s3://dev.argoapp.live"
+          to: "s3://dev.argoapp.net"
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
@@ -114,7 +114,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: build
-          to: "s3://app.argoapp.live"
+          to: "s3://app.argoapp.net"
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"

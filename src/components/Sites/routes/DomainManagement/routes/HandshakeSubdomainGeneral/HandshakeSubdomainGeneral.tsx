@@ -75,7 +75,7 @@ const HandshakeSubdomainGeneral = () => {
                 or use a gateway like hns.io
               </label>
               <a
-                href="https://docs.argoapp.live/custom-domains/handshake-domains"
+                href="https://docs.argoapp.net/domain-and-https/hns-domain/overview"
                 rel="noopener noreferrer"
                 target="_blank"
               >

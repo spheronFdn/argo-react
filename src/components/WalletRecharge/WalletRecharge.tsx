@@ -130,11 +130,11 @@ function WalletRecharge() {
                 <label className="wallet-recharge-form-subtitle">
                   To get <b>Matic Testnet $DAI Tokens</b>, please visit{" "}
                   <a
-                    href="https://faucet.argoapp.live"
+                    href="https://faucet.argoapp.net"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    https://faucet.argoapp.live
+                    https://faucet.argoapp.net
                   </a>
                   .
                 </label>
