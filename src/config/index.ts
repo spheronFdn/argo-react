@@ -22,7 +22,7 @@ const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://dev-api.argoapp.net",
+    API_URL: "http://localhost:8080",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {

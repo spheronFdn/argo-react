@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "./ProjectTopCard.scss";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,16 +13,12 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import config from "../../../../../config";
-import Popup from "reactjs-popup";
-import GenerateResolverSkylink from "../GenerateResolverSkylink";
 
 const ProjectTopCard = () => {
   const history = useHistory();
 
   const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
   const { setRepoForTriggerDeployment } = useContext<IActionModel>(ActionContext);
-  const [showGenerateSkylinkPopup, setShowGenerateSkylinkPopup] =
-    useState<boolean>(true);
 
   const sortedDeployments = projectLoading
     ? []
@@ -313,22 +309,12 @@ const ProjectTopCard = () => {
                       >
                         Redeploy Latest
                       </button>
-                      <Popup
-                        trigger={
-                          <button
-                            className="skylink-generate-button"
-                            onClick={(e) => setShowGenerateSkylinkPopup(true)}
-                          >
-                            Generate Resolver Skylink
-                          </button>
-                        }
-                        position="center center"
-                        open={showGenerateSkylinkPopup}
-                        className="popup-container"
-                        modal
+                      <button
+                        className="skylink-generate-button"
+                        onClick={triggerDeployment}
                       >
-                        <GenerateResolverSkylink />
-                      </Popup>
+                        Generate Resolver Skylink
+                      </button>
                     </div>
                   )}
                 </div>

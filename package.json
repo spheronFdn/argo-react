@@ -77,10 +77,12 @@
     "react-scripts": "3.4.3",
     "react-spinners": "^0.9.0",
     "react-tooltip": "^4.2.21",
+    "reactjs-popup": "^2.0.5",
     "rxjs": "^6.6.2",
+    "skynet-js": "^4.0.6-beta",
     "socket.io-client": "^4.1.1",
     "source-map-explorer": "^2.5.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.3"
   },
   "devDependencies": {
     "@types/javascript-time-ago": "^2.0.1",
