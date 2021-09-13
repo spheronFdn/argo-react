@@ -3,22 +3,15 @@ import "./Deployment.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
 // import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebookF,
-  faGithub,
-  faTelegramPlane,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import {
   faChevronLeft,
-  faEnvelope,
   faGlobe,
   faInfoCircle,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { IActionModel, IDomain, IStateModel } from "../../../../model/hooks.model";
 import animationData from "../../../../assets/lotties/rotating-settings.json";
-import animationDataTrophy from "../../../../assets/lotties/trophy-winner.json";
 import socketIOClient from "socket.io-client";
 import moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
@@ -34,7 +27,7 @@ import config from "../../../../config";
 import { LazyLoadedImage } from "../../../_SharedComponents";
 import Confetti from "react-confetti";
 import { useWindowSize } from "@react-hook/window-size";
-import Popup from "reactjs-popup";
+import SharePopup from "./components/SharePopup";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -49,14 +42,6 @@ const Deployment = () => {
     loop: true,
     autoplay: true,
     animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid",
-    },
-  };
-  const defaultOptionsTrophy = {
-    loop: true,
-    autoplay: true,
-    animationData: animationDataTrophy,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid",
     },
@@ -627,84 +612,11 @@ const Deployment = () => {
           {paymentStatus === "success" && (
             <div className="site-deployment-card-fields">
               <div className="button-container">
-                <Popup
-                  trigger={
-                    <button
-                      className="share-button"
-                      disabled={paymentStatus !== "success"}
-                    >
-                      Share
-                    </button>
-                  }
-                  position="center center"
-                  open={confettiStart}
-                  className="popup-container"
-                  modal
-                >
-                  <div className="modal-container">
-                    <div className="content">
-                      <div className="share-form">
-                        <label className="share-form-title">
-                          <Lottie options={defaultOptionsTrophy} height={150} />
-                        </label>
-                        <label className="share-form-subtitle">
-                          You have successfully deployed your app!
-                          <br /> Let your friends know by sharing this achievement.
-                        </label>
-                      </div>
-                      <div className="share-container">
-                        <a
-                          href={`https://twitter.com/share?url=${deployedLink}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <button className="share-button">
-                            <FontAwesomeIcon
-                              icon={faTwitter}
-                              className="share-button-icon"
-                            />
-                          </button>
-                        </a>
-                        <a
-                          href={`https://www.facebook.com/sharer/sharer.php?u=${deployedLink}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <button className="share-button">
-                            <FontAwesomeIcon
-                              icon={faFacebookF}
-                              className="share-button-icon"
-                            />
-                          </button>
-                        </a>
-                        <a
-                          href={`https://t.me/share/url?url=${deployedLink}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <button className="share-button">
-                            <FontAwesomeIcon
-                              icon={faTelegramPlane}
-                              className="share-button-icon"
-                            />
-                          </button>
-                        </a>
-                        <a
-                          href={`mailto:?subject=Check out my latest App &body=Check out this site ${deployedLink}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <button className="share-button">
-                            <FontAwesomeIcon
-                              icon={faEnvelope}
-                              className="share-button-icon"
-                            />
-                          </button>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </Popup>
+                <SharePopup
+                  isOpen={confettiStart}
+                  link={deployedLink}
+                  paymentStatus={paymentStatus}
+                />
               </div>
             </div>
           )}
