@@ -71,6 +71,8 @@ function DeploySiteConfig() {
     useState<boolean>(false);
   const [deployDisabled, setDeployDisabled] = useState<boolean>(false);
   const [showGithubRepos, setShowGithubRepos] = useState<boolean>(false);
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const componentIsMounted = useRef(true);
 
@@ -300,35 +302,55 @@ function DeploySiteConfig() {
       branch,
       protocol,
     };
-    ApiService.createConfiguration(configuration).subscribe((result) => {
-      if (componentIsMounted.current) {
-        const uniqueTopicId = uuidv4();
+    ApiService.createConfiguration(configuration).subscribe(
+      (result) => {
+        if (componentIsMounted.current) {
+          const uniqueTopicId = uuidv4();
 
-        const deployment = {
-          orgId: selectedOrg?._id,
-          githubUrl: selectedRepo.clone_url,
-          folderName: selectedRepo.name,
-          owner: selectedRepoOwner.name,
-          installationId: selectedRepoOwner.installationId,
-          repositoryId: selectedRepo.repositoryId,
-          organizationId: owner._id,
-          uniqueTopicId,
-          configurationId: result._id,
-          env: mapBuildEnv(buildEnv),
-          createDefaultWebhook: autoPublish,
-        };
+          const deployment = {
+            orgId: selectedOrg?._id,
+            githubUrl: selectedRepo.clone_url,
+            folderName: selectedRepo.name,
+            owner: selectedRepoOwner.name,
+            installationId: selectedRepoOwner.installationId,
+            repositoryId: selectedRepo.repositoryId,
+            organizationId: owner._id,
+            uniqueTopicId,
+            configurationId: result._id,
+            env: mapBuildEnv(buildEnv),
+            createDefaultWebhook: autoPublish,
+          };
 
-        ApiService.startDeployment(deployment).subscribe((result) => {
-          if (componentIsMounted.current) {
-            setLatestDeploymentConfig(deployment);
-            setStartDeploymentLoading(false);
-            history.push(
-              `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
-            );
-          }
-        });
-      }
-    });
+          ApiService.startDeployment(deployment).subscribe(
+            (result) => {
+              if (result.success) {
+                if (componentIsMounted.current) {
+                  setLatestDeploymentConfig(deployment);
+                  setStartDeploymentLoading(false);
+                  history.push(
+                    `/org/${selectedOrg?._id}/sites/${result.projectId}/deployments/${result.deploymentId}`,
+                  );
+                }
+              } else {
+                setErrorMessage(result.message);
+                setErrorWarning(true);
+                setStartDeploymentLoading(false);
+              }
+            },
+            (error) => {
+              setErrorMessage(error.message);
+              setErrorWarning(true);
+              setStartDeploymentLoading(false);
+            },
+          );
+        }
+      },
+      (error) => {
+        setErrorMessage(error.message);
+        setErrorWarning(true);
+        setStartDeploymentLoading(false);
+      },
+    );
   };
 
   const mapBuildEnv = (buildEnv: any[]): any => {
@@ -1060,6 +1082,14 @@ function DeploySiteConfig() {
                         Back
                       </button>
                     </div>
+                    {errorWarning ? (
+                      <div className="warning-container">
+                        <div className="warning-header">
+                          <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                          {errorMessage}
+                        </div>
+                      </div>
+                    ) : null}
                   </>
                 )}
               </div>

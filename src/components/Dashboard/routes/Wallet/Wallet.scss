@@ -143,14 +143,6 @@
             display: flex;
             align-items: center;
 
-            .recharge-button {
-              background: var(--fuelYellow) !important;
-
-              &:hover {
-                background: var(--fuelYellowDark) !important;
-              }
-            }
-
             .remove-button {
               background: var(--red) !important;
               margin-right: 1rem;
@@ -231,32 +223,37 @@
                   border-radius: 6px;
                   border-top-right-radius: 0;
                   border-bottom-right-radius: 0;
-                  width: 19%;
+                  width: 20%;
+                  text-align: center;
                 }
 
                 &:nth-child(2) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
-                  width: 21%;
+                  width: 22%;
+                  text-align: center;
                 }
                 &:nth-child(3) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
                   width: 10%;
+                  text-align: center;
                 }
                 &:nth-child(4) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
-                  width: 12%;
+                  width: 11.5%;
+                  text-align: center;
                 }
                 &:nth-child(5) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
-                  width: 8%;
+                  width: 10%;
+                  text-align: center;
                 }
 
                 &:nth-child(6) {
@@ -265,8 +262,8 @@
                   border-radius: 6px;
                   border-top-left-radius: 0;
                   border-bottom-left-radius: 0;
-                  text-align: right;
-                  width: 20%;
+                  text-align: center;
+                  width: 19%;
                 }
               }
             }
@@ -286,34 +283,38 @@
               border-bottom: 1px solid var(--themeColor);
               .td {
                 padding: 0.5rem 1rem;
+                overflow: hidden;
 
                 .user-container {
+                  overflow: hidden;
                   .user-text {
                     line-height: 20px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     font-size: 14px;
+                    cursor: default;
+                    text-align: center;
                   }
                 }
 
                 &:nth-child(1) {
-                  width: 23%;
+                  width: 20%;
                 }
                 &:nth-child(2) {
-                  width: 19%;
+                  width: 22%;
                 }
                 &:nth-child(3) {
-                  width: 12%;
+                  width: 10%;
                 }
                 &:nth-child(4) {
-                  width: 14%;
+                  width: 11.5%;
                 }
                 &:nth-child(5) {
                   width: 10%;
                 }
                 &:nth-child(6) {
-                  width: 16%;
+                  width: 19%;
                 }
               }
             }

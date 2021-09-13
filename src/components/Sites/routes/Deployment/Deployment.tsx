@@ -25,6 +25,9 @@ import PulseLoader from "react-spinners/PulseLoader";
 import en from "javascript-time-ago/locale/en";
 import config from "../../../../config";
 import { LazyLoadedImage } from "../../../_SharedComponents";
+import Confetti from "react-confetti";
+import { useWindowSize } from "@react-hook/window-size";
+import SharePopup from "./components/SharePopup";
 
 // Add locale-specific relative date/time formatting rules.
 TimeAgo.addLocale(en);
@@ -64,6 +67,7 @@ const Deployment = () => {
   }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
+  const [confettiStart, setConfettiStart] = useState<boolean>(false);
   const componentIsMounted = useRef(true);
 
   let socket: any = null;
@@ -176,6 +180,7 @@ const Deployment = () => {
                 const paymentDetails = stream.payload;
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
+                  setConfettiStart(true);
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
@@ -350,7 +355,7 @@ const Deployment = () => {
       case "arweave":
         return <span>{paymentDetails?.providerFee || 0} AR</span>;
       case "skynet":
-        return <span>{paymentDetails?.providerFee || 0} SIA</span>;
+        return <span>{paymentDetails?.providerFee || 0} SC</span>;
       case "neofs":
         return <span>{paymentDetails?.providerFee || 0} NEO</span>;
       default:
@@ -358,8 +363,31 @@ const Deployment = () => {
     }
   };
 
+  const [width, height] = useWindowSize();
+
+  const confettiStyles = {
+    zIndex: 2,
+    position: "fixed" as "fixed",
+    pointerEvents: "none" as "none",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  };
+
   return (
     <div className="SiteDeployment">
+      {confettiStart && (
+        <div className="confetti-container">
+          <Confetti
+            width={width}
+            height={height}
+            style={confettiStyles}
+            numberOfPieces={700}
+            recycle={false}
+          />
+        </div>
+      )}
       <div
         className="site-deployment-back"
         onClick={(e) => {
@@ -378,11 +406,13 @@ const Deployment = () => {
             {!deploymentLoading ? (
               <>
                 <span>
-                  {deploymentStatus === "pending"
-                    ? "Deploy in Progress"
-                    : deploymentStatus === "deployed"
-                    ? "Deployment successful"
-                    : "Deployment failed"}
+                  {deploymentStatus === "pending" ? (
+                    "Deploy in Progress"
+                  ) : deploymentStatus === "deployed" ? (
+                    <div>Deployment successful</div>
+                  ) : (
+                    "Deployment failed"
+                  )}
                 </span>
                 {deploymentStatus === "pending" ? (
                   <Lottie options={defaultOptions} height={54} width={76} />
@@ -579,6 +609,18 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
+          {paymentStatus === "success" && (
+            <div className="site-deployment-card-fields">
+              <div className="button-container">
+                <SharePopup
+                  isOpen={confettiStart}
+                  link={deployedLink}
+                  protocol={currentSiteDeployConfig.protocol}
+                  paymentStatus={paymentStatus}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {deploymentStatus !== "pending" && (
@@ -668,7 +710,6 @@ const Deployment = () => {
           </div>
         </div>
       )}
-
       <div
         className="site-deployment-card-container deploy-container"
         id="deploy-logs-container"

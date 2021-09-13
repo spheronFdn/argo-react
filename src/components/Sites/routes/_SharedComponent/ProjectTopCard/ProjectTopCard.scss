@@ -17,87 +17,10 @@
     min-width: 264px;
     padding: 24px;
     min-height: 152px;
-    .deployment-top-card {
+    .deployment-top-card-container {
       position: relative;
       display: flex;
-      align-items: center;
-      border-radius: 6px;
-      .project-top-card-header {
-        .project-top-card-header-title {
-          font-family: var(--headerFont) !important;
-          margin: 0px;
-          color: var(--themeColorDark);
-          display: flex;
-          align-items: center;
-          div {
-            display: flex;
-            margin: -10px -10px !important;
-          }
-        }
-        .project-top-card-header-description {
-          margin: 0px;
-          margin-top: 12px;
-        }
-      }
-      .project-top-header-title {
-        padding: 0.6rem 24px;
-        font-size: 18px;
-        font-weight: 500;
-        border-bottom: 1px solid var(--grey2Color);
-      }
-      .project-top-card-header-domain {
-        text-decoration: none;
-        color: var(--logoColor);
-        ul {
-          padding: 0 1rem;
-          margin: 0;
-          margin-top: 6px;
-          font-size: 18px;
-        }
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-      .project-top-card-content {
-        margin-top: 6px;
-        .project-top-card-fields {
-          display: flex;
-          align-items: center;
-          margin: 1rem 0px;
-          margin-bottom: 0px;
-          .project-top-github-icon {
-            font-size: 24px;
-            display: flex;
-            margin-right: 1rem;
-          }
-          .project-top-logo {
-            height: 24px;
-            width: 24px;
-            margin-right: 1rem;
-          }
-          .project-top-link {
-            text-decoration: none;
-            color: var(--logoColor);
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-          .comma-sep {
-            margin-right: 4px;
-          }
-          .trigger-deploy-button {
-            @include primaryButton(
-              white,
-              var(--themeColor),
-              0.5rem 1rem,
-              none,
-              8px,
-              var(--themeColorDark),
-              var(--primaryDisabled)
-            );
-          }
-        }
-      }
+      flex-direction: row;
       .deployment-screenshot-container {
         display: flex;
         align-items: center;
@@ -108,6 +31,85 @@
           height: 200px;
           width: 320px;
           border-radius: 6px;
+        }
+      }
+      .deployment-right {
+        flex-grow: 1;
+        .project-top-card-header {
+          .project-top-card-header-description {
+            margin: 0px;
+            margin-top: 12px;
+          }
+          .project-top-card-header-title-container {
+            display: flex;
+            flex-direction: row;
+            .project-top-card-header-title {
+              font-family: var(--headerFont) !important;
+              margin: 0px;
+              color: var(--themeColorDark);
+              display: flex;
+              align-items: center;
+              div {
+                display: flex;
+                margin: -10px -10px !important;
+              }
+            }
+            .archive-tag-container {
+              flex-grow: 1;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              .archive-tag {
+                font-size: 15px;
+                padding: 1px 10px;
+                width: fit-content;
+                background-color: #303030;
+                color: var(--white);
+                border-radius: 12px;
+                margin-top: 1px;
+              }
+            }
+          }
+        }
+        .project-top-card-content {
+          margin-top: 6px;
+          .project-top-card-fields {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0px;
+            margin-bottom: 0px;
+            .project-top-github-icon {
+              font-size: 24px;
+              display: flex;
+              margin-right: 1rem;
+            }
+            .project-top-logo {
+              height: 24px;
+              width: 24px;
+              margin-right: 1rem;
+            }
+            .project-top-link {
+              text-decoration: none;
+              color: var(--logoColor);
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+            .comma-sep {
+              margin-right: 4px;
+            }
+            .trigger-deploy-button {
+              @include primaryButton(
+                white,
+                var(--themeColor),
+                0.5rem 1rem,
+                none,
+                8px,
+                var(--themeColorDark),
+                var(--primaryDisabled)
+              );
+            }
+          }
         }
       }
     }

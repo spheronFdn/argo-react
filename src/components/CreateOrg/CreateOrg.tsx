@@ -44,6 +44,7 @@ function CreateOrg() {
     };
     ApiService.createOrganization(organization).subscribe((res) => {
       setCreateOrgLoading(false);
+      sessionStorage.setItem("selected-org-id", res.id);
       fetchUser(res.id);
       history.push("/dashboard");
     });
