@@ -141,20 +141,6 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
   });
 };
 
-// export const getInviteList = (organizationId: string): Observable<any> => {
-//   return defer(() => {
-//     return from<Promise<any>>(
-//       fetch(`${config.urls.API_URL}/invite/list/?organizationId=${organizationId}`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
-//         },
-//         method: "GET",
-//         // body: JSON.stringify(organizationId),
-//       }).then((res) => res.json()),
-//     );
-//   });
-// };
-
 export const deleteInvite = (id: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(

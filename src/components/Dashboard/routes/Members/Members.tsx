@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Members.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
-// import Skeleton from "react-loading-skeleton";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import {
@@ -23,7 +22,6 @@ const Members = () => {
   const [members, setMembers] = useState<IMemberModel[]>([]);
   const [invitedMembers, setInvitedMembers] = useState<IInviteMemberModel[]>([]);
   const { fetchUser } = useContext<IActionModel>(ActionContext);
-  // const [memberDeleted, setMemberDeleted] = useState<boolean>();
 
   const componentIsMounted = useRef(true);
 
@@ -63,21 +61,6 @@ const Members = () => {
       fetchUser();
     });
   };
-
-  // useEffect(() => {
-  //   if (selectedOrg) {
-  //     ApiService.getInviteList(selectedOrg._id).subscribe((res) => {
-  //       if (componentIsMounted.current) {
-  //         const invitedList: any[] = res.invitedUser.map((user: any) => ({
-  //           invitedEmail: user.userEmail,
-  //           invitedStatus: user.status,
-  //           invitedLink: user.link,
-  //         }));
-  //         setInvitedMember(invitedList);
-  //       }
-  //     });
-  //   }
-  // }, [selectedOrg]);
 
   useEffect(() => {
     return () => {
