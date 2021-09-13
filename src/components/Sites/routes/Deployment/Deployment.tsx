@@ -350,7 +350,7 @@ const Deployment = () => {
       case "arweave":
         return <span>{paymentDetails?.providerFee || 0} AR</span>;
       case "skynet":
-        return <span>{paymentDetails?.providerFee || 0} SIA</span>;
+        return <span>{paymentDetails?.providerFee || 0} SC</span>;
       case "neofs":
         return <span>{paymentDetails?.providerFee || 0} NEO</span>;
       default:

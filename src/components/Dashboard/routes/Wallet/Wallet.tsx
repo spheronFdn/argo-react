@@ -10,6 +10,7 @@ import { IPaymentModel } from "../../../../model/payment.model";
 import moment from "moment";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactTooltip from "react-tooltip";
 
 const Wallet = () => {
   const history = useHistory();
@@ -131,7 +132,7 @@ const Wallet = () => {
       case "arweave":
         return "AR";
       case "skynet":
-        return "SIA";
+        return "SC";
       case "neofs":
         return "NEO";
 
@@ -235,11 +236,11 @@ const Wallet = () => {
                           {removalLoader && (
                             <BounceLoader size={20} color={"#fff"} loading={true} />
                           )}
-                          Remove
+                          Remove Wallet
                         </button>
                         <button
                           type="button"
-                          className="primary-button recharge-button"
+                          className="primary-button"
                           disabled={walletLoading}
                           onClick={() => history.push("/wallet/recharge")}
                         >
@@ -313,17 +314,32 @@ const Wallet = () => {
               </div>
               {!paymentsLoading ? (
                 <div className="tbody">
+                  <ReactTooltip delayShow={50} />
                   {payments.length > 0 ? (
                     payments.map((payment: IPaymentModel, index: number) => (
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment?.projectName}</div>
+                            <div className="user-text">
+                              <span
+                                className="tooltip"
+                                data-tip={payment?.projectName}
+                              >
+                                {payment?.projectName}
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment?.deploymentId}</div>
+                            <div className="user-text">
+                              <span
+                                className="tooltip"
+                                data-tip={payment?.deploymentId}
+                              >
+                                {payment?.deploymentId}
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="td">
@@ -334,15 +350,27 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.providerFee}{" "}
-                              {showProtocolPrice(payment?.protocol)}
+                              <span
+                                className="tooltip"
+                                data-tip={`${
+                                  payment?.providerFee
+                                } ${showProtocolPrice(payment?.protocol)}`}
+                              >
+                                {payment?.providerFee.toFixed(5)}{" "}
+                                {showProtocolPrice(payment?.protocol)}
+                              </span>
                             </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.finalArgoFee.toFixed(3)} $DAI
+                              <span
+                                className="tooltip"
+                                data-tip={`${payment?.finalArgoFee} $DAI`}
+                              >
+                                {payment?.finalArgoFee.toFixed(3)} $DAI
+                              </span>
                             </div>
                           </div>
                         </div>
