@@ -30,8 +30,6 @@ const ProjectTopCard = () => {
     latestDeployment = sortedDeployments[0];
   }
 
-  // console.log("LATEST DEPLOYMENT -" + latestDeployment?.configuration.protocol);
-
   const showProtocolImage = (protocol: string) => {
     switch (protocol) {
       case "arweave":
@@ -132,187 +130,188 @@ const ProjectTopCard = () => {
   return (
     <div className="ProjectTopCard">
       <div className="project-top-card-container max-width-set">
-        <div className="deployment-top-card">
-          <div className="deployment-left">
-            <div className="deployment-screenshot-container">
-              {!projectLoading ? (
+        <div className="deployment-top-card-container">
+          <div className="deployment-screenshot-container">
+            {!projectLoading ? (
+              <a
+                href={latestDeployment?.sitePreview}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="deployment-screenshot"
+                  src={imageUrl(selectedProject?.latestDeployment?.screenshot?.url)}
+                  // onClick={latestDeployment?.sitePreview}
+                  alt={"Preview not Available"}
+                />
+              </a>
+            ) : (
+              <Skeleton height={200} width={320} duration={2} />
+            )}
+          </div>
+          <div className="deployment-right">
+            <div className="project-top-card-header">
+              <div className="project-top-card-header-title-container">
+                <h2 className="project-top-card-header-title">
+                  {!projectLoading ? (
+                    selectedProject?.name
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </h2>
+                <div className="archive-tag-container">
+                  {!projectLoading ? (
+                    selectedProject?.state === "ARCHIVED" ? (
+                      <span className="archive-tag">{selectedProject?.state}</span>
+                    ) : null
+                  ) : null}
+                </div>
+              </div>
+              <p className="project-top-card-header-description">
+                {!projectLoading ? (
+                  <>
+                    <u>Production</u>:{" "}
+                    {selectedProject?.latestDeployment?.configuration.branch} - Last
+                    published at {lastPublishedDate}
+                  </>
+                ) : (
+                  <Skeleton width={400} duration={2} />
+                )}
+              </p>
+            </div>
+            <div className="project-top-card-content">
+              {isDomainOrSubPresent && (
+                <div className="project-top-card-fields">
+                  <span className="project-top-github-icon">
+                    <FontAwesomeIcon icon={faGlobe} />
+                  </span>
+                  {!projectLoading ? (
+                    <>
+                      {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${d.name}`}
+                            className="project-top-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {d.name}
+                          </a>
+                          {(i !== a.length - 1 ||
+                            subdomains.length > 0 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`https://${s.name}`}
+                            className="project-top-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {(i !== a.length - 1 ||
+                            hnsDomains.length > 0 ||
+                            hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="project-top-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                      {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                        <>
+                          <a
+                            href={`http://${s.name}`}
+                            className="project-top-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {s.name}
+                          </a>
+                          {i !== a.length - 1 && (
+                            <span className="comma-sep">,</span>
+                          )}
+                        </>
+                      ))}
+                    </>
+                  ) : (
+                    <Skeleton width={300} duration={2} />
+                  )}
+                </div>
+              )}
+              <div className="project-top-card-fields">
+                <span className="project-top-github-icon">
+                  <FontAwesomeIcon icon={faGithub} />
+                </span>
                 <a
-                  href={latestDeployment?.sitePreview}
+                  href={githubBranchLink}
+                  className="project-top-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
-                    className="deployment-screenshot"
-                    src={imageUrl(
-                      selectedProject?.latestDeployment?.screenshot?.url,
-                    )}
-                    // onClick={latestDeployment?.sitePreview}
-                    alt={"Preview not Available"}
-                  />
-                </a>
-              ) : (
-                <Skeleton height={200} width={320} duration={2} />
-              )}
-            </div>
-            <div className="deployment-left">
-              <div>
-                <div className="project-top-card-header">
-                  <h2 className="project-top-card-header-title">
-                    {!projectLoading ? (
-                      selectedProject?.name
-                    ) : (
-                      <Skeleton width={200} duration={2} />
-                    )}
-                  </h2>
-                  <p className="project-top-card-header-description">
-                    {!projectLoading ? (
-                      <>
-                        <u>Production</u>:{" "}
-                        {selectedProject?.latestDeployment?.configuration.branch} -
-                        Last published at {lastPublishedDate}
-                      </>
-                    ) : (
-                      <Skeleton width={400} duration={2} />
-                    )}
-                  </p>
-                </div>
-                <div className="project-top-card-content">
-                  {isDomainOrSubPresent && (
-                    <div className="project-top-card-fields">
-                      <span className="project-top-github-icon">
-                        <FontAwesomeIcon icon={faGlobe} />
-                      </span>
-                      {!projectLoading ? (
-                        <>
-                          {domains.map((d: IDomain, i: number, a: IDomain[]) => (
-                            <>
-                              <a
-                                href={`https://${d.name}`}
-                                className="project-top-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {d.name}
-                              </a>
-                              {(i !== a.length - 1 ||
-                                subdomains.length > 0 ||
-                                hnsDomains.length > 0 ||
-                                hnsSubdomains.length > 0) && (
-                                <span className="comma-sep">,</span>
-                              )}
-                            </>
-                          ))}
-                          {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                            <>
-                              <a
-                                href={`https://${s.name}`}
-                                className="project-top-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {s.name}
-                              </a>
-                              {(i !== a.length - 1 ||
-                                hnsDomains.length > 0 ||
-                                hnsSubdomains.length > 0) && (
-                                <span className="comma-sep">,</span>
-                              )}
-                            </>
-                          ))}
-                          {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                            <>
-                              <a
-                                href={`http://${s.name}`}
-                                className="project-top-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {s.name}
-                              </a>
-                              {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
-                                <span className="comma-sep">,</span>
-                              )}
-                            </>
-                          ))}
-                          {hnsSubdomains.map(
-                            (s: IDomain, i: number, a: IDomain[]) => (
-                              <>
-                                <a
-                                  href={`http://${s.name}`}
-                                  className="project-top-link"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {s.name}
-                                </a>
-                                {i !== a.length - 1 && (
-                                  <span className="comma-sep">,</span>
-                                )}
-                              </>
-                            ),
-                          )}
-                        </>
-                      ) : (
-                        <Skeleton width={300} duration={2} />
-                      )}
-                    </div>
+                  {!projectLoading ? (
+                    <>
+                      {displayGithubRepo} (branch:{" "}
+                      {selectedProject?.latestDeployment?.configuration.branch})
+                    </>
+                  ) : (
+                    <Skeleton width={300} duration={2} />
                   )}
-                  <div className="project-top-card-fields">
-                    <span className="project-top-github-icon">
-                      <FontAwesomeIcon icon={faGithub} />
-                    </span>
-                    <a
-                      href={githubBranchLink}
-                      className="project-top-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {!projectLoading ? (
-                        <>
-                          {displayGithubRepo} (branch:{" "}
-                          {selectedProject?.latestDeployment?.configuration.branch})
-                        </>
-                      ) : (
-                        <Skeleton width={300} duration={2} />
-                      )}
-                    </a>
-                  </div>
-                  <div className="project-top-card-fields">
-                    {showProtocolImage(
-                      selectedProject?.latestDeployment?.configuration.protocol!,
-                    )}
+                </a>
+              </div>
+              <div className="project-top-card-fields">
+                {showProtocolImage(
+                  selectedProject?.latestDeployment?.configuration.protocol!,
+                )}
 
-                    {latestDeployment?.sitePreview ? (
-                      <a
-                        href={latestDeployment?.sitePreview}
-                        className="project-top-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {!projectLoading ? (
-                          "Latest Successful Site Preview"
-                        ) : (
-                          <Skeleton width={300} duration={2} />
-                        )}
-                      </a>
-                    ) : !projectLoading ? (
-                      <span>Site preview not available</span>
+                {latestDeployment?.sitePreview ? (
+                  <a
+                    href={latestDeployment?.sitePreview}
+                    className="project-top-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {!projectLoading ? (
+                      "Latest Successful Site Preview"
                     ) : (
                       <Skeleton width={300} duration={2} />
                     )}
-                  </div>
-                  {!projectLoading && (
-                    <div className="project-top-card-fields">
-                      <button
-                        className="trigger-deploy-button"
-                        onClick={triggerDeployment}
-                      >
-                        Redeploy Latest
-                      </button>
-                    </div>
-                  )}
-                </div>
+                  </a>
+                ) : !projectLoading ? (
+                  <span>Site preview not available</span>
+                ) : (
+                  <Skeleton width={300} duration={2} />
+                )}
               </div>
+              {!projectLoading && (
+                <div className="project-top-card-fields">
+                  <button
+                    className="trigger-deploy-button"
+                    onClick={triggerDeployment}
+                  >
+                    Redeploy Latest
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
