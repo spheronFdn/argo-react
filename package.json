@@ -79,7 +79,7 @@
     "react-tooltip": "^4.2.21",
     "reactjs-popup": "^2.0.5",
     "rxjs": "^6.6.2",
-    "skynet-js": "^4.0.6-beta",
+    "skynet-js": "^4.0.14-beta",
     "socket.io-client": "^4.1.1",
     "source-map-explorer": "^2.5.0",
     "typescript": "~3.7.3"
@@ -96,6 +96,8 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/socket.io-client": "^1.4.33",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
