@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Lottie from "react-lottie";
 import { useHistory } from "react-router";
 import { Popup } from "reactjs-popup";
-import animationData from "../../assets/lotties/58028-tick.json";
-import animationDataX from "../../assets/lotties/wrong-sign.json";
-import { ActionContext } from "../../hooks";
-import { IActionModel } from "../../model/hooks.model";
+import animationData from "../../../../../../assets/lotties/58028-tick.json";
+import animationDataX from "../../../../../../assets/lotties/wrong-sign.json";
+import { ActionContext } from "../../../../../../hooks";
+import { IActionModel } from "../../../../../../model/hooks.model";
 import IInviteProps from "./model";
 import "./InvitePopup.scss";
 

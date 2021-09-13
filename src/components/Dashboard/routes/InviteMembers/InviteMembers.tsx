@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
 import BounceLoader from "react-spinners/BounceLoader";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import InvitePopup from "../../../InvitePopup/InvitePopup";
+import InvitePopup from "./components/InvitePopup/InvitePopup";
 
 const InviteMembers = () => {
   const history = useHistory();
