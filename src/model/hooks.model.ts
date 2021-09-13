@@ -132,6 +132,14 @@ export interface IWallet {
   createDate: Date;
 }
 
+export interface IUserInvite {
+  userEmail: string;
+  status: string;
+  link: string;
+  _id: string;
+  organization: IOrganization;
+}
+
 export interface IOrganization {
   _id: string;
   profile: {
@@ -143,6 +151,7 @@ export interface IOrganization {
   users: IUser[];
   wallet: IWallet;
   payments: any[];
+  invitedMembers: IUserInvite[];
 }
 
 export interface IModalConfig {

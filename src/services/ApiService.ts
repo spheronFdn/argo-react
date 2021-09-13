@@ -141,6 +141,21 @@ export const updateInvite = (inviteReply: any): Observable<any> => {
   });
 };
 
+export const deleteInvite = (id: string): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/invite/delete`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "DELETE",
+        body: JSON.stringify({ inviteId: id }),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
 export const getAllOwnerRepos = (installationId: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
