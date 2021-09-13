@@ -615,6 +615,7 @@ const Deployment = () => {
                 <SharePopup
                   isOpen={confettiStart}
                   link={deployedLink}
+                  protocol={currentSiteDeployConfig.protocol}
                   paymentStatus={paymentStatus}
                 />
               </div>
