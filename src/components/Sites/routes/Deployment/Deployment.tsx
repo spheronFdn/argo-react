@@ -180,7 +180,9 @@ const Deployment = () => {
                 const paymentDetails = stream.payload;
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
-                  setConfettiStart(true);
+                  if (deploymentStatus === "deployed") {
+                    setConfettiStart(true);
+                  }
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
