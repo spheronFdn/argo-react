@@ -17,7 +17,7 @@ import { ApiService } from "../../../../services";
 
 const Members = () => {
   const history = useHistory();
-  const { selectedOrg, orgLoading } = useContext<IStateModel>(StateContext);
+  const { selectedOrg, orgLoading, user } = useContext<IStateModel>(StateContext);
   const [memberLoading, setMemberLoading] = useState<boolean>(false);
   const [members, setMembers] = useState<IMemberModel[]>([]);
   const [invitedMembers, setInvitedMembers] = useState<IInviteMemberModel[]>([]);
@@ -127,11 +127,13 @@ const Members = () => {
                       <div className="td">
                         <div className="user-container">
                           <div className="trash-icon-container">
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              className="trash-icon"
-                              onClick={() => deleteInvitedUser(member.id)}
-                            ></FontAwesomeIcon>
+                            {member.id !== user?._id && (
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="trash-icon"
+                                onClick={() => deleteInvitedUser(member.id)}
+                              ></FontAwesomeIcon>
+                            )}
                           </div>
                         </div>
                       </div>

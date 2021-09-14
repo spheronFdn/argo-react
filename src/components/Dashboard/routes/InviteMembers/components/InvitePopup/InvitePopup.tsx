@@ -35,58 +35,53 @@ const InvitePopup: React.FC<IInviteProps> = ({ isOpen, memberLoading, isData }) 
 
   return (
     <Popup
-      open={isOpen}
+      open={isOpen && !memberLoading}
       position="center center"
       className="invite-popup"
       modal
       nested
     >
-      {!memberLoading && (
-        <div className="modal-container">
-          <div className="close-btn-container">
-            <button
-              className="close-modal"
-              onClick={() => {
-                history.push("/dashboard/members");
-                fetchUser();
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faTimes}
-                className="close-icon"
-              ></FontAwesomeIcon>
-            </button>
-          </div>
-          {isData ? (
-            <div className="success-container">
-              <div className="check-container">
-                <Lottie options={defaultOptions} height={170} />
-              </div>
-              <div className="header-container">Success!</div>
-              <div className="text-description">
-                Invite mail sent successfully.
-                <br />
-                <br />
-                Please check your mail and confirm, to add as a member of this
-                organization.
-              </div>
-            </div>
-          ) : (
-            <div className="failure-container">
-              <div className="check-container">
-                <Lottie options={defaultOptionsX} height={170} />
-              </div>
-              <div className="header-container">Uh Oh!</div>
-              <div className="text-description">
-                Please check the entered email and try again.
-                <br />
-                <br />
-                You can reach out to the ArGo team if the problem persists.
-              </div>
-            </div>
-          )}
+      <div className="modal-container">
+        <div className="close-btn-container">
+          <button
+            className="close-modal"
+            onClick={() => {
+              history.push("/dashboard/members");
+              fetchUser();
+            }}
+          >
+            <FontAwesomeIcon icon={faTimes} className="close-icon"></FontAwesomeIcon>
+          </button>
         </div>
-      )}
+        {isData ? (
+          <div className="success-container">
+            <div className="check-container">
+              <Lottie options={defaultOptions} height={170} />
+            </div>
+            <div className="header-container">Success!</div>
+            <div className="text-description">
+              Invite mail sent successfully.
+              <br />
+              <br />
+              Please check your mail and confirm, to add as a member of this
+              organization.
+            </div>
+          </div>
+        ) : (
+          <div className="failure-container">
+            <div className="check-container">
+              <Lottie options={defaultOptionsX} height={170} />
+            </div>
+            <div className="header-container">Uh Oh!</div>
+            <div className="text-description">
+              Please check the entered email and try again.
+              <br />
+              <br />
+              You can reach out to the ArGo team if the problem persists.
+            </div>
+          </div>
+        )}
+      </div>
     </Popup>
   );
 };
