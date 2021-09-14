@@ -48,8 +48,8 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                 <LazyLoadedImage height={36} once>
                   <img
                     src={
-                      selectedOrg?.profile.image
-                        ? selectedOrg.profile.image
+                      selectedOrg?.profile?.image
+                        ? selectedOrg.profile?.image
                         : require("../../../assets/png/default_icon.png")
                     }
                     alt="org"
@@ -71,7 +71,11 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                 }}
               >
                 {!orgLoading ? (
-                  selectedOrg?.profile.name
+                  selectedOrg?.profile?.name ? (
+                    selectedOrg?.profile?.name
+                  ) : (
+                    "N.A"
+                  )
                 ) : (
                   <Skeleton width={60} duration={2} />
                 )}
@@ -127,7 +131,7 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
               {!userLoading ? (
                 <LazyLoadedImage height={42} once>
                   <img
-                    src={user?.argoProfile.avatar}
+                    src={user?.argoProfile?.avatar}
                     alt="address-blockie"
                     className={`user-profile-blockie-icon ${
                       showProfileDropdown ? "selected-profile" : ""

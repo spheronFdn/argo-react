@@ -283,6 +283,12 @@
                 }
               }
             }
+
+            .no-item {
+              padding: 1rem;
+              justify-content: center;
+              color: var(--grey3Color);
+            }
           }
         }
       }

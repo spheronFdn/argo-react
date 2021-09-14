@@ -234,45 +234,51 @@ const Members = () => {
               </div>
               {!memberLoading ? (
                 <div className="tbody">
-                  {invitedMembers.map((member: IInviteMemberModel, index: any) => (
-                    <div className="tr" key={index}>
-                      <div className="td">
-                        <div className="user-container">
-                          <div className="user-email">{member.email || "N.A"}</div>
-                          <div className="user-username-message">
-                            Awaiting user's response
+                  {invitedMembers.length > 0 ? (
+                    invitedMembers.map((member: IInviteMemberModel, index: any) => (
+                      <div className="tr" key={index}>
+                        <div className="td">
+                          <div className="user-container">
+                            <div className="user-email">{member.email || "N.A"}</div>
+                            <div className="user-username-message">
+                              Awaiting user's response
+                            </div>
+                          </div>
+                        </div>
+                        <div className="td">
+                          <div className="invite-user-container">
+                            <div className="invite-user-username">
+                              {member.status || "N.A"}
+                            </div>
+                            <div className="clipboard-icon-container">
+                              <FontAwesomeIcon
+                                onClick={() => {
+                                  navigator.clipboard.writeText(member.link);
+                                }}
+                                icon={faClipboard}
+                                className="clipboard-icon"
+                              ></FontAwesomeIcon>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="td">
+                          <div className="user-container">
+                            <div className="trash-icon-container">
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="trash-icon"
+                                onClick={() => deleteInvitedUser(member.id)}
+                              ></FontAwesomeIcon>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="td">
-                        <div className="invite-user-container">
-                          <div className="invite-user-username">
-                            {member.status || "N.A"}
-                          </div>
-                          <div className="clipboard-icon-container">
-                            <FontAwesomeIcon
-                              onClick={() => {
-                                navigator.clipboard.writeText(member.link);
-                              }}
-                              icon={faClipboard}
-                              className="clipboard-icon"
-                            ></FontAwesomeIcon>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="td">
-                        <div className="user-container">
-                          <div className="trash-icon-container">
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              className="trash-icon"
-                              onClick={() => deleteInvitedUser(member.id)}
-                            ></FontAwesomeIcon>
-                          </div>
-                        </div>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="tr no-item" key={1}>
+                      No invited members to show
                     </div>
-                  ))}
+                  )}
                 </div>
               ) : (
                 <div className="tbody">
