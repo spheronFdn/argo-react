@@ -182,80 +182,82 @@ const ProjectTopCard = () => {
             <div className="project-top-card-content">
               {isDomainOrSubPresent && (
                 <div className="project-top-card-fields">
-                  <span className="project-top-github-icon">
+                  <div className="project-top-github-icon">
                     <FontAwesomeIcon icon={faGlobe} />
-                  </span>
-                  {!projectLoading ? (
-                    <>
-                      {domains.map((d: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${d.name}`}
-                            className="project-top-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {d.name}
-                          </a>
-                          {(i !== a.length - 1 ||
-                            subdomains.length > 0 ||
-                            hnsDomains.length > 0 ||
-                            hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`https://${s.name}`}
-                            className="project-top-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {(i !== a.length - 1 ||
-                            hnsDomains.length > 0 ||
-                            hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`http://${s.name}`}
-                            className="project-top-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                      {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
-                        <>
-                          <a
-                            href={`http://${s.name}`}
-                            className="project-top-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {s.name}
-                          </a>
-                          {i !== a.length - 1 && (
-                            <span className="comma-sep">,</span>
-                          )}
-                        </>
-                      ))}
-                    </>
-                  ) : (
-                    <Skeleton width={300} duration={2} />
-                  )}
+                  </div>
+                  <div className="domain-container">
+                    {!projectLoading ? (
+                      <>
+                        {domains.map((d: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${d.name}`}
+                              className="project-top-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {d.name}
+                            </a>
+                            {(i !== a.length - 1 ||
+                              subdomains.length > 0 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {subdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${s.name}`}
+                              className="project-top-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 ||
+                              hnsDomains.length > 0 ||
+                              hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="project-top-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`http://${s.name}`}
+                              className="project-top-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {i !== a.length - 1 && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    ) : (
+                      <Skeleton width={300} duration={2} />
+                    )}
+                  </div>
                 </div>
               )}
               <div className="project-top-card-fields">

@@ -73,6 +73,9 @@
         }
         .project-top-card-content {
           margin-top: 6px;
+          .domain-container {
+            word-break: break-all;
+          }
           .project-top-card-fields {
             display: flex;
             align-items: center;

@@ -694,6 +694,15 @@ const Deployment = () => {
                   </LazyLoadedImage>
                 </span>
                 <span>{paymentMessage}</span>
+                {paymentMessage ===
+                  "Payment failed due to insufficient allowance." && (
+                  <button
+                    className="set-allowance"
+                    onClick={() => history.push("/wallet/recharge")}
+                  >
+                    Set Allowance
+                  </button>
+                )}
               </div>
             )}
             {paymentStatus === "success" && (

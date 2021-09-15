@@ -158,6 +158,21 @@
         display: flex;
         font-weight: 500;
         margin-right: 1rem;
+        &:nth-child(2) {
+          flex: 1;
+        }
+      }
+
+      .set-allowance {
+        @include primaryButton(
+          white,
+          var(--themeColor),
+          0.5rem 1rem,
+          none,
+          8px,
+          var(--themeColorDark),
+          var(--primaryDisabled)
+        );
       }
     }
 
