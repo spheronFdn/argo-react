@@ -292,6 +292,8 @@ function DeploySiteConfig() {
   };
 
   const startDeployment = async () => {
+    setErrorWarning(false);
+    setErrorMessage("");
     setStartDeploymentLoading(true);
     const configuration = {
       framework,
@@ -334,12 +336,20 @@ function DeploySiteConfig() {
               } else {
                 setErrorMessage(result.message);
                 setErrorWarning(true);
+                setTimeout(() => {
+                  setErrorWarning(false);
+                  setErrorMessage("");
+                }, 5000);
                 setStartDeploymentLoading(false);
               }
             },
             (error) => {
               setErrorMessage(error.message);
               setErrorWarning(true);
+              setTimeout(() => {
+                setErrorWarning(false);
+                setErrorMessage("");
+              }, 5000);
               setStartDeploymentLoading(false);
             },
           );
@@ -348,6 +358,10 @@ function DeploySiteConfig() {
       (error) => {
         setErrorMessage(error.message);
         setErrorWarning(true);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
         setStartDeploymentLoading(false);
       },
     );

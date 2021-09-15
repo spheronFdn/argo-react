@@ -54,7 +54,10 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
                     }
                     alt="org"
                     className="team-avatar"
-                    onClick={(e) => history.push("/dashboard")}
+                    onClick={(e) => {
+                      fetchUser(selectedOrg?._id);
+                      history.push("/dashboard");
+                    }}
                     height={36}
                     width={36}
                     loading="lazy"
