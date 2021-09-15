@@ -255,15 +255,11 @@ const SettingsGeneral = () => {
         </div>
         <div className="settings-project-details">
           <div className="settings-project-header delete-containers">
-            {!projectLoading ? (
-              selectedProject?.state === "ARCHIVED" ? (
-                "Unarchive Project"
-              ) : (
-                "Archive Project"
-              )
-            ) : (
-              <></>
-            )}
+            {!projectLoading
+              ? selectedProject?.state === "ARCHIVED"
+                ? "Unarchive Project"
+                : "Archive Project"
+              : null}
           </div>
           <div className="settings-project-body">
             <div className="delete-org-container">
@@ -280,9 +276,9 @@ const SettingsGeneral = () => {
               <br />
               {!projectLoading ? (
                 <b>
-                  Note - You can {archiveState} your project by visiting organization
-                  settings and clicking on the {archiveState} button on the project
-                  settings page.
+                  {archiveState === "archive"
+                    ? "Note - You can view your archived projects in your organization settings."
+                    : "Note - You can archive your project by clicking on the archive button on the project settings page."}
                 </b>
               ) : (
                 <Skeleton width={500} duration={2} />
@@ -458,18 +454,16 @@ const SettingsGeneral = () => {
                     disabled={!archiveConfirmed}
                     onClick={projectArchive}
                   >
-                    <div className="bounceLoader">
-                      {archiveLoading && (
+                    {archiveLoading && (
+                      <div className="bounceLoader">
                         <BounceLoader size={20} color={"#fff"} loading={true} />
-                      )}
-                    </div>
+                      </div>
+                    )}
                     Archive
                   </button>
                 )}
               </div>
-            ) : (
-              <></>
-            )}
+            ) : null}
             {/* <div className="archive-button-container">
               <button
                 type="button"

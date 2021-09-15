@@ -58,6 +58,7 @@ const Deployment = () => {
     sec: 0,
   });
   const [paymentStatus, setPaymentStatus] = useState<string>("waiting");
+  const [livePaymentStatus, setlivePaymentStatus] = useState<string>("waiting");
   const [paymentMessage, setPaymentMessage] = useState<string>("");
   const [paymentDetails, setPaymentDetails] = useState<{
     providerFee: number;
@@ -180,9 +181,11 @@ const Deployment = () => {
                 const paymentDetails = stream.payload;
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
-                  if (deploymentStatus === "deployed") {
-                    setConfettiStart(true);
-                  }
+                  setlivePaymentStatus("success");
+                  // console.log(deploymentStatus);
+                  // if (deploymentStatus === "deployed") {
+                  //   setConfettiStart(true);
+                  // }
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
@@ -209,6 +212,12 @@ const Deployment = () => {
       },
     );
   };
+
+  useEffect(() => {
+    if (deploymentStatus === "deployed" && livePaymentStatus === "success") {
+      setConfettiStart(true);
+    }
+  }, [deploymentStatus, livePaymentStatus]);
 
   let displayGithubRepo = "";
   let githubBranchLink = "";
@@ -611,7 +620,7 @@ const Deployment = () => {
               <Skeleton width={200} duration={2} />
             )}
           </div>
-          {paymentStatus === "success" && (
+          {paymentStatus === "success" && deploymentStatus === "deployed" && (
             <div className="site-deployment-card-fields">
               <div className="button-container">
                 <SharePopup
