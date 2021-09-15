@@ -205,6 +205,27 @@
               width: 132px;
             }
           }
+
+          .warning-container {
+            display: flex;
+            margin: 1rem 24px;
+            background-color: #fa383e;
+            border-radius: 10px;
+            .warning-header {
+              padding: 16px;
+              text-overflow: ellipsis;
+              word-break: break-word;
+              overflow: hidden;
+              white-space: nowrap;
+              color: var(--grey1Color);
+              display: flex;
+              align-items: center;
+
+              svg {
+                margin-right: 0.5rem;
+              }
+            }
+          }
         }
       }
     }

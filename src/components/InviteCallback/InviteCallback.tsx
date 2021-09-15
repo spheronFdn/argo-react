@@ -1,5 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { BounceLoader } from "react-spinners";
 import { ActionContext } from "../../hooks";
 import { ApiService } from "../../services";
 import "./InviteCallback.scss";
@@ -11,6 +14,9 @@ function InviteCallback() {
   const history = useHistory();
 
   const { fetchUser } = useContext(ActionContext);
+  const [inviteStatus, setInviteStatus] = useState<string>("");
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [inviteLoading, setInviteLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt-token");
@@ -25,19 +31,51 @@ function InviteCallback() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const componentIsMounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    };
+  }, []);
+
   const sendInvitation = (pValue: string) => {
+    if (pValue === "accepts") {
+      setInviteLoading(true);
+    }
     const query = new URLSearchParams(location.search);
     const ref = query.get("ref") || localStorage.getItem("inviteRef");
     const inviteReply = {
       id: ref,
       status: pValue,
     };
-    ApiService.updateInvite(inviteReply).subscribe((res) => {
-      localStorage.removeItem("inviteRef");
-      fetchUser();
-      history.push("/dashboard");
-    });
+    ApiService.updateInvite(inviteReply).subscribe(
+      (res) => {
+        if (componentIsMounted.current) {
+          if (!res.error) {
+            setInviteStatus(res.message);
+            setErrorWarning(false);
+            localStorage.removeItem("inviteRef");
+            fetchUser();
+            history.push("/dashboard");
+          } else {
+            setInviteStatus(res.message);
+            setErrorWarning(true);
+          }
+        }
+        setInviteLoading(false);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setInviteStatus("");
+        }, 5000);
+      },
+      (err) => {
+        setErrorWarning(true);
+        setInviteStatus(err.message);
+      },
+    );
   };
+
   return (
     <div className="InviteCallback">
       <RootHeader parent={"InviteCallback"} />
@@ -66,6 +104,9 @@ function InviteCallback() {
                   className="accept-button"
                   onClick={(e) => sendInvitation("accepts")}
                 >
+                  {inviteLoading && (
+                    <BounceLoader size={20} color={"#fff"} loading={true} />
+                  )}
                   Accept
                 </button>
                 <button
@@ -76,6 +117,13 @@ function InviteCallback() {
                   Decline
                 </button>
               </div>
+              {errorWarning && (
+                <div className="warning-container">
+                  <div className="warning-header">
+                    <FontAwesomeIcon icon={faExclamationCircle} /> {inviteStatus}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

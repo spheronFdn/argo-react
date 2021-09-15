@@ -3,7 +3,7 @@ import "./HandshakeSubdomainGeneral.scss";
 import { DomainItem } from "../../components";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
@@ -74,12 +74,16 @@ const HandshakeSubdomainGeneral = () => {
                 </a>{" "}
                 or use a gateway like hns.io
               </label>
-              {/* <a href="https://docs.argoapp.net/">
-                Learn more about custom domains in our docs
+              <a
+                href="https://docs.argoapp.net/domain-and-https/hns-domain/overview"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more about handshake domains in our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
                 </span>
-              </a> */}
+              </a>
               <div className="domain-general-add-domain-container">
                 <input
                   type="text"
@@ -121,8 +125,8 @@ const HandshakeSubdomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.handshakeSubdomains.length ? (
-                    selectedProject?.handshakeSubdomains.map((subdomain, index) => (
+                  selectedProject?.handshakeSubdomains?.length ? (
+                    selectedProject?.handshakeSubdomains?.map((subdomain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}
