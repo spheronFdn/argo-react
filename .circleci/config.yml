@@ -96,7 +96,7 @@ jobs:
           name: Install Dependencies
           command: |
             sudo npm i -g codecov node-gyp
-            yarn i
+            yarn install
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
