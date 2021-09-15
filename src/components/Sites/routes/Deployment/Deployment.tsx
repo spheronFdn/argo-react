@@ -65,7 +65,8 @@ const Deployment = () => {
     argoFee: number;
     discount: number;
     finalArgoFee: number;
-  }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
+    token: string;
+  }>({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0, token: "ARGO" });
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const [confettiStart, setConfettiStart] = useState<boolean>(false);
@@ -94,7 +95,13 @@ const Deployment = () => {
     setLatestDeploymentLogs([]);
     setDeploymentStatus("pending");
     setPaymentStatus("waiting");
-    setPaymentDetails({ providerFee: 0, argoFee: 0, discount: 0, finalArgoFee: 0 });
+    setPaymentDetails({
+      providerFee: 0,
+      argoFee: 0,
+      discount: 0,
+      finalArgoFee: 0,
+      token: "ARGO",
+    });
     setBuildTime({
       min: 0,
       sec: 0,
@@ -182,10 +189,6 @@ const Deployment = () => {
                 if (paymentDetails.status === "success") {
                   setPaymentDetails(paymentDetails);
                   setlivePaymentStatus("success");
-                  // console.log(deploymentStatus);
-                  // if (deploymentStatus === "deployed") {
-                  //   setConfettiStart(true);
-                  // }
                 } else {
                   setPaymentMessage(paymentDetails.failedMessage);
                 }
@@ -199,6 +202,7 @@ const Deployment = () => {
                 argoFee: result.deployment.payment.argoFee,
                 discount: result.deployment.payment.discount,
                 finalArgoFee: result.deployment.payment.finalArgoFee,
+                token: result.deployment.payment.token,
               };
               setPaymentDetails(paymentDetails);
               setPaymentStatus("success");
@@ -706,15 +710,23 @@ const Deployment = () => {
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Total Fee:</label>
-                  <span>{paymentDetails?.argoFee || 0} $ARGO</span>
+                  <span>
+                    {paymentDetails?.argoFee || 0} ${paymentDetails?.token || "ARGO"}
+                  </span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Discount:</label>
-                  <span>{paymentDetails?.discount || 0} $ARGO</span>
+                  <span>
+                    {paymentDetails?.discount || 0} $
+                    {paymentDetails?.token || "ARGO"}
+                  </span>
                 </div>
                 <div className="site-deployment-body-item">
                   <label>Final Payment:</label>
-                  <span>{paymentDetails?.finalArgoFee || 0} $ARGO</span>
+                  <span>
+                    {paymentDetails?.finalArgoFee || 0} $
+                    {paymentDetails?.token || "ARGO"}
+                  </span>
                 </div>
               </>
             )}

@@ -420,9 +420,9 @@ const Wallet = () => {
                             <div className="user-text">
                               <span
                                 className="tooltip"
-                                data-tip={`${payment?.finalArgoFee} $ARGO`}
+                                data-tip={`${payment?.finalArgoFee} $${payment.token}`}
                               >
-                                {payment?.finalArgoFee.toFixed(3)} $ARGO
+                                {payment?.finalArgoFee.toFixed(3)} ${payment.token}
                               </span>
                             </div>
                           </div>

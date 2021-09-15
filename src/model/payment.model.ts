@@ -5,5 +5,7 @@ export interface IPaymentModel {
   protocol: string;
   providerFee: number;
   finalArgoFee: number;
+  token: string;
   createdAt: string;
+  updatedAt: string;
 }
