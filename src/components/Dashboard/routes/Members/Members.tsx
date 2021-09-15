@@ -62,6 +62,12 @@ const Members = () => {
     });
   };
 
+  const deleteMember = (userId: string) => {
+    ApiService.deleteMember(selectedOrg?._id!, userId).subscribe((result) => {
+      fetchUser();
+    });
+  };
+
   useEffect(() => {
     return () => {
       componentIsMounted.current = false;
@@ -131,7 +137,7 @@ const Members = () => {
                               <FontAwesomeIcon
                                 icon={faTrash}
                                 className="trash-icon"
-                                onClick={() => deleteInvitedUser(member.id)}
+                                onClick={() => deleteMember(member.id)}
                               ></FontAwesomeIcon>
                             )}
                           </div>
