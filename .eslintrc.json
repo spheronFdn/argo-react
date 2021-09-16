@@ -1,11 +1,6 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "extends": ["prettier", "react-app", "@typescript-eslint"],
-  "plugins": [
-    "eslint:recommended",
-    "prettier",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["prettier", "react-app"],
+  "plugins": ["prettier"],
   "rules": {
     "curly": "warn",
     "no-console": [
@@ -23,7 +18,6 @@
       }
     ],
     "prefer-template": "warn",
-    "prettier/prettier": "warn",
-    "@typescript-eslint/no-floating-promises": 1
+    "prettier/prettier": "warn"
   }
 }

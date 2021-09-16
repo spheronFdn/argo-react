@@ -70,7 +70,9 @@ const GenerateResolverSkylink = () => {
     /************************************************/
 
     // call logout to globally logout of mysky
-    await mySky.logout();
+    if (mySky) {
+      await mySky.logout();
+    }
 
     //set react state
     setLoggedIn(false);
