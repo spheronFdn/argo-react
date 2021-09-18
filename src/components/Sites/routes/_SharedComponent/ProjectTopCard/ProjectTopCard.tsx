@@ -307,34 +307,6 @@ const ProjectTopCard = () => {
                 ) : (
                   <Skeleton width={300} duration={2} />
                 )}
-                  </div>
-                  {!projectLoading && (
-                    <div className="project-top-card-fields">
-                      <button
-                        className="trigger-deploy-button"
-                        onClick={triggerDeployment}
-                      >
-                        Redeploy Latest
-                      </button>
-                      <Popup
-                        trigger={
-                          <button
-                            className="skylink-generate-button"
-                            onClick={(e) => setShowGenerateSkylinkPopup(true)}
-                          >
-                            Generate Resolver Skylink
-                          </button>
-                        }
-                        position="center center"
-                        open={showGenerateSkylinkPopup}
-                        className="popup-container"
-                        modal
-                      >
-                        <GenerateResolverSkylink />
-                      </Popup>
-                    </div>
-                  )}
-                </div>
               </div>
               {!projectLoading && (
                 <div className="project-top-card-fields">
@@ -344,6 +316,22 @@ const ProjectTopCard = () => {
                   >
                     Redeploy Latest
                   </button>
+                  <Popup
+                    trigger={
+                      <button
+                        className="skylink-generate-button"
+                        onClick={(e) => setShowGenerateSkylinkPopup(true)}
+                      >
+                        Generate Resolver Skylink
+                      </button>
+                    }
+                    position="center center"
+                    open={showGenerateSkylinkPopup}
+                    className="popup-container"
+                    modal
+                  >
+                    <GenerateResolverSkylink />
+                  </Popup>
                 </div>
               )}
             </div>
