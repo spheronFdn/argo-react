@@ -33,7 +33,25 @@
 
       .settings-project-body {
         flex: 1;
-        padding: 1rem 0px;
+        .archive-button-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          .archive-button {
+            @include primaryButton(
+              white,
+              var(--themeColor),
+              0.3rem 1rem,
+              none,
+              8px,
+              var(--themeColorDark),
+              var(--themeColor)
+            );
+            margin-right: 1rem;
+            min-width: 86px;
+          }
+        }
+
         .delete-org-container {
           padding: 1rem 24px;
           color: var(--grey3Color);
@@ -117,6 +135,99 @@
           align-items: center;
           justify-content: space-between;
         }
+        .settings-deployment-item {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem 24px;
+          border-radius: 6px;
+          // margin: 0.5rem 10px;
+          .settings-deployment-left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            margin-right: 1rem;
+
+            .bold-text {
+              font-weight: 500;
+            }
+
+            .deployment-link {
+              text-decoration: none;
+              color: var(--logoColor);
+              // &:hover {
+              //   text-decoration: underline;
+              // }
+            }
+            .deployment-screenshot {
+              height: 100px;
+              width: 190px;
+              border: 1px solid var(--grey1Color);
+              border-radius: 6px;
+            }
+            .comma-sep {
+              margin-right: 4px;
+            }
+            .deployment-left-detail {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              flex: 1;
+              overflow: hidden;
+              margin-left: 1.5rem;
+
+              .deployment-header-description {
+                margin-top: 1rem;
+                font-size: 200;
+              }
+
+              .deployment-domains-detail {
+                word-break: break-all;
+                height: 24px;
+                overflow: hidden;
+                margin-right: 1rem;
+              }
+              .deployment-publish-detail {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                word-break: break-all;
+                overflow: hidden;
+                margin-right: 1rem;
+
+                .deployment-header-title {
+                  font-weight: bold;
+                  font-size: larger;
+                  color: varcolor(--themeColor);
+                }
+              }
+              .deployment-commit-details {
+                word-break: break-all;
+                height: 24px;
+                overflow: hidden;
+                margin-right: 1rem;
+              }
+            }
+            // .protocol-tag-container {
+            //   margin-top: 0.2rem;
+            //   .protocol-tag-arweave {
+            //     font-size: 15px;
+            //     padding: 1px 10px;
+            //     background-color: #303030;
+            //     color: var(--white);
+            //     border-radius: 12px;
+            //   }
+            //   .protocol-tag-skynet {
+            //     font-size: 15px;
+            //     padding: 1px 10px;
+            //     background-color: #00c66f;
+            //     color: var(--white);
+            //     border-radius: 12px;
+            //   }
+            // }
+          }
+        }
       }
 
       .settings-project-footer {
@@ -131,6 +242,10 @@
         border-top: 1px solid var(--themeColorDark);
         font-size: 14px;
         color: var(--grey4Color);
+
+        .bounceLoader {
+          margin-right: 5px;
+        }
 
         .warning-text-container {
           display: flex;
@@ -156,7 +271,7 @@
           min-width: 86px;
         }
 
-        .delete-button {
+        .archive-button {
           @include primaryButton(
             white,
             var(--red),
@@ -167,7 +282,7 @@
             var(--redDisabled)
           );
           margin-left: 1rem;
-          min-width: 86px;
+          // min-width: 86px;
         }
       }
     }
