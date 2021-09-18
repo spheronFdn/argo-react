@@ -21,6 +21,97 @@
       position: relative;
       display: flex;
       flex-direction: row;
+      align-items: center;
+      border-radius: 6px;
+      .project-top-card-header {
+        .project-top-card-header-title {
+          font-family: var(--headerFont) !important;
+          margin: 0px;
+          color: var(--themeColorDark);
+          display: flex;
+          align-items: center;
+          div {
+            display: flex;
+            margin: -10px -10px !important;
+          }
+        }
+        .project-top-card-header-description {
+          margin: 0px;
+          margin-top: 12px;
+        }
+      }
+      .project-top-header-title {
+        padding: 0.6rem 24px;
+        font-size: 18px;
+        font-weight: 500;
+        border-bottom: 1px solid var(--grey2Color);
+      }
+      .project-top-card-header-domain {
+        text-decoration: none;
+        color: var(--logoColor);
+        ul {
+          padding: 0 1rem;
+          margin: 0;
+          margin-top: 6px;
+          font-size: 18px;
+        }
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .project-top-card-content {
+        margin-top: 6px;
+        .project-top-card-fields {
+          display: flex;
+          align-items: center;
+          margin: 1rem 0px;
+          margin-bottom: 0px;
+          .project-top-github-icon {
+            font-size: 24px;
+            display: flex;
+            margin-right: 1rem;
+          }
+          .project-top-logo {
+            height: 24px;
+            width: 24px;
+            margin-right: 1rem;
+          }
+          .project-top-link {
+            text-decoration: none;
+            color: var(--logoColor);
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+          .comma-sep {
+            margin-right: 4px;
+          }
+          .trigger-deploy-button {
+            @include primaryButton(
+              white,
+              var(--themeColor),
+              0.5rem 1rem,
+              none,
+              8px,
+              var(--themeColorDark),
+              var(--primaryDisabled)
+            );
+            margin-right: 1rem;
+          }
+          .skylink-generate-button {
+            @include primaryButton(
+              white,
+              #363636,
+              0.5rem 1rem,
+              none,
+              8px,
+              #0d0d0d,
+              #272727
+            );
+            margin-right: 1rem;
+          }
+        }
+      }
       .deployment-screenshot-container {
         display: flex;
         align-items: center;
