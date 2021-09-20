@@ -63,7 +63,7 @@ const InvitePopup: React.FC<IInviteProps> = ({ isOpen, memberLoading, isData }) 
               Invite mail sent successfully.
               <br />
               <br />
-              Please check your mail and confirm, to add as a member of this
+              Ask member to check his mail and confirm, to add as a member of this
               organization.
             </div>
           </div>

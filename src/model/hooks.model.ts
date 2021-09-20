@@ -73,6 +73,15 @@ export interface IWebHooks {
   projectId: string;
   configurationId: IConfiguration;
 }
+export interface IResolverSkylink {
+  _id: string;
+  name: string;
+  resolverSkylink: string;
+  targetSkylink: string;
+  projectId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface IProject {
   _id?: string;
@@ -85,6 +94,7 @@ export interface IProject {
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
+  resolverSkylinks: IResolverSkylink[];
   env: any;
   webHooks: IWebHooks[];
   updatedAt: Date;

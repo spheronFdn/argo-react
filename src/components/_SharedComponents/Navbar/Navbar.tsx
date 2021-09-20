@@ -36,6 +36,18 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
               <li className="nav-item">
                 <Link
                   className={`${
+                    location.pathname.indexOf("resolver-skylinks") !== -1
+                      ? "selected"
+                      : ""
+                  }`}
+                  to={`/org/${params.orgid}/sites/${params.slug1}/resolver-skylinks`}
+                >
+                  Resolver Skylinks
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className={`${
                     location.pathname.indexOf("domain") !== -1 ? "selected" : ""
                   }`}
                   to={`/org/${params.orgid}/sites/${params.slug1}/domain`}
