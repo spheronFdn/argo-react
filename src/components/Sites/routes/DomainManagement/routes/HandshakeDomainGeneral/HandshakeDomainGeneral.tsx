@@ -21,6 +21,11 @@ const HandshakeDomainGeneral = () => {
     : selectedProject?.deployments
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+  const sortedResolverSkylinks = projectLoading
+    ? []
+    : selectedProject?.resolverSkylinks.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
 
   const addDomainDetails = () => {
     setDomainLoading(true);
@@ -72,7 +77,7 @@ const HandshakeDomainGeneral = () => {
                 <a href="https://hdns.io" rel="noopener noreferrer" target="_blank">
                   HDNS.io
                 </a>{" "}
-                or use a gateway like hns.io
+                or use a gateway like hns.to
               </label>
               <a
                 href="https://docs.argoapp.live/custom-domains/handshake-domains"
@@ -99,6 +104,16 @@ const HandshakeDomainGeneral = () => {
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
+                    {(sortedResolverSkylinks ? sortedResolverSkylinks : []).map(
+                      (dep, index) => (
+                        <option
+                          value={`https://siasky.net/${dep.resolverSkylink}`}
+                          key={index}
+                        >
+                          Resolver Skylink - {dep.name}
+                        </option>
+                      ),
+                    )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>

@@ -24,6 +24,11 @@ const DomainGeneral = () => {
     : selectedProject?.deployments
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+  const sortedResolverSkylinks = projectLoading
+    ? []
+    : selectedProject?.resolverSkylinks.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
 
   const addDomainDetails = () => {
     setDomainLoading(true);
@@ -96,11 +101,22 @@ const DomainGeneral = () => {
                 <div className="add-domain-select-container">
                   <select
                     className="add-domain-select"
+                    disabled={projectLoading}
                     value={deployedSite}
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
                     <option value="latest">Latest Deployed</option>
+                    {(sortedResolverSkylinks ? sortedResolverSkylinks : []).map(
+                      (dep, index) => (
+                        <option
+                          value={`https://siasky.net/${dep.resolverSkylink}`}
+                          key={index}
+                        >
+                          Resolver Skylink - {dep.name}
+                        </option>
+                      ),
+                    )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
