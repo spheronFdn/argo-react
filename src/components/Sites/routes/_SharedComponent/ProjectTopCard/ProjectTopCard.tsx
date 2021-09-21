@@ -67,6 +67,17 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
+      case "filecoin":
+        return (
+          <img
+            src={require("../../../../../assets/png/neo-light.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
 
       default:
         return (

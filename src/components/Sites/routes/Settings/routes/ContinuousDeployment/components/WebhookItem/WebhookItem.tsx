@@ -353,6 +353,7 @@ const WebhookItem: React.FC<IWebhookItemProps> = ({
                   >
                     <option value="arweave">Arweave</option>
                     <option value="skynet">Skynet</option>
+                    <option value="skynet">filecoin</option>
                   </select>
                   <span className="select-down-icon">
                     <FontAwesomeIcon icon={faChevronDown} />

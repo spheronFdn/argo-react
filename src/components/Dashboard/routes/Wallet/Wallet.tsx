@@ -134,6 +134,8 @@ const Wallet = () => {
         return "SIA";
       case "neofs":
         return "NEO";
+      case "filecoin":
+        return "FIL";
 
       default:
     }

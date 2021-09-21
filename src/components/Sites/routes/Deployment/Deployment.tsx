@@ -329,6 +329,12 @@ const Deployment = () => {
             Deploying on Skynet, Preview in a minute
           </span>
         );
+      case "filecoin":
+        return (
+          <span className="site-deployment-link">
+            Deploying on ipfs with filecoin, Preview in a minute
+          </span>
+        );
       case "neofs":
         return (
           <span className="site-deployment-link">
