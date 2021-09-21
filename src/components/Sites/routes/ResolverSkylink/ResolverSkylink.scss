@@ -75,7 +75,7 @@
               display: flex;
               background-color: var(--themeColorSelected);
               .th {
-                padding: 0.5rem 1rem;
+                padding: 0.5rem;
                 text-align: left;
                 text-transform: uppercase;
                 font-weight: 500;
@@ -87,21 +87,21 @@
                   border-radius: 6px;
                   border-top-right-radius: 0;
                   border-bottom-right-radius: 0;
-                  width: 20%;
+                  width: 18%;
                 }
 
                 &:nth-child(2) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
-                  width: 25%;
+                  width: 26%;
                 }
 
                 &:nth-child(3) {
                   border: 1px solid var(--themeColor);
                   border-left: 0;
                   border-right: 0;
-                  width: 25%;
+                  width: 26%;
                 }
                 &:nth-child(4) {
                   border: 1px solid var(--themeColor);
@@ -123,82 +123,126 @@
 
           .tbody {
             .tr {
-              display: flex;
               border-bottom: 1px solid var(--themeColor);
-              .td {
+              .tr-first {
                 display: flex;
-                align-items: center;
-                padding: 0.5rem 1rem;
-                overflow: hidden;
-
-                .skylinks-td-container {
-                  overflow: hidden;
-                  text-overflow: ellipsis;
+                .td {
                   display: flex;
                   align-items: center;
+                  padding: 0.5rem;
+                  overflow: hidden;
 
-                  .skylinks-title {
-                    line-height: 20px;
+                  .skylinks-td-container {
                     overflow: hidden;
-                    white-space: nowrap;
                     text-overflow: ellipsis;
-                    font-weight: 500;
-                  }
+                    display: flex;
+                    align-items: center;
 
-                  .skylinks-links {
-                    text-decoration: none;
-                    color: var(--logoColor);
-                    width: fit-content;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
+                    .skylinks-title {
+                      line-height: 20px;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      font-weight: 500;
+                    }
 
-                    &:hover {
-                      text-decoration: underline;
+                    .skylinks-links {
+                      text-decoration: none;
+                      color: var(--logoColor);
+                      width: fit-content;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+
+                      &:hover {
+                        text-decoration: underline;
+                      }
+                    }
+
+                    .skylinks-text {
+                      line-height: 20px;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      font-weight: 300;
+                      color: var(--grey3Color);
+                    }
+                    .trash-icon-container {
+                      color: var(--grey3Color);
+                      margin-left: 0.5rem;
+                      cursor: pointer;
+                      &:hover {
+                        color: black;
+                      }
+                    }
+
+                    .icon-disabled {
+                      cursor: not-allowed !important;
+                      &:hover {
+                        color: var(--grey3Color) !important;
+                      }
                     }
                   }
 
-                  .skylinks-text {
-                    line-height: 20px;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    font-weight: 300;
-                    color: var(--grey3Color);
+                  &:nth-child(1) {
+                    width: 18%;
                   }
-                  .trash-icon-container {
-                    color: var(--grey3Color);
-                    margin-left: 0.5rem;
-                    cursor: pointer;
-                    &:hover {
-                      color: black;
-                    }
+                  &:nth-child(2) {
+                    width: 26%;
+                  }
+                  &:nth-child(3) {
+                    width: 26%;
+                  }
+                  &:nth-child(4) {
+                    width: 23%;
+                  }
+                  &:nth-child(5) {
+                    width: 7%;
+                    justify-content: flex-end;
+                  }
+                }
+              }
+
+              .tr-second {
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+
+                .badge-container {
+                  display: flex;
+                  cursor: pointer;
+                  opacity: 0.8;
+                  transition: all 0.2s linear;
+                  img {
+                    border-radius: 4px;
                   }
 
-                  .icon-disabled {
-                    cursor: not-allowed !important;
-                    &:hover {
-                      color: var(--grey3Color) !important;
-                    }
+                  &:hover {
+                    opacity: 1;
                   }
                 }
 
-                &:nth-child(1) {
-                  width: 20%;
+                .copy-badge-container {
+                  display: flex;
+                  align-items: center;
+                  margin-left: 1rem;
+                  cursor: pointer;
+                  color: var(--grey3Color);
+                  transition: all 0.2s linear;
+                  &:hover {
+                    color: var(--black);
+                  }
+
+                  .clipboard-icon-container {
+                    margin-left: 10px;
+                  }
                 }
-                &:nth-child(2) {
-                  width: 25%;
-                }
-                &:nth-child(3) {
-                  width: 25%;
-                }
-                &:nth-child(4) {
-                  width: 23%;
-                }
-                &:nth-child(5) {
-                  width: 7%;
-                  justify-content: flex-end;
-                }
+              }
+
+              .no-item {
+                padding: 1rem;
+                justify-content: center;
+                color: var(--grey3Color);
               }
             }
           }

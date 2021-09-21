@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GridLoader } from "react-spinners";
 import IGenerateResolverSkylinkProps from "./model";
 import { RAW_SKYLINK_SIZE } from "skynet-js/dist/cjs/skylink/sia";
+import config from "../../../../../../config";
 
 // We'll define a portal to allow for developing on localhost.
 // When hosted on a skynet portal, SkynetClient doesn't need any arguments.
@@ -26,7 +27,7 @@ const portal =
 
 // Initiate the SkynetClient
 const client = new SkynetClient(portal);
-const dataDomain = "localhost";
+const dataDomain = config.skynet.DATA_DOMAIN;
 
 const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
   type,
@@ -125,7 +126,7 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
   const generateResolverSkylink = async () => {
     try {
       setSkylinkLoading(true);
-      if (useSeed) {
+      if (!useSeed) {
         if (mySky) {
           await mySky.setDataLink(
             name,
@@ -155,6 +156,12 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log((err as Error).message);
+      setErrorWarning(true);
+      setErrorMessage((err as Error).message);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
       setSkylinkLoading(false);
     }
   };
@@ -181,11 +188,19 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
           setSkylinkLoading(false);
           setErrorWarning(true);
           setErrorMessage(result.message);
+          setTimeout(() => {
+            setErrorWarning(false);
+            setErrorMessage("");
+          }, 5000);
         }
       },
       (err) => {
         setErrorWarning(true);
         setErrorMessage(err.message);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
       },
     );
   };
@@ -210,11 +225,19 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
           setSkylinkLoading(false);
           setErrorWarning(true);
           setErrorMessage(result.message);
+          setTimeout(() => {
+            setErrorWarning(false);
+            setErrorMessage("");
+          }, 5000);
         }
       },
       (err) => {
         setErrorWarning(true);
         setErrorMessage(err.message);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
       },
     );
   };
@@ -222,7 +245,7 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
   const deleteResolverSkylink = async () => {
     try {
       setSkylinkLoading(true);
-      if (useSeed) {
+      if (!useSeed) {
         if (mySky) {
           await mySky.setEntryData(name, new Uint8Array(RAW_SKYLINK_SIZE));
           removeResolverSkylink(resolver?._id || "");
@@ -241,6 +264,12 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log((err as Error).message);
+      setErrorWarning(true);
+      setErrorMessage((err as Error).message);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
       setSkylinkLoading(false);
     }
   };
@@ -261,12 +290,20 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
           setSkylinkLoading(false);
           setErrorWarning(true);
           setErrorMessage(result.message);
+          setTimeout(() => {
+            setErrorWarning(false);
+            setErrorMessage("");
+          }, 5000);
         }
       },
       (err) => {
         setSkylinkLoading(false);
         setErrorWarning(true);
         setErrorMessage(err.message);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
       },
     );
   };
