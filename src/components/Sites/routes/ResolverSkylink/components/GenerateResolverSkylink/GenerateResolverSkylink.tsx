@@ -29,8 +29,7 @@ import config from "../../../../../../config";
 
 // We'll define a portal to allow for developing on localhost.
 // When hosted on a skynet portal, SkynetClient doesn't need any arguments.
-const portal =
-  window.location.hostname === "localhost" ? "https://siasky.net" : undefined;
+const portal = "https://siasky.net";
 
 // Initiate the SkynetClient
 const client = new SkynetClient(portal);
