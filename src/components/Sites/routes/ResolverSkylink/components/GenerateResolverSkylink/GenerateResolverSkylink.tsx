@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./GenerateResolverSkylink.scss";
-import { genKeyPairFromSeed, MySky, SkynetClient } from "skynet-js";
+import {
+  genKeyPairFromSeed,
+  MySky,
+  PermCategory,
+  Permission,
+  PermType,
+  SkynetClient,
+} from "skynet-js";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
 import moment from "moment";
@@ -68,6 +75,14 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       setPopupLoading(true);
       try {
         const mySky = await client.loadMySky(dataDomain);
+        await mySky.addPermissions(
+          new Permission(
+            "argoapplive.hns",
+            dataDomain,
+            PermCategory.Discoverable,
+            PermType.Write,
+          ),
+        );
         const loggedIn = await mySky.checkLogin();
         if (componentIsMounted.current) {
           setMySky(mySky);
