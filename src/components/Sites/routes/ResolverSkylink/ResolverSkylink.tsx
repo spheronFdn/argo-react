@@ -10,12 +10,12 @@ import GenerateResolverSkylink from "./components/GenerateResolverSkylink";
 import { SkynetClient } from "skynet-js";
 import moment from "moment";
 import { ProjectTopCard } from "../_SharedComponent";
+import config from "../../../../config";
 
-const portal =
-  window.location.hostname === "localhost" ? "https://siasky.net" : undefined;
+const portal = "https://siasky.net";
 // Initiate the SkynetClient
 const client = new SkynetClient(portal);
-const dataDomain = "localhost";
+const dataDomain = config.skynet.DATA_DOMAIN;
 
 const ResolverSkylink = () => {
   const { projectLoading, selectedProject, orgLoading } =
