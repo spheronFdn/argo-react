@@ -74,14 +74,6 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       setPopupLoading(true);
       try {
         const mySky = await client.loadMySky(dataDomain);
-        await mySky.addPermissions(
-          new Permission(
-            "argoapplive.hns",
-            dataDomain,
-            PermCategory.Discoverable,
-            PermType.Write,
-          ),
-        );
         const loggedIn = await mySky.checkLogin();
         if (componentIsMounted.current) {
           setMySky(mySky);
@@ -119,6 +111,14 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
 
   const loginMySky = async () => {
     if (mySky) {
+      await mySky.addPermissions(
+        new Permission(
+          "argoapplive.hns",
+          dataDomain,
+          PermCategory.Discoverable,
+          PermType.Write,
+        ),
+      );
       const status = await mySky.requestLoginAccess();
       if (componentIsMounted.current) {
         if (status) {
