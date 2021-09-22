@@ -70,7 +70,7 @@ const ProjectTopCard = () => {
       case "filecoin":
         return (
           <img
-            src={require("../../../../../assets/png/neo-light.png")}
+            src={require("../../../../../assets/png/filecoin.png")}
             alt="github"
             className="project-top-logo"
             height={24}
