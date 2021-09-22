@@ -1,4 +1,8 @@
-import { faInfoCircle, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationCircle,
+  faInfoCircle,
+  faSyncAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -24,6 +28,8 @@ function WalletRecharge() {
   const [rechargeLoader, setRechargeLoader] = useState<boolean>(false);
   const [walletLoading, setWalletLoading] = useState<boolean>(false);
   const [orgWallet, setOrgWallet] = useState<string>("");
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
@@ -44,6 +50,7 @@ function WalletRecharge() {
   }, [selectedOrg, orgLoading]);
 
   const rechargeArGo = async () => {
+    setErrorWarning(false);
     try {
       if (!wallet) {
         setWalletLoader(true);
@@ -68,12 +75,19 @@ function WalletRecharge() {
       console.log(err);
       setWalletLoader(false);
       setRechargeLoader(false);
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
       // window.location.reload();
     }
   };
 
   const refreshWallet = async () => {
     try {
+      setErrorWarning(false);
       setWalletLoader(true);
       const wallet = await Web3Service.getCurrentAccount();
       const walletBal = await Web3Service.getArgoBalance(wallet);
@@ -86,6 +100,12 @@ function WalletRecharge() {
       // eslint-disable-next-line no-console
       console.log(err);
       setWalletLoader(false);
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
       // window.location.reload();
     }
   };
@@ -239,6 +259,13 @@ function WalletRecharge() {
                   Cancel
                 </button>
               </div>
+              {errorWarning ? (
+                <div className="warning-container">
+                  <div className="warning-header">
+                    <FontAwesomeIcon icon={faExclamationCircle} /> {errorMessage}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

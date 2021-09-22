@@ -8,8 +8,12 @@ import { IActionModel, IStateModel } from "../../../../model/hooks.model";
 import BounceLoader from "react-spinners/BounceLoader";
 import { IPaymentModel } from "../../../../model/payment.model";
 import moment from "moment";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationCircle,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactTooltip from "react-tooltip";
 
 const Wallet = () => {
   const history = useHistory();
@@ -27,6 +31,8 @@ const Wallet = () => {
   const [walletLoader, setWalletLoader] = useState<boolean>(false);
   const [enableLoader, setEnableLoader] = useState<boolean>(false);
   const [removalLoader, setRemovalLoader] = useState<boolean>(false);
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const componentIsMounted = useRef(true);
 
@@ -64,31 +70,46 @@ const Wallet = () => {
 
   const connectWallet = async () => {
     setWalletLoader(true);
-    const wallet = await Web3Service.getAccount();
-    setWallet(wallet);
-    let walletBal = 0;
     try {
+      const wallet = await Web3Service.getAccount();
+      setWallet(wallet);
+      let walletBal = 0;
       walletBal = await Web3Service.getArgoBalance(wallet);
+
+      setWalletBal(walletBal);
+      setWalletLoader(false);
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setWalletLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
     }
-    setWalletBal(walletBal);
-    setWalletLoader(false);
   };
 
   const checkAllowance = async () => {
     setWalletLoader(true);
-    await Web3Service.getAccount();
-    let walletApproval = 0;
     try {
+      await Web3Service.getAccount();
+      let walletApproval = 0;
       walletApproval = await Web3Service.getArgoAllowances(orgWallet);
+      setArgoAllowance(walletApproval);
+      setWalletLoader(false);
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setWalletLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
     }
-    setArgoAllowance(walletApproval);
-    setWalletLoader(false);
   };
 
   const enableWallet = async () => {
@@ -97,33 +118,59 @@ const Wallet = () => {
       address: wallet,
       orgId: selectedOrg?._id,
     };
-    ApiService.enableWallet(walletBody).subscribe((res) => {
-      if (componentIsMounted.current) {
-        setEnableLoader(false);
-        fetchUser();
-      }
-    });
+    ApiService.enableWallet(walletBody).subscribe(
+      (res) => {
+        if (componentIsMounted.current) {
+          setEnableLoader(false);
+          fetchUser();
+        }
+      },
+      (err) => {
+        setErrorMessage((err as any).message);
+        setErrorWarning(true);
+        setTimeout(() => {
+          setErrorWarning(false);
+          setErrorMessage("");
+        }, 5000);
+      },
+    );
   };
 
   const removeWallet = async () => {
     setRemovalLoader(true);
-    await Web3Service.getAccount();
     try {
+      await Web3Service.getAccount();
       const signature = await Web3Service.signRemoveWallet();
       const removeBody = {
         id: selectedOrg?.wallet._id,
         signature,
       };
-      ApiService.removeWallet(removeBody).subscribe((res) => {
-        if (componentIsMounted.current) {
-          setRemovalLoader(false);
-          fetchUser();
-        }
-      });
+      ApiService.removeWallet(removeBody).subscribe(
+        (res) => {
+          if (componentIsMounted.current) {
+            setRemovalLoader(false);
+            fetchUser();
+          }
+        },
+        (err) => {
+          setErrorMessage((err as any).message);
+          setErrorWarning(true);
+          setTimeout(() => {
+            setErrorWarning(false);
+            setErrorMessage("");
+          }, 5000);
+        },
+      );
     } catch (err) {
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      setRemovalLoader(false);
       // eslint-disable-next-line no-console
       console.log(err);
-      setRemovalLoader(false);
     }
   };
   const showProtocolPrice = (protocol: string) => {
@@ -131,7 +178,7 @@ const Wallet = () => {
       case "arweave":
         return "AR";
       case "skynet":
-        return "SIA";
+        return "SC";
       case "neofs":
         return "NEO";
       case "filecoin":
@@ -143,6 +190,13 @@ const Wallet = () => {
 
   return (
     <div className="Wallet">
+      {errorWarning ? (
+        <div className="warning-container">
+          <div className="warning-header">
+            <FontAwesomeIcon icon={faExclamationCircle} /> {errorMessage}
+          </div>
+        </div>
+      ) : null}
       <div className="wallet-container">
         <div className="wallet-details">
           <div className="wallet-header">
@@ -237,11 +291,11 @@ const Wallet = () => {
                           {removalLoader && (
                             <BounceLoader size={20} color={"#fff"} loading={true} />
                           )}
-                          Remove
+                          Remove Wallet
                         </button>
                         <button
                           type="button"
-                          className="primary-button recharge-button"
+                          className="primary-button"
                           disabled={walletLoading}
                           onClick={() => history.push("/wallet/recharge")}
                         >
@@ -315,17 +369,32 @@ const Wallet = () => {
               </div>
               {!paymentsLoading ? (
                 <div className="tbody">
+                  <ReactTooltip delayShow={50} />
                   {payments.length > 0 ? (
                     payments.map((payment: IPaymentModel, index: number) => (
                       <div className="tr" key={index}>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment?.projectName}</div>
+                            <div className="user-text">
+                              <span
+                                className="tooltip"
+                                data-tip={payment?.projectName}
+                              >
+                                {payment?.projectName}
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
-                            <div className="user-text">{payment?.deploymentId}</div>
+                            <div className="user-text">
+                              <span
+                                className="tooltip"
+                                data-tip={payment?.deploymentId}
+                              >
+                                {payment?.deploymentId}
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="td">
@@ -336,15 +405,27 @@ const Wallet = () => {
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.providerFee}{" "}
-                              {showProtocolPrice(payment?.protocol)}
+                              <span
+                                className="tooltip"
+                                data-tip={`${
+                                  payment?.providerFee
+                                } ${showProtocolPrice(payment?.protocol)}`}
+                              >
+                                {payment?.providerFee.toFixed(5)}{" "}
+                                {showProtocolPrice(payment?.protocol)}
+                              </span>
                             </div>
                           </div>
                         </div>
                         <div className="td">
                           <div className="user-container">
                             <div className="user-text">
-                              {payment?.finalArgoFee.toFixed(3)} $ARGO
+                              <span
+                                className="tooltip"
+                                data-tip={`${payment?.finalArgoFee} $${payment.token}`}
+                              >
+                                {payment?.finalArgoFee.toFixed(3)} ${payment.token}
+                              </span>
                             </div>
                           </div>
                         </div>

@@ -73,6 +73,15 @@ export interface IWebHooks {
   projectId: string;
   configurationId: IConfiguration;
 }
+export interface IResolverSkylink {
+  _id: string;
+  name: string;
+  resolverSkylink: string;
+  targetSkylink: string;
+  projectId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface IProject {
   _id?: string;
@@ -85,10 +94,12 @@ export interface IProject {
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
+  resolverSkylinks: IResolverSkylink[];
   env: any;
   webHooks: IWebHooks[];
   updatedAt: Date;
   createdAt: Date;
+  state: string;
 }
 
 export interface IDomain {
@@ -131,6 +142,14 @@ export interface IWallet {
   createDate: Date;
 }
 
+export interface IUserInvite {
+  userEmail: string;
+  status: string;
+  link: string;
+  _id: string;
+  organization: IOrganization;
+}
+
 export interface IOrganization {
   _id: string;
   profile: {
@@ -142,6 +161,7 @@ export interface IOrganization {
   users: IUser[];
   wallet: IWallet;
   payments: any[];
+  invitedMembers: IUserInvite[];
 }
 
 export interface IModalConfig {

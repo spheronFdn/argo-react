@@ -22,7 +22,7 @@ jobs:
           name: Install Dependencies
           command: |
             sudo npm i -g codecov node-gyp
-            npm i
+            yarn install
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -33,7 +33,7 @@ jobs:
 
       - run:
           name: Check Formatting & Codecov
-          command: npm run prettier:check && codecov
+          command: yarn run prettier:check && codecov
 
   build-deploy-dev:
     resource_class: large
@@ -54,7 +54,7 @@ jobs:
           name: Install Dependencies
           command: |
             sudo npm i -g codecov node-gyp
-            npm i
+            yarn install
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -65,7 +65,7 @@ jobs:
 
       - run:
           name: Run Build
-          command: CI=false npm run build:dev
+          command: CI=false yarn run build:dev
 
       - aws-s3/sync:
           aws-region: AWS_REGION
@@ -96,7 +96,7 @@ jobs:
           name: Install Dependencies
           command: |
             sudo npm i -g codecov node-gyp
-            npm i
+            yarn install
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -107,7 +107,7 @@ jobs:
 
       - run:
           name: Run Build
-          command: CI=false npm run build:prod
+          command: CI=false yarn run build:prod
 
       - aws-s3/sync:
           aws-region: AWS_REGION

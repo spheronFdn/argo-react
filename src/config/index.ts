@@ -16,13 +16,16 @@ export interface IConfig {
     CMC_KEY: string;
     VERIFYING_MESSAGE: string;
   };
+  skynet: {
+    DATA_DOMAIN: string;
+  };
 }
 
 const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://dev-api.argoapp.net",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -39,6 +42,9 @@ const development: IConfig = {
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
+  },
+  skynet: {
+    DATA_DOMAIN: "dev.argoapp.net",
   },
 };
 
@@ -48,7 +54,7 @@ const production: IConfig = {
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
-    PAYMENT_CONTRACT_ADDRESS: "0x4D89Ab733a7BaF5A09fC11f8C247DF17050021B7",
+    PAYMENT_CONTRACT_ADDRESS: "0x5140Ff2C70e861453604A268468E379762daF84c",
     ERC20_CONTRACT_ADDRESS: "0x6794a9E5411f8f9B3E5Dc7457162728544A443E0",
     onboard: {
       DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
@@ -61,6 +67,9 @@ const production: IConfig = {
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
+  },
+  skynet: {
+    DATA_DOMAIN: "app.argoapp.net",
   },
 };
 
@@ -83,6 +92,9 @@ const test: IConfig = {
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
     VERIFYING_MESSAGE:
       "I'm the owner of this wallet and want to remove it from the organization.",
+  },
+  skynet: {
+    DATA_DOMAIN: "dev.argoapp.net",
   },
 };
 

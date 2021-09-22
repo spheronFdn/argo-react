@@ -2,7 +2,13 @@ import React, { useContext, useEffect } from "react";
 import "./Sites.scss";
 import { Header } from "../_SharedComponents";
 import { Redirect, Route, useHistory, useParams } from "react-router-dom";
-import { AllDeployments, Deployment, Overview, Settings } from "./routes";
+import {
+  AllDeployments,
+  Deployment,
+  Overview,
+  ResolverSkylink,
+  Settings,
+} from "./routes";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
 import DomainManagement from "./routes/DomainManagement";
@@ -47,6 +53,11 @@ function Sites() {
             path="/org/:orgid/sites/:siteid/deployments/"
             exact
             render={() => <AllDeployments />}
+          />
+          <Route
+            path="/org/:orgid/sites/:siteid/resolver-skylinks/"
+            exact
+            render={() => <ResolverSkylink />}
           />
           <Route
             path="/org/:orgid/sites/:siteid/domain/:slug"

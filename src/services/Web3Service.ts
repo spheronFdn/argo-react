@@ -112,7 +112,7 @@ export const getAccount = async () => {
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
-    return "";
+    throw new Error("Seems like you've not selected a correct wallet.");
   }
 };
 

@@ -25,6 +25,12 @@ const SubdomainGeneral = () => {
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
+  const sortedResolverSkylinks = projectLoading
+    ? []
+    : selectedProject?.resolverSkylinks.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
+
   const addSubdomainDetails = () => {
     setDomainLoading(true);
     const domain = {
@@ -101,6 +107,16 @@ const SubdomainGeneral = () => {
                   >
                     <option value="">Select deployment</option>
                     <option value="latest">Latest Deployed</option>
+                    {(sortedResolverSkylinks ? sortedResolverSkylinks : []).map(
+                      (dep, index) => (
+                        <option
+                          value={`https://siasky.net/${dep.resolverSkylink}`}
+                          key={index}
+                        >
+                          Resolver Skylink - {dep.name}
+                        </option>
+                      ),
+                    )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
