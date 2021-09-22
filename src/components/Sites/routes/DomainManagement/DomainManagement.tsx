@@ -4,6 +4,7 @@ import { ProjectTopCard } from "../_SharedComponent";
 import { Route, useHistory, useLocation, useParams } from "react-router-dom";
 import {
   DomainGeneral,
+  EnsDomainGeneral,
   HandshakeDomainGeneral,
   HandshakeSubdomainGeneral,
   SubdomainGeneral,
@@ -72,6 +73,19 @@ const DomainManagement = () => {
             HNS Subdomain
             <span className="item-badge">Beta</span>
           </div>
+          <div
+            className={`domain-management-bar-item ${
+              lastPath === "ens-domain" ? "selected" : ""
+            }`}
+            onClick={(e) =>
+              history.push(
+                `/org/${params.orgid}/sites/${params.siteid}/domain/ens-domain`,
+              )
+            }
+          >
+            ENS Domain
+            <span className="item-badge">Beta</span>
+          </div>
         </div>
         <Route
           path="/org/:orgid/sites/:siteid/domain/domains"
@@ -92,6 +106,11 @@ const DomainManagement = () => {
           path="/org/:orgid/sites/:siteid/domain/handshake-subdomain"
           exact
           render={() => <HandshakeSubdomainGeneral />}
+        />
+        <Route
+          path="/org/:orgid/sites/:siteid/domain/ens-domain"
+          exact
+          render={() => <EnsDomainGeneral />}
         />
       </div>
     </div>
