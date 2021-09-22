@@ -202,10 +202,10 @@
                     font-weight: bold;
                     display: flex;
                     align-items: center;
-                    .tooltip {
-                      color: rgb(66, 65, 65);
-                      margin-left: 10px;
-                    }
+                    // .tooltip {
+                    //   color: rgb(66, 65, 65);
+                    //   margin-left: 10px;
+                    // }
                   }
 
                   .new-item-tag {
@@ -602,6 +602,20 @@
               );
               width: 120px;
               margin-left: 1rem;
+            }
+          }
+          .warning-container {
+            display: flex;
+            margin: 1rem 24px;
+            background-color: #fa383e;
+            border-radius: 10px;
+            .warning-header {
+              padding: 16px;
+              text-overflow: ellipsis;
+              word-break: break-word;
+              overflow: hidden;
+              white-space: nowrap;
+              color: var(--grey1Color);
             }
           }
         }

@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Navbar.scss";
 import { Link, useLocation, useParams } from "react-router-dom";
 import INavbarProps from "./model";
+import { StateContext } from "../../../hooks";
+import { IStateModel } from "../../../model/hooks.model";
 
 const Navbar: React.FC<INavbarProps> = ({ parent }) => {
   const location = useLocation();
   const params = useParams<any>();
+
+  const { projectLoading, selectedProject } = useContext<IStateModel>(StateContext);
+
+  let isSkynetDeploymentPresent = false;
+  if (!projectLoading) {
+    isSkynetDeploymentPresent =
+      (selectedProject
+        ? selectedProject.deployments.filter(
+            (d) => d.sitePreview?.indexOf("siasky.net") !== -1,
+          )
+        : []
+      ).length > 0;
+  }
 
   return (
     <nav className="NavBar">
@@ -33,6 +48,20 @@ const Navbar: React.FC<INavbarProps> = ({ parent }) => {
                   Deploys
                 </Link>
               </li>
+              {isSkynetDeploymentPresent && (
+                <li className="nav-item">
+                  <Link
+                    className={`${
+                      location.pathname.indexOf("resolver-skylinks") !== -1
+                        ? "selected"
+                        : ""
+                    }`}
+                    to={`/org/${params.orgid}/sites/${params.slug1}/resolver-skylinks`}
+                  >
+                    Resolver Skylinks
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <Link
                   className={`${

@@ -3,7 +3,7 @@ import "./HandshakeDomainGeneral.scss";
 import { DomainItem } from "../../components";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ApiService } from "../../../../../../services";
@@ -21,6 +21,11 @@ const HandshakeDomainGeneral = () => {
     : selectedProject?.deployments
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+  const sortedResolverSkylinks = projectLoading
+    ? []
+    : selectedProject?.resolverSkylinks.sort((a, b) =>
+        moment(b.createdAt).diff(moment(a.createdAt)),
+      );
 
   const addDomainDetails = () => {
     setDomainLoading(true);
@@ -72,14 +77,18 @@ const HandshakeDomainGeneral = () => {
                 <a href="https://hdns.io" rel="noopener noreferrer" target="_blank">
                   HDNS.io
                 </a>{" "}
-                or use a gateway like hns.io
+                or use a gateway like hns.to
               </label>
-              {/* <a href="https://github.com/">
-                Learn more about custom domains in our docs
+              <a
+                href="https://docs.argoapp.live/custom-domains/handshake-domains"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more about handshake domains in our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
                 </span>
-              </a> */}
+              </a>
               <div className="domain-general-add-domain-container">
                 <input
                   type="text"
@@ -95,6 +104,16 @@ const HandshakeDomainGeneral = () => {
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
+                    {(sortedResolverSkylinks ? sortedResolverSkylinks : []).map(
+                      (dep, index) => (
+                        <option
+                          value={`https://siasky.net/${dep.resolverSkylink}`}
+                          key={index}
+                        >
+                          Resolver Skylink - {dep.name}
+                        </option>
+                      ),
+                    )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -121,8 +140,8 @@ const HandshakeDomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.handshakeDomains.length ? (
-                    selectedProject?.handshakeDomains.map((domain, index) => (
+                  selectedProject?.handshakeDomains?.length ? (
+                    selectedProject?.handshakeDomains?.map((domain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}

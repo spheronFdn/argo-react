@@ -1,6 +1,7 @@
 import React from "react";
-import { Route, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { SettingsGeneral } from "./routes";
+import SettingsArchive from "./routes/SettingsArchive";
 import "./Settings.scss";
 
 const Settings = () => {
@@ -22,16 +23,27 @@ const Settings = () => {
           >
             General
           </div>
-          {/* <div className="settings-bar-item">OAuth</div>
-          <div className="settings-bar-item">Git Integration</div>
-          <div className="settings-bar-item">Billing</div>
-          <div className="settings-bar-item">Tokens</div> */}
+          <div
+            className={`settings-bar-item ${
+              lastPath === "archive" ? "selected" : ""
+            }`}
+            onClick={(e) => history.push("/dashboard/settings/archive")}
+          >
+            Archived Projects
+          </div>
         </div>
-        <Route
-          path="/dashboard/settings/general"
-          exact
-          render={() => <SettingsGeneral />}
-        />
+        <Switch>
+          <Route
+            path="/dashboard/settings/general"
+            exact
+            render={() => <SettingsGeneral />}
+          />
+          <Route
+            path="/dashboard/settings/archive"
+            exact
+            render={() => <SettingsArchive />}
+          />
+        </Switch>
       </div>
     </div>
   );

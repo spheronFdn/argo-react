@@ -1,4 +1,8 @@
-import { faInfoCircle, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationCircle,
+  faInfoCircle,
+  faSyncAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -24,6 +28,8 @@ function WalletRecharge() {
   const [rechargeLoader, setRechargeLoader] = useState<boolean>(false);
   const [walletLoading, setWalletLoading] = useState<boolean>(false);
   const [orgWallet, setOrgWallet] = useState<string>("");
+  const [errorWarning, setErrorWarning] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const componentIsMounted = useRef(true);
 
   useEffect(() => {
@@ -44,6 +50,7 @@ function WalletRecharge() {
   }, [selectedOrg, orgLoading]);
 
   const rechargeArGo = async () => {
+    setErrorWarning(false);
     try {
       if (!wallet) {
         setWalletLoader(true);
@@ -68,12 +75,19 @@ function WalletRecharge() {
       console.log(err);
       setWalletLoader(false);
       setRechargeLoader(false);
-      window.location.reload();
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      // window.location.reload();
     }
   };
 
   const refreshWallet = async () => {
     try {
+      setErrorWarning(false);
       setWalletLoader(true);
       const wallet = await Web3Service.getCurrentAccount();
       const walletBal = await Web3Service.getArgoBalance(wallet);
@@ -86,7 +100,13 @@ function WalletRecharge() {
       // eslint-disable-next-line no-console
       console.log(err);
       setWalletLoader(false);
-      window.location.reload();
+      setErrorMessage((err as any).message);
+      setErrorWarning(true);
+      setTimeout(() => {
+        setErrorWarning(false);
+        setErrorMessage("");
+      }, 5000);
+      // window.location.reload();
     }
   };
 
@@ -119,22 +139,22 @@ function WalletRecharge() {
                   chain in your metamask.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  Please approve more than minimum $DAI tokens to our Payment Smart
+                  Please approve more than minimum $ARGO tokens to our Payment Smart
                   Contract. Approval transaction is <b>Gassless</b>, no need to hold
                   $MATIC tokens for approval.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
                   To start deploying your application, minimum allowance required is
-                  20 $DAI and minimum balance required is 20 $DAI tokens.
+                  60 $ARGO and minimum balance required is 60 $ARGO tokens.
                 </label>
                 <label className="wallet-recharge-form-subtitle">
-                  To get <b>Matic Testnet $DAI Tokens</b>, please visit{" "}
+                  To get <b>Matic Testnet $ARGO Tokens</b>, please visit{" "}
                   <a
-                    href="https://faucet.argoapp.live"
+                    href="https://faucet.argoapp.net"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    https://faucet.argoapp.live
+                    https://faucet.argoapp.net
                   </a>
                   .
                 </label>
@@ -174,10 +194,10 @@ function WalletRecharge() {
                         </div>
                       </div>
                       <div className="wallet-details-items">
-                        <div className="wallet-details-item-title">DAI Balance</div>
+                        <div className="wallet-details-item-title">ARGO Balance</div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletBal} $DAI`
+                            `${walletBal} $ARGO`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
@@ -185,11 +205,11 @@ function WalletRecharge() {
                       </div>
                       <div className="wallet-details-items">
                         <div className="wallet-details-item-title">
-                          DAI Allowance
+                          ARGO Allowance
                         </div>
                         <div className="wallet-details-item-desc">
                           {!walletLoader ? (
-                            `${walletApproval} $DAI`
+                            `${walletApproval} $ARGO`
                           ) : (
                             <Skeleton width={150} duration={2} />
                           )}
@@ -239,6 +259,13 @@ function WalletRecharge() {
                   Cancel
                 </button>
               </div>
+              {errorWarning ? (
+                <div className="warning-container">
+                  <div className="warning-header">
+                    <FontAwesomeIcon icon={faExclamationCircle} /> {errorMessage}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

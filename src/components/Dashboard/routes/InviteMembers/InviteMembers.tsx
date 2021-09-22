@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./InviteMembers.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
@@ -7,12 +7,28 @@ import { ApiService } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import { concat } from "rxjs";
 import BounceLoader from "react-spinners/BounceLoader";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import InvitePopup from "./components/InvitePopup/InvitePopup";
 
 const InviteMembers = () => {
   const history = useHistory();
   const { selectedOrg, user } = useContext(StateContext);
   const [inviteMembers, setInviteMembers] = useState<string>("");
   const [inviteMemberLoading, setInviteMembersLoading] = useState<boolean>(false);
+  const [inviteData, setInviteData] = useState<boolean>();
+  const [validateEmail, setValidateEmail] = useState<boolean>(false);
+  const [popupIsOpen, setPopupIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (
+      inviteMembers.match("^([a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+,?)*$") &&
+      inviteMembers !== ""
+    ) {
+      setValidateEmail(true);
+    } else {
+      setValidateEmail(false);
+    }
+  }, [inviteMembers]);
 
   const sendInvite = () => {
     setInviteMembersLoading(true);
@@ -26,8 +42,8 @@ const InviteMembers = () => {
     concat(invites.map((invite) => ApiService.sendMemberInvite(invite))).subscribe(
       (res) =>
         res.subscribe((data) => {
+          setInviteData(data.success);
           setInviteMembersLoading(false);
-          history.push("/dashboard/members");
         }),
     );
   };
@@ -58,18 +74,41 @@ const InviteMembers = () => {
                   onChange={(e) => setInviteMembers(e.target.value)}
                 />
               </div>
+              {!validateEmail && (
+                <label className="invite-members-form-alert">
+                  <span className="alert-icon-container">
+                    <FontAwesomeIcon icon={faExclamationCircle}></FontAwesomeIcon>
+                  </span>
+                  Please enter the email in a valid format.
+                </label>
+              )}
               <label className="invite-members-form-subtitle-bottom">
                 You can enter several email addresses separated by commas <br />
                 (without spaces).
               </label>
             </div>
             <div className="button-container">
-              <button type="button" className="primary-button" onClick={sendInvite}>
-                {inviteMemberLoading && (
-                  <BounceLoader size={20} color={"#fff"} loading={true} />
-                )}
-                Send
-              </button>
+              <div>
+                <button
+                  type="button"
+                  className="primary-button"
+                  onClick={() => {
+                    sendInvite();
+                    setPopupIsOpen(true);
+                  }}
+                  disabled={!validateEmail}
+                >
+                  {inviteMemberLoading && (
+                    <BounceLoader size={20} color={"#fff"} loading={true} />
+                  )}
+                  Send
+                </button>
+              </div>
+              <InvitePopup
+                isOpen={popupIsOpen}
+                memberLoading={inviteMemberLoading}
+                isData={inviteData!}
+              />
               <button
                 type="button"
                 className="cancel-button"
