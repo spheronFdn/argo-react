@@ -143,10 +143,12 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       if (!useSeed) {
         if (mySky) {
           await mySky.setDataLink(
-            `${dataDomain}/${name}`,
+            `${dataDomain}/${selectedProject?._id}/${name}`,
             latestSkylink.split("https://siasky.net/")[1].slice(0, -1),
           );
-          const resolverSkylink = await mySky.getEntryLink(`${dataDomain}/${name}`);
+          const resolverSkylink = await mySky.getEntryLink(
+            `${dataDomain}/${selectedProject?._id}/${name}`,
+          );
           if (type === "create") {
             addResolverSkylinks(resolverSkylink);
           } else {
@@ -157,12 +159,12 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
         const { publicKey, privateKey } = genKeyPairFromSeed(skynetSeed);
         await client.db.setDataLink(
           privateKey,
-          `${dataDomain}/${name}`,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
           latestSkylink.split("https://siasky.net/")[1].slice(0, -1),
         );
         const resolverSkylink = await client.registry.getEntryLink(
           publicKey,
-          `${dataDomain}/${name}`,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
         );
         if (type === "create") {
           addResolverSkylinks(resolverSkylink);
@@ -265,7 +267,7 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       if (!useSeed) {
         if (mySky) {
           await mySky.setEntryData(
-            `${dataDomain}/${name}`,
+            `${dataDomain}/${selectedProject?._id}/${name}`,
             new Uint8Array(RAW_SKYLINK_SIZE),
           );
           removeResolverSkylink(resolver?._id || "");
@@ -274,11 +276,11 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
         const { publicKey, privateKey } = genKeyPairFromSeed(skynetSeed);
         const reg = await client.registry.getEntry(
           publicKey,
-          `${dataDomain}/${name}`,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
         );
         const revision = reg.entry ? reg.entry.revision + BigInt(1) : BigInt(1);
         await client.registry.setEntry(privateKey, {
-          dataKey: `${dataDomain}/${name}`,
+          dataKey: `${dataDomain}/${selectedProject?._id}/${name}`,
           data: new Uint8Array(RAW_SKYLINK_SIZE),
           revision,
         });
