@@ -721,7 +721,23 @@ function DeploySiteConfig() {
                           </div>
                           <div
                             className="deploy-protocol-image"
-                            onClick={(e) => selectProtocol("filecoin")}
+                            onClick={(e) => selectProtocol("ipfs-filecoin")}
+                          >
+                            <LazyLoadedImage height={50} once>
+                              <img
+                                src={require("../../assets/png/filecoin.png")}
+                                alt="filecoin"
+                                className="deploy-protocol-item-avatar"
+                                height={50}
+                                width={200}
+                                loading="lazy"
+                              />
+                            </LazyLoadedImage>
+                            <div className="new-protocol-tag">New</div>
+                          </div>
+                          <div
+                            className="deploy-protocol-image"
+                            onClick={(e) => selectProtocol("ipfs-pinata")}
                           >
                             <LazyLoadedImage height={50} once>
                               <img

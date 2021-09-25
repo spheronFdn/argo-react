@@ -181,8 +181,10 @@ const Wallet = () => {
         return "SC";
       case "neofs":
         return "NEO";
-      case "filecoin":
+      case "ipfs-filecoin":
         return "FIL";
+      case "ipfs-pinata":
+        return "USD";
 
       default:
     }
