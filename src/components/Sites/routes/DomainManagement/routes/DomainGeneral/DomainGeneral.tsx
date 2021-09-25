@@ -153,7 +153,6 @@ const DomainGeneral = () => {
                           domain={`${domain.name}`}
                           link={`${domain.link}`}
                           isSubdomain={false}
-                          isHandshake={domain.type.indexOf("handshake") !== -1}
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
                           ownerVerified={domain.verified}
@@ -172,7 +171,6 @@ const DomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={false}
-                      isHandshake={false}
                       autoDns={false}
                       ownerVerified={true}
                       domainType=""

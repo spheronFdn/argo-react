@@ -59,7 +59,7 @@ const EnsDomainGeneral = () => {
           <div className="domain-general-project-body">
             <div className="domain-general-project-item">
               <label className="domain-general-project-item-title">
-                Configure your ENS Domains
+                Configure your ENS Domains/Subdomains
               </label>
               <label className="domain-general-project-item-subtitle">
                 By default, your site is always accessible via arweave gateway based
@@ -68,10 +68,10 @@ const EnsDomainGeneral = () => {
               </label>
               <label className="domain-general-project-item-subtitle label-note">
                 To resolve your ENS Domains, use a gateway like eth.link or eth.limo.
-                Brave & Opera browsers have direct support for ENS Domains so no
+                Brave & Opera browsers have direct support for ENS Domains, so no
                 gateway is required.
               </label>
-              <a href="https://docs.argoapp.live/">
+              <a href="https://docs.argoapp.net/">
                 Learn more about ens domains from our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
@@ -81,7 +81,7 @@ const EnsDomainGeneral = () => {
                 <input
                   type="text"
                   className="add-domain-input"
-                  placeholder="mywebsite.hns"
+                  placeholder="eg: mywebsite.eth or dash.mywebsite.eth"
                   value={domainName}
                   onChange={(e) => setDomainName(e.target.value)}
                 />
@@ -128,7 +128,6 @@ const EnsDomainGeneral = () => {
                           domain={`${domain.name}`}
                           link={`${domain.link}`}
                           isSubdomain={false}
-                          isHandshake={domain.type.indexOf("handshake") !== -1}
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
                           ownerVerified={domain.verified}
@@ -147,7 +146,6 @@ const EnsDomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={false}
-                      isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
                       domainType=""

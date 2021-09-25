@@ -3,6 +3,7 @@ import Onboard from "bnc-onboard";
 import Notify from "bnc-notify";
 import config from "../config";
 import * as paymentLib from "@argoapp/payment-js";
+import { setupENS } from "@ensdomains/ui";
 
 declare global {
   interface Window {
@@ -10,47 +11,87 @@ declare global {
   }
 }
 
-var notify = Notify({
-  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
-  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+var notifyPolygon = Notify({
+  dappId: config.web3.onboardPolygon.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardPolygon.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+});
+
+var notifyEth = Notify({
+  dappId: config.web3.onboardEth.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardEth.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
 });
 
 let provider: ethers.providers.Web3Provider | null;
 let payment: paymentLib.Payment | null;
+let ensInstance: any;
 
-const wallets = [
+const walletsPolygon = [
   { walletName: "metamask", preferred: true },
   { walletName: "authereum", preferred: true },
-  { walletName: "trust", preferred: true, rpcUrl: config.web3.onboard.RPC_URL },
+  {
+    walletName: "trust",
+    preferred: true,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
+  },
   { walletName: "gnosis", preferred: true },
   {
     walletName: "ledger",
-    rpcUrl: config.web3.onboard.RPC_URL,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
     preferred: true,
   },
   {
     walletName: "torus",
-    rpcUrl: config.web3.onboard.RPC_URL,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
     preferred: true,
   },
   {
     walletName: "walletConnect",
     rpc: {
-      "80001": config.web3.onboard.RPC_URL,
+      "80001": config.web3.onboardPolygon.RPC_URL,
     },
     preferred: true,
   },
 ];
 
-const onboard = Onboard({
-  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
-  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
-  networkName: config.web3.onboard.NETWORK_NAME,
+const walletsEth = [
+  { walletName: "metamask", preferred: true },
+  { walletName: "authereum", preferred: true },
+  {
+    walletName: "trust",
+    preferred: true,
+    rpcUrl: config.web3.onboardEth.RPC_URL,
+  },
+  { walletName: "gnosis", preferred: true },
+  {
+    walletName: "ledger",
+    rpcUrl: config.web3.onboardEth.RPC_URL,
+    preferred: true,
+  },
+  {
+    walletName: "torus",
+    rpcUrl: config.web3.onboardEth.RPC_URL,
+    preferred: true,
+  },
+  {
+    walletName: "walletConnect",
+    rpc: {
+      "1": config.web3.onboardEth.RPC_URL,
+    },
+    preferred: true,
+  },
+];
+
+const onboardPolygon = Onboard({
+  dappId: config.web3.onboardPolygon.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardPolygon.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+  networkName: config.web3.onboardPolygon.NETWORK_NAME,
   subscriptions: {
     wallet: async (wallet) => {
       if (wallet.provider) {
         try {
           provider = new ethers.providers.Web3Provider(wallet.provider);
+          const { ens } = await setupENS();
+          ensInstance = ens;
           const vendor: paymentLib.Vendor = new paymentLib.Vendor(
             provider,
             provider.getSigner(),
@@ -72,11 +113,37 @@ const onboard = Onboard({
     },
   },
   walletSelect: {
-    wallets: wallets,
+    wallets: walletsPolygon,
   },
 });
 
-export const autoChangeNetwork = async () => {
+const onboardEth = Onboard({
+  dappId: config.web3.onboardEth.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardEth.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+  networkName: config.web3.onboardEth.NETWORK_NAME,
+  subscriptions: {
+    wallet: async (wallet) => {
+      if (wallet.provider) {
+        try {
+          provider = new ethers.providers.Web3Provider(wallet.provider);
+          const { ens } = await setupENS({ customProvider: wallet.provider });
+          ensInstance = ens;
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+      } else {
+        provider = null;
+        payment = null;
+      }
+    },
+  },
+  walletSelect: {
+    wallets: walletsEth,
+  },
+});
+
+export const autoChangeNetworkPolygon = async () => {
   try {
     if (window.ethereum.chainId !== "0x13881") {
       await window.ethereum.request({
@@ -102,12 +169,12 @@ export const autoChangeNetwork = async () => {
   }
 };
 
-export const getAccount = async () => {
+export const getPolygonAccount = async () => {
   try {
-    await autoChangeNetwork();
-    await onboard.walletSelect();
-    await onboard.walletCheck();
-    const currentState = onboard.getState();
+    await autoChangeNetworkPolygon();
+    await onboardPolygon.walletSelect();
+    await onboardPolygon.walletCheck();
+    const currentState = onboardPolygon.getState();
     return currentState.address;
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -116,13 +183,13 @@ export const getAccount = async () => {
   }
 };
 
-export const getCurrentAccount = async () => {
-  const currentState = onboard.getState();
+export const getPolygonCurrentAccount = async () => {
+  const currentState = onboardPolygon.getState();
   return currentState.address;
 };
 
-export const disconnect = () => {
-  onboard.walletReset();
+export const disconnectPolygon = () => {
+  onboardPolygon.walletReset();
 };
 
 export const getArgoBalance = async (address: string) => {
@@ -153,9 +220,56 @@ export const giveAllowance = async (amount: string) => {
   if (payment) {
     const tx = await payment.gasslessApproval(
       amount,
-      config.web3.onboard.NETWORK_ID,
+      config.web3.onboardPolygon.NETWORK_ID,
     );
-    notify.hash(tx.hash);
+    notifyPolygon.hash(tx.hash);
+    await tx.wait();
+    return tx;
+  }
+  return null;
+};
+
+export const autoChangeNetworkEth = async () => {
+  try {
+    if (window.ethereum.chainId !== "0x1") {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x1" }],
+      });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+};
+
+export const getEthAccount = async () => {
+  try {
+    await autoChangeNetworkEth();
+    await onboardEth.walletSelect();
+    await onboardEth.walletCheck();
+    const currentState = onboardEth.getState();
+    return currentState.address;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+    throw new Error("Seems like you've not selected a correct wallet.");
+  }
+};
+
+export const getEthCurrentAccount = async () => {
+  const currentState = onboardEth.getState();
+  return currentState.address;
+};
+
+export const disconnectEth = () => {
+  onboardEth.walletReset();
+};
+
+export const updateEnsContentHash = async (domain: string, contentHash: string) => {
+  if (ensInstance) {
+    const tx = await ensInstance.setContenthash(domain, contentHash);
+    notifyEth.hash(tx.hash);
     await tx.wait();
     return tx;
   }

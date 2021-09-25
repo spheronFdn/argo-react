@@ -150,7 +150,6 @@ const HandshakeDomainGeneral = () => {
                           domain={`${domain.name}`}
                           link={`${domain.link}`}
                           isSubdomain={false}
-                          isHandshake={domain.type.indexOf("handshake") !== -1}
                           autoDns={domain.isLatest}
                           uuid={`${domain.argoKey}`}
                           ownerVerified={domain.verified}
@@ -169,7 +168,6 @@ const HandshakeDomainGeneral = () => {
                       link=""
                       uuid=""
                       isSubdomain={false}
-                      isHandshake={true}
                       autoDns={false}
                       ownerVerified={true}
                       domainType=""
