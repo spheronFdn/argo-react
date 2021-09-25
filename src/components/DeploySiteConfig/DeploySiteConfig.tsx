@@ -741,7 +741,7 @@ function DeploySiteConfig() {
                           >
                             <LazyLoadedImage height={50} once>
                               <img
-                                src={require("../../assets/png/filecoin.png")}
+                                src={require("../../assets/png/pinata.png")}
                                 alt="filecoin"
                                 className="deploy-protocol-item-avatar"
                                 height={50}

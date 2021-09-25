@@ -79,7 +79,7 @@ const ProjectTopCard = () => {
       case "ipfs-pinata":
         return (
           <img
-            src={require("../../../../../assets/png/filecoin.png")}
+            src={require("../../../../../assets/png/pinata.png")}
             alt="github"
             className="project-top-logo"
             height={24}
