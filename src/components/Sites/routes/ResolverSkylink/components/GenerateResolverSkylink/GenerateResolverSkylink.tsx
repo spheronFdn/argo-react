@@ -74,14 +74,6 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       setPopupLoading(true);
       try {
         const mySky = await client.loadMySky(dataDomain);
-        await mySky.addPermissions(
-          new Permission(
-            "argoapplive.hns",
-            dataDomain,
-            PermCategory.Discoverable,
-            PermType.Write,
-          ),
-        );
         const loggedIn = await mySky.checkLogin();
         if (componentIsMounted.current) {
           setMySky(mySky);
@@ -119,6 +111,14 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
 
   const loginMySky = async () => {
     if (mySky) {
+      await mySky.addPermissions(
+        new Permission(
+          window.location.hostname,
+          dataDomain,
+          PermCategory.Discoverable,
+          PermType.Write,
+        ),
+      );
       const status = await mySky.requestLoginAccess();
       if (componentIsMounted.current) {
         if (status) {
@@ -143,10 +143,12 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       if (!useSeed) {
         if (mySky) {
           await mySky.setDataLink(
-            name,
+            `${dataDomain}/${selectedProject?._id}/${name}`,
             latestSkylink.split("https://siasky.net/")[1].slice(0, -1),
           );
-          const resolverSkylink = await mySky.getEntryLink(name);
+          const resolverSkylink = await mySky.getEntryLink(
+            `${dataDomain}/${selectedProject?._id}/${name}`,
+          );
           if (type === "create") {
             addResolverSkylinks(resolverSkylink);
           } else {
@@ -157,10 +159,13 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
         const { publicKey, privateKey } = genKeyPairFromSeed(skynetSeed);
         await client.db.setDataLink(
           privateKey,
-          name,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
           latestSkylink.split("https://siasky.net/")[1].slice(0, -1),
         );
-        const resolverSkylink = await client.registry.getEntryLink(publicKey, name);
+        const resolverSkylink = await client.registry.getEntryLink(
+          publicKey,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
+        );
         if (type === "create") {
           addResolverSkylinks(resolverSkylink);
         } else {
@@ -261,15 +266,21 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       setSkylinkLoading(true);
       if (!useSeed) {
         if (mySky) {
-          await mySky.setEntryData(name, new Uint8Array(RAW_SKYLINK_SIZE));
+          await mySky.setEntryData(
+            `${dataDomain}/${selectedProject?._id}/${name}`,
+            new Uint8Array(RAW_SKYLINK_SIZE),
+          );
           removeResolverSkylink(resolver?._id || "");
         }
       } else {
         const { publicKey, privateKey } = genKeyPairFromSeed(skynetSeed);
-        const reg = await client.registry.getEntry(publicKey, name);
+        const reg = await client.registry.getEntry(
+          publicKey,
+          `${dataDomain}/${selectedProject?._id}/${name}`,
+        );
         const revision = reg.entry ? reg.entry.revision + BigInt(1) : BigInt(1);
         await client.registry.setEntry(privateKey, {
-          dataKey: name,
+          dataKey: `${dataDomain}/${selectedProject?._id}/${name}`,
           data: new Uint8Array(RAW_SKYLINK_SIZE),
           revision,
         });
@@ -339,7 +350,15 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
       <div className="modal-container">
         {!popupLoading ? (
           <div className="modal-body">
-            <h3 className="modal-title">Generate Resolver Skylink</h3>
+            {type === "create" && (
+              <h3 className="modal-title">Generate Resolver Skylink</h3>
+            )}
+            {type === "update" && (
+              <h3 className="modal-title">Update Resolver Skylink</h3>
+            )}
+            {type === "remove" && (
+              <h3 className="modal-title">Remove Resolver Skylink</h3>
+            )}
             {step !== 3 ? (
               <p className="modal-content">
                 Resolver skylinks are a special type of skylink that enables skylinks
