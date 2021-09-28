@@ -7,15 +7,8 @@ import Popup from "reactjs-popup";
 import { StateContext } from "../../../../hooks";
 import { IResolverSkylink, IStateModel } from "../../../../model/hooks.model";
 import GenerateResolverSkylink from "./components/GenerateResolverSkylink";
-import { SkynetClient } from "skynet-js";
 import moment from "moment";
 import { ProjectTopCard } from "../_SharedComponent";
-import config from "../../../../config";
-
-const portal = "https://siasky.net";
-// Initiate the SkynetClient
-const client = new SkynetClient(portal);
-const dataDomain = config.skynet.DATA_DOMAIN;
 
 const ResolverSkylink = () => {
   const { projectLoading, selectedProject, orgLoading } =
@@ -47,26 +40,6 @@ const ResolverSkylink = () => {
       }
     }
   }, [selectedProject, projectLoading]);
-
-  useEffect(() => {
-    logoutMySky();
-  }, [showCreatePopup]);
-
-  useEffect(() => {
-    logoutMySky();
-  }, [showUpdatePopup]);
-
-  useEffect(() => {
-    logoutMySky();
-  }, [showRemovePopup]);
-
-  const logoutMySky = async () => {
-    const mySky = await client.loadMySky(dataDomain);
-    const loggedIn = await mySky.checkLogin();
-    if (loggedIn) {
-      await mySky.logout();
-    }
-  };
 
   return (
     <div className="ResolverSkylink">

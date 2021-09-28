@@ -333,6 +333,15 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
     );
   };
 
+  const logoutMySky = async () => {
+    const mySky = await client.loadMySky(dataDomain);
+    const loggedIn = await mySky.checkLogin();
+    if (loggedIn) {
+      await mySky.logout();
+      setStep(1);
+    }
+  };
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -403,9 +412,22 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
             {step === 2 && (
               <div className="connect-container">
                 {!useSeed && (
-                  <div className="skylink-name-container">
-                    <label>User ID</label>
-                    <div className="skylink-name">{userID.substring(0, 51)}...</div>
+                  <div className="user-container">
+                    <div className="skylink-name-container">
+                      <label>User ID</label>
+                      <div className="skylink-name small-text">
+                        {userID.substring(0, 51)}
+                      </div>
+                    </div>
+                    <div className="margin-left">
+                      <button
+                        className="logout-mysky-button"
+                        onClick={logoutMySky}
+                        type="button"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </div>
                 )}
                 <div className="skylink-name-container">
