@@ -90,8 +90,6 @@ const onboardPolygon = Onboard({
       if (wallet.provider) {
         try {
           provider = new ethers.providers.Web3Provider(wallet.provider);
-          const { ens } = await setupENS();
-          ensInstance = ens;
           const vendor: paymentLib.Vendor = new paymentLib.Vendor(
             provider,
             provider.getSigner(),

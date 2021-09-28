@@ -195,7 +195,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       setTimeout(async () => {
         await Web3Service.updateEnsContentHash(
           domain,
-          `${separator.base}://${link.split(separator.sep)[1]}`,
+          `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
         );
       }, 2000);
     } catch (error) {}
