@@ -385,6 +385,8 @@ const Deployment = () => {
         return <span>{paymentDetails?.providerFee || 0} SC</span>;
       case "neofs":
         return <span>{paymentDetails?.providerFee || 0} NEO</span>;
+      case "filecoin":
+        return <span>{paymentDetails?.providerFee || 0} FIL</span>;
       default:
         return <span>{paymentDetails?.providerFee || 0} ?</span>;
     }
