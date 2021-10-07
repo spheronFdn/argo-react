@@ -309,6 +309,28 @@ const Deployment = () => {
             loading="lazy"
           />
         );
+      case "ipfs-filecoin":
+        return (
+          <img
+            src={require("../../../../assets/png/filecoin.png")}
+            alt="skynet"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "ipfs-pinata":
+        return (
+          <img
+            src={require("../../../../assets/svg/pinata.svg")}
+            alt="skynet"
+            className="site-deployment-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
       case "neofs":
         return (
           <img
@@ -352,13 +374,13 @@ const Deployment = () => {
       case "ipfs-filecoin":
         return (
           <span className="site-deployment-link">
-            Deploying on ipfs with filecoin, Preview in a minute
+            Deploying on IPFS with Filecoin, Preview in a minute
           </span>
         );
       case "ipfs-pinata":
         return (
           <span className="site-deployment-link">
-            Deploying on ipfs with Pinata, Preview in a minute
+            Deploying on IPFS with Pinata, Preview in a minute
           </span>
         );
       case "neofs":
@@ -382,11 +404,13 @@ const Deployment = () => {
       case "arweave":
         return <span>{paymentDetails?.providerFee || 0} AR</span>;
       case "skynet":
-        return <span>{paymentDetails?.providerFee || 0} SC</span>;
+        return <span>N.A</span>;
       case "neofs":
         return <span>{paymentDetails?.providerFee || 0} NEO</span>;
-      case "filecoin":
+      case "ipfs-filecoin":
         return <span>{paymentDetails?.providerFee || 0} FIL</span>;
+      case "ipfs-pinata":
+        return <span>N.A</span>;
       default:
         return <span>{paymentDetails?.providerFee || 0} ?</span>;
     }
@@ -753,6 +777,46 @@ const Deployment = () => {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+      {currentSiteDeployConfig?.protocol === "ipfs-filecoin" && (
+        <div className="site-deployment-card-container deploy-container">
+          <div className="site-deployment-header-title">
+            Filecoin Pinning Details
+          </div>
+          <div className="site-deployment-body">
+            <div className="site-deployment-body-item">
+              <label>Filecoin Deal ID:</label>
+              <span>
+                {buildTime?.min}m {buildTime?.sec}s
+              </span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>Filecoin Deal Status:</label>
+              <span>
+                {paymentDetails?.argoFee || 0} ${paymentDetails?.token || "ARGO"}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      {currentSiteDeployConfig?.protocol === "ipfs-pinata" && (
+        <div className="site-deployment-card-container deploy-container">
+          <div className="site-deployment-header-title">Pinata Pinning Details</div>
+          <div className="site-deployment-body">
+            <div className="site-deployment-body-item">
+              <label>IPFS Pin ID:</label>
+              <span>
+                {buildTime?.min}m {buildTime?.sec}s
+              </span>
+            </div>
+            <div className="site-deployment-body-item">
+              <label>IPFS Pin Status:</label>
+              <span>
+                {paymentDetails?.argoFee || 0} ${paymentDetails?.token || "ARGO"}
+              </span>
+            </div>
           </div>
         </div>
       )}

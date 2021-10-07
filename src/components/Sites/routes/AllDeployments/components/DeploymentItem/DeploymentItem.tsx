@@ -71,9 +71,9 @@ const DeploymentItem: React.FC<IDeploymentItemProps> = ({
       case "neofs":
         return <span className="protocol-tag-neofs">NeoFS</span>;
       case "ipfs-filecoin":
-        return <span className="protocol-tag-filecoin">IPFS-Filecoin</span>;
+        return <span className="protocol-tag-filecoin">Filecoin</span>;
       case "ipfs-pinata":
-        return <span className="protocol-tag-pinata">IPFS-Pinata</span>;
+        return <span className="protocol-tag-pinata">Pinata</span>;
 
       default:
     }

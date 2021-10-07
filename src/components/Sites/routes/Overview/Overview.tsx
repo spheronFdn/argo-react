@@ -13,18 +13,10 @@ const Overview = () => {
   const history = useHistory();
   const params = useParams<any>();
 
-  const { projectLoading, selectedProject, selectedOrg } =
+  const { projectLoading, selectedProject, selectedOrg, orgLoading } =
     useContext<IStateModel>(StateContext);
 
-  const sortedDeployments = projectLoading
-    ? []
-    : selectedProject?.deployments.sort((a, b) =>
-        moment(b.createdAt).diff(moment(a.createdAt)),
-      );
-  let latestDeployment: any = {};
-  if (sortedDeployments) {
-    latestDeployment = sortedDeployments[0];
-  }
+  const latestDeployment: any = selectedProject?.latestDeployment;
 
   const lastPublishedDate = moment(latestDeployment?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -77,6 +69,64 @@ const Overview = () => {
           </div>
         )}
       </div>
+      {latestDeployment?.configuration?.protocol === "ipfs-filecoin" && (
+        <div className="site-overview-card-container deploy-container">
+          <div className="site-overview-header-title">
+            Latest Filecoin Deployment Pinning Details
+          </div>
+          <div className="deploy-summary-item">
+            <div className="deploy-summary-body-item">
+              <label>Filecoin Deal ID:</label>
+              <span>
+                {!projectLoading ? (
+                  selectedProject?.name
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            <div className="deploy-summary-body-item">
+              <label>Filecoin Deal Status:</label>
+              <span>
+                {!projectLoading ? (
+                  selectedOrg?.profile.name
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      {latestDeployment?.configuration?.protocol === "ipfs-pinata" && (
+        <div className="site-overview-card-container deploy-container">
+          <div className="site-overview-header-title">
+            Latest IPFS Deployment Pinning Details
+          </div>
+          <div className="deploy-summary-item">
+            <div className="deploy-summary-body-item">
+              <label>IPFS Deal ID:</label>
+              <span>
+                {!projectLoading ? (
+                  selectedProject?.name
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            <div className="deploy-summary-body-item">
+              <label>IPFS Deal Status:</label>
+              <span>
+                {!projectLoading ? (
+                  selectedOrg?.profile.name
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="site-overview-card-container deploy-container">
         <div className="site-overview-header-title">Project Overview</div>
         <div className="deploy-summary-item">
@@ -93,7 +143,7 @@ const Overview = () => {
           <div className="deploy-summary-body-item">
             <label>Owner:</label>
             <span>
-              {!projectLoading ? (
+              {!orgLoading ? (
                 selectedOrg?.profile.name
               ) : (
                 <Skeleton width={200} duration={2} />
@@ -122,7 +172,7 @@ const Overview = () => {
                   {latestDeployment?.sitePreview}
                 </a>
               ) : (
-                "Site preview not available"
+                <span>Site preview not available</span>
               )
             ) : (
               <Skeleton width={200} duration={2} />
