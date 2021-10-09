@@ -70,6 +70,8 @@ const Deployment = () => {
   const [deployedLink, setDeployedLink] = useState<string>("");
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const [confettiStart, setConfettiStart] = useState<boolean>(false);
+  const [pinDetailLoading, setPinDetailLoading] = useState<boolean>(true);
+  const [pinDetail, setPinDetail] = useState<any>(null);
   const componentIsMounted = useRef(true);
 
   let socket: any = null;
@@ -413,6 +415,46 @@ const Deployment = () => {
         return <span>N.A</span>;
       default:
         return <span>{paymentDetails?.providerFee || 0} ?</span>;
+    }
+  };
+
+  useEffect(() => {
+    if (deploymentStatus === "deployed") {
+      if (currentSiteDeployConfig?.protocol === "ipfs-filecoin") {
+        getFilecoinPinDetais();
+      } else if (currentSiteDeployConfig?.protocol === "ipfs-pinata") {
+        getPinataPinDetais();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deploymentStatus, currentSiteDeployConfig?.protocol]);
+
+  const getFilecoinPinDetais = async () => {
+    setPinDetailLoading(true);
+    if (deployedLink) {
+      const cid = deployedLink.split("https://ipfs.infura.io/ipfs/")[1];
+      ApiService.getFilecoinPinDetails(cid).subscribe((data) => {
+        if (componentIsMounted.current) {
+          setPinDetail(data);
+          setPinDetailLoading(false);
+        }
+      });
+    } else {
+      setPinDetailLoading(false);
+    }
+  };
+  const getPinataPinDetais = async () => {
+    setPinDetailLoading(true);
+    if (deployedLink) {
+      const cid = deployedLink.split("https://ipfs.infura.io/ipfs/")[1];
+      ApiService.getPinataPinDetails(cid).subscribe((data) => {
+        if (componentIsMounted.current) {
+          setPinDetail(data);
+          setPinDetailLoading(false);
+        }
+      });
+    } else {
+      setPinDetailLoading(false);
     }
   };
 
@@ -780,46 +822,98 @@ const Deployment = () => {
           </div>
         </div>
       )}
-      {currentSiteDeployConfig?.protocol === "ipfs-filecoin" && (
-        <div className="site-deployment-card-container deploy-container">
-          <div className="site-deployment-header-title">
-            Filecoin Pinning Details
+      {deploymentStatus === "deployed" &&
+        currentSiteDeployConfig?.protocol === "ipfs-filecoin" && (
+          <div className="site-deployment-card-container deploy-container">
+            <div className="site-deployment-header-title">
+              Filecoin Pinning Details
+            </div>
+            <div className="site-deployment-body">
+              <div className="site-deployment-body-item">
+                <label>Filecoin CID:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    pinDetail.cid
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+              <div className="site-deployment-body-item">
+                <label>Filecoin Pinning Status:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    pinDetail.isPinned ? (
+                      "Pinned"
+                    ) : (
+                      "Not Pinned"
+                    )
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+              {!pinDetailLoading && pinDetail.isPinned && (
+                <div className="site-deployment-body-item">
+                  <label>Filecoin Pinned Date:</label>
+                  <span>
+                    {!pinDetailLoading ? (
+                      moment(pinDetail.pinnedDate).format("MMM DD, YYYY hh:mm A")
+                    ) : (
+                      <Skeleton width={200} duration={2} />
+                    )}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="site-deployment-body">
-            <div className="site-deployment-body-item">
-              <label>Filecoin Deal ID:</label>
-              <span>
-                {buildTime?.min}m {buildTime?.sec}s
-              </span>
+        )}
+      {deploymentStatus === "deployed" &&
+        currentSiteDeployConfig?.protocol === "ipfs-pinata" && (
+          <div className="site-deployment-card-container deploy-container">
+            <div className="site-deployment-header-title">
+              Pinata Pinning Details
             </div>
-            <div className="site-deployment-body-item">
-              <label>Filecoin Deal Status:</label>
-              <span>
-                {paymentDetails?.argoFee || 0} ${paymentDetails?.token || "ARGO"}
-              </span>
+            <div className="site-deployment-body">
+              <div className="site-deployment-body-item">
+                <label>IPFS CID:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    pinDetail.cid
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+              <div className="site-deployment-body-item">
+                <label>IPFS Pinning Status:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    pinDetail.isPinned ? (
+                      "Pinned"
+                    ) : (
+                      "Not Pinned"
+                    )
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+              {!pinDetailLoading && pinDetail.isPinned && (
+                <div className="site-deployment-body-item">
+                  <label>IPFS Pinned Date:</label>
+                  <span>
+                    {!pinDetailLoading ? (
+                      moment(pinDetail.pinnedDate).format("MMM DD, YYYY hh:mm A")
+                    ) : (
+                      <Skeleton width={200} duration={2} />
+                    )}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      )}
-      {currentSiteDeployConfig?.protocol === "ipfs-pinata" && (
-        <div className="site-deployment-card-container deploy-container">
-          <div className="site-deployment-header-title">Pinata Pinning Details</div>
-          <div className="site-deployment-body">
-            <div className="site-deployment-body-item">
-              <label>IPFS Pin ID:</label>
-              <span>
-                {buildTime?.min}m {buildTime?.sec}s
-              </span>
-            </div>
-            <div className="site-deployment-body-item">
-              <label>IPFS Pin Status:</label>
-              <span>
-                {paymentDetails?.argoFee || 0} ${paymentDetails?.token || "ARGO"}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+        )}
       <div
         className="site-deployment-card-container deploy-container"
         id="deploy-logs-container"

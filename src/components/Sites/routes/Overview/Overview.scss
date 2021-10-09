@@ -88,6 +88,8 @@
           text-decoration: none;
           color: var(--logoColor);
           font-weight: 500;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           &:hover {
             text-decoration: underline;
