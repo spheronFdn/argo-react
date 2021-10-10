@@ -944,7 +944,8 @@ const Deployment = () => {
                   {currLog.time}:{" "}
                   {currLog.log.indexOf("https://arweave.net/") !== -1 ||
                   currLog.log.indexOf("https://siasky.net/") !== -1 ||
-                  currLog.log.indexOf("https://http.fs.neo.org/") !== -1 ? (
+                  currLog.log.indexOf("https://http.fs.neo.org/") !== -1 ||
+                  currLog.log.indexOf("https://ipfs.infura.io/ipfs/") !== -1 ? (
                     <a
                       href={currLog.log.trim()}
                       className="log-site-link"
