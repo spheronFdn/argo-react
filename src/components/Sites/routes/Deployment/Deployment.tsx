@@ -269,8 +269,14 @@ const Deployment = () => {
         )
       : [];
 
+  const ensDomains =
+    selectedProject && deployedLink
+      ? selectedProject.ensDomains.filter((d) => deployedLink.indexOf(d.link) !== -1)
+      : [];
+
   const isDomainOrSubPresent =
-    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
+    [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains, ...ensDomains]
+      .length > 0;
 
   const scrollToWithContainer = (index: number) => {
     window.scrollTo({
@@ -606,7 +612,8 @@ const Deployment = () => {
                       {(i !== a.length - 1 ||
                         subdomains.length > 0 ||
                         hnsDomains.length > 0 ||
-                        hnsSubdomains.length > 0) && (
+                        hnsSubdomains.length > 0 ||
+                        ensDomains.length > 0) && (
                         <span className="comma-sep">,</span>
                       )}
                     </>
@@ -623,7 +630,8 @@ const Deployment = () => {
                       </a>
                       {(i !== a.length - 1 ||
                         hnsDomains.length > 0 ||
-                        hnsSubdomains.length > 0) && (
+                        hnsSubdomains.length > 0 ||
+                        ensDomains.length > 0) && (
                         <span className="comma-sep">,</span>
                       )}
                     </>
@@ -638,12 +646,29 @@ const Deployment = () => {
                       >
                         {s.name}
                       </a>
-                      {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                      {(i !== a.length - 1 ||
+                        hnsSubdomains.length > 0 ||
+                        ensDomains.length > 0) && (
                         <span className="comma-sep">,</span>
                       )}
                     </>
                   ))}
                   {hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                    <>
+                      <a
+                        href={`http://${s.name}`}
+                        className="site-deployment-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {s.name}
+                      </a>
+                      {(i !== a.length - 1 || ensDomains.length > 0) && (
+                        <span className="comma-sep">,</span>
+                      )}
+                    </>
+                  ))}
+                  {ensDomains.map((s: IDomain, i: number, a: IDomain[]) => (
                     <>
                       <a
                         href={`http://${s.name}`}
