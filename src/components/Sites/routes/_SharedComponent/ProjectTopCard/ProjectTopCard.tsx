@@ -185,7 +185,7 @@ const ProjectTopCard = () => {
                   <div className="project-top-github-icon">
                     <FontAwesomeIcon icon={faGlobe} />
                   </div>
-                  <div className="domain-container">
+                  <div className="domain-overview-container">
                     {!projectLoading ? (
                       <>
                         {domains.map((d: IDomain, i: number, a: IDomain[]) => (

@@ -94,6 +94,7 @@ export interface IProject {
   subdomains: IDomain[];
   handshakeDomains: IDomain[];
   handshakeSubdomains: IDomain[];
+  ensDomains: IDomain[];
   resolverSkylinks: IResolverSkylink[];
   env: any;
   webHooks: IWebHooks[];
