@@ -11,7 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { ApiService, Web3Service } from "../../../../../../services";
+import {
+  ApiService,
+  Web3ServiceEth as Web3Service,
+} from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
 const DomainItem: React.FC<IDeploymentItemProps> = ({
@@ -191,13 +194,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
 
   const updateEnsDomain = async () => {
     try {
-      await Web3Service.getEthAccount();
-      setTimeout(async () => {
-        await Web3Service.updateEnsContentHash(
-          domain,
-          `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
-        );
-      }, 2000);
+      await Web3Service.updateEnsContentHash(
+        domain,
+        `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
+      );
     } catch (error) {}
   };
 
@@ -210,6 +210,12 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       setIsLatest(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      Web3Service.disconnect();
+    };
+  }, []);
 
   return (
     <div className="domain-item" key={index}>

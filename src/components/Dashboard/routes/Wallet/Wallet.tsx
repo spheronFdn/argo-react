@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Wallet.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
-import { ApiService, Web3Service } from "../../../../services";
+import { ApiService, Web3ServicePolygon as Web3Service } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { IActionModel, IStateModel } from "../../../../model/hooks.model";

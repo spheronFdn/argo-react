@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
-import { Web3Service } from "../../services";
+import { Web3ServicePolygon as Web3Service } from "../../services";
 import "./WalletRecharge.scss";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));

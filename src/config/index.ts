@@ -12,11 +12,9 @@ export interface IConfig {
       NETWORK_NAME: string;
       RPC_URL: string;
     };
-    onboardEth: {
-      DAPP_ID: string;
-      NETWORK_ID: number;
-      NETWORK_NAME: string;
-      RPC_URL: string;
+    ethConfig: {
+      INFURA_KEY: string;
+      PORTIS_ID: string;
     };
     BICONOMY_KEY: string;
     CMC_KEY: string;
@@ -31,7 +29,7 @@ const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://dev-api.argoapp.net",
+    API_URL: "http://localhost:8080",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -44,11 +42,9 @@ const development: IConfig = {
       RPC_URL:
         "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
-    onboardEth: {
-      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      NETWORK_ID: 1,
-      NETWORK_NAME: "ethereum mainnet",
-      RPC_URL: "https://mainnet.infura.io/v3/d2aeb63172e34db99638f149103ae693",
+    ethConfig: {
+      INFURA_KEY: "8b8d0c60bfab43bc8725df20fc660d15",
+      PORTIS_ID: "1fd36be2-6443-4fb2-93fc-5fe3d0a6ac44",
     },
     BICONOMY_KEY: "IXRYQIMN6.59c8aa5a-cd68-4de4-bea5-f7ab0db70b66",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -75,11 +71,9 @@ const production: IConfig = {
       RPC_URL:
         "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
-    onboardEth: {
-      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      NETWORK_ID: 1,
-      NETWORK_NAME: "ethereum mainnet",
-      RPC_URL: "https://mainnet.infura.io/v3/d2aeb63172e34db99638f149103ae693",
+    ethConfig: {
+      INFURA_KEY: "8b8d0c60bfab43bc8725df20fc660d15",
+      PORTIS_ID: "1fd36be2-6443-4fb2-93fc-5fe3d0a6ac44",
     },
     BICONOMY_KEY: "IXRYQIMN6.59c8aa5a-cd68-4de4-bea5-f7ab0db70b66",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
@@ -93,7 +87,7 @@ const production: IConfig = {
 
 const test: IConfig = {
   urls: {
-    API_URL: "http://localhost:8080",
+    API_URL: "https://dev-api.argoapp.net",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -106,11 +100,9 @@ const test: IConfig = {
       RPC_URL:
         "https://polygon-mumbai.infura.io/v3/d2aeb63172e34db99638f149103ae693",
     },
-    onboardEth: {
-      DAPP_ID: "052b3fe9-87d5-4614-b2e9-6dd81115979a",
-      NETWORK_ID: 1,
-      NETWORK_NAME: "ethereum mainnet",
-      RPC_URL: "https://mainnet.infura.io/v3/d2aeb63172e34db99638f149103ae693",
+    ethConfig: {
+      INFURA_KEY: "8b8d0c60bfab43bc8725df20fc660d15",
+      PORTIS_ID: "1fd36be2-6443-4fb2-93fc-5fe3d0a6ac44",
     },
     BICONOMY_KEY: "K97155Ti7.fb32dac1-77df-404b-9e63-621d64ad6718",
     CMC_KEY: "0c5b25a6-4d37-4836-8b43-a6c575667cdd",
