@@ -475,9 +475,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    {domainType.indexOf("handshake") === -1 && (
-                      <option value="latest">Latest Deployed</option>
-                    )}
+                    {domainType.indexOf("handshake") === -1 &&
+                      domainType.indexOf("ens") === -1 && (
+                        <option value="latest">Latest Deployed</option>
+                      )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
