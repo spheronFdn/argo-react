@@ -71,7 +71,7 @@ const Deployment = () => {
   const [deploymentLoading, setDeploymentLoading] = useState<boolean>(true);
   const [confettiStart, setConfettiStart] = useState<boolean>(false);
   const [pinDetailLoading, setPinDetailLoading] = useState<boolean>(true);
-  const [pinDetail, setPinDetail] = useState<any>(null);
+  const [pinDetail, setPinDetail] = useState<any>({ cid: "N.A", isPinned: false });
   const componentIsMounted = useRef(true);
 
   let socket: any = null;

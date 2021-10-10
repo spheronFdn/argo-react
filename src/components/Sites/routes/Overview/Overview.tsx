@@ -22,7 +22,7 @@ const Overview = () => {
   }, []);
 
   const [pinDetailLoading, setPinDetailLoading] = useState<boolean>(true);
-  const [pinDetail, setPinDetail] = useState<any>(null);
+  const [pinDetail, setPinDetail] = useState<any>({ cid: "N.A", isPinned: false });
 
   const { projectLoading, selectedProject, selectedOrg, orgLoading } =
     useContext<IStateModel>(StateContext);
