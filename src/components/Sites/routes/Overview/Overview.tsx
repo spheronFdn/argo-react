@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Overview.scss";
 import { ProjectTopCard } from "../_SharedComponent";
 import moment from "moment";
@@ -8,23 +8,26 @@ import Skeleton from "react-loading-skeleton";
 import { faArrowRight, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory, useParams } from "react-router-dom";
+import { ApiService } from "../../../../services";
 
 const Overview = () => {
   const history = useHistory();
   const params = useParams<any>();
+  const componentIsMounted = useRef(true);
 
-  const { projectLoading, selectedProject, selectedOrg } =
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    };
+  }, []);
+
+  const [pinDetailLoading, setPinDetailLoading] = useState<boolean>(true);
+  const [pinDetail, setPinDetail] = useState<any>(null);
+
+  const { projectLoading, selectedProject, selectedOrg, orgLoading } =
     useContext<IStateModel>(StateContext);
 
-  const sortedDeployments = projectLoading
-    ? []
-    : selectedProject?.deployments.sort((a, b) =>
-        moment(b.createdAt).diff(moment(a.createdAt)),
-      );
-  let latestDeployment: any = {};
-  if (sortedDeployments) {
-    latestDeployment = sortedDeployments[0];
-  }
+  const latestDeployment: any = selectedProject?.latestDeployment;
 
   const lastPublishedDate = moment(latestDeployment?.createdAt).format(
     "MMM DD, YYYY hh:mm A",
@@ -47,6 +50,48 @@ const Overview = () => {
       selectedProject.githubUrl.length - 4,
     )}/tree/${"master"}`;
   }
+
+  useEffect(() => {
+    if (latestDeployment?.configuration?.protocol === "ipfs-filecoin") {
+      getFilecoinPinDetais();
+    } else if (latestDeployment?.configuration?.protocol === "ipfs-pinata") {
+      getPinataPinDetais();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestDeployment?.configuration?.protocol]);
+
+  const getFilecoinPinDetais = async () => {
+    setPinDetailLoading(true);
+    if (latestDeployment.sitePreview) {
+      const cid = latestDeployment.sitePreview.split(
+        "https://ipfs.infura.io/ipfs/",
+      )[1];
+      ApiService.getFilecoinPinDetails(cid).subscribe((data) => {
+        if (componentIsMounted.current) {
+          setPinDetail(data);
+          setPinDetailLoading(false);
+        }
+      });
+    } else {
+      setPinDetailLoading(false);
+    }
+  };
+  const getPinataPinDetais = async () => {
+    setPinDetailLoading(true);
+    if (latestDeployment.sitePreview) {
+      const cid = latestDeployment.sitePreview.split(
+        "https://ipfs.infura.io/ipfs/",
+      )[1];
+      ApiService.getPinataPinDetails(cid).subscribe((data) => {
+        if (componentIsMounted.current) {
+          setPinDetail(data);
+          setPinDetailLoading(false);
+        }
+      });
+    } else {
+      setPinDetailLoading(false);
+    }
+  };
 
   return (
     <div className="SiteOverview">
@@ -77,6 +122,96 @@ const Overview = () => {
           </div>
         )}
       </div>
+      {latestDeployment?.configuration?.protocol === "ipfs-filecoin" && (
+        <div className="site-overview-card-container deploy-container">
+          <div className="site-overview-header-title">
+            Latest Filecoin Deployment Pinning Details
+          </div>
+          <div className="deploy-summary-item">
+            <div className="deploy-summary-body-item">
+              <label>Filecoin CID:</label>
+              <span>
+                {!pinDetailLoading ? (
+                  pinDetail.cid
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            <div className="deploy-summary-body-item">
+              <label>Filecoin Pinning Status:</label>
+              <span>
+                {!pinDetailLoading ? (
+                  pinDetail.isPinned ? (
+                    "Pinned"
+                  ) : (
+                    "Not Pinned"
+                  )
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            {!pinDetailLoading && pinDetail.isPinned && (
+              <div className="deploy-summary-body-item">
+                <label>Filecoin Pinned Date:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    moment(pinDetail.pinnedDate).format("MMM DD, YYYY hh:mm A")
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {latestDeployment?.configuration?.protocol === "ipfs-pinata" && (
+        <div className="site-overview-card-container deploy-container">
+          <div className="site-overview-header-title">
+            Latest IPFS Deployment Pinning Details
+          </div>
+          <div className="deploy-summary-item">
+            <div className="deploy-summary-body-item">
+              <label>IPFS CID:</label>
+              <span>
+                {!pinDetailLoading ? (
+                  pinDetail.cid
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            <div className="deploy-summary-body-item">
+              <label>IPFS Pinning Status:</label>
+              <span>
+                {!pinDetailLoading ? (
+                  pinDetail.isPinned ? (
+                    "Pinned"
+                  ) : (
+                    "Not Pinned"
+                  )
+                ) : (
+                  <Skeleton width={200} duration={2} />
+                )}
+              </span>
+            </div>
+            {!pinDetailLoading && pinDetail.isPinned && (
+              <div className="deploy-summary-body-item">
+                <label>IPFS Pinned Date:</label>
+                <span>
+                  {!pinDetailLoading ? (
+                    moment(pinDetail.pinnedDate).format("MMM DD, YYYY hh:mm A")
+                  ) : (
+                    <Skeleton width={200} duration={2} />
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div className="site-overview-card-container deploy-container">
         <div className="site-overview-header-title">Project Overview</div>
         <div className="deploy-summary-item">
@@ -93,7 +228,7 @@ const Overview = () => {
           <div className="deploy-summary-body-item">
             <label>Owner:</label>
             <span>
-              {!projectLoading ? (
+              {!orgLoading ? (
                 selectedOrg?.profile.name
               ) : (
                 <Skeleton width={200} duration={2} />
@@ -122,7 +257,7 @@ const Overview = () => {
                   {latestDeployment?.sitePreview}
                 </a>
               ) : (
-                "Site preview not available"
+                <span>Site preview not available</span>
               )
             ) : (
               <Skeleton width={200} duration={2} />

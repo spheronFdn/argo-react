@@ -15,11 +15,9 @@
     display: flex;
     justify-content: space-between;
     margin-right: 1rem;
-
     .bold-text {
       font-weight: 500;
     }
-
     .deployment-link {
       text-decoration: none;
       color: var(--logoColor);
@@ -40,7 +38,6 @@
       flex: 1;
       overflow: hidden;
       margin-left: 1.5rem;
-
       .deployment-domains-detail {
         word-break: break-all;
         height: 24px;
@@ -76,14 +73,26 @@
         color: var(--white);
         border-radius: 12px;
       }
+      .protocol-tag-filecoin {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #0190ff;
+        color: var(--white);
+        border-radius: 12px;
+      }
+      .protocol-tag-pinata {
+        font-size: 15px;
+        padding: 1px 10px;
+        background-color: #800080;
+        color: var(--white);
+        border-radius: 12px;
+      }
     }
   }
-
   .deployment-right {
     display: flex;
     align-items: center;
   }
-
   .deployment-status {
     color: var(--grey3Color);
     display: flex;
@@ -95,7 +104,6 @@
         display: flex;
         margin: -10px -10px !important;
       }
-
       .lazyload-wrapper {
         margin: auto !important;
         .rocket-icon {
@@ -118,11 +126,9 @@
     display: flex;
     justify-content: space-between;
     margin-right: 1rem;
-
     .bold-text {
       font-weight: 500;
     }
-
     .deployment-link {
       text-decoration: none;
       color: var(--logoColor);
@@ -136,7 +142,6 @@
     .deployment-left-detail {
       flex: 1;
       overflow: hidden;
-
       .deployment-domains-detail {
         word-break: break-all;
         height: 24px;
@@ -181,7 +186,6 @@
       }
     }
   }
-
   .deployment-status {
     color: var(--grey3Color);
     display: flex;
@@ -193,7 +197,6 @@
         display: flex;
         margin: -10px -10px !important;
       }
-
       .lazyload-wrapper {
         margin: auto !important;
         .rocket-icon {

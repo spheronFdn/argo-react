@@ -65,6 +65,28 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
+      case "ipfs-filecoin":
+        return (
+          <img
+            src={require("../../../../../assets/png/filecoin.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "ipfs-pinata":
+        return (
+          <img
+            src={require("../../../../../assets/svg/pinata.svg")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
 
       default:
         return (
