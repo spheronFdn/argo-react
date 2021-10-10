@@ -62,6 +62,11 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       base: "sia",
       sep: "https://siasky.net/",
     };
+  } else if (link.indexOf("ipfs.infura.io") !== -1) {
+    separator = {
+      base: "ipfs",
+      sep: "https://ipfs.infura.io/ipfs/",
+    };
   }
 
   useEffect(() => {
@@ -143,7 +148,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: "_contenthash",
-          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
           ttl: 60,
         },
         {
@@ -160,7 +165,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: `_contenthash.${domain.substring(0, domain.lastIndexOf("."))}`,
-          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
           ttl: 60,
         },
         {
@@ -348,7 +353,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td more-width">CONTENT</div>
                           <div className="td less-width">{domain}</div>
                           <div className="td">
-                            {separator.base}://{link.split(separator.sep)[1]}
+                            {separator.base}://
+                            {link.split(separator.sep)[1].slice(0, -1)}
                           </div>
                         </div>
                       </div>
@@ -363,7 +369,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td">TXT</div>
                           <div className="td">_contenthash</div>
                           <div className="td">
-                            {separator.base}://{link.split(separator.sep)[1]}
+                            {separator.base}://
+                            {link.split(separator.sep)[1].slice(0, -1)}
                           </div>
                         </div>
                       </div>
@@ -381,7 +388,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                             {domain.substring(0, domain.lastIndexOf("."))}
                           </div>
                           <div className="td">
-                            {separator.base}://{link.split(separator.sep)[1]}
+                            {separator.base}://
+                            {link.split(separator.sep)[1].slice(0, -1)}
                           </div>
                         </div>
                       </div>
