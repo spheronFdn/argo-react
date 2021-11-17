@@ -148,7 +148,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: "_contenthash",
-          value: `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
           ttl: 60,
         },
         {
@@ -165,7 +165,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: `_contenthash.${domain.substring(0, domain.lastIndexOf("."))}`,
-          value: `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
           ttl: 60,
         },
         {
@@ -201,7 +201,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     try {
       await Web3Service.updateEnsContentHash(
         domain,
-        `${separator.base}://${link.split(separator.sep)[1].slice(0, -1)}`,
+        `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
       );
     } catch (error) {}
   };
@@ -354,7 +354,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td less-width">{domain}</div>
                           <div className="td">
                             {separator.base}://
-                            {link.split(separator.sep)[1].slice(0, -1)}
+                            {link.split(separator.sep)[1].split("/")[0]}
                           </div>
                         </div>
                       </div>
@@ -370,7 +370,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td">_contenthash</div>
                           <div className="td">
                             {separator.base}://
-                            {link.split(separator.sep)[1].slice(0, -1)}
+                            {link.split(separator.sep)[1].split("/")[0]}
                           </div>
                         </div>
                       </div>
@@ -389,7 +389,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           </div>
                           <div className="td">
                             {separator.base}://
-                            {link.split(separator.sep)[1].slice(0, -1)}
+                            {link.split(separator.sep)[1].split("/")[0]}
                           </div>
                         </div>
                       </div>
