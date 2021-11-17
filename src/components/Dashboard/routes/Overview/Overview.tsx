@@ -138,6 +138,7 @@ const Overview = () => {
                         ? repo.handshakeSubdomains
                         : []
                     }
+                    ensDomains={repo.ensDomains?.length ? repo.ensDomains : []}
                     latestDeployment={
                       repo?.latestDeployment?.sitePreview
                         ? repo?.latestDeployment?.sitePreview
@@ -158,6 +159,7 @@ const Overview = () => {
                 subdomains={null}
                 hnsDomains={null}
                 hnsSubdomains={null}
+                ensDomains={null}
                 latestDeployment={null}
                 githubUrl={null}
                 updateTime={null}
@@ -173,6 +175,7 @@ const Overview = () => {
               subdomains={null}
               hnsDomains={null}
               hnsSubdomains={null}
+              ensDomains={null}
               latestDeployment={null}
               githubUrl={null}
               updateTime={null}

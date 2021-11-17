@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@argoapp/payment-js": "^1.0.3",
+    "@ensdomains/ui": "https://github.com/rekpero/ui.git",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
@@ -84,7 +85,8 @@
     "skynet-js": "^4.0.14-beta",
     "socket.io-client": "^4.1.1",
     "source-map-explorer": "^2.5.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "web3modal": "^1.9.4"
   },
   "devDependencies": {
     "@types/javascript-time-ago": "^2.0.1",

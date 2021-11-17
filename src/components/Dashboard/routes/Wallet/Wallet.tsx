@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Wallet.scss";
 import { ActionContext, StateContext } from "../../../../hooks";
-import { ApiService, Web3Service } from "../../../../services";
+import { ApiService, Web3ServicePolygon as Web3Service } from "../../../../services";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { IActionModel, IStateModel } from "../../../../model/hooks.model";
@@ -64,14 +64,14 @@ const Wallet = () => {
   useEffect(() => {
     return () => {
       componentIsMounted.current = false;
-      Web3Service.disconnect();
+      Web3Service.disconnectPolygon();
     };
   }, []);
 
   const connectWallet = async () => {
     setWalletLoader(true);
     try {
-      const wallet = await Web3Service.getAccount();
+      const wallet = await Web3Service.getPolygonAccount();
       setWallet(wallet);
       let walletBal = 0;
       walletBal = await Web3Service.getArgoBalance(wallet);
@@ -94,7 +94,7 @@ const Wallet = () => {
   const checkAllowance = async () => {
     setWalletLoader(true);
     try {
-      await Web3Service.getAccount();
+      await Web3Service.getPolygonAccount();
       let walletApproval = 0;
       walletApproval = await Web3Service.getArgoAllowances(orgWallet);
       setArgoAllowance(walletApproval);
@@ -139,7 +139,7 @@ const Wallet = () => {
   const removeWallet = async () => {
     setRemovalLoader(true);
     try {
-      await Web3Service.getAccount();
+      await Web3Service.getPolygonAccount();
       const signature = await Web3Service.signRemoveWallet();
       const removeBody = {
         id: selectedOrg?.wallet._id,
@@ -181,6 +181,10 @@ const Wallet = () => {
         return "SC";
       case "neofs":
         return "NEO";
+      case "ipfs-filecoin":
+        return "FIL";
+      case "ipfs-pinata":
+        return "USD";
 
       default:
     }

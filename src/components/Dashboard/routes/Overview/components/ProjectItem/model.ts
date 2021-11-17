@@ -8,6 +8,7 @@ export default interface IProjectItemProps {
   subdomains: IDomain[] | null;
   hnsDomains: IDomain[] | null;
   hnsSubdomains: IDomain[] | null;
+  ensDomains: IDomain[] | null;
   githubUrl: string | null;
   updateTime: string | null;
   repo: IProject | null;

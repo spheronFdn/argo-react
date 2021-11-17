@@ -47,11 +47,11 @@ const GenerateResolverSkylink: React.FC<IGenerateResolverSkylinkProps> = ({
   const skylinksList = !projectLoading
     ? selectedProject
       ? selectedProject?.deployments
-          .filter((deployment) => deployment.status.toLowerCase() === "deployed")
+          .filter((deployment) => deployment?.status?.toLowerCase() === "deployed")
           .filter(
-            (deployment) => deployment.sitePreview.indexOf("siasky.net") !== -1,
+            (deployment) => deployment?.sitePreview?.indexOf("siasky.net") !== -1,
           )
-          .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)))
+          .sort((a, b) => moment(b?.createdAt).diff(moment(a?.createdAt)))
       : []
     : [];
 

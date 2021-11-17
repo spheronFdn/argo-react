@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import BounceLoader from "react-spinners/BounceLoader";
 import { ActionContext, StateContext } from "../../hooks";
 import { IActionModel, IStateModel } from "../../model/hooks.model";
-import { Web3Service } from "../../services";
+import { Web3ServicePolygon as Web3Service } from "../../services";
 import "./WalletRecharge.scss";
 
 const RootHeader = React.lazy(() => import("../_SharedComponents/RootHeader"));
@@ -54,7 +54,7 @@ function WalletRecharge() {
     try {
       if (!wallet) {
         setWalletLoader(true);
-        const wallet = await Web3Service.getAccount();
+        const wallet = await Web3Service.getPolygonAccount();
         setWallet(wallet);
         if (wallet) {
           const walletBal = await Web3Service.getArgoBalance(wallet);
@@ -89,7 +89,7 @@ function WalletRecharge() {
     try {
       setErrorWarning(false);
       setWalletLoader(true);
-      const wallet = await Web3Service.getCurrentAccount();
+      const wallet = await Web3Service.getPolygonCurrentAccount();
       const walletBal = await Web3Service.getArgoBalance(wallet);
       const walletApproval = await Web3Service.getArgoAllowances(wallet);
       setWallet(wallet);
@@ -113,7 +113,7 @@ function WalletRecharge() {
   useEffect(() => {
     return () => {
       componentIsMounted.current = false;
-      Web3Service.disconnect();
+      Web3Service.disconnectPolygon();
     };
   }, []);
 

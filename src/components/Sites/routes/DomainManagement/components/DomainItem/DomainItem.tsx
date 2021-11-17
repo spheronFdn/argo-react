@@ -11,7 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
-import { ApiService } from "../../../../../../services";
+import {
+  ApiService,
+  Web3ServiceEth as Web3Service,
+} from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
 const DomainItem: React.FC<IDeploymentItemProps> = ({
@@ -24,7 +27,6 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
   autoDns,
   uuid,
   ownerVerified,
-  isHandshake,
   domainType,
 }) => {
   const { projectLoading, selectedProject, selectedOrg } =
@@ -59,6 +61,11 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     separator = {
       base: "sia",
       sep: "https://siasky.net/",
+    };
+  } else if (link.indexOf("ipfs.infura.io") !== -1) {
+    separator = {
+      base: "ipfs",
+      sep: "https://ipfs.infura.io/ipfs/",
     };
   }
 
@@ -133,7 +140,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     });
   };
 
-  const updateDomain = () => {
+  const updateHnsDomain = () => {
     setUpdateDomainLoading(true);
     let records: string = "";
     if (!isSubdomain) {
@@ -141,7 +148,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: "_contenthash",
-          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
           ttl: 60,
         },
         {
@@ -158,7 +165,7 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
         {
           type: "TXT",
           host: `_contenthash.${domain.substring(0, domain.lastIndexOf("."))}`,
-          value: `${separator.base}://${link.split(separator.sep)[1]}`,
+          value: `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
           ttl: 60,
         },
         {
@@ -190,6 +197,15 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
     window.location.href = url.toString();
   };
 
+  const updateEnsDomain = async () => {
+    try {
+      await Web3Service.updateEnsContentHash(
+        domain,
+        `${separator.base}://${link.split(separator.sep)[1].split("/")[0]}`,
+      );
+    } catch (error) {}
+  };
+
   const setTransaction = (tx: string) => {
     setDeployedSite(tx);
 
@@ -199,6 +215,12 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       setIsLatest(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      Web3Service.disconnect();
+    };
+  }, []);
 
   return (
     <div className="domain-item" key={index}>
@@ -210,7 +232,9 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                 <div className="domain-general-domain-item-header-left">
                   <div>
                     <a
-                      href={`${isHandshake ? "http" : "https"}://${domain}`}
+                      href={`${
+                        domainType.indexOf("handshake") !== -1 ? "http" : "https"
+                      }://${domain}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -249,30 +273,42 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   {!isSubdomain ? (
                     <>
                       <h3>Domain Configuration</h3>
-                      {!isHandshake ? (
+                      {domainType.indexOf("handshake") === -1 &&
+                      domainType.indexOf("ens") === -1 ? (
                         <p>
                           Set the following record on your DNS provider to configure
                           your domain and verify your ownership:
                         </p>
-                      ) : (
+                      ) : domainType.indexOf("handshake") !== -1 ? (
                         <p>
                           Update the following record on Namebase to configure your
                           HNS domain and verify domain records:
+                        </p>
+                      ) : (
+                        <p>
+                          Update the following record on ENS Dashboard to configure
+                          your ENS domain and verify domain records:
                         </p>
                       )}
                     </>
                   ) : (
                     <>
                       <h3>Subdomain Configuration</h3>
-                      {!isHandshake ? (
+                      {domainType.indexOf("handshake") === -1 &&
+                      domainType.indexOf("ens") === -1 ? (
                         <p>
                           Set the following record on your DNS provider to configure
                           your subdomain and verify your ownership:
                         </p>
-                      ) : (
+                      ) : domainType.indexOf("handshake") !== -1 ? (
                         <p>
                           Update the following record on Namebase to configure your
                           HNS subdomain and verify subdomain records:
+                        </p>
+                      ) : (
+                        <p>
+                          Update the following record on ENS Dashboard to configure
+                          your ENS subdomain and verify domain records:
                         </p>
                       )}
                     </>
@@ -280,12 +316,25 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                   <div className="configure-domain-records-table">
                     <div className="thead">
                       <div className="tr">
-                        <div className="th">Type</div>
-                        <div className="th">Name</div>
+                        <div
+                          className={`th ${
+                            domainType.indexOf("ens") !== -1 ? "more-width" : ""
+                          }`}
+                        >
+                          Type
+                        </div>
+                        <div
+                          className={`th ${
+                            domainType.indexOf("ens") !== -1 ? "less-width" : ""
+                          }`}
+                        >
+                          Name
+                        </div>
                         <div className="th">Value</div>
                       </div>
                     </div>
-                    {!isHandshake ? (
+                    {domainType.indexOf("handshake") === -1 &&
+                    domainType.indexOf("ens") === -1 ? (
                       <div className="tbody">
                         <div className="tr">
                           <div className="td">A</div>
@@ -296,6 +345,17 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td">TXT</div>
                           <div className="td">{domain}</div>
                           <div className="td">argo={uuid}</div>
+                        </div>
+                      </div>
+                    ) : domainType.indexOf("ens") !== -1 ? (
+                      <div className="tbody">
+                        <div className="tr">
+                          <div className="td more-width">CONTENT</div>
+                          <div className="td less-width">{domain}</div>
+                          <div className="td">
+                            {separator.base}://
+                            {link.split(separator.sep)[1].split("/")[0]}
+                          </div>
                         </div>
                       </div>
                     ) : !isSubdomain ? (
@@ -309,7 +369,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                           <div className="td">TXT</div>
                           <div className="td">_contenthash</div>
                           <div className="td">
-                            {separator.base}://{link.split(separator.sep)[1]}
+                            {separator.base}://
+                            {link.split(separator.sep)[1].split("/")[0]}
                           </div>
                         </div>
                       </div>
@@ -327,7 +388,8 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                             {domain.substring(0, domain.lastIndexOf("."))}
                           </div>
                           <div className="td">
-                            {separator.base}://{link.split(separator.sep)[1]}
+                            {separator.base}://
+                            {link.split(separator.sep)[1].split("/")[0]}
                           </div>
                         </div>
                       </div>
@@ -342,11 +404,27 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                         <span>Update Records and Verify</span>
                       </div>
                       <div className="verify-domain-button-container">
-                        {isHandshake ? (
+                        {domainType.indexOf("handshake") !== -1 ? (
                           <button
                             className="update-domain-button"
                             disabled={updateDomainLoading}
-                            onClick={updateDomain}
+                            onClick={updateHnsDomain}
+                          >
+                            Update
+                            {updateDomainLoading ? (
+                              <BounceLoader
+                                size={20}
+                                color={"#fff"}
+                                loading={true}
+                              />
+                            ) : null}
+                          </button>
+                        ) : null}
+                        {domainType.indexOf("ens") !== -1 ? (
+                          <button
+                            className="update-domain-button"
+                            disabled={updateDomainLoading}
+                            onClick={updateEnsDomain}
                           >
                             Update
                             {updateDomainLoading ? (
@@ -397,7 +475,10 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    {!isHandshake && <option value="latest">Latest Deployed</option>}
+                    {domainType.indexOf("handshake") === -1 &&
+                      domainType.indexOf("ens") === -1 && (
+                        <option value="latest">Latest Deployed</option>
+                      )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>

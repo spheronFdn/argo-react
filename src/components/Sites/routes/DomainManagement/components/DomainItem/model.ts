@@ -8,6 +8,5 @@ export default interface IDeploymentItemProps {
   autoDns: boolean;
   uuid: string;
   ownerVerified: boolean;
-  isHandshake: boolean;
   domainType: string;
 }
