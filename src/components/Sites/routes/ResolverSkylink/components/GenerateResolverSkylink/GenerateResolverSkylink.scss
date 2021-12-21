@@ -1,0 +1,253 @@
+@import "../../../../../../styles/mixin";
+.GenerateResolverSkylink {
+  position: relative;
+  .close-button {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    color: var(--grey3Color);
+    z-index: 10;
+    font-weight: 600;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      color: var(--black);
+    }
+  }
+  .modal-container {
+    transition: all 0.12s ease-in-out 0s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    max-width: 600px;
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+
+      .modal-title {
+        margin: 0;
+        margin-top: 1rem;
+      }
+
+      .modal-content {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.2;
+        margin-top: 1.5rem;
+        color: var(--grey3Color);
+      }
+
+      .connect-container {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+
+        .small-text {
+          font-size: 16px;
+        }
+
+        .margin-left {
+          margin-left: 1rem;
+        }
+
+        .user-container {
+          display: flex;
+          align-items: center;
+          width: 100%;
+        }
+
+        .text-input {
+          flex: 1;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-size: 16px;
+          border: 1px solid var(--grey2Color);
+          outline: none;
+
+          &:focus {
+            border: 1px solid var(--grey5Color);
+          }
+        }
+
+        .skylink-name-container {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          margin-bottom: 1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          label {
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+          }
+          .skylink-name {
+            width: 100%;
+            display: flex;
+            margin-top: 0.5rem;
+          }
+
+          .skylink-select-container {
+            position: relative;
+            margin-top: 0.5rem;
+
+            .skylink-select {
+              width: 100%;
+              padding: 9px 12px;
+              border-radius: 4px;
+              font-size: 16px;
+              border: 1px solid var(--grey2Color);
+              outline: none;
+              appearance: none;
+              cursor: pointer;
+              z-index: 100;
+
+              &:focus {
+                border: 1px solid var(--grey5Color);
+              }
+
+              &::-ms-expand {
+                display: none;
+              }
+            }
+
+            .select-down-icon {
+              position: absolute;
+              right: 12px;
+              top: 9px;
+              cursor: pointer;
+              height: fit-content;
+              display: flex;
+            }
+          }
+        }
+
+        .seed-phrase-container {
+          width: 100%;
+          display: flex;
+        }
+
+        .or-text {
+          text-transform: uppercase;
+          font-weight: 800;
+          color: var(--grey4Color);
+          font-size: 18px;
+        }
+
+        .connect-mysky-button {
+          @include primaryButton(
+            white,
+            var(--themeColor),
+            0.5rem 1rem,
+            none,
+            8px,
+            var(--themeColorDark),
+            var(--primaryDisabled)
+          );
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .logout-mysky-button {
+          @include primaryButton(
+            white,
+            var(--red),
+            0.2rem 1rem,
+            none,
+            8px,
+            var(--redDark),
+            var(--redDisabled)
+          );
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .success-container {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        .content {
+          display: flex;
+          flex-direction: column;
+          width: -webkit-fill-available;
+        }
+        .header-container {
+          font-weight: 700;
+          font-size: xx-large;
+          margin-bottom: 20px;
+        }
+        .text-description {
+          text-align: center;
+          font-size: 16px;
+          margin-top: 10px;
+          opacity: 0.8;
+        }
+
+        .resolver-link {
+          text-decoration: none;
+          color: var(--logoColor);
+          width: fit-content;
+          margin-top: 0.5rem;
+          font-size: 16px;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .warning-container {
+    display: flex;
+    background-color: #fa383e;
+    border-radius: 10px;
+    width: 100%;
+    .warning-header {
+      padding: 16px;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--grey1Color);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  .popup-container-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .space-between {
+    margin-right: 4px;
+  }
+
+  .loading-container {
+    min-height: 400px;
+    min-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

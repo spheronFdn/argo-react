@@ -21,6 +21,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
   subdomains,
   hnsDomains,
   hnsSubdomains,
+  ensDomains,
   githubUrl,
   updateTime,
   repo,
@@ -40,13 +41,15 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
     (domains && domains.length > 0) ||
     (subdomains && subdomains.length > 0) ||
     (hnsDomains && hnsDomains.length > 0) ||
-    (hnsSubdomains && hnsSubdomains.length > 0);
+    (hnsSubdomains && hnsSubdomains.length > 0) ||
+    (ensDomains && ensDomains.length > 0);
 
   const domainsAttached = [
     ...(domains || []),
     ...(subdomains || []),
     ...(hnsDomains || []),
     ...(hnsSubdomains || []),
+    ...(ensDomains || []),
   ];
 
   return (
@@ -105,7 +108,8 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                     {(i !== a.length - 1 ||
                       (subdomains && subdomains.length > 0) ||
                       (hnsDomains && hnsDomains.length > 0) ||
-                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      (hnsSubdomains && hnsSubdomains.length > 0) ||
+                      (ensDomains && ensDomains.length > 0)) && (
                       <span className="comma-sep">,</span>
                     )}
                   </>
@@ -124,7 +128,8 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                     </a>
                     {(i !== a.length - 1 ||
                       (hnsDomains && hnsDomains.length > 0) ||
-                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      (hnsSubdomains && hnsSubdomains.length > 0) ||
+                      (ensDomains && ensDomains.length > 0)) && (
                       <span className="comma-sep">,</span>
                     )}
                   </>
@@ -142,13 +147,32 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
                       {s.name}
                     </a>
                     {(i !== a.length - 1 ||
-                      (hnsSubdomains && hnsSubdomains.length > 0)) && (
+                      (hnsSubdomains && hnsSubdomains.length > 0) ||
+                      (ensDomains && ensDomains.length > 0)) && (
                       <span className="comma-sep">,</span>
                     )}
                   </>
                 ))}
               {hnsSubdomains &&
                 hnsSubdomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                  <>
+                    <a
+                      href={`http://${s.name}`}
+                      className="project-item-live-value"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={i}
+                    >
+                      {s.name}
+                    </a>
+                    {(i !== a.length - 1 ||
+                      (ensDomains && ensDomains.length > 0)) && (
+                      <span className="comma-sep">,</span>
+                    )}
+                  </>
+                ))}
+              {ensDomains &&
+                ensDomains.map((s: IDomain, i: number, a: IDomain[]) => (
                   <>
                     <a
                       href={`http://${s.name}`}

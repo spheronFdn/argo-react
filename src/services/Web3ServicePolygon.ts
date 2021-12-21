@@ -11,8 +11,8 @@ declare global {
 }
 
 var notify = Notify({
-  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
-  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+  dappId: config.web3.onboardPolygon.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardPolygon.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
 });
 
 let provider: ethers.providers.Web3Provider | null;
@@ -21,31 +21,35 @@ let payment: paymentLib.Payment | null;
 const wallets = [
   { walletName: "metamask", preferred: true },
   { walletName: "authereum", preferred: true },
-  { walletName: "trust", preferred: true, rpcUrl: config.web3.onboard.RPC_URL },
+  {
+    walletName: "trust",
+    preferred: true,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
+  },
   { walletName: "gnosis", preferred: true },
   {
     walletName: "ledger",
-    rpcUrl: config.web3.onboard.RPC_URL,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
     preferred: true,
   },
   {
     walletName: "torus",
-    rpcUrl: config.web3.onboard.RPC_URL,
+    rpcUrl: config.web3.onboardPolygon.RPC_URL,
     preferred: true,
   },
   {
     walletName: "walletConnect",
     rpc: {
-      "80001": config.web3.onboard.RPC_URL,
+      "80001": config.web3.onboardPolygon.RPC_URL,
     },
     preferred: true,
   },
 ];
 
 const onboard = Onboard({
-  dappId: config.web3.onboard.DAPP_ID, // [String] The API key created by step one above
-  networkId: config.web3.onboard.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
-  networkName: config.web3.onboard.NETWORK_NAME,
+  dappId: config.web3.onboardPolygon.DAPP_ID, // [String] The API key created by step one above
+  networkId: config.web3.onboardPolygon.NETWORK_ID, // [Integer] The Ethereum network ID your Dapp uses.
+  networkName: config.web3.onboardPolygon.NETWORK_NAME,
   subscriptions: {
     wallet: async (wallet) => {
       if (wallet.provider) {
@@ -72,11 +76,11 @@ const onboard = Onboard({
     },
   },
   walletSelect: {
-    wallets: wallets,
+    wallets,
   },
 });
 
-export const autoChangeNetwork = async () => {
+export const autoChangeNetworkPolygon = async () => {
   try {
     if (window.ethereum.chainId !== "0x13881") {
       await window.ethereum.request({
@@ -102,9 +106,9 @@ export const autoChangeNetwork = async () => {
   }
 };
 
-export const getAccount = async () => {
+export const getPolygonAccount = async () => {
   try {
-    await autoChangeNetwork();
+    await autoChangeNetworkPolygon();
     await onboard.walletSelect();
     await onboard.walletCheck();
     const currentState = onboard.getState();
@@ -116,12 +120,12 @@ export const getAccount = async () => {
   }
 };
 
-export const getCurrentAccount = async () => {
+export const getPolygonCurrentAccount = async () => {
   const currentState = onboard.getState();
   return currentState.address;
 };
 
-export const disconnect = () => {
+export const disconnectPolygon = () => {
   onboard.walletReset();
 };
 
@@ -153,7 +157,7 @@ export const giveAllowance = async (amount: string) => {
   if (payment) {
     const tx = await payment.gasslessApproval(
       amount,
-      config.web3.onboard.NETWORK_ID,
+      config.web3.onboardPolygon.NETWORK_ID,
     );
     notify.hash(tx.hash);
     await tx.wait();

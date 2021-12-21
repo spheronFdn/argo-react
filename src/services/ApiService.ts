@@ -323,6 +323,59 @@ export const deleteDomain = (id: string): Observable<any> => {
   });
 };
 
+export const addResolverSkylinks = (
+  resolverSkylinksDetails: any,
+): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/resolver-skylinks/`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify(resolverSkylinksDetails),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const editResolverSkylinks = (
+  id: string,
+  resolverSkylinksDetails: any,
+): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/resolver-skylinks/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "PUT",
+        body: JSON.stringify(resolverSkylinksDetails),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const deleteResolverSkylinks = (
+  id: string,
+  details: any,
+): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/resolver-skylinks/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "DELETE",
+        body: JSON.stringify(details),
+      }).then((res) => res.json()),
+    );
+  });
+};
+
 export const getGithubRepoBranches = (branchUrl: string): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
@@ -477,6 +530,34 @@ export const getArchiveProject = (id: any): Observable<any> => {
   return defer(() => {
     return from<Promise<any>>(
       fetch(`${config.urls.API_URL}/project/getArchived/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "GET",
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const getFilecoinPinDetails = (id: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/deploymentData/filecoin/pins/${id}`, {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+        },
+        method: "GET",
+      }).then((res) => res.json()),
+    );
+  });
+};
+
+export const getPinataPinDetails = (id: any): Observable<any> => {
+  return defer(() => {
+    return from<Promise<any>>(
+      fetch(`${config.urls.API_URL}/deploymentData/pinata/pins/${id}`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,

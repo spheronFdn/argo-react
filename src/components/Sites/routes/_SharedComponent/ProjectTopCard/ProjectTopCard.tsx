@@ -65,6 +65,28 @@ const ProjectTopCard = () => {
             loading="lazy"
           />
         );
+      case "ipfs-filecoin":
+        return (
+          <img
+            src={require("../../../../../assets/png/filecoin.png")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
+      case "ipfs-pinata":
+        return (
+          <img
+            src={require("../../../../../assets/svg/pinata.svg")}
+            alt="github"
+            className="project-top-logo"
+            height={24}
+            width={24}
+            loading="lazy"
+          />
+        );
 
       default:
         return (
@@ -108,6 +130,7 @@ const ProjectTopCard = () => {
   const subdomains = selectedProject ? selectedProject.subdomains : [];
   const hnsDomains = selectedProject ? selectedProject.handshakeDomains : [];
   const hnsSubdomains = selectedProject ? selectedProject.handshakeSubdomains : [];
+  const ensDomains = selectedProject ? selectedProject.ensDomains : [];
 
   const isDomainOrSubPresent =
     [...domains, ...subdomains, ...hnsDomains, ...hnsSubdomains].length > 0;
@@ -185,7 +208,7 @@ const ProjectTopCard = () => {
                   <div className="project-top-github-icon">
                     <FontAwesomeIcon icon={faGlobe} />
                   </div>
-                  <div className="domain-container">
+                  <div className="domain-overview-container">
                     {!projectLoading ? (
                       <>
                         {domains.map((d: IDomain, i: number, a: IDomain[]) => (
@@ -201,7 +224,8 @@ const ProjectTopCard = () => {
                             {(i !== a.length - 1 ||
                               subdomains.length > 0 ||
                               hnsDomains.length > 0 ||
-                              hnsSubdomains.length > 0) && (
+                              hnsSubdomains.length > 0 ||
+                              ensDomains.length > 0) && (
                               <span className="comma-sep">,</span>
                             )}
                           </>
@@ -218,7 +242,8 @@ const ProjectTopCard = () => {
                             </a>
                             {(i !== a.length - 1 ||
                               hnsDomains.length > 0 ||
-                              hnsSubdomains.length > 0) && (
+                              hnsSubdomains.length > 0 ||
+                              ensDomains.length > 0) && (
                               <span className="comma-sep">,</span>
                             )}
                           </>
@@ -233,7 +258,9 @@ const ProjectTopCard = () => {
                             >
                               {s.name}
                             </a>
-                            {(i !== a.length - 1 || hnsSubdomains.length > 0) && (
+                            {(i !== a.length - 1 ||
+                              hnsSubdomains.length > 0 ||
+                              ensDomains.length > 0) && (
                               <span className="comma-sep">,</span>
                             )}
                           </>
@@ -242,6 +269,21 @@ const ProjectTopCard = () => {
                           <>
                             <a
                               href={`http://${s.name}`}
+                              className="project-top-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {s.name}
+                            </a>
+                            {(i !== a.length - 1 || ensDomains.length > 0) && (
+                              <span className="comma-sep">,</span>
+                            )}
+                          </>
+                        ))}
+                        {ensDomains.map((s: IDomain, i: number, a: IDomain[]) => (
+                          <>
+                            <a
+                              href={`https://${s.name}.link`}
                               className="project-top-link"
                               target="_blank"
                               rel="noopener noreferrer"

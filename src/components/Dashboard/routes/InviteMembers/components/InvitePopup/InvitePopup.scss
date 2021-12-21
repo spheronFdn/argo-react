@@ -33,11 +33,6 @@
     align-items: center;
     padding: 0px 50px 40px 50px;
     backdrop-filter: blur(4px);
-    .content {
-      display: flex;
-      flex-direction: column;
-      width: -webkit-fill-available;
-    }
     .header-container {
       font-weight: 700;
       font-size: xx-large;

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import "./HandshakeDomainGeneral.scss";
+import "./EnsDomainGeneral.scss";
 import { DomainItem } from "../../components";
 import { ActionContext, StateContext } from "../../../../../../hooks";
 import { IActionModel, IStateModel } from "../../../../../../model/hooks.model";
@@ -9,7 +9,7 @@ import moment from "moment";
 import { ApiService } from "../../../../../../services";
 import BounceLoader from "react-spinners/BounceLoader";
 
-const HandshakeDomainGeneral = () => {
+const EnsDomainGeneral = () => {
   const { projectLoading, selectedProject, selectedOrg } =
     useContext<IStateModel>(StateContext);
   const { fetchProject } = useContext<IActionModel>(ActionContext);
@@ -21,11 +21,6 @@ const HandshakeDomainGeneral = () => {
     : selectedProject?.deployments
         .filter((dep) => dep.sitePreview)
         .sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
-  const sortedResolverSkylinks = projectLoading
-    ? []
-    : selectedProject?.resolverSkylinks.sort((a, b) =>
-        moment(b.createdAt).diff(moment(a.createdAt)),
-      );
 
   const addDomainDetails = () => {
     setDomainLoading(true);
@@ -34,7 +29,7 @@ const HandshakeDomainGeneral = () => {
       projectId: selectedProject?._id,
       name: domainName,
       link: deployedSite,
-      type: "handshake-domain",
+      type: "ens-domain",
     };
     ApiService.addDomain(domain).subscribe((result) => {
       if (result.success) {
@@ -58,33 +53,26 @@ const HandshakeDomainGeneral = () => {
       <div className="domain-general-right-container">
         <div className="domain-general-project-details">
           <div className="domain-general-project-header">
-            Handshake Domains
+            ENS Domains
             <span className="beta-badge">Beta</span>
           </div>
           <div className="domain-general-project-body">
             <div className="domain-general-project-item">
               <label className="domain-general-project-item-title">
-                Configure your Handshake Domains
+                Configure your ENS Domains/Subdomains
               </label>
               <label className="domain-general-project-item-subtitle">
                 By default, your site is always accessible via arweave gateway based
-                on transaction hash. Handshake is decentralized naming and
-                certificate authority that allow you to access your site in a
-                decentralized peer-to-peer root naming system.
+                on transaction hash. ENS is an open source blockchain-based naming
+                protocol.
               </label>
               <label className="domain-general-project-item-subtitle label-note">
-                To resolve your Handshake Domains, connect to{" "}
-                <a href="https://hdns.io" rel="noopener noreferrer" target="_blank">
-                  HDNS.io
-                </a>{" "}
-                or use a gateway like hns.to
+                To resolve your ENS Domains, use a gateway like eth.link or eth.limo.
+                Brave & Opera browsers have direct support for ENS Domains, so no
+                gateway is required.
               </label>
-              <a
-                href="https://docs.argoapp.live/custom-domains/handshake-domains"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Learn more about handshake domains in our docs
+              <a href="https://docs.argoapp.net/">
+                Learn more about ens domains from our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />
                 </span>
@@ -93,7 +81,7 @@ const HandshakeDomainGeneral = () => {
                 <input
                   type="text"
                   className="add-domain-input"
-                  placeholder="mywebsite.hns"
+                  placeholder="eg: mywebsite.eth or dash.mywebsite.eth"
                   value={domainName}
                   onChange={(e) => setDomainName(e.target.value)}
                 />
@@ -104,16 +92,6 @@ const HandshakeDomainGeneral = () => {
                     onChange={(e) => setTransaction(e.target.value)}
                   >
                     <option value="">Select Site</option>
-                    {(sortedResolverSkylinks ? sortedResolverSkylinks : []).map(
-                      (dep, index) => (
-                        <option
-                          value={`https://siasky.net/${dep.resolverSkylink}`}
-                          key={index}
-                        >
-                          Resolver Skylink - {dep.name}
-                        </option>
-                      ),
-                    )}
                     {(sortedDeployments ? sortedDeployments : []).map(
                       (dep, index) => (
                         <option value={dep.sitePreview} key={index}>
@@ -140,8 +118,8 @@ const HandshakeDomainGeneral = () => {
               </div>
               <div className="domain-general-domain-list">
                 {!projectLoading ? (
-                  selectedProject?.handshakeDomains?.length ? (
-                    selectedProject?.handshakeDomains?.map((domain, index) => (
+                  selectedProject?.ensDomains?.length ? (
+                    selectedProject?.ensDomains?.map((domain, index) => (
                       <div key={index}>
                         <DomainItem
                           index={index}
@@ -183,4 +161,4 @@ const HandshakeDomainGeneral = () => {
   );
 };
 
-export default HandshakeDomainGeneral;
+export default EnsDomainGeneral;
