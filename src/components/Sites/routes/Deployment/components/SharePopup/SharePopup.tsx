@@ -72,25 +72,25 @@ const SharePopup: React.FC<IPopupProps> = ({
   const shareAchievement = (platform: string) => {
     switch (platform) {
       case "twitter":
-        return `I decentralized my web app using @argoapplive.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
+        return `I decentralized my web app using @SpheronHQ.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
           protocol,
           platform,
-        )}. 🥳%0a%0a%23PoweredByArGoApp`;
+        )}. 🥳%0a%0a%23PoweredBySpheron`;
       case "fb":
-        return `I decentralized my web app using ArGoApp.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
+        return `I decentralized my web app using Spheron Protocol.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
           protocol,
           platform,
-        )}. 🥳%0a%0a%23PoweredByArGoApp`;
+        )}. 🥳%0a%0a%23PoweredBySpheron`;
       case "telegram":
         return `I decentralized my web app using @argoofficial.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
           protocol,
           platform,
-        )}. 🥳%0a%0a%23PoweredByArGoApp`;
+        )}. 🥳%0a%0a%23PoweredBySpheron`;
       case "mail":
-        return `I decentralized my web app using ArGoApp.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
+        return `I decentralized my web app using Spheron Protocol.%0a%0aCheck it out at ${link} deployed on ${showProtocolText(
           protocol,
           platform,
-        )}. 🥳%0a%0a%23PoweredByArGoApp`;
+        )}. 🥳%0a%0a%23PoweredBySpheron`;
       default:
         return "";
     }
