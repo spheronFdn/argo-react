@@ -84,7 +84,9 @@ const DomainItem: React.FC<IDeploymentItemProps> = ({
       orgId: selectedOrg?._id,
       name: editDomainName !== domain ? editDomainName : undefined,
       link:
-        deployedSite !== link && deployedSite !== "latest"
+        deployedSite === "latest"
+          ? (sortedDeployments || [{ sitePreview: "" }])[0].sitePreview || ""
+          : deployedSite !== link
           ? deployedSite
           : undefined,
       isLatest,
