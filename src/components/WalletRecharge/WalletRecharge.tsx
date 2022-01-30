@@ -150,11 +150,11 @@ function WalletRecharge() {
                 <label className="wallet-recharge-form-subtitle">
                   To get <b>Matic Testnet $ARGO Tokens</b>, please visit{" "}
                   <a
-                    href="https://faucet.argoapp.net"
+                    href="https://faucet.spheron.network/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    https://faucet.argoapp.net
+                    https://faucet.spheron.network
                   </a>
                   .
                 </label>

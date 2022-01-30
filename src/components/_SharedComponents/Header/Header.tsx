@@ -120,7 +120,7 @@ const Header: React.FC<IHeaderProps> = ({ parent }) => {
               <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
             </div> */}
             <a
-              href="https://docs.argoapp.net"
+              href="https://docs.spheron.network"
               target="_blank"
               rel="noopener noreferrer"
               className="link-container"

@@ -71,7 +71,7 @@ const EnsDomainGeneral = () => {
                 Brave & Opera browsers have direct support for ENS Domains, so no
                 gateway is required.
               </label>
-              <a href="https://docs.argoapp.net/">
+              <a href="https://docs.spheron.network/">
                 Learn more about ens domains from our docs
                 <span>
                   <FontAwesomeIcon icon={faArrowRight} />

@@ -81,7 +81,7 @@ const HandshakeSubdomainGeneral = () => {
                 or use a gateway like hns.to
               </label>
               <a
-                href="https://docs.argoapp.net/domain-and-https/hns-domain/overview"
+                href="https://docs.spheron.network/domain-and-https/hns-domain/overview"
                 rel="noopener noreferrer"
                 target="_blank"
               >
