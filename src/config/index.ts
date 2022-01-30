@@ -29,7 +29,7 @@ const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
 
 const development: IConfig = {
   urls: {
-    API_URL: "https://dev-api.spheron.network",
+    API_URL: "https://api-dev.spheron.network",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
@@ -87,7 +87,7 @@ const production: IConfig = {
 
 const test: IConfig = {
   urls: {
-    API_URL: "https://dev-api.spheron.network",
+    API_URL: "https://api-dev.spheron.network",
     IMAGE_NOT_FOUND: "https://ik.imagekit.io/argo/default-not-fount_RVbgyZDh5Q.png",
   },
   web3: {
