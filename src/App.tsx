@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, lazy, Suspense } from "react";
+import React, { useContext, useEffect, lazy, Suspense, useState } from "react";
 import "./App.scss";
 import { Route, Redirect, useHistory, Switch } from "react-router-dom";
 import { ActionContext } from "./hooks";
@@ -6,6 +6,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { BroadcastChannel } from "broadcast-channel";
 import Loading from "./components/Loading";
 import { IActionModel } from "./model/hooks.model";
+import AquaModal from "./components/_SharedComponents/Modal/AquaModal";
 
 const SignUp = lazy(() => import("./components/SignUp"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
@@ -46,10 +47,13 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [modalOpen, setModalOpen] = useState(true);
+
   return (
     <SkeletonTheme color="#ebebeb" highlightColor="#787878">
       <div className="App">
         <Suspense fallback={<Loading />}>
+          {modalOpen && <AquaModal setOpenModal={setModalOpen} />}
           <Switch>
             <Route
               path="/"
