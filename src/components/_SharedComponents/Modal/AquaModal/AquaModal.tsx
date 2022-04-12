@@ -1,29 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./AquaModal.scss";
 import IModalProps from "./model";
 
 const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
+  useEffect(() => {
+    const modal_status = localStorage.getItem("showModal");
+    if (modal_status === "false") {
+      setOpenModal(false);
+    }
+  }, []);
   return (
     <div className="modal__outer__con">
       <div className="modal__inner__con">
-        <div className="x_container">
-          <button
-            className="x_button"
-            onClick={() => {
-              setOpenModal(false);
-            }}
-          >
-            X
-          </button>
-        </div>
-        <div className="header"> This is inside the Modal Component</div>
         <button
+          className="x_button"
           onClick={() => {
             setOpenModal(false);
+            localStorage.setItem("showModal", "false");
           }}
         >
-          Cancel
+          X
         </button>
+        <div className="header"> Hola!!</div>
+        <div className="body">
+          Prashant And Mitra's vision was to bring the next million developers
+          onboarded in Web3 by providing best in class dev tooling. <br />
+          <br />
+          The journey you onboarded to reach that vision was the first step to
+          validating the product and market fit. Now we are at a stage where we want
+          to improve your experience, and we are on the cusp of launching a new
+          version of the app called 'AQUA'. <br />
+          <br />
+          We will be discontinuing this version of the app and giving out a free
+          ticket to all of our active users to the 'AQUA'. <br />
+          <br />
+          To claim a complimentary ticket, copy this message and paste it either on
+          Twitter or on our discord general chat, and we will allocate you the NEW
+          NFT to access the app. <br />
+          <br />
+          Join our{" "}
+          <a className="link" href={"https://discord.gg/5p4XqrNhVB"}>
+            Discord
+          </a>{" "}
+          group to get personalised guidance for accessing the new release.
+        </div>
+        <div className="button_container">
+          <button
+            className="visit_btn"
+            onClick={() => {
+              window.open("https://aqua.spheron.network/");
+            }}
+          >
+            Visit
+          </button>
+          <button
+            className="cancel_btn"
+            onClick={() => {
+              setOpenModal(false);
+              localStorage.setItem("showModal", "false");
+            }}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
