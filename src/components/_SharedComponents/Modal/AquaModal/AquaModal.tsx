@@ -50,7 +50,12 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
           NFT to access the app. <br />
           <br />
           Join our{" "}
-          <a className="link" href={"https://discord.gg/5p4XqrNhVB"}>
+          <a
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"https://discord.gg/5p4XqrNhVB"}
+          >
             Discord
           </a>{" "}
           group to get personalised guidance for accessing the new release.
