@@ -1,14 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { StateContext } from "../../../../hooks";
 import "./AquaModal.scss";
 import IModalProps from "./model";
 
 const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
+  const { user } = useContext(StateContext);
+  const [userName, setUserName] = useState<string>("");
+
   useEffect(() => {
     const modal_status = localStorage.getItem("showModal");
     if (modal_status === "false") {
       setOpenModal(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.argoProfile.username);
+    }
+  }, [user]);
+
   return (
     <div className="modal__outer__con">
       <div className="modal__inner__con">
@@ -21,7 +32,7 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
         >
           X
         </button>
-        <div className="header"> Hola!!</div>
+        <div className="header"> Hola {userName} !!</div>
         <div className="body">
           Prashant And Mitra's vision was to bring the next million developers
           onboarded in Web3 by providing best in class dev tooling. <br />

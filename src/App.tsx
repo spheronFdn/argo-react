@@ -30,6 +30,7 @@ function App() {
     bc.onmessage = (msg) => {
       if (msg === "signedup") {
         fetchUser();
+        setModalOpen(true);
         history.push("/dashboard");
       }
     };
@@ -43,11 +44,12 @@ function App() {
     const isJWTPresent = localStorage.getItem("jwt-token");
     if (isJWTPresent) {
       fetchUser();
+      setModalOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <SkeletonTheme color="#ebebeb" highlightColor="#787878">
