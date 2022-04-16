@@ -1,3 +1,3 @@
-import Navbar from "./AquaModal";
+import AquaModal from "./AquaModal";
 
-export default Navbar;
+export default AquaModal;
