@@ -1,0 +1,107 @@
+.modal__outer__con {
+  z-index: 9999;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(128, 128, 128, 0.39);
+  position: fixed;
+  .modal__inner__con {
+    width: 60%;
+    height: max-content;
+    background: #ffffff;
+    border: 0.5px solid #edf1fe;
+    box-shadow: 0px 10px 28px rgba(38, 42, 49, 0.2);
+    padding: 5px 5px 5px 5px;
+    border-radius: 20px;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 24px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 500ms;
+    .x_button {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: min-content;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 19px;
+      background-color: #ffffff;
+      &:hover {
+        font-weight: 500;
+      }
+    }
+    .header {
+      margin-bottom: 20px;
+      font-weight: 550;
+      font-size: 17px;
+    }
+    .body {
+      width: 90%;
+      margin-bottom: 30px;
+      .link {
+        text-decoration: none;
+      }
+    }
+    .button_container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      .visit_btn {
+        width: 120px;
+        height: 38px;
+        border-radius: 8px;
+        background-color: #4977f9;
+        border: 0px;
+        color: #ffffff;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 10px;
+        cursor: pointer;
+        transition-property: background-color, border-color, color, fill, stroke,
+          opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 500ms;
+        &:hover {
+          background-color: darken($color: #4977f9, $amount: 10);
+        }
+      }
+      .cancel_btn {
+        width: 120px;
+        height: 38px;
+        border-radius: 8px;
+        color: #4977f9;
+        border: 2px solid;
+        background-color: #ffffff;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 10px;
+        cursor: pointer;
+        transition-property: background-color, border-color, color, fill, stroke,
+          opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 500ms;
+        &:hover {
+          color: darken($color: #4977f9, $amount: 10);
+        }
+      }
+    }
+  }
+}
