@@ -60,6 +60,18 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
           </a>{" "}
           group to get personalised guidance for accessing the new release.
         </div>
+        <div className="body">
+          Please fill out this{" "}
+          <a
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"https://forms.gle/43ekB8mJgJLQWq7s9"}
+          >
+            form
+          </a>{" "}
+          to get exclusive access to our new app.
+        </div>
         <div className="button_container">
           <button
             className="visit_btn"

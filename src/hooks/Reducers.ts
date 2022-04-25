@@ -35,6 +35,7 @@ const Reducers = (dispatch: any, history: any) => ({
         });
       } else {
         localStorage.removeItem("jwt-token");
+        localStorage.removeItem("showModal");
         history.push("/login");
       }
       dispatch({ type: Actions.SET_USER_LOADING, userLoading: false });
