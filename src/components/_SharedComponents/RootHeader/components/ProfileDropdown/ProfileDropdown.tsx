@@ -17,6 +17,7 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ setShowDropdown }) =
     setLogoutText("Logging out...");
     logoutSvc = ApiService.logout().subscribe(() => {
       localStorage.removeItem("jwt-token");
+      localStorage.removeItem("showModal");
       resetUser();
       setLogoutText("Logout");
       history.push("/login");
