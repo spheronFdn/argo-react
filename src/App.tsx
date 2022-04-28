@@ -44,7 +44,6 @@ function App() {
     const isJWTPresent = localStorage.getItem("jwt-token");
     if (isJWTPresent) {
       fetchUser();
-      setModalOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

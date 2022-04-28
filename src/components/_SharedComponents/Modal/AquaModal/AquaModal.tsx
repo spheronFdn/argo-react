@@ -12,6 +12,7 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
     if (modal_status === "false") {
       setOpenModal(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
