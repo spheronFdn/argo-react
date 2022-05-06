@@ -55,7 +55,7 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
             className="link"
             target="_blank"
             rel="noopener noreferrer"
-            href={"https://discord.gg/5p4XqrNhVB"}
+            href={"https://discord.com/invite/ahxuCtm"}
           >
             Discord
           </a>{" "}
