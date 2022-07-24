@@ -1,3 +1,2 @@
 - name: Arweave upload file
   uses: rgbrota/arweave-upload-file@v1
-
