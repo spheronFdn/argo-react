@@ -23,6 +23,9 @@ export interface IConfig {
   skynet: {
     DATA_DOMAIN: string;
   };
+  couponCode: {
+    FREE_PRO: string;
+  };
 }
 
 const NODE_ENV: string = process.env.REACT_APP_STAGE || "development";
@@ -54,6 +57,9 @@ const development: IConfig = {
   skynet: {
     DATA_DOMAIN: "dev.argoapp.net",
   },
+  couponCode: {
+    FREE_PRO: "spheronxheroes000",
+  },
 };
 
 const production: IConfig = {
@@ -83,6 +89,9 @@ const production: IConfig = {
   skynet: {
     DATA_DOMAIN: "app.argoapp.net",
   },
+  couponCode: {
+    FREE_PRO: "spheronxheroes000",
+  },
 };
 
 const test: IConfig = {
@@ -111,6 +120,9 @@ const test: IConfig = {
   },
   skynet: {
     DATA_DOMAIN: "dev.argoapp.net",
+  },
+  couponCode: {
+    FREE_PRO: "spheronxheroes000",
   },
 };
 

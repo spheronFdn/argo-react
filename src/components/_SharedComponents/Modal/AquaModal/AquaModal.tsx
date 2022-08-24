@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import config from "../../../../config";
 import { StateContext } from "../../../../hooks";
 import "./AquaModal.scss";
 import IModalProps from "./model";
@@ -21,6 +22,16 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
     }
   }, [user]);
 
+  const showCoupon = () => {
+    return (
+      <span className="">
+        {"{"}
+        <strong>{config.couponCode.FREE_PRO.toUpperCase()}</strong>
+        {"}"}
+      </span>
+    );
+  };
+
   return (
     <div className="modal__outer__con">
       <div className="modal__inner__con">
@@ -36,21 +47,42 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
         <div className="header"> Hola {userName} !!</div>
         <div className="body">
           Prashant And Mitra's vision was to bring the next million developers
-          onboarded in Web3 by providing best in class dev tooling. <br />
+          onboarded in Web3 by providing best-in-class dev tooling. <br />
           <br />
           The journey you onboarded to reach that vision was the first step to
-          validating the product and market fit. Now we are at a stage where we want
-          to improve your experience, and we are on the cusp of launching a new
-          version of the app called 'AQUA'. <br />
+          validating the product and market fit. Now we are at a stage where we have
+          tested our new version, 'AQUA', and more than 400+ projects have onboarded
+          during the launch phase. At this stage of 'AQUA', we have decided to make
+          it an official app. <br />
           <br />
-          We will be discontinuing this version of the app and giving out a free
-          ticket to all of our active users to the 'AQUA'. <br />
+          We will discontinue this app version from September 15th, 2022. <br />
           <br />
-          To claim a complimentary ticket, copy this message and paste it either on
-          Twitter or on our discord general chat, and we will allocate you the NEW
-          NFT to access the app. <br />
+          Prashant and Mitra would love to invite you to the new app currently hosted
+          at{" "}
+          <a
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"https://aqua.spheron.network"}
+          >
+            https://aqua.spheron.network
+          </a>
+          . After September 15th, our older app, hosted at{" "}
+          <a
+            className="link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"https://app.spheron.network"}
+          >
+            https://app.spheron.network
+          </a>
+          , will be migrated to the new 'AQUA' version. <br />
           <br />
-          Join our{" "}
+          With your help, we were able to reach this milestone, and here is your
+          unique COUPON CODE TO GET FREE PRO VERSION OF AQUA FOR 3 MONTHS{" "}
+          {showCoupon()} <br /> <br />
+          We are looking forward to seeing you at the new app. <br /> <br />
+          Please join our{" "}
           <a
             className="link"
             target="_blank"
@@ -59,20 +91,11 @@ const AquaModal: React.FC<IModalProps> = ({ setOpenModal }) => {
           >
             Discord
           </a>{" "}
-          group to get personalised guidance for accessing the new release.
+          group for personalised guidance for accessing the new release. <br />
+          <br />
+          Gracias!!!
         </div>
-        <div className="body">
-          Please fill out this{" "}
-          <a
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={"https://forms.gle/43ekB8mJgJLQWq7s9"}
-          >
-            form
-          </a>{" "}
-          to get exclusive access to our new app.
-        </div>
+
         <div className="button_container">
           <button
             className="visit_btn"
