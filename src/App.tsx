@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, lazy, Suspense, useState } from "react";
 import "./App.scss";
 import { Route, Redirect, useHistory, Switch } from "react-router-dom";
-import { ActionContext } from "./hooks";
+import { ActionContext, StateContext } from "./hooks";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { BroadcastChannel } from "broadcast-channel";
 import Loading from "./components/Loading";
@@ -49,12 +49,15 @@ function App() {
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const { user, userLoading } = useContext(StateContext);
 
   return (
     <SkeletonTheme color="#ebebeb" highlightColor="#787878">
       <div className="App">
         <Suspense fallback={<Loading />}>
-          {modalOpen && <AquaModal setOpenModal={setModalOpen} />}
+          {modalOpen && user !== null && !userLoading && (
+            <AquaModal setOpenModal={setModalOpen} />
+          )}
           <Switch>
             <Route
               path="/"
